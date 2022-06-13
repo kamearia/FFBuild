@@ -62,6 +62,8 @@ double myjn(long n, double x){ return jn((int) n,x);}
 // F. Hecht fev. 2015 ...
 #endif
 #include "AFunction.hpp"
+extern Polymorphic * TheOperators,
+					*TheRightOperators;//=new Polymorphic();
 #ifndef kame
 #include <cstdarg>
 #include <cstring>
@@ -1031,13 +1033,16 @@ template<typename T>
 bool  pswap(T *a,T *b) {swap(*a,*b);return 0; }
 long lrintc(Complex x) { return lrint(real(x));}
 long lroundc(Complex x) { return lround(real(x));}
+#endif
 void Init_map_type()
 {
    TheOperators=new Polymorphic(),
    TheRightOperators=new Polymorphic();
     map_type[typeid(AnyType).name()] = new ForTypeAnyType();
     map_type[typeid(void).name()] = new ForTypeVoid();
-       InitLoop();
+
+    InitLoop();
+#ifndef kame
     Dcl_Type<Expression>(0);
     Dcl_TypeandPtr<double>(0,0,::InitializeDef<double>,0);
     Dcl_TypeandPtr<long>(0,0,::InitializeDef<long>,0);
@@ -1698,10 +1703,10 @@ void Init_map_type()
   // add setw feb 2015 FH
   Global.Add("setw","(",new OneOperator1<OP_setw,long>(defOP_setw));
   TheOperators->Add("<<", new OneBinaryOperator<Print<OP_setw> >);
-
+#endif
 }
 
-
+#ifndef kame
 
 
  void ClearMem()

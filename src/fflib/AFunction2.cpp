@@ -1034,11 +1034,11 @@ void lgerror (const char* s)
     args+=instt;
     return C_F0(TheOperators,"{}",args);
 }
-
+#endif
 void InitLoop()
 {
      Dcl_Type<PolymorphicLoop*>(0);
 
 }
 
-#endif
+

@@ -733,7 +733,7 @@ class CListOfInst;
 class ForTypeVoid:  public basicForEachType{public:
     ForTypeVoid():basicForEachType(typeid(void),0,0,0,0,0) {}
 };
-#ifndef kame
+
 template<class T> 
 class ForEachType:  public basicForEachType{public:
     ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(T),sizeof(T),0,0,iv,id,OOnReturn) {
@@ -745,6 +745,7 @@ class ForEachType:  public basicForEachType{public:
       }
     }
 };
+#ifndef kame
 template<class T> 
 class ForEachType<T*>:  public basicForEachType{public:// coorection july 2009..... FH  Hoooo....  (Il y a un bug DUR DUR FH  ...) 
     ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(T),sizeof(T),0,0,iv,id,OOnReturn) {
@@ -778,13 +779,13 @@ class ForEachTypePtrfspace:  public ForEachTypePtr<T> { public:
     int TYPEOFID() const {return RTYPE;} 
 };
 
-
+#endif
 class ForTypeAnyType:  public basicForEachType{public:
     ForTypeAnyType(): basicForEachType(typeid(AnyType),sizeof(AnyType)) {}
       bool CastingFrom(const basicForEachType * ) const {return true;}
 	  C_F0 CastTo(const C_F0 & e) const {return e;}     
 };
-
+#ifndef kame
 
 //  for  cast and get value associed to a pointer  
 
@@ -2129,8 +2130,9 @@ aType TypeArray(aType c,aType b,aType a);
 
 /// Declaration of TypeTemplate
 aType TypeTemplate(aType,aType);
-
+#endif
 void Init_map_type();
+#ifndef kame
 
 /// <<Block>>
 
@@ -3003,12 +3005,13 @@ inline C_F0 & operator+=(C_F0 & a,C_F0 &b)
    return a;
 }
 */
+#endif
 template<typename T>
 void CheckDclTypeEmpty() {
     if(map_type.find(typeid(T).name())!=map_type.end())
         cout << " Erreur  fftype dcl twist "<< typeid(T).name() << endl; 
         }
-                            
+#ifndef kame                            
 template<typename T,typename PT>
 void Dcl_TypeandPtr_ (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1 OnReturn=0,Function1 pOnReturn=0)
    {
@@ -3054,7 +3057,7 @@ template<class T>
       map_type[typeid(T).name()] = new ForEachType<T>();
       map_type[typeid(T*).name()] = new ForEachTypePtr<T>(); 
    }
-   
+#endif   
 template<class T>
   aType Dcl_Type (Function1 iv=0,Function1 id=0,Function1 Onreturn=0)
    {
@@ -3066,7 +3069,7 @@ template<class T>
      return map_type[typeid(T).name()] = new ForEachType<T>(iv,id,Onreturn); 
     
    }
-
+#ifndef kame
 template<class T>
   void Add(const char * k,const char * op,OneOperator *p0,OneOperator *p1=0,
       OneOperator *p2=0,OneOperator *p3=0,OneOperator *p4=0,
@@ -3413,10 +3416,12 @@ Type_Expr CVariable(R  (*ff)() )
     throwassert(map_type[typeid(R).name()]);
     return make_pair(map_type[typeid(R).name()],new  typename OneOperator0<R>::E_F0_F(ff));
 }
+#endif
 void InitLoop();
+#ifndef kame
 C_F0 ForAll(Block *,ListOfId * id,C_F0  m);
 C_F0 ForAll(C_F0  loop,C_F0  inst);
-
+#endif
 class PolymorphicLoop:public Polymorphic {
 public:
     typedef Expression Exp;
@@ -3438,7 +3443,7 @@ public:
     AnyType fj(Stack s) const { return j ? (*j)(s): Nothing ;}
     
 };
-
+#ifndef kame
 
 
 class ForAllLoopOpBase :  public E_F0mps { public:

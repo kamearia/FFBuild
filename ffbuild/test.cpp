@@ -7,11 +7,11 @@
 using namespace std;
 
 int main() {
-	ForTypeVoid *x=new ForTypeVoid();
-	cout << x << endl;
+//	ForTypeVoid *x=new ForTypeVoid();
+//	cout << x << endl;
 
 //	AnyType::test();
-	CodeAllocT<int>::test();
+//	CodeAllocT<int>::test();
 
-	//	Init_map_type();
+	Init_map_type();
 }

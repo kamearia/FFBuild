@@ -160,10 +160,10 @@ YYSTYPE *plglval;
 
    C_F0 *pOne=0,*pZero=0,*pminusOne=0;
 // const C_F0 & One(*pOne), &Zero(*pZero);
-
+#endif
  Polymorphic * TheOperators=0, //=new Polymorphic(),
              * TheRightOperators=0;//=new Polymorphic();
-
+#ifndef kame
 /// <<Global>> Contains all FreeFem++ language keywords. Declaration in [[file:AFunction.hpp::Global]]
 
 TableOfIdentifier Global;
@@ -177,8 +177,9 @@ ListOfTOfId tables_of_identifier;
 const int AC_F0::MaxSize=1024; // maximal number of parameters
 
 
-
+#endif
 map<const string,basicForEachType *> map_type;
+#ifndef kame
 bool showCPU= false;
 
 #endif
