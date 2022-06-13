@@ -28,7 +28,14 @@
 #pragma once;
 //#pragma dont_inline on
 //#pragma inline_depth(1)
-
+#include <iostream>
+#include "AFunction.hpp"
+#include "lex.hpp"
+#include "showverb.hpp"
+using namespace std;
+extern long mpirank;
+extern long verbosity;
+extern mylex *zzzfff;
 #ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
@@ -36,7 +43,7 @@
 #endif
 
 #include <complex>
-#include "AFunction.hpp"
+
 #include <cstdarg>
 #include <cstring>
 #include "error.hpp"
@@ -118,7 +125,7 @@ OneOperator::pair_find OneOperator::FindWithOutCast(const ArrayOfaType & at)cons
            w=oo;}
       return make_pair(w,n);
 }
-
+#endif
 // <<FindSameR>>
 OneOperator* OneOperator::FindSameR(const ArrayOfaType & at)
  {
@@ -163,7 +170,7 @@ void OneOperator::Show(const ArrayOfaType & at,ostream &f) const
          else if (np != 1)
            f << " We have ambiguity " << n << endl;
  }
-
+#ifndef kame
 const  OneOperator * Polymorphic::Find(const char *op, const  ArrayOfaType &at) const
   {
     const_iterator i=m.find(op);
@@ -412,8 +419,10 @@ vectorOfInst* TableOfIdentifier::newdestroy()
   ffassert(j==k);
  return l;
 }
+
 C_F0  TableOfIdentifier::destroy() {return C_F0(newdestroy());}
-   void TableOfIdentifier::clear()
+#endif
+void TableOfIdentifier::clear()
    {
      for (iterator i=m.begin();i!=m.end();++i)
        {
@@ -447,14 +456,16 @@ basicForEachType::basicForEachType(const type_info  & k,
         DoOnReturn(dreturn),
         //funct_type(0),
         destroy(id) {}
+
  void basicForEachType::SetArgs(const ListOfId *lid) const
 { SHOWVERB(cout << "SetArgs::\n ") ;ffassert(lid==0 || lid->size()==0);}
 
 
 
  TableOfIdentifier::TableOfIdentifier() : listofvar(0),nIdWithDelete(0) {}
- TableOfIdentifier:: ~TableOfIdentifier() {}
 
+ TableOfIdentifier:: ~TableOfIdentifier() {}
+#ifndef kame
 
 Block::Block(Block * f):fatherblock(f),top(f?f->top:BeginOffset*sizeof(void*)),topmax(top)
     {
@@ -564,7 +575,7 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
          }
       }
  }
-
+#endif
 bool ArrayOfaType::WithOutCast( const ArrayOfaType & a) const
  {
    if ( ( !ellipse && (a.n != n))  || (ellipse && n > a.n) ) return false;
@@ -573,7 +584,7 @@ bool ArrayOfaType::WithOutCast( const ArrayOfaType & a) const
         return false;
    return true;
  }
-
+#ifdef kame
 
 bool ArrayOfaType::WithCast( const ArrayOfaType & a,int nbcast) const
  {
@@ -644,7 +655,7 @@ void basicForEachType::AddCast(CastFunc f1,CastFunc f2,CastFunc f3,CastFunc f4,
     }
     return f;
  }
-
+#endif
 Expression NewExpression(Function1 f,Expression a)
 {
   ffassert(f);
@@ -656,7 +667,7 @@ Expression NewExpression(Function2 f,Expression a,Expression b)
   return new E_F0_Func2(f,a,b);
 
 }
-
+#ifndef kame
 // <<ShowType>>
  void ShowType(ostream & f)
  {
@@ -847,7 +858,7 @@ void ShowDebugStack()
      }
 #endif
  }
-#ifndef kame
+
 
   int  E_F0::Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n)
      {
@@ -858,7 +869,7 @@ void ShowDebugStack()
       	      << " :" << *this << endl;
        return insert(this,l,m,n);
      }
-
+#ifndef kame
 
 class E_F0para :public E_F0 { public:
   const int i;
@@ -943,7 +954,7 @@ void basicAC_F0::SetNameParam(int n,name_and_type *l , Expression * e) const
    }
 }
 
-
+#endif
 //  change FH to bluid .dll
 
 void lgerror (const char* s)
@@ -957,7 +968,7 @@ void lgerror (const char* s)
 	}
       throw(ErrorCompile(s,zzzfff->lineno(),zzzfff->YYText() ));
   }
-
+#ifndef kame
 
 
  C_F0 ForAll(Block *cb,ListOfId * id,C_F0  m)

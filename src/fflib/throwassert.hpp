@@ -25,8 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef THROWASSERT
-#define THROWASSERT
+#pragma once
 #include <iostream>
 
 //#ifdef __INTEL__
@@ -51,4 +50,4 @@
 #define AFAIRE(cmm) ( cerr << "FH: A Faire/ To Do  "<< cmm << " file " << __FILE__<< " line "<< __LINE__ << endl, InternalError(cmm))
 
 #define InternalError(message) throw(ErrorInternal(message,__LINE__,__FILE__))
-#endif
+

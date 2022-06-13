@@ -27,6 +27,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#pragma once
 #ifndef kame
 //-----------------------------------  
 //  to manage the freefem stack 
@@ -76,8 +77,9 @@ T * Stack_offset (Stack stack,size_t offset)
 template<class T>
 T * & Stack_Ptr (Stack stack,size_t offset)  
   {return   (T * &)  (((void **) stack)[offset]);}
-
+#endif
 void ShowType(ostream & f);
+#ifndef kame
 
 
 struct VOIDPtrType {

@@ -27,16 +27,26 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef MY_LEX_HPP_
-#define MY_LEX_HPP_
+#pragma once
+#ifndef kame
 // with New version of macro expansion more simple and more stable 
 // FH jan 2005
-#include <stack> 
+
 #include "environment.hpp"
 extern bool lexdebug;
 extern long mpisize,mpirank;
 
-
+#endif
+#include <list>
+#include <deque>
+#include <stack>
+#include <utility> 
+#include "AnyType.hpp"
+#include "CodeAlloc.hpp"
+#include "RNM.hpp"
+#include "String.hpp"
+using namespace std;
+extern void CompileError(string msg, aType r);
 /// <<mylex>>
 class mylex : public CodeAlloc { 
   public:
@@ -95,7 +105,7 @@ class mylex : public CodeAlloc {
   list<MapMacroDef> *listMacroDef;
   list<MapMacroParam> *listMacroParam;
   public:
-  
+	class String;
   mylex(ostream & out,bool eecho=true,const KN<String> *pargs=0 );
   string token() const;
   void print(ostream &f) const; 
@@ -122,7 +132,7 @@ class mylex : public CodeAlloc {
   
   void Check(bool b,Key k,const char * s) {
     if(b) {cout <<"Add " << s << "  null: " << k << endl;
-    CompileError();}}
+    CompileError("",0);}}
   
   void Add(Key k,int i) ;//    {Check(!i,k,"mot clef");Add(k,i,0); }
   void Add(Key k,aType t);//   {Check(!t,k,"type");Add(k,TYPE,t); }
@@ -171,6 +181,7 @@ private:
   
 } ;
 
+#ifndef kame
 mylex * Newlex(  ostream & out,bool =true,KN<String> * args=0);
  void Destroylex(mylex * m);
 

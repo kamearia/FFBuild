@@ -7,7 +7,10 @@
 using namespace std;
 
 int main() {
-	AnyType::test();
+	ForTypeVoid *x=new ForTypeVoid();
+	cout << x << endl;
+
+//	AnyType::test();
 	CodeAllocT<int>::test();
 
 	//	Init_map_type();

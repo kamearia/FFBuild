@@ -27,7 +27,9 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#pragma once
 //file afonction.h
+#define Nothing (void *)0;
 #ifndef kame
 
 #pragma once
@@ -80,45 +82,54 @@ inline double CPUtime(){
      */
       return ((double) std::clock())/CLOCKS_PER_SEC;
 }
-
+#endif
 extern long verbosity;  // level off printing
+#ifndef kame
 extern long searchMethod; //pichon
 extern bool  withrgraphique;
 extern bool lockOrientation; // lock the element orientation
 
-
-using namespace std;
 #endif
+using namespace std;
 #include "ffstack.hpp"
-#ifndef kame
 #include "AnyType.hpp"
+#include "CodeAlloc.hpp"
+#ifndef kame
 #include "String.hpp"
 
 
 class basicForEachType;
+#endif
 class E_F1_funcT_Type;
+#ifndef kame
+#endif
 class C_F0;  //  une instruction  complie time
+#ifndef kame
 class ListOfInst;
 class Polymorphic;
+#endif
 class OneOperator;
+#ifndef kame
 #endif
 class E_F0;  //  une instruction exec time 
 /// <<Expression>> is used as the type of the local list contained in ListOfInst 
 
 typedef  E_F0  *  Expression; // [[E_F0]]
-#ifndef kame
 class AC_F0;
 class basicAC_F0;
+#ifndef kame
 typedef complex<double> Complex;
-
+#endif
 /// <<Type_Expr>> [[file:AnyType.hpp::aType]] [[E_F0]]
 typedef pair<aType,  E_F0  *>  Type_Expr ;// to store the type and the expression  29042005 FH
-
+#ifndef kame
  int  FindType(const char * name) ; 
-  void lgerror (const char* s) ;  
- void CompileError(string msg="",aType r=0);
+#endif
+ void lgerror (const char* s) ;  
+ extern void CompileError(string msg="",aType r=0);
+#ifndef kame
  void ExecError(string msg="");
- 
+#endif 
 struct UnId {
   const char * id;
   aType r;
@@ -164,15 +175,17 @@ typedef deque<UnId> ListOfId;
 #define NEW_TYPE_PtrNIND(type) map_type[typeid(type*).name()] = new ForEachTypePtr<type >(0,0)
 //#define NEW_TYPE_PtrI(type) map_type[typeid(type*).name()] = new ForEachTypePtr<type*>(Initialize<type>)
 */
-
+#ifndef kame
 /// Doxygen doc
 extern Polymorphic * TheOperators, * TheRightOperators;
 
 //  -------------
 extern  C_F0 *pOne,*pZero,*pminusOne;
 
-
+#endif
+typedef void * Stack;
 typedef   AnyType (* Function1)(Stack, const AnyType &);
+
 typedef   AnyType (* Function2)(Stack, const AnyType &,const AnyType &);
 typedef   AnyType (* CFunction2)(Stack,  E_F0 *, E_F0  *);
 typedef   AnyType (* CFunction4)(Stack,  E_F0 *, E_F0 *, E_F0 *, E_F0 *);
@@ -180,11 +193,11 @@ typedef   AnyType (* CFunction4)(Stack,  E_F0 *, E_F0 *, E_F0 *, E_F0 *);
 
 Expression NewExpression(Function1,Expression);
 Expression NewExpression(Function2,Expression,Expression);
-
+#ifndef kame
 
 inline Type_Expr make_Type_Expr(aType t, E_F0  * e) {return make_pair(t,e);}
 inline Type_Expr make_Type_Expr( E_F0  * e,aType t) {return make_pair(t,e);}
-
+#endif
 struct Keyless : binary_function<const char *,const char *, bool>
    { 
     typedef const char * Key;
@@ -197,7 +210,7 @@ class TableOfIdentifier: public CodeAlloc {
   public:
   struct Value;
   typedef const char * Key;
-  typedef map<Key,Value,Keyless> maptype;
+  typedef std::map<Key,Value,Keyless> maptype;
   typedef pair<const Key,Value> pKV;
   typedef maptype::iterator iterator;
   typedef maptype::const_iterator const_iterator;
@@ -245,7 +258,6 @@ template<class T>
   ~TableOfIdentifier(); //
 };
 
-
 // <<basicForEachType>> for all the type of the language 
 class basicForEachType : public CodeAlloc {
     const type_info  * ktype;  // the real type_info
@@ -256,7 +268,7 @@ class basicForEachType : public CodeAlloc {
 
     
     typedef OneOperator * CastFunc;
-    typedef map<aType,CastFunc>::const_iterator const_cast_iterator;
+    typedef std::map<aType,CastFunc>::const_iterator const_cast_iterator;
 
     typedef const char * Key;
 
@@ -334,7 +346,7 @@ public:
     
 };
 
-
+void ShowType(ostream &);
 template<typename T> 
 inline basicForEachType * atype() { 
   map<const string,basicForEachType *>::iterator ir=map_type.find(typeid(T).name());
@@ -344,6 +356,7 @@ inline basicForEachType * atype() {
             throw(ErrorExec("exit",1));}
   return ir->second;}
 
+#ifndef kame
 template<typename T>
 inline basicForEachType * atype0() {
     map<const string,basicForEachType *>::iterator ir=map_type.find(typeid(T).name());
@@ -370,7 +383,7 @@ class C_LF1;
 /// [[ListOfInst]], and evaluated when CListOfInst::eval() [[file:AFunction.hpp::CListOfInst::eval]] is called at
 /// [[file:../lglib/lg.ypp::evaluate_parsed_FF_script]] (see \ref index). No internal data member.
 
-typedef void * Stack;
+
 class E_F0 :public CodeAlloc 
    {
    public:
@@ -416,7 +429,7 @@ class E_F0 :public CodeAlloc
 inline ostream & operator<<(ostream & f,const E_F0 &e) { if(!e.Empty()) e.dump(f); else f << " --0-- " ;return f;}
 
 /// <<E_F0mps>> Specialization of [[E_F0]] where MeshIndependent() always returns false instead of true.  
-#ifndef kame
+
 class E_F0mps : public E_F0 { public:
   virtual bool MeshIndependent() const {return false;} // 
 };
@@ -431,11 +444,11 @@ class E_F0info : public E_F0 { public:
 
   
 };
-
+#ifndef kame
 class E_F1 : public CodeAlloc{ public: virtual AnyType operator()(Stack,AnyType &)  const =0;}; 
 class E_F2 : public CodeAlloc{ public: virtual AnyType operator()(Stack,AnyType &,AnyType &)  const =0;};
 class E_FN : public CodeAlloc{ public: virtual AnyType operator()(Stack,size_t N,...)  const =0;};
-
+#endif
 //   class to play with  polymorphisme 
 //   ---------------------------------
 class basicAC_F0;
@@ -511,6 +524,7 @@ class  ArrayOfaType : public CodeAlloc{
    friend ostream & operator<<(ostream & f,const ArrayOfaType & a);
 };
 
+#include "throwassert.hpp"
 
 /// <<OneOperator>> Base class for all language operators. Daughter classes have the same name with several extensions:
 /// "[1-9]" represent the number of operator arguments, "_" designates operators that take a reference instead of a
@@ -590,7 +604,7 @@ private:
  //  struct Keyless : binary_function<Key,Key, bool>
  //  { bool operator()(const Key& x, const Key& y) const{ return strcmp(x,y)<0;} };
    
-   typedef map<Key,Value,Keyless> maptype;          //  
+   typedef std::map<Key,Value,Keyless> maptype;          //  
    typedef maptype::const_iterator const_iterator;  // 
    typedef maptype::iterator iterator;              // 
    //  remark the map is mutable because 
@@ -705,7 +719,7 @@ private:
   C_F0( Expression ff ): f(ff),r(0) {}
 };
 
-
+#ifndef kame
 
 // for bison [[CListOfInst]]
 class CListOfInst;
@@ -714,12 +728,12 @@ class CListOfInst;
  //  f => t||f
  //  t => t
  //  (a =>b)  <=>  (!a || b )
- 
+#endif 
 //  warning ------------------
 class ForTypeVoid:  public basicForEachType{public:
     ForTypeVoid():basicForEachType(typeid(void),0,0,0,0,0) {}
 };
-
+#ifndef kame
 template<class T> 
 class ForEachType:  public basicForEachType{public:
     ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(T),sizeof(T),0,0,iv,id,OOnReturn) {
@@ -1220,7 +1234,7 @@ class E_F2_func :public  E_F2 { public:
    AnyType operator()(Stack s,AnyType & a,AnyType & b)  const {return f(s,a,b);}
    E_F2_func( Function2 ff) : f(ff) {}
 };
-
+#endif
 class E_F0_Func1 :public  E_F0 { public:
    Function1  f;
    E_F0 *a;
@@ -1245,6 +1259,7 @@ class E_F0_Func1 :public  E_F0 { public:
     virtual ostream & dump(ostream &ff) const  { ff << "E_F0_Func1 f= " << f << " a= "<< *a << ' '  ;return ff; }
 
 };
+
 class E_F0_Func2 :public  E_F0 { public:
    Function2  f;
    E_F0 *a,*b;
@@ -1256,7 +1271,7 @@ class E_F0_Func2 :public  E_F0 { public:
 
 };
 
-
+#ifndef kame
 
 //  the variable offset / stack (local variable)
 template<class R> class Value1:public E_F0
@@ -1504,7 +1519,7 @@ AnyType TTry(Stack s ,E_F0 * i0,E_F0 * i1,E_F0 * i2,E_F0 * notuse);
 
 extern TableOfIdentifier Global;
 
-void ShowType(ostream & );
+
 
 template<class T> 
 inline C_F0 to(const C_F0 & a) { return map_type[typeid(T).name()]->CastTo(a);}
@@ -1526,7 +1541,7 @@ inline C_F0 FIf(C_F0 i0,C_F0 i1) {return C_F0(new E_F0_CFunc4(FIf,to<bool>(i0),i
 //inline  C_F0 C_F0::PtrValue() const{ 
 //   if (!(r && r->un_ptr)) { cerr << "PtrValue: Not a Left value " << *r << endl;CompileError();} 
 //   return C_F0(new  E_F0_Func1(r->un_ptr->f,f),r->un_ptr->r);}
-
+#endif
 /// <<basicAC_F0>> version de base d'un tableau d'un parametres pour les operateurs unaire, binaire, pas d'allocation
 
 class basicAC_F0 {
@@ -1536,7 +1551,7 @@ class basicAC_F0 {
  int nb;
  C_F0 *a;
  public:
-  typedef map<const char *,C_F0,Keyless> maptype ;
+  typedef std::map<const char *,C_F0,Keyless> maptype ;
   typedef maptype::iterator iterator;
   typedef maptype::const_iterator const_iterator;
   maptype * named_parameter;
@@ -1560,6 +1575,7 @@ class basicAC_F0 {
  
   void SetNameParam(int n=0,name_and_type *l=0 , Expression * e=0) const ;
 };
+
 
 /// <<AC_F0>> array of parameters for FF language operators. uses [[basicAC_F0]]
 
@@ -1612,7 +1628,7 @@ class AC_F0: public basicAC_F0 { //  a Array of [[C_F0]]
         a=0;named_parameter=0;}
   
 }; 
-
+#ifndef kame
 class  basicAC_F0_wa : public basicAC_F0 { public:
  template<bool...> struct pack { };
  template<class... T>
@@ -1869,10 +1885,10 @@ inline  double *  E_BorderN::var(Stack stack) const {return b->xvar ? GetAny<dou
 inline  long *  E_BorderN::index(Stack stack) const {return b->xindex ? GetAny<long*>((*b->xindex)(stack)): (long*) 0 ;}
 inline  void  E_BorderN::code(Stack stack)const {(*b->xcode)(stack);}
 inline  long  E_BorderN::label()const {return b->label;}
-
+#endif
 inline ArrayOfaType::ArrayOfaType(const basicAC_F0 & aa) : n(aa.size()),t(n ? (n<=4 ? tt : new aType[n]):0),ellipse(false) { 
    for (int i=0;i<n;i++) t[i]=aa[i].left();}
-   
+#ifndef kame   
 inline ArrayOfaType::ArrayOfaType(const ArrayOfaType & aa) : n(aa.n),t(n<=4?tt:new aType[n]),ellipse(aa.ellipse) { 
    for (int i=0;i<n;i++) t[i]=aa.t[i];}   
 
@@ -1891,14 +1907,14 @@ inline C_F0 TableOfIdentifier::Find(const char * name,const basicAC_F0 & args) c
 //  les initialisation   x = y   ( passe par l'operateur binaire <-  dans TheOperators
 //   les initialisation   x(y)   ( passe par l'operateur unaire <-  du type de x
 //   -------
-
+#endif
 inline size_t align8(size_t &off) 
 { 
   size_t o= off %8 ;
   off += o ? 8-o : 0;
  return off;
 }
-
+#ifndef kame
 
 template<class T>
 inline Type_Expr  NewVariable(aType t,size_t &off) 
@@ -1983,6 +1999,7 @@ inline  C_F0 basicForEachType::Find(const char * k) const
      //if (r.Empty()) {cerr << " no member " <<k << " in type " << name() << endl; CompileError("  ");}
      return r; }
 inline C_F0  basicForEachType::Find(const char * k,const basicAC_F0 & args) const {return ti.Find(k,args);}
+#endif
 inline  C_F0 basicForEachType::Initialization(const Type_Expr & e) const 
   {
      if(!InitExp) 
@@ -1992,7 +2009,7 @@ inline  C_F0 basicForEachType::Initialization(const Type_Expr & e) const
        }
    return C_F0(new  E_F0_Func1(InitExp,e.second),this);        
   }
-  
+#ifndef kame  
 
     
 //inline  AnyType Args2(const AnyType &,const  AnyType & b) {return b;}
@@ -2882,7 +2899,7 @@ template<>  struct binary_trait<int,complex<double> > { typedef  complex<double>
 template<>  struct binary_trait<long,complex<double> > { typedef  complex<double> R;}; 
 template<>  struct binary_trait<double,complex<double> > { typedef  complex<double> R ;}; 
 template<class A>  struct binary_trait<A,string* > { typedef  string*  R ;}; 
-
+#endif
 //  1 variable pour les operation de cast 
 class E_F1_funcT_Type: public OneOperator{ public:
     //  const basicForEachType *r,*a;
@@ -2899,7 +2916,7 @@ class E_F1_funcT_Type: public OneOperator{ public:
     //: r(rr),a(aa),f(ff) {}
     //  friend ostream & operator<<(ostream & f,const E_F1_funcT_Type & e) { f << *e.a << " -> " << *e.r ;return f;}
 };
-
+#ifndef kame
 template<class R,class A>
 class E_F1_funcT :public  E_F1_funcT_Type{ public:   
     E_F1_funcT(Function1 ff) : E_F1_funcT_Type(map_type[typeid(R).name()],map_type[typeid(A).name()],ff){}
@@ -3074,11 +3091,11 @@ inline  void CC_F0::operator=(const CListOfInst& c)
   { C_F0 cc=c;f=cc.f;r=cc.r;}
 inline   CListOfInst &  CListOfInst::operator+=(const CC_F0 & a)
   { if( !a.Empty()){ f->Add(a);r=a.left();};return *this;} 
-  
+#endif  
 inline Type_Expr basicForEachType::SetParam(const C_F0 & ,const ListOfId * ,size_t & ) const
      { cerr << " int basicForEachType " << name() << endl; 
        InternalError("basicForEachType::SetParam non defined");  }//return make_pair<aType,const E_F0  *>(c.left(),c.LeftValue());}
-     
+#ifndef kame     
 
 
 /*
@@ -3092,20 +3109,21 @@ class  OneOpCast: public OneOperator {
     OneOpCast(CastFunc  ff): OneOperator(ff->r,ff->a),f(ff){}
 };
 */
-
+#endif
 // 
+
 inline  bool  basicForEachType::CastingFrom(aType t) const  {
      throwassert( t);
      if ( t == this) return true;
      else if( t ==  type_C_F0 ) return true; // FH do work .... 09 / 2012 (use of ellispe ...)
      return casting->FindSameR(ArrayOfaType(t,false)); // uses [[casting]] [[file:AFunction2.cpp::FindSameR]]
   }
-
+#ifndef kame
 inline  void CerrCast(const pair<const basicForEachType*,const E_F1_funcT_Type *> & i)
 { 
    cerr << "\t" <<  *i.first << ":" << i.second << endl;
 }
-
+#endif
 inline 	 C_F0 basicForEachType::CastTo(const C_F0 & e) const 
 {
  throwassert(this);
@@ -3131,6 +3149,7 @@ inline 	 C_F0 basicForEachType::CastTo(const C_F0 & e) const
            CompileError();} 
  return C_F0();
 }
+
 inline Expression  basicForEachType::RightValueExpr(Expression f) const 
 {
   if (un_ptr) return new  E_F0_Func1(un_ptr->f,f);
@@ -3141,12 +3160,12 @@ inline void CompileError(string msg,aType r){
  string m= r ? msg + "  type: " + r->name() : msg ;
    lgerror(m.c_str());
  }
- 
+#ifndef kame
  inline void ExecError(string msg){ 
   // cerr << "Fatal ExecError: " << msg << endl;
    throw(ErrorExec(msg.c_str(),1));
  }
- 
+#endif 
 const  Function1 NotReturnOfthisType = reinterpret_cast<Function1>(1); 
 
 inline Expression basicForEachType::OnReturn(Expression f) const {
@@ -3156,7 +3175,7 @@ inline Expression basicForEachType::OnReturn(Expression f) const {
     else return new  E_F0_Func1(DoOnReturn,f);
     return 0; 
 }
-
+#ifndef kame
 
 inline  void CC_F0::operator=(const AC_F0& a) {  f=new E_Array(a); r= atype<E_Array>();};
 
@@ -3316,7 +3335,7 @@ public:
   virtual  operator aType ()  const { return  *(l.back().first);}   // the type of the expression  
 }; 
  
-//#endif 
+#endif 
 inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
        // cout << " ffff :" ;
         MapOfE_F0::const_iterator i= m.find(this); 
@@ -3335,7 +3354,7 @@ inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
            }     
         return i == m.end() ? 0 : i->second ;
     }
-//#ifndef kame
+
  inline   int E_F0::insert(Expression  opt,deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) 
     {
      int rr=align8(n);
@@ -3347,7 +3366,7 @@ inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
        m.insert(p); 
        return rr;
      }
-
+#ifndef kame
 extern vector<pair<const E_Routine*,int> > * debugstack;
 
 struct NothingType {  // a type to do nothing 

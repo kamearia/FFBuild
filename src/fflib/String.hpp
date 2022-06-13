@@ -25,12 +25,13 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef STRING_HPP_
-#define STRING_HPP_
+#pragma once
 
 
 #include <map>
 #include <cstdio>
+#include "throwassert.hpp"
+extern long verbosity;
 
 // BUG option compilation -fast 
 /*
@@ -204,4 +205,3 @@ extern  Map_type_of_map map_type_of_map ; //  to store te type
 //  of a map  of  A[B] 
 
 
-#endif

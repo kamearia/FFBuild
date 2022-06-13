@@ -60,6 +60,18 @@
     <ClInclude Include="..\src\fflib\ffstack.hpp">
       <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fflib\throwassert.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\lex.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\String.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\showverb.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -72,7 +84,10 @@
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\fflib\global.cpp">
-      <Filter>ヘッダー ファイル\src\fflib</Filter>
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\AFunction.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

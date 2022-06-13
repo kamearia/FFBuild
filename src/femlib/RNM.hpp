@@ -29,8 +29,7 @@
 
 
  */
-#ifndef KNM_H_
-#define KNM_H_
+#pragma once
 // version sept 2008 FH.
 // ----------------------
 // une tentative qui ne marche pas
@@ -1638,5 +1637,4 @@ inline bool  SameShape(const ShapeOfArray & a,const F_KN_<R,A,B,BB>  & b)
 #include "RNM_tpl.hpp"
 #ifdef K_throwassert
 #undef K_throwassert
-#endif
 #endif

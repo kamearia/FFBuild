@@ -25,8 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef ERROR_H
-#define ERROR_H
+#pragma once
 #include <cassert>
 #include <string>
 #include "throwassert.hpp"
@@ -138,4 +137,3 @@ public:
   int errcode() const{return codeexit;}
 };
 
-#endif

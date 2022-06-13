@@ -153,10 +153,15 @@
     <ClInclude Include="..\src\fflib\CodeAlloc.hpp" />
     <ClInclude Include="..\src\fflib\error.hpp" />
     <ClInclude Include="..\src\fflib\ffstack.hpp" />
+    <ClInclude Include="..\src\fflib\lex.hpp" />
+    <ClInclude Include="..\src\fflib\showverb.hpp" />
+    <ClInclude Include="..\src\fflib\String.hpp" />
+    <ClInclude Include="..\src\fflib\throwassert.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp" />
     <ClCompile Include="..\src\fflib\global.cpp" />

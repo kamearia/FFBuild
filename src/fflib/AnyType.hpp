@@ -30,7 +30,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //   are pointer 
 //#define WITHCHECK
 #pragma once
-#include <ostream>
+#include <iostream>
+#include <map>
 using namespace std;
 /// cf [[file:AFunction.hpp::basicForEachType]]
 
@@ -57,11 +58,8 @@ template <class T>
 class CheckSize<T, false> {
 	CheckSize() { } // private constructor to see the error
 };
-
+extern std::map<const string, basicForEachType *> map_type;
 #ifdef WITHCHECK
-extern map<const string, basicForEachType *> map_type;
-
-
 class AnyTypeWithCheck {
 
 private:
@@ -213,10 +211,11 @@ template<class T>  inline T * PGetAny(const AnyTypeWithOutCheck & x)
 //template<class T>  inline   T * const & GetAny<T*>(const AnyTypeWithOutCheck & x)
 //  { return  x.p;}
 
-typedef   AnyTypeWithOutCheck AnyType;
-#endif
 
-void AnyType::test() {
+typedef   AnyTypeWithOutCheck AnyType;
+
+#ifndef kame
+void AnyTypeWithOutCheck::test() {
 	AnyType x(1.0);
 	cout << "x.r= " << x.r << endl;
 
@@ -225,16 +224,20 @@ void AnyType::test() {
 
 	cout << "GetAny<double>(y)=" << GetAny<double>(y) << endl;
 
-	int *p =new int[5];
-	p[0] = 1, p[1]=2, p[2]=3, p[3]=4;
+	int *p = new int[5];
+	p[0] = 1, p[1] = 2, p[2] = 3, p[3] = 4;
 	AnyType z(p);
 	int *zz = GetAny<int *>(z);
 	cout << "zz= ";
 	for (int i = 0; i < 5; i++)
 		cout << "  [ " << i << "]=" << zz[i];
-	cout<<endl;
+	cout << endl;
 	delete[] zz;
 }
+#endif
+
+#endif
+
 
 
 

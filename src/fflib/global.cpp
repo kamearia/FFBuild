@@ -27,6 +27,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "AFunction.hpp"
 #ifndef kame
 #include <iostream>
 #include <cstdio>
@@ -125,7 +126,9 @@ using namespace std;
  bool  NoGraphicWindow=false;
 
 /// <<verbosity>>
+#endif
 long verbosity = 1;
+#ifndef kame
 long searchMethod = 0; //pichon
 long npichon2d=0, npichon3d=0;
 long npichon2d1=0, npichon3d1=0;
@@ -139,7 +142,10 @@ Map_type_of_map map_pair_of_type ; //  to store te type
  basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
 
 /// <<zzzfff>> see [[file:lex.hpp::mylex]]
+#endif
+#include "lex.hpp"
 mylex *zzzfff;
+#ifndef kame
 bool lexdebug;
 
 /// <<plglval>> see [[file:../lglib/lg.ypp::YYSTYPE]] and [[file:../lglib/lg.ypp::yylval]]
@@ -188,14 +194,15 @@ bool echo_edp=true; // add F.H of remove script dump
 
 //  add F. Hecht
 EnvironmentData  ffenvironment;
-
+#endif
 basicForEachType *basicForEachType::tnull=0;
+
 E_F0 *E_F0::tnull=0;
-
+#ifndef kame
 long newconvect3=0;// old convect 3d
-
+#endif
 CodeAlloc *CodeAlloc::tnull=0;
-
+#ifndef kame
 #include <RefCounter.hpp>
 RefCounter *RefCounter::tnull=0;
 double ff_tgv=1e30;

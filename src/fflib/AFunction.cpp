@@ -25,6 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#ifndef kame
 //#pragma dont_inline on
 //#pragma inline_depth(1)
 
@@ -59,7 +60,9 @@ double myjn(long n, double x){ return jn((int) n,x);}
 //int  ShowAlloc(const char *s, size_t lg);
 
 // F. Hecht fev. 2015 ...
+#endif
 #include "AFunction.hpp"
+#ifndef kame
 #include <cstdarg>
 #include <cstring>
 #include "error.hpp"
@@ -134,8 +137,9 @@ extern double  genrand_res53(void) ;
 double  VersionNumber();
 double Imag(const  complex<double> & z){ return imag(z);}
 double Real(const  complex<double> & z){ return real(z);}
+#endif
 const  basicForEachType * basicForEachType::type_C_F0 =0; //  for any type un formal operation .... FH add 09/2012
-
+#ifndef kame
 // FH
 
 template<class T> inline T Max (const T &a,const T & b){return a > b ? a : b;}
@@ -2060,3 +2064,4 @@ string  *newstring(const char * c){
 void   freestring(const string * c){
     if(verbosity>999999) cout << c << "freestring(  "<< *c <<") \n";
     delete c;}
+#endif
