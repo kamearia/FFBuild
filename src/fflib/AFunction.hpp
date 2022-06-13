@@ -28,10 +28,9 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 //file afonction.h
+#ifndef kame
 
-
-#ifndef __AFONCTION__
-#define __AFONCTION__
+#pragma once
 #include "showverb.hpp" 
 #include "InitFunct.hpp"
 
@@ -41,8 +40,10 @@
 #include <fstream>
 #include <cstring>
 #include "error.hpp"
+#endif
 #include <map>
 #include <deque>
+#ifndef kame
 #include <list>
 #include <vector>
 #include <queue>
@@ -87,24 +88,25 @@ extern bool lockOrientation; // lock the element orientation
 
 
 using namespace std;
+#endif
 #include "ffstack.hpp"
-
+#ifndef kame
 #include "AnyType.hpp"
 #include "String.hpp"
 
 
 class basicForEachType;
 class E_F1_funcT_Type;
-class E_F0;  //  une instruction exec time 
 class C_F0;  //  une instruction  complie time
 class ListOfInst;
 class Polymorphic;
 class OneOperator;
-
+#endif
+class E_F0;  //  une instruction exec time 
 /// <<Expression>> is used as the type of the local list contained in ListOfInst 
 
 typedef  E_F0  *  Expression; // [[E_F0]]
-
+#ifndef kame
 class AC_F0;
 class basicAC_F0;
 typedef complex<double> Complex;
@@ -360,7 +362,7 @@ inline basicForEachType * atype0() {
 //  --  exec times le code is just E_F0*(fonction without args)
 class C_LF2;
 class C_LF1;
-
+#endif
 //  3 types of function/expression  0,1,2 args  
 
 /// <<E_F0>> is the base class for all expressions built by parsing an EDP script in the grammar of the FreeFem++
@@ -368,6 +370,7 @@ class C_LF1;
 /// [[ListOfInst]], and evaluated when CListOfInst::eval() [[file:AFunction.hpp::CListOfInst::eval]] is called at
 /// [[file:../lglib/lg.ypp::evaluate_parsed_FF_script]] (see \ref index). No internal data member.
 
+typedef void * Stack;
 class E_F0 :public CodeAlloc 
    {
    public:
@@ -413,7 +416,7 @@ class E_F0 :public CodeAlloc
 inline ostream & operator<<(ostream & f,const E_F0 &e) { if(!e.Empty()) e.dump(f); else f << " --0-- " ;return f;}
 
 /// <<E_F0mps>> Specialization of [[E_F0]] where MeshIndependent() always returns false instead of true.  
-
+#ifndef kame
 class E_F0mps : public E_F0 { public:
   virtual bool MeshIndependent() const {return false;} // 
 };
@@ -1903,7 +1906,7 @@ inline Type_Expr  NewVariable(aType t,size_t &off)
    size_t o= align8(off);//  align    
  //  off += t->un_ptr_type->size;
  // bug    off += t->size;
-   off += t->un_ptr_type->size; // correction 16/09/2003 merci ‡ Richard MICHEL
+   off += t->un_ptr_type->size; // correction 16/09/2003 merci ÅERichard MICHEL
    return  Type_Expr(t,new T(o,t));
 } 
 
@@ -2500,20 +2503,20 @@ public:
 };
 template<typename C,class MI=OneBinaryOperatorMI,class MIx=evalE_F2 >
 class  OneBinaryOperator : public OneOperator{
-  typedef  typename C::result_type R;
-  typedef typename C::first_argument_type A;
-  typedef typename C::second_argument_type B;
-  aType t0,t1; // type of template modif FH mars 2006 
-  class Op : public E_F0 {
-      typedef typename C::first_argument_type A;
-      typedef typename C::second_argument_type B;
-      typedef  typename C::result_type Result;
-    Expression a,b;
-  public:
-    AnyType operator()(Stack s)  const 
-    {return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));}
+	typedef  typename C::result_type R;
+	typedef typename C::first_argument_type A;
+	typedef typename C::second_argument_type B;
+	aType t0,t1; // type of template modif FH mars 2006 
+	class Op : public E_F0 {
+		typedef typename C::first_argument_type A;
+		typedef typename C::second_argument_type B;
+		typedef  typename C::result_type Result;
+		Expression a,b;
+	public:
+		AnyType operator()(Stack s)  const 
+			{return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));}
     //   optim  eval MI ...  juin 2007 FH ...
-    AnyType eval(Stack s, bool & meshidenp)  const 
+		AnyType eval(Stack s, bool & meshidenp)  const 
     {return  MIx::eval(s,this,a,b,meshidenp);}
     // fi optime 
     Op(Expression aa,Expression bb) : a(aa),b(bb) {} 
@@ -2548,6 +2551,7 @@ class  OneBinaryOperator : public OneOperator{
     Opt(const  Op &t,size_t iaa,size_t ibb) 
       : Op(t) ,
 	ia(iaa),ib(ibb) {}
+/*
     AnyType operator()(Stack s)  const 
     {
       // cout <<  "Opt2 ::: " << ia << " "<< ib << " f = " 
@@ -2559,7 +2563,8 @@ class  OneBinaryOperator : public OneOperator{
 			      *static_cast<B *>(static_cast<void*>(static_cast<char *>(s)+ib)) ) );}  
     
     
-  };     
+  }; 
+*/ //KAME
   //   aType r; //  return type 
 public: 
   E_F0 * code(const basicAC_F0 & args) const 
@@ -3311,7 +3316,7 @@ public:
   virtual  operator aType ()  const { return  *(l.back().first);}   // the type of the expression  
 }; 
  
- 
+//#endif 
 inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
        // cout << " ffff :" ;
         MapOfE_F0::const_iterator i= m.find(this); 
@@ -3330,6 +3335,7 @@ inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
            }     
         return i == m.end() ? 0 : i->second ;
     }
+//#ifndef kame
  inline   int E_F0::insert(Expression  opt,deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) 
     {
      int rr=align8(n);
@@ -3456,5 +3462,3 @@ class  ForAllLoop : public OneOperator {public:
 };
 
 #endif
-
-

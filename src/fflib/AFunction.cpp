@@ -1021,7 +1021,7 @@ double invdiff(const double & aa, const double & bb,const double &eps) { double 
 extern double ff_tgv; // Add FH jan 2018
 double sign(double x){return (x>0.)-(x<0.); }// Add FH jan 2018
 long sign(long x){return (x>0)-(x<0); }// Add FH jan 2018
-bool ffsignbit(long x){return signbit(x);}
+//KAME bool ffsignbit(long x){return signbit(x);}
 bool ffsignbit(double x){return signbit(x);}
 template<typename T>
 bool  pswap(T *a,T *b) {swap(*a,*b);return 0; }
@@ -1665,7 +1665,7 @@ void Init_map_type()
   Global.Add("copysign","(",new OneOperator2<double>(copysign));// Add jan 2018 FH
   Global.Add("sign","(",new OneOperator1<double>(sign));// Add jan 2018 FH
   Global.Add("sign","(",new OneOperator1<long>(sign));// Add jan 2018 FH
-  Global.Add("signbit","(",new OneOperator1<bool,long>(ffsignbit));// Add jan 2018 FH
+//KAME  Global.Add("signbit","(",new OneOperator1<bool,long>(ffsignbit));// Add jan 2018 FH
   Global.Add("signbit","(",new OneOperator1<bool,double>(ffsignbit));// Add jan 2018 FH
 
   Global.Add("isInf","(",new OneOperator1<long,double>(isInf));

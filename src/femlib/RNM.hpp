@@ -816,16 +816,16 @@ template<class R>
 struct if_KN_ {
     const KN_<R> & a,&b;
     R c;
-    if_KN_(const KN_<R> & aa, const KN_<R> &bb,R cc=1.) : a(aa),b(bb),c(cc) {}
-    if_KN_ operator * (R cc) { return if_KN_(a,b,c*cc);}
+//KAME    if_KN_(const KN_<R> & aa, const KN_<R> &bb,R cc=1.) : a(aa),b(bb),c(cc) {}
+//KAME    if_KN_ operator * (R cc) { return if_KN_(a,b,c*cc);}
 };
 
 template<class R>
 struct ifnot_KN_ {
     const KN_<R> & a,&b;
     R c;
-    ifnot_KN_(const KN_<R> & aa, const KN_<R> &bb,R cc=1.) : a(aa),b(bb),c(cc) {}
-    ifnot_KN_ operator * (R cc) { return ifnot_KN_(a,b,c*cc);}
+//KAME    ifnot_KN_(const KN_<R> & aa, const KN_<R> &bb,R cc=1.) : a(aa),b(bb),c(cc) {}
+//KAME    ifnot_KN_ operator * (R cc) { return ifnot_KN_(a,b,c*cc);}
 };
 
 

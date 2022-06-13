@@ -25,9 +25,11 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#pragma once;
 //#pragma dont_inline on
 //#pragma inline_depth(1)
 
+#ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
@@ -250,6 +252,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const C_F0 & aa)
 }
 
 // <<C_F0_constructor_binary_operator>> operator binaire
+/*
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b)
 {
   C_F0 tab[2]={a,b};
@@ -259,8 +262,9 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
   // [[file:AFunction.hpp::C_F0_constructor_pop_char_basicAC_F0_decl]]
   *this=C_F0(pop,op,p);
 }
-
+*/  //KAME
 //  operator trinaire
+/*
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b,const  C_F0 & c)
 {
   C_F0 tab[3]={a,b,c};
@@ -268,7 +272,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
   p=make_pair<int,C_F0*>(3,tab);
   *this= C_F0(pop,op,p);
 }
-
+*/ //KAME
 
  OneOperator::~OneOperator(){
        OneOperator * d=next;
@@ -818,9 +822,17 @@ AnyType ListOfInst::operator()(Stack s) const {
 	throw;
     }
     return r;}
-
+#endif
+/*
+extern long mpisize;
+extern long mpirank;
+extern int TheCurrentLine;
+#include <iostream>
+using namespace std;
+*/
 void ShowDebugStack()
  {
+#ifndef kame
    if (mpisize)
    cerr << "  current line = " << TheCurrentLine
         << " mpirank " << mpirank << " / " << mpisize <<endl;
@@ -833,8 +845,9 @@ void ShowDebugStack()
         cerr << " call " << debugstack->at(i).first->name<< "  at  line "
              <<debugstack->at(i).second << endl;
      }
+#endif
  }
-
+#ifndef kame
 
   int  E_F0::Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n)
      {
@@ -1016,3 +1029,5 @@ void InitLoop()
      Dcl_Type<PolymorphicLoop*>(0);
 
 }
+
+#endif

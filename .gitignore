@@ -387,4 +387,6 @@ ffbuild/.vs/*
 *.tlog
 *.opendb
 *.db
+*.enc
+*.ilk
 # End:

@@ -214,13 +214,13 @@
      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
      */
 
-#include <config.h>
+//KAME #include <config.h>
 #include <iostream>
 #include  <complex>
 #include <string>
   // for reset cout,cin  in windows  dll
 #ifdef _WIN32
-#include <ext/stdio_filebuf.h>
+//KAME #include <ext/stdio_filebuf.h>
 #include <iostream>
 #include <cstdio>
 #endif

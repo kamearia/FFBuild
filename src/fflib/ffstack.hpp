@@ -27,6 +27,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#ifndef kame
 //-----------------------------------  
 //  to manage the freefem stack 
 #ifndef FFSTACK_HPP__
@@ -57,10 +58,10 @@ const int BeginOffset = 6;
 
 #ifndef NEWFFSTACK
 typedef void StackType;
-
+#endif
 /// <<Stack>>
 typedef void *Stack;
-
+#if ndef kame
 
  const Stack  NullStack=0;
 //typedef StackType& Stack;
@@ -418,4 +419,5 @@ inline void deleteStack(Stack s)
  s.clean();
  }  
 #endif  
+#endif
 #endif

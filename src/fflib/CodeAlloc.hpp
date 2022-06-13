@@ -26,9 +26,9 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef CODE_ALLOC_HPP
-#define CODE_ALLOC_HPP
+#pragma once;
 
+#include <cassert>
 class CodeAlloc { public:
 
   static size_t nb,nbt,lg, nbdl,nbpx, chunk ;   
@@ -73,12 +73,23 @@ class CodeAlloc { public:
   
 };
 
-template<class T> class CodeAllocT: public CodeAlloc{
-  T * p;
-  public: 
-  CodeAllocT(int n): p(new T[n]) { assert(p);}
-  static T * New(int n) { return (new CodeAllocT(n))->p;}
-  ~CodeAllocT(){ delete [] p;}
+template<class T=int> class CodeAllocT: public CodeAlloc{
+	T * p;
+public:
+	CodeAllocT(int n) : p(new T[n]) { assert(p); }
+	static T * New(int n) { return (new CodeAllocT(n))->p; }
+	~CodeAllocT() { delete[] p; }
+
+  static void test() {
+	  CodeAllocT<double> x(10);
+	  double *y = CodeAllocT<double>::New(10);
+//error 	  x.~CodeAllocT();
+
+	  y[0] = 5.;
+	  y[9] = 10.;
+//error	  y[10] = 11.;
+	  delete[] y;
+
+  }
 };
 
-#endif

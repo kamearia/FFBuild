@@ -19,6 +19,18 @@
     <Filter Include="ソース ファイル\src\fflib">
       <UniqueIdentifier>{c85adb0e-35ef-450d-8719-015559d7180f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\src\lglib">
+      <UniqueIdentifier>{77fe4da3-1387-4326-8486-aa14db4f4a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\src">
+      <UniqueIdentifier>{c8f0b508-d58c-4c3a-9af0-a8b8ca680827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\src\fflib">
+      <UniqueIdentifier>{e11c8685-333f-40ad-9e7e-85880c9f7a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\src\femlib">
+      <UniqueIdentifier>{7533589e-e964-4abc-847e-81c2f8d48711}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -30,10 +42,37 @@
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fflib\AnyType.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\CodeAlloc.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\error.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\AFunction.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\femlib\RNM.hpp">
+      <Filter>ヘッダー ファイル\src\femlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\ffstack.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="test.cpp">
+      <Filter>ソース ファイル\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\AFunction2.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\global.cpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

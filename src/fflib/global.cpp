@@ -27,6 +27,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#ifndef kame
 #include <iostream>
 #include <cstdio>
 
@@ -144,11 +145,12 @@ bool lexdebug;
 /// <<plglval>> see [[file:../lglib/lg.ypp::YYSTYPE]] and [[file:../lglib/lg.ypp::yylval]]
 #include "lg.tab.hpp"
 YYSTYPE *plglval;
-
+#endif
  int TheCurrentLine=-1; // unset: by default
+
 //int NbNewVarWithDel =0; // add FH sep 2016 (bof bof global variable not got but hard to set in E_F0 or C_F0
  long mpisize=0,mpirank=0;
-
+#ifndef kame
 
    C_F0 *pOne=0,*pZero=0,*pminusOne=0;
 // const C_F0 & One(*pOne), &Zero(*pZero);
@@ -173,13 +175,15 @@ const int AC_F0::MaxSize=1024; // maximal number of parameters
 map<const string,basicForEachType *> map_type;
 bool showCPU= false;
 
-
+#endif
+#include "CodeAlloc.hpp"
 size_t CodeAlloc::nb=0, CodeAlloc::lg=0,CodeAlloc::nbpx=0,CodeAlloc::chunk=2048;
 size_t CodeAlloc::nbt,CodeAlloc::nbdl=0;
 CodeAlloc ** CodeAlloc::mem=0;
 size_t CodeAlloc::memoryusage=0;
 bool CodeAlloc::sort=true;
 bool  CodeAlloc::cleanning=false;
+#ifndef kame
 bool echo_edp=true; // add F.H of remove script dump
 
 //  add F. Hecht
@@ -204,3 +208,4 @@ void InitMeshPoint(void * p)
 }
 
 string *def_solver=0,*def_solver_sym=0, *def_solver_sym_dp=0;
+#endif
