@@ -389,4 +389,6 @@ ffbuild/.vs/*
 *.db
 *.enc
 *.ilk
+*.pch
+*.ipch
 # End:

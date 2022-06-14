@@ -37,10 +37,7 @@ extern bool lexdebug;
 extern long mpisize,mpirank;
 
 #endif
-#include <list>
-#include <deque>
-#include <stack>
-#include <utility> 
+
 #include "AnyType.hpp"
 #include "CodeAlloc.hpp"
 #include "RNM.hpp"

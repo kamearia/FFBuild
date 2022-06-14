@@ -31,6 +31,7 @@
 //file afonction.h
 #define Nothing (void *)0;
 #include "showverb.hpp" 
+#include "RNM.hpp" 
 #ifndef kame
 
 #include "InitFunct.hpp"
@@ -41,20 +42,14 @@
 #include <fstream>
 #include <cstring>
 #include "error.hpp"
-#endif
-#include <map>
-#ifndef kame
+
 #include <list>
 #include <vector>
-#endif
-#include <queue>
-#include <complex>
-#ifndef kame
 #include <string>
 #include <cstdlib>
 #include <algorithm>
 extern bool showCPU;
-#include "RNM.hpp" 
+
 
 # include <ctime>
 /* #ifdef TIME_WITH_SYS_TIME
@@ -750,10 +745,9 @@ class ForEachType<T*>:  public basicForEachType{public:// coorection july 2009..
 };
 #endif
 template<class A,class B>  AnyType UnRef(Stack,const AnyType &a) ; 
-#ifndef kame
 template<class A>  AnyType Initialize(Stack,const AnyType &a) ; 
 template<class A>  AnyType Destroy(Stack,const AnyType &a) ; 
-#endif
+
 //  the type of variable is pointer because we need to write in 
 template<class T,class PT=T*> 
 class ForEachTypePtr:  public basicForEachType { public:
@@ -809,7 +803,7 @@ template<class A>
     A * pc = *ppa ? new A(**ppa) : nullptr;
     return   SetPtrAny(Add2StackOfPtr2Free(s,pc)) ;}
        
-    
+#endif   
 template<class A> AnyType Initialize(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
   A *b=new A;// 
@@ -825,14 +819,14 @@ template<class A> AnyType InitializePtr(Stack stack,const AnyType &x){
   return  x;
 }
 
-#endif
+
 template<class A> AnyType InitializeDef(Stack stack,const AnyType &x){
     A * a=PGetAny<A>(x);
     SHOWVERB( cout << " init ptr " << typeid(A*).name() <<  (char *) a  - (char*) stack<< endl);
     *a=A();
     return  x;
 }
-#ifndef kame
+
 
 template<class A> inline AnyType Delete(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
@@ -840,7 +834,7 @@ template<class A> inline AnyType Delete(Stack,const AnyType &x){
   (*a).~A(); 
   return  Nothing;
 }
-
+#ifndef kame
 template<class A> inline AnyType Destroy(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
   SHOWVERB(cout << "DESTROY " <<typeid(A).name() << " " << a <<  endl); 
@@ -877,7 +871,7 @@ template<class A> inline AnyType  DestroyPtr(Stack,const AnyType &x) {
 
   return  Nothing; 
 };
-
+#endif
 template<class A> inline AnyType DeletePtr(Stack,const AnyType &x) {
   const A *  a=PGetAny<A>(x);
  SHOWVERB( cout << "DeletePtr " << typeid(A).name() << *a  << endl);
@@ -886,7 +880,7 @@ template<class A> inline AnyType DeletePtr(Stack,const AnyType &x) {
 
   return  Nothing; 
 };
-
+#ifndef kame
 template<> AnyType inline DestroyPtr<string *>(Stack,const AnyType &x) {
   string **  a=PGetAny<string*>(x);
  SHOWVERB( cout << "DestroyPtr " << typeid(string*).name() << *a  << endl);
@@ -1518,10 +1512,10 @@ AnyType TTry(Stack s ,E_F0 * i0,E_F0 * i1,E_F0 * i2,E_F0 * notuse);
 extern TableOfIdentifier Global;
 
 
-
+#endif
 template<class T> 
 inline C_F0 to(const C_F0 & a) { return map_type[typeid(T).name()]->CastTo(a);}
-
+#ifndef kame
 
 /*
 inline C_F0 toBool(const C_F0 & a)    {return ATYPE(bool)->CastTo(a);}
@@ -1626,7 +1620,7 @@ class AC_F0: public basicAC_F0 { //  a Array of [[C_F0]]
         a=0;named_parameter=0;}
   
 }; 
-#ifndef kame
+
 class  basicAC_F0_wa : public basicAC_F0 { public:
  template<bool...> struct pack { };
  template<class... T>
@@ -1700,7 +1694,7 @@ class TransE_Array:  public E_F0 {  public:
     TransE_Array(const E_Array * e): v(e) {ffassert(e);}
     AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
 };
-
+#ifndef kame
 // fin nov 2007
 //  add 2010 feb.  FH
 inline C_F0 TryConj(const C_F0 & c) {
@@ -1715,10 +1709,12 @@ inline C_F0 TryConj(const C_F0 & c) {
     }
     
     return c; }
+#endif
 // fin add 2010 feb.
 // avril 2007
 class PlotStream;  
 class E_Border ;
+
 class E_BorderN :public E_F0mps { public: 
    const E_Border * b;
    int cas;// 0 long , 1, KN_ , 2 : Array // FH april 14 ..
@@ -1804,7 +1800,7 @@ static C_F0 to(int cas, C_F0 nn)
     
   void BoundingBox(Stack stack,double  &xmin,double & xmax, double & ymin,double & ymax, double & zmin,double & zmax) const ;
 };
-
+#ifndef kame
 class AddBorderOperator: public  OneOperator{
   typedef const E_BorderN * A;
     public: 
@@ -1821,7 +1817,7 @@ class AddBorderOperator: public  OneOperator{
 
 };
 
-
+#endif
 class  OneOperator_borderN : public OneOperator {public:
     const  E_Border * theborder;int cas;
     E_F0 * code(const basicAC_F0 & a) const 
@@ -1874,6 +1870,8 @@ class E_Border  :public Polymorphic  {  public:
     return  SetAny<const  E_Border *>(this);}
   double length(Stack ) const { ffassert(0);return 0.0; /* a faire */ }
 };
+#ifndef kame
+
 inline  E_BorderN::E_BorderN(const E_Border *bb, C_F0  nn,const E_BorderN * nx)
 :b(bb),cas(Cas(nn)),n(to(cas,nn) ),next(nx) { /* cout << "  -- E_BorderN  : cas " << cas << endl; */ throwassert(b);}
 
@@ -2112,10 +2110,11 @@ inline	  C_F0::C_F0(const C_F0 & e,const char *nm)
 	       }
 	       
 	   }
+#endif
 inline  E_F0 * C_F0::LeftValue() const {
     return f;
 }
-
+#ifndef kame
 /*inline Type_Expr C_F0::SetParam(const ListOfId * l,size_t & top) const {
     return r->SetParam(*this,l,top);
 }*/
@@ -3258,7 +3257,7 @@ class Routine: public OneOperator{  public:
    Block * Set(CListOfInst   instr) ;
 };
 
-
+#endif
 class TypeLineFunction: public ForEachType<C_F0> {
   public:
   TypeLineFunction() : ForEachType<C_F0>(0,0) {}
@@ -3274,7 +3273,7 @@ class TypeLineFunction: public ForEachType<C_F0> {
     {  return C_F0(); }  // nothing to initialize 
     
 };
-
+#ifndef kame
 
 class E_F0_Optimize : public E_F0 { 
   deque<pair<Expression,int> > l;
@@ -3368,11 +3367,11 @@ inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
      }
 #ifndef kame
 extern vector<pair<const E_Routine*,int> > * debugstack;
-
+#endif
 struct NothingType {  // a type to do nothing 
  NothingType() {};
 };
-
+#ifndef kame
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
   
 void initArrayOperators();   

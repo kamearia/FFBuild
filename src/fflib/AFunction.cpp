@@ -25,6 +25,8 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
+#include "String.hpp"
 #ifndef kame
 //#pragma dont_inline on
 //#pragma inline_depth(1)
@@ -424,7 +426,7 @@ long exec(string *s)
       int r=execute(s->c_str());
     //  delete s;    modif mars 2006 FH
       return r;}
-
+#endif
  class ostream_precis { public:
  ostream_precis(ostream * ff) :f(ff) {}
   ostream * f;
@@ -437,6 +439,7 @@ class OP_setw { public:
     OP_setw(long ww) :w(ww) {}
     friend   ostream & operator<<(ostream & f,const OP_setw& op) { return f << setw(op.w);}
 };
+#ifndef kame
  OP_setw defOP_setw(long i) {return OP_setw(i);}
 
 
@@ -444,7 +447,7 @@ class OP_setw { public:
   ostream_precis ostream_precision(ostream *f){ return ostream_precis(f);}
  long get_precis( ostream_precis  pf) { return pf.f->precision();}
  long set_precis( ostream_precis  pf, long  l) { return pf.f->precision(l);}
-
+#endif
 class ostream_seekp { public:
     ostream_seekp(ostream * ff) :f(ff) {}
     ostream * f;
@@ -457,7 +460,7 @@ class istream_seekg { public:
     istream * f;
     operator long () const {return f->tellg();}
 };
-
+#ifndef kame
 ostream_seekp ff_oseekp(ostream **f){ return ostream_seekp(*f);}
 ostream_seekp ff_oseekp(ostream *f){ return ostream_seekp(f);}
 istream_seekg ff_iseekg(istream **f){ return istream_seekg(*f);}
@@ -467,12 +470,13 @@ long ffseekp( ostream_seekp  pf, long  l) {  pf.f->clear();long ll= pf.f->tellp(
 long fftellp( ostream_seekp  pf) { pf.f->clear(); return pf.f->tellp() ;}
 long ffseekg( istream_seekg  pf, long  l) { pf.f->clear(); return pf.f->seekg(l),l;}
 long fftellg( istream_seekg  pf) { return pf.f->tellg() ;}
-
+#endif
  class istream_good { public:
   istream_good(istream * ff) :f(ff) {}
   istream * f;
   operator bool () const {return f->good();}
  };
+#ifndef kame
  inline istream_good to_istream_good(istream **f){ return istream_good(*f);}
  inline istream_good to_istream_good(istream *f){ return istream_good(f);}
 
@@ -1047,8 +1051,9 @@ void Init_map_type()
     Dcl_TypeandPtr<long>(0,0,::InitializeDef<long>,0);
     Dcl_TypeandPtr<bool>(0,0,::InitializeDef<bool>,0);
     Dcl_TypeandPtr<Complex>(0,0,::InitializeDef<Complex>,0);
-#ifndef kame
-    Dcl_Type<void*>(); // add FH ...  for mpi comm world
+	Dcl_Type<void*>(); // add FH ...  for mpi comm world
+
+
     Dcl_Type<char*>();
     Dcl_Type<const char *>();
     Dcl_Type<char>();
@@ -1071,7 +1076,7 @@ void Init_map_type()
     typedef MyMap<String,String> MyMapSS;
     map_type[typeid(MyMapSS*).name()] = new ForEachType<MyMapSS*>(Initialize<MyMapSS >,Delete<MyMapSS >) ;
     map_type_of_map[make_pair(atype<string*>(),atype<string*>())]=atype<MyMapSS*>();
-
+#ifndef kame
 
     Dcl_Type<SubArray>();
     Dcl_Type<pair<long,long> >();
@@ -2066,7 +2071,7 @@ string  *newstring(const char * c){
      string * p=new string(c);
     if(verbosity>999999) cout << p << "=newstring((char*)  "<< c << " ) \n";
     return p;}
+#endif
 void   freestring(const string * c){
     if(verbosity>999999) cout << c << "freestring(  "<< *c <<") \n";
     delete c;}
-#endif

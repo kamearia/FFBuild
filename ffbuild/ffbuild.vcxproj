@@ -96,13 +96,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D"CMAKE"  /D"kame" %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

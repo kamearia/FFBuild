@@ -7,9 +7,18 @@
 
 #include "targetver.h"
 
-#include <stdio.h>
-#include <tchar.h>
-
-
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <limits>
+#include <complex>
+#include <list>
+#include <stack>
+#include <queue>
+#include <map>
+#include <utility>
+#include <cassert>
+#include <exception>
+#include <iomanip>
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください

@@ -27,7 +27,9 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #include "AFunction.hpp"
+#include "String.hpp"
 #ifndef kame
 #include <iostream>
 #include <cstdio>
@@ -136,7 +138,9 @@ long npichon2d1=0, npichon3d1=0;
  FILE *ThePlotStream=0; //  Add for new plot. FH oct 2008
 
   KN<String> *pkarg;//  for the list of argument  mars 2010
+#endif
  Map_type_of_map map_type_of_map ; //  to store te type
+#ifndef kame
 Map_type_of_map map_pair_of_type ; //  to store te type
 
  basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable

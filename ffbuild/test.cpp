@@ -1,5 +1,5 @@
+#include "stdafx.h"
 //#include "AFunction.hpp"
-#include <iostream>
 #include "AnyType.hpp"
 #include "CodeAlloc.hpp"
 #include "AFunction.hpp"

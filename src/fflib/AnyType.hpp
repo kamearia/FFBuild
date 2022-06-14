@@ -30,8 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //   are pointer 
 //#define WITHCHECK
 #pragma once
-#include <iostream>
-#include <map>
+
 using namespace std;
 /// cf [[file:AFunction.hpp::basicForEachType]]
 

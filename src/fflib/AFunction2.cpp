@@ -25,7 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#pragma once;
+#include "stdafx.h"
 //#pragma dont_inline on
 //#pragma inline_depth(1)
 #include <iostream>

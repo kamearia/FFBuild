@@ -34,13 +34,6 @@
 // ----------------------
 // une tentative qui ne marche pas
 // de tableau constant
-#include <complex>
-#include <iostream>
-#include <iomanip>
-#include <cmath>
-#include <cassert>
-#include <limits>
-
 
 using namespace std;
 #define const_R   R

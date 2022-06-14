@@ -19,7 +19,7 @@
 // ORG     : LJLL Universite Pierre et Marie Curie, Paris, FRANCE
 // AUTHORS : Frederic Hecht
 // E-MAIL  : frederic.hecht@sorbonne-univeriste.fr
-
+#include "stdafx.h"
 #include <iostream>
 #include <typeinfo>
 #include <cstddef>
