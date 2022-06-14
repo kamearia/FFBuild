@@ -166,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
+    <ClCompile Include="..\src\fflib\array_complex.cpp" />
     <ClCompile Include="..\src\fflib\array_long.cpp" />
     <ClCompile Include="..\src\fflib\array_real.cpp" />
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp" />

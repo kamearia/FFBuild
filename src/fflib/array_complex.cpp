@@ -19,10 +19,12 @@
 // ORG     : LJLL Universite Pierre et Marie Curie, Paris, FRANCE
 // AUTHORS : Frederic Hecht
 // E-MAIL  : frederic.hecht@sorbonne-universite.fr
-
+#include "stdafx.h"
+using namespace std;
+extern long verbosity;
 #include "array_tlp.hpp"
 #include "array_init.hpp"
-
+#ifndef kame
 /*!
  * \brief Get_C2R
  * Not used ?
@@ -70,11 +72,12 @@ KN_<Complex> rmeps(KN_rmeps<Complex> p,double eps)
         if(c) p.v[i]=Complex(a,b);
     }
     return p.v;}//
+
+#endif
 void initArrayDCLComplex() {
   ArrayDCL<Complex>();
-
 }
-
+#ifndef kame
 Complex square(const Complex &x){ return x*x; }
 // double imagc(const Complex &x){ return imag(x); }  // Commented out in interface
 // double realc(const Complex &x){ return realc(x); }
@@ -111,3 +114,4 @@ void initArrayOperatorComplex() {
   );
   Global.Add("toCarray", "(", new OneOperator_2KN_<Complex>);
 }
+#endif
