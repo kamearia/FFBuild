@@ -19,12 +19,17 @@
 // ORG     : LJLL Universite Pierre et Marie Curie, Paris, FRANCE
 // AUTHORS : ...
 // E-MAIL  : ...
-
+#include "stdafx.h"
+#include "RNM.hpp"
+extern long verbosity;
 #include "array_tlp.hpp"
+
+#ifndef kame
+
 #include "array_init.hpp"
 
 double square(double x) { return x*x; }
-
+#endif
 void initArrayDCLdouble() {
   // ArrayOperator<long>();
   ArrayDCL<double>();
@@ -33,6 +38,8 @@ void initArrayDCLdouble() {
     for(int i=0;i<p.v.N();++i)
         if(abs(p.v[i]) < eps) p.v[i]=0;
     return p.v;}//
+
+#ifndef kame
 //template<class A, class B>  A Build(B b) { return A(b); }
 
 
@@ -89,3 +96,5 @@ void initArrayOperatordouble() {
 
   //     ArrayDCL<long>();
 }
+
+#endif

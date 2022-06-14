@@ -1081,8 +1081,8 @@ void Init_map_type()
     Dcl_Type<pair<long,long> >();
 
     initArrayDCLlong();
-#ifndef kame
     initArrayDCLdouble();
+#ifndef kame
     initArrayDCLComplex();
 
     Dcl_Type<ios::openmode>();

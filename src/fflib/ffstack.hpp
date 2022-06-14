@@ -29,6 +29,7 @@
  */
 #pragma once
 #include "error.hpp"
+
 #ifndef kame
 //-----------------------------------  
 //  to manage the freefem stack 

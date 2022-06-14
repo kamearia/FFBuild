@@ -29,7 +29,10 @@
 //#pragma inline_depth(1)
 #pragma once
 #include "Operator.hpp"
+#include "ffstack.hpp"
 #include "String.hpp"
+#include "AFunction.hpp"
+
 #ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
@@ -1942,9 +1945,10 @@ void ArrayOperatorF()
     TheOperators->Add("<-", new OneOperator2_<KN<K> *,KN<K> *,F_KN_<K,K,K,KK> >(set_init_N));
 
 }
+#endif
 // Add nov 2019  version 4.4-3 FH
 template<class K> struct KN_rmeps {KN_<K> v;
     KN_rmeps(KN_<K> vv):v(vv) {}
 } ;
 template<class K> KN_rmeps<K> build_rmeps(KN_<K> v){ return KN_rmeps<K>(v);}
-#endif
+
