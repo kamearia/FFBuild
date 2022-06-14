@@ -150,10 +150,13 @@
     <ClInclude Include="..\src\femlib\RNM.hpp" />
     <ClInclude Include="..\src\fflib\AFunction.hpp" />
     <ClInclude Include="..\src\fflib\AnyType.hpp" />
+    <ClInclude Include="..\src\fflib\array_init.hpp" />
+    <ClInclude Include="..\src\fflib\array_tlp.hpp" />
     <ClInclude Include="..\src\fflib\CodeAlloc.hpp" />
     <ClInclude Include="..\src\fflib\error.hpp" />
     <ClInclude Include="..\src\fflib\ffstack.hpp" />
     <ClInclude Include="..\src\fflib\lex.hpp" />
+    <ClInclude Include="..\src\fflib\Operator.hpp" />
     <ClInclude Include="..\src\fflib\showverb.hpp" />
     <ClInclude Include="..\src\fflib\String.hpp" />
     <ClInclude Include="..\src\fflib\throwassert.hpp" />
@@ -163,6 +166,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
+    <ClCompile Include="..\src\fflib\array_long.cpp" />
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp" />
     <ClCompile Include="..\src\fflib\global.cpp" />
     <ClCompile Include="test.cpp" />

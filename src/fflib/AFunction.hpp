@@ -834,7 +834,7 @@ template<class A> inline AnyType Delete(Stack,const AnyType &x){
   (*a).~A(); 
   return  Nothing;
 }
-#ifndef kame
+
 template<class A> inline AnyType Destroy(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
   SHOWVERB(cout << "DESTROY " <<typeid(A).name() << " " << a <<  endl); 
@@ -848,20 +848,21 @@ template<class A> inline AnyType DestroyS(Stack,const AnyType &x){
   a.destroy(); 
   return  Nothing;
 }
-
+#ifndef kame
 template<class A> inline AnyType InitS(Stack,const AnyType &x){
   A  a=GetAny<A>(x);
   SHOWVERB(cout << "InitS " <<typeid(A).name() << " " << a <<  endl); 
   a.init(); 
   return  Nothing;
 }
+#endif
 template<class A> inline AnyType InitP(Stack,const AnyType &x){
   A  *a=PGetAny<A>(x);
   SHOWVERB(cout << "InitP " <<typeid(A).name() << " " << a <<  endl); 
   a->init(); 
   return  Nothing;
 }
-
+#ifndef kame
 
 template<class A> inline AnyType  DestroyPtr(Stack,const AnyType &x) {
   const A *  a=PGetAny<A>(x);
@@ -2119,10 +2120,11 @@ inline  E_F0 * C_F0::LeftValue() const {
     return r->SetParam(*this,l,top);
 }*/
 
-
+#endif
 /// Declaration of TypeArray
 aType TypeArray(aType,aType);
 aType TypeArray(aType c,aType b,aType a);
+#ifndef kame
 
 /// Declaration of TypeTemplate
 aType TypeTemplate(aType,aType);
@@ -3006,7 +3008,7 @@ void CheckDclTypeEmpty() {
     if(map_type.find(typeid(T).name())!=map_type.end())
         cout << " Erreur  fftype dcl twist "<< typeid(T).name() << endl; 
         }
-#ifndef kame                            
+                          
 template<typename T,typename PT>
 void Dcl_TypeandPtr_ (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1 OnReturn=0,Function1 pOnReturn=0)
    {
@@ -3015,7 +3017,7 @@ void Dcl_TypeandPtr_ (Function1 i,Function1 d,Function1 pi,Function1 pd,Function
       map_type[typeid(T).name()] = new ForEachType<T>(i,d,OnReturn);
       map_type[typeid(PT).name()] = new ForEachTypePtr<T,PT>(pi,pd,pOnReturn); 
    }
-#endif
+
 template<class T>
 void Dcl_TypeandPtr (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1 OnReturn=0,Function1 pOnReturn=0)
 {
@@ -3482,3 +3484,4 @@ class  ForAllLoop : public OneOperator {public:
 };
 
 #endif
+#include "array_init.hpp"

@@ -19,7 +19,11 @@
 // ORG     : LJLL Universite Pierre et Marie Curie, Paris, FRANCE
 // AUTHORS : Frederic Hecht
 // E-MAIL  : frederic.hecht@sorbonne-universite.fr
-
+#include "stdafx.h"
+#include "AnyType.hpp"
+#include "AFunction.hpp"
+#include "array_tlp.hpp"
+#ifndef kame
 #include "array_tlp.hpp"
 #include "array_init.hpp"
 const basicForEachType *aatypeknlongp;
@@ -37,15 +41,15 @@ void initArrayDCL() {
   ArrayDCL<long>();
 }
 */
-
+#endif
 aType aaaa_knlp;
 void initArrayDCLlong() {
   // ArrayOperator<long>();
   Dcl_Type<Inv_KN_long>(); // Add FH mars 2005
   ArrayDCL<long>();
-  aaaa_knlp = atype<KN<long>*>();
+//  aaaa_knlp = atype<KN<long>*>();
 }
-
+#ifndef kame
 class OneBinaryOperatorInv_KN_long : public OneOperator {
   public:
     OneBinaryOperatorInv_KN_long(basicForEachType * ti) : OneOperator(atype<Inv_KN_long >(), ti ,atype<long>()) {}
@@ -195,3 +199,4 @@ void initArrayOperatorlong()
 
 // void xxxx() {
 // }
+#endif

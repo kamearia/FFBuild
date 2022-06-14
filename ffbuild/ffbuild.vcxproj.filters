@@ -72,6 +72,15 @@
     <ClInclude Include="..\src\fflib\showverb.hpp">
       <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fflib\array_init.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\array_tlp.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\Operator.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp">
@@ -87,6 +96,9 @@
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\fflib\AFunction.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\array_long.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
   </ItemGroup>

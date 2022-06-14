@@ -337,7 +337,7 @@ AnyType FIf(Stack s ,Expression test,Expression i1,Expression i2,Expression )
  }
 
 
-
+#endif
 aType TypeArray(aType b,aType a)
 { // type of  b[a]
    aType r=map_type_of_map[make_pair(a->right(),b->right())];
@@ -351,7 +351,7 @@ aType TypeArray(aType b,aType a)
    }
    return r;
 }
-
+#ifndef kame
 aType TypeTemplate(aType b,aType a)
 { // type of  b[a]
    aType r=map_type_of_map[make_pair(b,a)];
@@ -1076,12 +1076,12 @@ void Init_map_type()
     typedef MyMap<String,String> MyMapSS;
     map_type[typeid(MyMapSS*).name()] = new ForEachType<MyMapSS*>(Initialize<MyMapSS >,Delete<MyMapSS >) ;
     map_type_of_map[make_pair(atype<string*>(),atype<string*>())]=atype<MyMapSS*>();
-#ifndef kame
 
     Dcl_Type<SubArray>();
     Dcl_Type<pair<long,long> >();
 
     initArrayDCLlong();
+#ifndef kame
     initArrayDCLdouble();
     initArrayDCLComplex();
 

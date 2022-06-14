@@ -140,9 +140,9 @@ long npichon2d1=0, npichon3d1=0;
   KN<String> *pkarg;//  for the list of argument  mars 2010
 #endif
  Map_type_of_map map_type_of_map ; //  to store te type
-#ifndef kame
-Map_type_of_map map_pair_of_type ; //  to store te type
 
+Map_type_of_map map_pair_of_type ; //  to store te type
+#ifndef kame
  basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
 
 /// <<zzzfff>> see [[file:lex.hpp::mylex]]

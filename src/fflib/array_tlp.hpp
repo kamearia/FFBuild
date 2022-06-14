@@ -27,14 +27,16 @@
  */
 //#pragma dont_inline on
 //#pragma inline_depth(1)
-
+#pragma once
+#include "Operator.hpp"
+#include "String.hpp"
+#ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
 #endif
 
-#ifndef ARRAY_TLP_HPP
-#define ARRAY_TLP_HPP
+
 
 #include <set>
 #include <complex>
@@ -78,10 +80,10 @@ struct affectation_sub: binary_function<T, T, T>
 };
 
 
-
+#endif
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
-
+#ifndef kame
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
 
 extern int TheCurrentLine; // unset: by default
@@ -785,7 +787,7 @@ AnyType ClearReturnpKN(Stack stack, const AnyType & a)
 	cout << "AddIncrement:: increment + Add2StackOfPtr2FreeRC " << endl;
     return new KN<K>(true, *m);
 }*/
-
+#endif
 template<typename K,typename KK>
 AnyType ClearReturnpKK(Stack stack, const AnyType & a)
 {
@@ -801,6 +803,7 @@ AnyType ClearReturnpKK(Stack stack, const AnyType & a)
 	cout << "ClearReturnpKK:: increment + Add2StackOfPtr2FreeRC nb ref  " <<  -m->next  << endl;
     return m;
 }
+#ifndef kame
 template<typename K,typename KK,typename KK_>
 AnyType ClearReturnpKK_(Stack stack, const AnyType & a)
 {
@@ -813,6 +816,7 @@ AnyType ClearReturnpKK_(Stack stack, const AnyType & a)
 	cout << "ClearReturnpKK_:: copie  Add2StackOfPtr2Free "  << endl;
     return (KK_ *) cm;
 }
+#endif
 template<typename K,typename KK,typename KK_>
 AnyType ClearReturnKK_(Stack stack, const AnyType & a)
 {
@@ -825,6 +829,7 @@ AnyType ClearReturnKK_(Stack stack, const AnyType & a)
 	cout << "ClearReturnKK_:: copie  Add2StackOfPtr2Free   "  << endl;
     return SetAny<KK_>(*cm);
 }
+
 template<typename K,typename KK_,typename KK>
 AnyType CopieKK_pKK(Stack stack,const AnyType &a) {
     KK_  m = GetAny<KK_>(a);
@@ -833,7 +838,6 @@ AnyType CopieKK_pKK(Stack stack,const AnyType &a) {
 	cout << "CopieKK_pKK:: copie  Add2StackOfPtr2Free   "<< cm   << endl;
     Add2StackOfPtr2Free(stack,cm);// detruire la copie
 return cm;}
-
 
 template<typename KK,typename KK_>
 AnyType UnRefpKN(Stack,const AnyType &a) {
@@ -954,7 +958,7 @@ void ArrayDCL()
 
 }
 
-
+#ifndef kame
 
 template<class A,class B> pair<A,B> * pBuild(const A & a,const B & b)
   { return new pair<A,B>(a,b);}

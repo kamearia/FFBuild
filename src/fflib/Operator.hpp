@@ -26,9 +26,8 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef Operator_hpp_
-#define Operator_hpp_
-
+#pragma once
+#ifndef kame
 #if defined(__GNUC__) && __GNUC__+0 >= 3
 inline double pow(double x,long l) { return pow(x,(double)l);}
 #endif
@@ -744,6 +743,7 @@ struct Op2_p: public binary_function<A,B,R*> {
 
 
 
+#endif
 template<class T>
 class Transpose{ public:
   T  t;
@@ -753,4 +753,3 @@ class Transpose{ public:
   template<class TT> Transpose( TT * v) : t(*v) {}  
   operator const T & () const {return t;}
 };
-#endif

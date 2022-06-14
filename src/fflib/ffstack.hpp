@@ -28,11 +28,12 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #pragma once
+#include "error.hpp"
 #ifndef kame
 //-----------------------------------  
 //  to manage the freefem stack 
-#ifndef FFSTACK_HPP__
-#define FFSTACK_HPP__
+//#ifndef FFSTACK_HPP__
+//#define FFSTACK_HPP__
 
 #include "throwassert.hpp"
 
@@ -45,7 +46,9 @@
 const int MeshPointStackOffset =0;
 const int ParamPtrOffset = 1;
 const int ElemMatPtrOffset = 2;
+#endif
 const int ExprPtrs = 4;
+#ifndef kame
 const int NbPtrs = 5;
 
 
@@ -56,13 +59,15 @@ const int BeginOffset = 6;
 //  2 : Truc les matrice elementaire
 
 #define NEWFFSTACKxxx
-
-#ifndef NEWFFSTACK
-typedef void StackType;
 #endif
+//#ifndef NEWFFSTACK
+//typedef void StackType;
+//#endif
+
 /// <<Stack>>
 typedef void *Stack;
-#if ndef kame
+
+#ifndef kame
 
  const Stack  NullStack=0;
 //typedef StackType& Stack;
@@ -72,12 +77,12 @@ template<class T>
 T * Stack_offset (Stack stack,size_t offset)  
 {  //cout << "Stack_offset" << stack << " " << offset << endl;
     return   (T *) (void *) (((char *) stack)+offset);}
-
+#endif
 // <<Stack_Ptr>>
 template<class T>
 T * & Stack_Ptr (Stack stack,size_t offset)  
   {return   (T * &)  (((void **) stack)[offset]);}
-#endif
+
 void ShowType(ostream & f);
 #ifndef kame
 
@@ -101,7 +106,7 @@ struct PtrArrayType: public VOIDPtrType {
 };
 
 
-#else
+//#else
 
 struct StackType;
 
@@ -171,19 +176,19 @@ struct PtrArrayType: public VOIDPtrType {
 
 
 
-#endif
+
 //------------------------------------
- 
+#endif
  // Add FH mars 2006 
  // clean pointeur ceated by the language 
  // ----
  struct BaseNewInStack {
   virtual ~BaseNewInStack() {};
 };
-
+#ifndef kame
 struct BaseNewInStack;
+#endif
 struct StackOfPtr2Free;
-
 // <<WhereStackOfPtr2Free>> [[Stack_Ptr]] [[StackOfPtr2Free]] [[ExprPtrs]]
 inline StackOfPtr2Free  * & WhereStackOfPtr2Free(Stack s) { return  Stack_Ptr<StackOfPtr2Free>(s,ExprPtrs) ;} // fait  
 
@@ -258,12 +263,12 @@ private:// no copy ....
 	
 };	
 
- 
+#ifndef kame
 inline void * NewAllocTmp(Stack s,size_t l)
 {
   return WhereStackOfPtr2Free(s)->alloc(l);
 }
-
+#endif
 template<class T>
 struct NewInStack: public BaseNewInStack   {	
    T * p;
@@ -284,7 +289,7 @@ private:
  friend  TT * Add2StackOfPtr2Free(Stack s,TT * p);
    
 };
-
+#ifndef kame
 extern void freestring(const string *);
 
 template<>
@@ -310,7 +315,7 @@ private:
 };
 // ajout of 2 class NewRefCountInStack and NewArrayInStack
 //  for clean of meshes 
-
+#endif
 template<class T>
 struct NewRefCountInStack: public BaseNewInStack   {	
     T * p;
@@ -327,7 +332,7 @@ private:
     friend  TT * Add2StackOfPtr2FreeRC(Stack s,TT * p);
     
 };
-
+#ifndef kame
 template<class T>
 struct NewArrayInStack: public BaseNewInStack   {	
     T * p;
@@ -348,7 +353,7 @@ private:
     friend  TT * Add2StackOfPtr2Free(Stack s,TT * p);
     
 };
-
+#endif
 template<class T>
 T * Add2StackOfPtr2FreeRC(Stack s,T * p)
 {
@@ -357,6 +362,7 @@ T * Add2StackOfPtr2FreeRC(Stack s,T * p)
     return p;
 }	
 
+
 template<class T>
 T * Add2StackOfPtr2Free(Stack s,T * p)
 {
@@ -364,6 +370,9 @@ T * Add2StackOfPtr2Free(Stack s,T * p)
      WhereStackOfPtr2Free(s)->add(new NewInStack<T>(p));
    return p;
 }	
+
+#ifndef kame
+
 template<class T>
 T * Add2StackOfPtr2FreeA(Stack s,T * p)
 {
@@ -420,6 +429,6 @@ inline void deleteStack(Stack s)
   //  delete [] (char *) s;
  s.clean();
  }  
-#endif  
+
 #endif
 #endif
