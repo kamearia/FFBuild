@@ -30,10 +30,9 @@
 #pragma once
 //file afonction.h
 #define Nothing (void *)0;
+#include "showverb.hpp" 
 #ifndef kame
 
-#pragma once
-#include "showverb.hpp" 
 #include "InitFunct.hpp"
 
 #include <typeinfo>
@@ -44,12 +43,13 @@
 #include "error.hpp"
 #endif
 #include <map>
-#include <deque>
 #ifndef kame
 #include <list>
 #include <vector>
+#endif
 #include <queue>
 #include <complex>
+#ifndef kame
 #include <string>
 #include <cstdlib>
 #include <algorithm>
@@ -101,8 +101,6 @@ using namespace std;
 class basicForEachType;
 #endif
 class E_F1_funcT_Type;
-#ifndef kame
-#endif
 class C_F0;  //  une instruction  complie time
 #ifndef kame
 class ListOfInst;
@@ -117,9 +115,7 @@ class E_F0;  //  une instruction exec time
 typedef  E_F0  *  Expression; // [[E_F0]]
 class AC_F0;
 class basicAC_F0;
-#ifndef kame
 typedef complex<double> Complex;
-#endif
 /// <<Type_Expr>> [[file:AnyType.hpp::aType]] [[E_F0]]
 typedef pair<aType,  E_F0  *>  Type_Expr ;// to store the type and the expression  29042005 FH
 #ifndef kame
@@ -752,11 +748,12 @@ class ForEachType<T*>:  public basicForEachType{public:// coorection july 2009..
 	//T i= 0.0;
     }
 };
-
+#endif
 template<class A,class B>  AnyType UnRef(Stack,const AnyType &a) ; 
+#ifndef kame
 template<class A>  AnyType Initialize(Stack,const AnyType &a) ; 
 template<class A>  AnyType Destroy(Stack,const AnyType &a) ; 
-
+#endif
 //  the type of variable is pointer because we need to write in 
 template<class T,class PT=T*> 
 class ForEachTypePtr:  public basicForEachType { public:
@@ -779,7 +776,6 @@ class ForEachTypePtrfspace:  public ForEachTypePtr<T> { public:
     int TYPEOFID() const {return RTYPE;} 
 };
 
-#endif
 class ForTypeAnyType:  public basicForEachType{public:
     ForTypeAnyType(): basicForEachType(typeid(AnyType),sizeof(AnyType)) {}
       bool CastingFrom(const basicForEachType * ) const {return true;}
@@ -797,7 +793,7 @@ template<class A,class B>
 template<class A,class B,A F(const  B &)> 
   AnyType FCast(Stack s,const AnyType &b) { 
     return   SetAny<A>(Add2StackOfPtr2Free(s,F(GetAny<B>(b))));}
-    
+#endif    
 template<class A> 
   AnyType UnRef(Stack,const AnyType &a) { 
     return   SetAny<A>(*PGetAny<A>(a));}
@@ -805,7 +801,7 @@ template<class A>
 template<class A,class B> 
   AnyType UnRef(Stack,const AnyType &a) { 
     return   SetAny<A>(*GetAny<B>(a));}
-    
+#ifndef kame    
     
 template<class A> 
   AnyType UnRefCopyPtr(Stack s,const AnyType &a) { 
@@ -829,13 +825,14 @@ template<class A> AnyType InitializePtr(Stack stack,const AnyType &x){
   return  x;
 }
 
+#endif
 template<class A> AnyType InitializeDef(Stack stack,const AnyType &x){
     A * a=PGetAny<A>(x);
     SHOWVERB( cout << " init ptr " << typeid(A*).name() <<  (char *) a  - (char*) stack<< endl);
     *a=A();
     return  x;
 }
-
+#ifndef kame
 
 template<class A> inline AnyType Delete(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
@@ -1889,10 +1886,10 @@ inline  long  E_BorderN::label()const {return b->label;}
 #endif
 inline ArrayOfaType::ArrayOfaType(const basicAC_F0 & aa) : n(aa.size()),t(n ? (n<=4 ? tt : new aType[n]):0),ellipse(false) { 
    for (int i=0;i<n;i++) t[i]=aa[i].left();}
-#ifndef kame   
+  
 inline ArrayOfaType::ArrayOfaType(const ArrayOfaType & aa) : n(aa.n),t(n<=4?tt:new aType[n]),ellipse(aa.ellipse) { 
    for (int i=0;i<n;i++) t[i]=aa.t[i];}   
-
+#ifndef kame 
 
 inline C_F0 TableOfIdentifier::Find(const char * name) const  {
     const_iterator i=m.find(name); 
@@ -2918,13 +2915,12 @@ class E_F1_funcT_Type: public OneOperator{ public:
     //: r(rr),a(aa),f(ff) {}
     //  friend ostream & operator<<(ostream & f,const E_F1_funcT_Type & e) { f << *e.a << " -> " << *e.r ;return f;}
 };
-#ifndef kame
+
 template<class R,class A>
 class E_F1_funcT :public  E_F1_funcT_Type{ public:   
     E_F1_funcT(Function1 ff) : E_F1_funcT_Type(map_type[typeid(R).name()],map_type[typeid(A).name()],ff){}
     E_F1_funcT(aType rr,aType a,Function1 ff) : E_F1_funcT_Type(rr,a,ff){}
 };
-
 
 template<class T,class PT> 
  ForEachTypePtr<T,PT>::ForEachTypePtr(): 
@@ -2933,7 +2929,7 @@ template<class T,class PT>
          new E_F1_funcT_Type(atype<T>(),this,UnRef<T,PT>),atype<T>(),
 
          ::Initialize<T>,::Delete<T>){}
-         
+       
 template<class T,class PT> 
  ForEachTypePtr<T,PT>::ForEachTypePtr(Function1 init,Function1 dl,Function1 onreturn): 
          basicForEachType(typeid(PT),sizeof(PT),
@@ -2941,7 +2937,7 @@ template<class T,class PT>
          new E_F1_funcT_Type(atype<T>(),this,UnRef<T,PT>),atype<T>(),
 			  init,
 			  dl , onreturn ){}
-         
+       
 template<class T,class PT> 
  ForEachTypePtr<T,PT>::ForEachTypePtr(Function1 dl): 
          basicForEachType(typeid(PT),sizeof(PT),
@@ -3005,7 +3001,7 @@ inline C_F0 & operator+=(C_F0 & a,C_F0 &b)
    return a;
 }
 */
-#endif
+
 template<typename T>
 void CheckDclTypeEmpty() {
     if(map_type.find(typeid(T).name())!=map_type.end())
@@ -3020,6 +3016,7 @@ void Dcl_TypeandPtr_ (Function1 i,Function1 d,Function1 pi,Function1 pd,Function
       map_type[typeid(T).name()] = new ForEachType<T>(i,d,OnReturn);
       map_type[typeid(PT).name()] = new ForEachTypePtr<T,PT>(pi,pd,pOnReturn); 
    }
+#endif
 template<class T>
 void Dcl_TypeandPtr (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1 OnReturn=0,Function1 pOnReturn=0)
 {
@@ -3029,7 +3026,7 @@ void Dcl_TypeandPtr (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1
 map_type[typeid(T).name()] = new ForEachType<T>(i,d,OnReturn); 
 map_type[typeid(T*).name()] = new ForEachTypePtr<T>(pi,pd,pOnReturn); 
 }
-
+#ifndef kame
 
 template<class T>
   void Dcl_TypeandPtr (Function1 pi,Function1 pd)
@@ -3382,10 +3379,10 @@ void initArrayOperators();
 void  initArrayDCL();
 
 void ClearMem(); 
-
+#endif
 // <<OneOperator_code2>>
 inline C_F0  OneOperator::code2(const basicAC_F0 &a) const  {return C_F0(code(a),r);}	
-
+#ifndef kame
 template<class R>
 class  OneOperator0 : public OneOperator {public:
     class E_F0_F :public  E_F0 { public:

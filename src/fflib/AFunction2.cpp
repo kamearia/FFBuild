@@ -280,7 +280,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
   *this= C_F0(pop,op,p);
 }
 */ //KAME
-
+#endif
  OneOperator::~OneOperator(){
        OneOperator * d=next;
        next=0;
@@ -338,7 +338,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
     OneOperator::OneOperator(aType rr,const ListOfId *l)
       : ArrayOfaType(l),r(rr),next(0),pref(0)
       {throwassert(rr );}
-
+#ifndef kame
 void Polymorphic::Addp (const char *op, Value pp, ...) const {
   pair<iterator,bool> p = m.insert(pair<const Key, Value>(op, pp));
   Value f = p.first->second;
@@ -461,7 +461,6 @@ basicForEachType::basicForEachType(const type_info  & k,
 { SHOWVERB(cout << "SetArgs::\n ") ;ffassert(lid==0 || lid->size()==0);}
 
 
-
  TableOfIdentifier::TableOfIdentifier() : listofvar(0),nIdWithDelete(0) {}
 
  TableOfIdentifier:: ~TableOfIdentifier() {}
@@ -560,7 +559,7 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
       }
       p->Add(op,p0,p1,p2,p3,p4,p5,p6);
   }
-
+#endif
  ArrayOfaType::ArrayOfaType(const ListOfId * l)
   : n(l->size()),t(new aType[n]),ellipse(false)
  {
@@ -575,7 +574,7 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
          }
       }
  }
-#endif
+
 bool ArrayOfaType::WithOutCast( const ArrayOfaType & a) const
  {
    if ( ( !ellipse && (a.n != n))  || (ellipse && n > a.n) ) return false;
@@ -667,7 +666,7 @@ Expression NewExpression(Function2 f,Expression a,Expression b)
   return new E_F0_Func2(f,a,b);
 
 }
-#ifndef kame
+
 // <<ShowType>>
  void ShowType(ostream & f)
  {
@@ -698,7 +697,7 @@ Expression NewExpression(Function2 f,Expression a,Expression b)
         }
    }
 
-
+#ifndef kame
 
 
 

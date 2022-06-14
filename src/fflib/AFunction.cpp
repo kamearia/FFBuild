@@ -1040,14 +1040,14 @@ void Init_map_type()
    TheRightOperators=new Polymorphic();
     map_type[typeid(AnyType).name()] = new ForTypeAnyType();
     map_type[typeid(void).name()] = new ForTypeVoid();
-
     InitLoop();
-#ifndef kame
+
     Dcl_Type<Expression>(0);
     Dcl_TypeandPtr<double>(0,0,::InitializeDef<double>,0);
     Dcl_TypeandPtr<long>(0,0,::InitializeDef<long>,0);
     Dcl_TypeandPtr<bool>(0,0,::InitializeDef<bool>,0);
     Dcl_TypeandPtr<Complex>(0,0,::InitializeDef<Complex>,0);
+#ifndef kame
     Dcl_Type<void*>(); // add FH ...  for mpi comm world
     Dcl_Type<char*>();
     Dcl_Type<const char *>();
