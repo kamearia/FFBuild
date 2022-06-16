@@ -26,13 +26,17 @@
 
 // Proposed FreeFem++ Application Programming Interface
 // ----------------------------------------------------
+#include "stdafx.h"
 
+#ifndef kame
 #ifdef WITH_PETSC
 #include <petsc.h>
 #endif
 
 // headerfilter [[shell:headerfilter '../../ff/src/fflib/ffapi.cpp']] [[file:~/alh/bin/headerfilter]]
+#endif
 #include "ffapi.hpp" // [[file:ffapi.hpp]] found by [[file:~/alh/bin/headerfilter]]
+#ifndef kame
 #include <cstdlib> 
 #ifdef FFLANG
 #include "socket.hpp"
@@ -90,8 +94,9 @@ void bufferwrite(const char *b,const int l){
 Buffer buffer(NULL,bufferwrite); // need #include "buffer.hpp" // [[file:~/ffcs/src/buffer.hpp::Buffer]]
 #endif
 //  allocation/definition of all ffapi in Global.cpp
-
+#endif
 namespace ffapi{
+
     
   // Get a pointer to the local cin/cout (which is distinct from ffcs's stdin/stdout under Windows because each DLL owns
   // separate cin/cout objects).
@@ -106,10 +111,9 @@ namespace ffapi{
 static  FILE *ffapi_ffstdout(){return stdout;}
 static  FILE *ffapi_ffstderr(){return stderr;}
 static  FILE *ffapi_ffstdin(){return stdin;}
-
 static  void ffapi_newplot(){}
-
-  FILE *ffapi_ff_popen(const char *command, const char *type){
+#ifndef kame
+FILE *ffapi_ff_popen(const char *command, const char *type){
 #ifdef FFLANG
 
     // this happens right at the begining of FF, so the socket
@@ -119,7 +123,6 @@ static  void ffapi_newplot(){}
     PROGRESS;
     return (FILE*)FFAPISTREAM;
 #else
-
     // need #include <cstdio>
       FILE *f= popen(command,type);
       if( f!=0) {
@@ -138,7 +141,7 @@ static  void ffapi_newplot(){}
       return f;
 #endif
   }
-
+#ifndef kame
   // <<ffapi_ff_pclose>>
 static  int ffapi_ff_pclose(FILE *stream){
 #ifdef FFLANG
@@ -174,7 +177,7 @@ static  size_t ffapi_fwriteinit(const void *ptr, size_t size, size_t nmemb,FILE 
 #endif
     return ff_fwrite(ptr,size,nmemb,stream);
   }
-
+#endif
 static  size_t ffapi_ff_fwrite(const void *ptr, size_t size, size_t nmemb,FILE *stream){
 #ifdef FFLANG
 
@@ -291,9 +294,10 @@ static  bool ffapi_protectedservermode(){
     return false;
 #endif
   }
-
+#endif
   // <<init>> [[file:ffapi.hpp::init]] called by [[file:../lglib/mymain.cpp::ffapi::init]]
   void init(){
+#ifndef kame
     ffapi::cin = ffapi::ffapi_cin;
     ffapi::cout = ffapi::ffapi_cout;
     ffapi::cerr = ffapi::ffapi_cerr;
@@ -301,6 +305,7 @@ static  bool ffapi_protectedservermode(){
     ffapi::ffstderr = ffapi::ffapi_ffstderr;
     ffapi::ffstdin = ffapi::ffapi_ffstdin;
     ffapi::newplot = ffapi::ffapi_newplot;
+
     ffapi::ff_popen = ffapi::ffapi_ff_popen;
     ffapi::ff_pclose = ffapi::ffapi_ff_pclose; // <<ff_pclose>>
     ffapi::fwriteinit = ffapi::ffapi_fwriteinit;
@@ -313,6 +318,7 @@ static  bool ffapi_protectedservermode(){
     ffapi::mpi_init = ffapi::ffapi_mpi_init;
     ffapi::mpi_finalize = ffapi::ffapi_mpi_finalize;
     ffapi::protectedservermode = ffapi::ffapi_protectedservermode;
+#endif
   }
 }
 

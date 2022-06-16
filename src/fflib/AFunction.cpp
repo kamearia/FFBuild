@@ -27,6 +27,8 @@
  */
 #include "stdafx.h"
 #include "String.hpp"
+#include "lex.hpp"
+extern mylex *zzzfff;
 #ifndef kame
 //#pragma dont_inline on
 //#pragma inline_depth(1)
@@ -66,6 +68,7 @@ double myjn(long n, double x){ return jn((int) n,x);}
 #include "AFunction.hpp"
 extern Polymorphic * TheOperators,
 					*TheRightOperators;//=new Polymorphic();
+extern basicForEachType *  typevarreal;
 #ifndef kame
 #include <cstdarg>
 #include <cstring>
@@ -1083,12 +1086,11 @@ void Init_map_type()
     initArrayDCLlong();
     initArrayDCLdouble();
     initArrayDCLComplex();
-#ifndef kame
 
     Dcl_Type<ios::openmode>();
 
     // <<known_variable_types>> les types des variables
-
+#ifndef kame
   zzzfff->Add("real",typevarreal=atype<double*>());
   zzzfff->Add("int",atype<long*>());
   zzzfff->Add("complex",typevarcomplex=atype<Complex*>());
@@ -1097,8 +1099,8 @@ void Init_map_type()
   zzzfff->Add("ifstream",atype<istream**>());
   zzzfff->Add("ofstream",atype<ostream**>());
   zzzfff->AddF("func",atype<C_F0>());
-
-
+#endif
+#ifndef kame
 
 //  end of know types
 

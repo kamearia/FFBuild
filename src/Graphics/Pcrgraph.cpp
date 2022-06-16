@@ -26,6 +26,9 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
+//#include "windef.h"
+#ifndef kame
 #define PCRGRAPH_CPP
 #define FF_GRAPH_SET_PTR
 #include <config.h>
@@ -79,7 +82,9 @@ float scalj(int j);
 //int pStrCopy (StringPtr p1, StringPtr p2);
 int execute(char* what);
 //int DoMouseDown (int windowPart, WindowPtr whichWindow, EventRecord *myEvent);
+#endif
 char Getijc(int & x,int & y);
+#ifndef kame
 void postexit();
 
 static int  cube6[7][3] ={ {255,0,0},{255,255,0},{0,255,0},
@@ -116,7 +121,9 @@ template<class T> inline T Min (const T &a,const T &b){return a < b ? a : b;}
 template<class T> inline T Max (const T &a,const T & b){return a > b ? a : b;}
 
 char errbuf[255];
+#endif
 static int INITGRAPH=0;
+#ifndef kame
 float rayon;
 static int width,height;
 
@@ -142,7 +149,9 @@ int getcolor();
 void putpixel(int ix,int iy, int couleur);
 int scalx(float x);
 int scaly(float y);
+#endif
 void rattente (int);
+#ifndef kame
 BOOL inittext(VOID);
 
 BOOL ShowOpenDialogBox(char *fileName);
@@ -162,12 +171,15 @@ BOOL FatalErr(char *s, int err);
 
 //*OT  flag for FreeFEM+/WinfFEM
 #define winf_VFFEM 1
+#endif
 #define winf_NOWAIT 2
+#ifndef kame
 #define winf_NOCOLOR 4
 #define winf_NOEDIT 8
 #define  winf_Usage   1024
-
+#endif
 unsigned int winf_flg = 0;
+#ifndef kame
 // end
 
 char FreeFemCache[256]="\0",
@@ -535,7 +547,7 @@ void couleur(int c)
   }
 }
 int LaCouleur(){return cstatic;}
-
+#endif
 //* Control on the graphic window
 void rattente(int waitm)
 {
@@ -597,7 +609,7 @@ char Getijc(int & x,int & y)
  //	cout << " x = " << x << " y = " << y  << " char = " << ((unsigned char)char1 > 127 ? '*': char1) << ")" << endl;
  	return char1;
 }
-
+#ifndef kame
 char Getxyc(float &x,float &y)
 {
   char c=' ';
@@ -680,7 +692,7 @@ void initgraphique(void)
   INITGRAPH = 1;
   // cout << flush << "end  inigraphique " << endl;
 }
-
+#endif
 void closegraphique(void)
 {
 	if(INITGRAPH) {
@@ -692,7 +704,7 @@ void closegraphique(void)
 //    DestroyWindow(hWnd);
 	}
 }
-
+#ifndef kame
 void GetScreenSize(int & ix,int &iy)
 {
   ix = width ;
@@ -1558,3 +1570,5 @@ int  execute (const char * str)
 
 void setgrey(bool gg ){grey=gg;}
 int getgrey(){ return grey;}
+
+#endif

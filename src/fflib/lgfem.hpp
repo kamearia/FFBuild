@@ -69,7 +69,7 @@ using Fem2D::TypeOfFE;
 namespace {
   using namespace Fem2D;
   using Fem2D::Vertex;
-
+#ifndef kame
   class lgVertex {
    public:
     typedef double R;
@@ -163,7 +163,7 @@ namespace {
     bool operator<=(const lgElement &l) const { return pTh == l.pTh && k <= l.k; }
   };
   // add FH  August 2009 ...
-
+#endif
   class lgBoundaryEdge {
    public:
     struct BE {

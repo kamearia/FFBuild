@@ -25,19 +25,22 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#include  <complex>
-#include  <string>
-#include  <iostream>
+#include "stdafx.h"
+//#include  <complex>
+//#include  <string>
+//#include  <iostream>
 #include  "error.hpp"
 #include  <cctype>
 #include  <cstdlib>
-#include  <map>
+//#include  <map>
 #include "AFunction.hpp"
 //class pfes;
 #include  <iomanip>
-#include "lg.tab.hpp"
-#include "lex.hpp"
 
+#include "lg.tab.hpp"
+
+#include "lex.hpp"
+#ifndef kame
 extern YYSTYPE *plglval;
 
 //  New version of macro expantion more classical
@@ -45,7 +48,7 @@ extern YYSTYPE *plglval;
 // FH Jan. 2005
 
 static const bool debugmacro = false;
-
+#endif
 void  mylex::Add(Key k,int i)
 {
     Check(!i,k,"mot clef");
@@ -60,7 +63,7 @@ void  mylex::Add(Key k,aType t)
     // TYPE defined at [[file:../lglib/lg.ypp::token type TYPE]]
     Add(k,TYPE,t);
 }
-
+#ifndef kame
 void  mylex::AddF(Key k,aType t)
 {
     Check(!t,k,"FUNCTION");
@@ -112,7 +115,7 @@ bool mylex::InMotClef(const char *b,aType &t,int &r)const
         return true;
     }
 }
-
+#endif
 // <<mylex_Add_Key_int_aType>>
 void  mylex::Add(Key k,int r,aType t)
 {
@@ -120,7 +123,7 @@ void  mylex::Add(Key k,int r,aType t)
     ffassert(ii==MotClef.end());
     MotClef.insert(pair<const Key,Value>(k,Value(r,t)));
 }
-
+#ifndef kame
 // <<dump>>
 void mylex::dump(ostream & f )
 {
@@ -1425,3 +1428,4 @@ ostream & mylex::ShowStack(ostream & f)
         if(  pilesource[i].filename ) f << " \t"<<i<<"\t"<<" in " << *pilesource[i].filename<< " line : " <<  pilesource[i].l << endl;
     return f;
 }
+#endif

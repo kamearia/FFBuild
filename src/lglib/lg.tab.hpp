@@ -149,6 +149,7 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
+#ifndef kame
 typedef union YYSTYPE
 #line 163 "lg.ypp"
 {
@@ -191,6 +192,7 @@ typedef union YYSTYPE
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
-
+#endif
+#ifndef kame
 extern YYSTYPE lglval;
-
+#endif

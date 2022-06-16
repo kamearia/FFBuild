@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D"CMAKE"  /D"kame" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib;C:\EMSolution\FreeFem\FreeFem-sources\src\lglib;C:\EMSolution\FreeFem\FreeFem-sources\ffbuild;C:\EMSolution\FreeFem\FreeFem-sources\src\Graphics</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -154,12 +154,16 @@
     <ClInclude Include="..\src\fflib\array_tlp.hpp" />
     <ClInclude Include="..\src\fflib\CodeAlloc.hpp" />
     <ClInclude Include="..\src\fflib\error.hpp" />
+    <ClInclude Include="..\src\fflib\ffapi.hpp" />
     <ClInclude Include="..\src\fflib\ffstack.hpp" />
     <ClInclude Include="..\src\fflib\lex.hpp" />
     <ClInclude Include="..\src\fflib\Operator.hpp" />
     <ClInclude Include="..\src\fflib\showverb.hpp" />
     <ClInclude Include="..\src\fflib\String.hpp" />
     <ClInclude Include="..\src\fflib\throwassert.hpp" />
+    <ClInclude Include="..\src\Graphics\getprog-unix.hpp" />
+    <ClInclude Include="..\src\Graphics\mode_open.hpp" />
+    <ClInclude Include="..\src\lglib\lg.tab.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -170,8 +174,19 @@
     <ClCompile Include="..\src\fflib\array_long.cpp" />
     <ClCompile Include="..\src\fflib\array_real.cpp" />
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp" />
+    <ClCompile Include="..\src\fflib\environment.cpp" />
+    <ClCompile Include="..\src\fflib\ffapi.cpp" />
     <ClCompile Include="..\src\fflib\global.cpp" />
+    <ClCompile Include="..\src\fflib\lex.cpp" />
+    <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
+    <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />
+    <ClCompile Include="..\src\Graphics\Pcrgraph.cpp" />
+    <ClCompile Include="..\src\lglib\lg.ypp.cpp" />
+    <ClCompile Include="..\src\lglib\mymain.cpp" />
     <ClCompile Include="test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\lglib\lg.ypp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

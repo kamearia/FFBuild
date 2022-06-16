@@ -20,6 +20,8 @@
 // AUTHORS : Frederic Hecht
 // E-MAIL  : frederic.hecht@sorbonne-universite.fr
 
+#include "stdafx.h"
+#ifndef kame
 #include "environment.hpp"
 #include "iostream"
 #include <iostream>
@@ -27,9 +29,10 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
-
+#endif
 // set in getprog-unix.hpp in Graphic dir
 const char *prognamearg = 0;
+#ifndef kame
 extern void (*initparallele)(int &, char **&); // to know if mpiversion ...
 
 #ifdef PURE_WIN32
@@ -401,9 +404,10 @@ void EnvironmentLoad() {
 #else
 #include <unistd.h>
 #endif
-
+#endif
 namespace ffapi
 {
+#ifndef kame
 // to change to tmp dir for exec ...
 long chtmpdir()
 {
@@ -419,13 +423,17 @@ long chtmpdir()
     return chdir(tmp);
 
 }
+#endif
 bool ff_justcompile=false;
 bool ff_ch2edpdtmpir=0;
+
+#ifndef kame
 void ifchtmpdir()
 {
     if(ff_ch2edpdtmpir) {
     }
 }
+#endif;
 }
 
 #ifdef TESTMAIN

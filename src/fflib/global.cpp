@@ -63,8 +63,9 @@ namespace ffapi {
     void (*newplot)();
 
     /// Redefinition of standard system calls
-
+#endif
     FILE *(*ff_popen)(const char *command, const char *type);
+#ifndef kame
   int (*ff_pclose)(FILE *stream); // [[file:ffapi.cpp::ff_pclose]]
     size_t (*ff_fwrite)(const void *ptr, size_t size, size_t nmemb,FILE *stream);
     int (*ff_fflush)(FILE *stream);
@@ -142,9 +143,9 @@ long npichon2d1=0, npichon3d1=0;
  Map_type_of_map map_type_of_map ; //  to store te type
 
 Map_type_of_map map_pair_of_type ; //  to store te type
-#ifndef kame
- basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
 
+ basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
+#ifndef kame
 /// <<zzzfff>> see [[file:lex.hpp::mylex]]
 #endif
 #include "lex.hpp"

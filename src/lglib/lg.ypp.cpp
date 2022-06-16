@@ -28,18 +28,30 @@
      along with Freefem++; if not, write to the Free Software
      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
      */
+#include "stdafx.h"
+#include "getprog-unix.hpp"
+#include "String.hpp"
 
+	extern void rattente(int);
+	extern void closegraphique(void);
+//extern  long mpirank;
+//extern long verbosity
+#ifndef kame
 #include <config.h>
 #include <iostream>
 #include  <complex>
-#include <string>
+#endif
+
   // for reset cout,cin  in windows  dll
 #ifdef _WIN32
+#ifndef kame
 #include <ext/stdio_filebuf.h>
+#endif
 #include <iostream>
 #include <cstdio>
 #endif
 
+#ifndef kame
 #include "error.hpp"
 class Iden;
 #include "strversionnumber.hpp"
@@ -51,7 +63,10 @@ class Iden;
 #include <alloca.h>
 #endif
 #endif
+#endif
 #include "RNM.hpp"
+
+#ifndef kame
 
 #include "AFunction.hpp"
 //  to reserve space to graphical pointer function
@@ -64,6 +79,7 @@ class Iden;
 #include "lgfem.hpp"
 #include "lex.hpp"
 #include "environment.hpp"
+
 extern long storageused();
     extern FILE *ThePlotStream;
     extern KN<String> *pkarg;
@@ -80,6 +96,7 @@ extern  void (*initparallele)(int &, char **&);
 extern  void (*init_lgparallele)();
 // extern  void (*end_parallele)();
 //
+
 #ifdef HAVE_LIBARPACK
   void init_eigenvalue();
 #endif
@@ -103,6 +120,7 @@ Block * StackOfLoop[sizeStackOfLoop];
 double CPUcompileInit =0;
 //class pfes;
 C_F0  fespacetype;
+
 bool fespacecomplex;
 int fespacedim;
 extern int UnShowAlloc;
@@ -112,7 +130,7 @@ int ShowAlloc(const char *s,size_t &);
 
 inline int yylex()  {return zzzfff->scan();}
 inline int lineno() {return zzzfff->lineno();}
-
+#endif
 extern bool withrgraphique;
 
 /// <<fingraphique>>
@@ -123,7 +141,7 @@ inline void fingraphique()
     rattente(1);
     closegraphique();
   }}
-
+#ifndef kame
 void lgerror (const char* s) ;
 
 
@@ -131,11 +149,12 @@ void lgerror (const char* s) ;
 void (*initparallele)(int &argc, char **& argv)=0 ;
 void (*init_lgparallele)()=0;
 //void (*end_parallele)()=0;
-
+#endif
 // Add dec 2014
 #include <vector>
 typedef void (*AtEnd)();
 vector<AtEnd> AtFFEnd;
+
 void ff_finalize()
 {
     for (vector<AtEnd>::const_reverse_iterator i=AtFFEnd.rbegin(); i !=AtFFEnd.rend(); ++ i)
@@ -146,7 +165,7 @@ void ff_atend(AtEnd f)
 {
     AtFFEnd.push_back(f);
 }
-
+#ifndef kame
 #include <csignal>
 void signalCPUHandler( int signum ) {
     ff_finalize();
@@ -911,9 +930,11 @@ static void SetcppIo()
 }
 
 // pour l'environement.
+#endif
 extern const char *  prognamearg;
+#ifndef kame
 extern  bool echo_edp;
-
+#endif
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
 
 int mainff (int  argc, char **argv)
@@ -928,17 +949,23 @@ int mainff (int  argc, char **argv)
   if(mpirank !=0) verbosity=0;
 
   // ALH - 14/10/8 - This breaks FFCS output redirection
-#ifndef ENABLE_FFCS
+#ifndef kame
+//#ifndef ENABLE_FFCS
   SetcppIo();
+//#endif
 #endif
 
+#ifndef kame
   GetEnvironment(); // [[file:~/ff/src/fflib/environment.cpp::GetEnvironment]]
 //    vvold=verbosity;
   if(mpirank !=0) verbosity=0;
   //  size_t lg000;
  // ShowAlloc("begin main ",lg000);
+#endif
   int retvalue=0;
+
    ff_atend(fingraphique);
+#ifndef kame
    if (initparallele)initparallele(argc,argv);
 
   CPUcompileInit= CPUtime();
@@ -1034,7 +1061,9 @@ int mainff (int  argc, char **argv)
   Destroylex( zzzfff);
   delete [] cc;
    // ClearMem();
+#endif;
   return retvalue;
+
 }
 
 /* FFCS: emacs configuration for this file */

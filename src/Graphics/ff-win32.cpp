@@ -1,4 +1,5 @@
-
+#include "stdafx.h"
+#ifndef kame
 #ifdef _WIN32
 #include <string>
 using namespace std;
@@ -14,8 +15,8 @@ using namespace std;
 #endif   // _WIN64
 //#include <commdlg.h>
 #include <io.h>      //*OT  use for the console window
-
-BOOL ShowOpenDialogBox1(char *fileName)
+#endif
+bool ShowOpenDialogBox1(char *fileName)
 {
   OPENFILENAME *pofn= new OPENFILENAME[2], &ofn= *pofn;
     
@@ -38,7 +39,7 @@ BOOL ShowOpenDialogBox1(char *fileName)
   delete[] pofn;
   return ret;
 } 
-
+#ifndef kame
 
 
 string ChangeExt(const string & ff,const char * suff)
@@ -89,4 +90,5 @@ bool GetConsoleBuff(const string &edpname)
   cout << " save log in :  '"<< fname << "'\n"  ;
   return true;
 }
+#endif
 #endif

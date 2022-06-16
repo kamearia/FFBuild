@@ -20,5 +20,6 @@
 #include <cassert>
 #include <exception>
 #include <iomanip>
+#include <direct.h>
 
 // TODO: プログラムに必要な追加ヘッダーをここで参照してください

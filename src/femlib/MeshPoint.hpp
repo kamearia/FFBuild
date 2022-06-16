@@ -1,7 +1,10 @@
-#ifndef MeshPoint_hpp_
-#define MeshPoint_hpp_
-#include <climits>
-//typedef double R;
+//#ifndef MeshPoint_hpp_
+//#define MeshPoint_hpp_
+#pragma once
+//#include <climits>
+
+#include "ffstack.hpp"
+//typedef double 
 #ifndef LONG_MIN
 #if 1000000L*1000000L <0L
 # define LONG_MIN -2147483647
@@ -965,4 +968,4 @@ inline static void MeshPointStack( void *s,MeshPoint* mp) {*static_cast<MeshPoin
 #endif
 
 }
-#endif
+//#endif

@@ -31,6 +31,15 @@
     <Filter Include="ヘッダー ファイル\src\femlib">
       <UniqueIdentifier>{7533589e-e964-4abc-847e-81c2f8d48711}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\src\lglib">
+      <UniqueIdentifier>{1f9ea83f-a732-4ebd-bc19-275fb3e31e6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\src\Graphics">
+      <UniqueIdentifier>{cbd3010e-d528-48cd-937a-e9f7eb6ea1b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\src\Graphics">
+      <UniqueIdentifier>{12569fbe-c43b-49a0-8ef2-21da44de9713}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -81,11 +90,20 @@
     <ClInclude Include="..\src\fflib\Operator.hpp">
       <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\lglib\lg.tab.hpp">
+      <Filter>ヘッダー ファイル\src\lglib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\getprog-unix.hpp">
+      <Filter>ヘッダー ファイル\src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Graphics\mode_open.hpp">
+      <Filter>ヘッダー ファイル\src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\ffapi.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
-      <Filter>ソース ファイル\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
@@ -107,5 +125,37 @@
     <ClCompile Include="..\src\fflib\array_complex.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\fflib\lex.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Graphics\ff-win32.cpp">
+      <Filter>ソース ファイル\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lglib\lg.ypp.cpp">
+      <Filter>ソース ファイル\src\lglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\environment.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lglib\mymain.cpp">
+      <Filter>ソース ファイル\src\lglib</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Graphics\getprog-unix.cpp">
+      <Filter>ソース ファイル\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\ffapi.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Graphics\Pcrgraph.cpp">
+      <Filter>ソース ファイル\src\Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\lglib\lg.ypp">
+      <Filter>ヘッダー ファイル\src\lglib</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -2594,7 +2594,7 @@ namespace bamg {
             Triangle *tc = HeapTriangle[i];    // triangle courant
             if (!tc->Locked(na))               // arete non frontiere
             {
-              Triangle *ta = tc->TriangleAdj(na);    // næ triangle adjacent
+              Triangle *ta = tc->TriangleAdj(na);    // nEtriangle adjacent
               if (ta->link == 0)                     // non deja chainer => on enpile
               {
                 i++;
