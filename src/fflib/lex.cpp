@@ -1213,7 +1213,7 @@ bool mylex::CallMacro(int &ret)
         }
     return false;
 }
-
+#endif
 void  mylex::xxxx::open(mylex *lex,const char * ff)
 {
 
@@ -1223,7 +1223,8 @@ void  mylex::xxxx::open(mylex *lex,const char * ff)
     nf=f=0;
     sep=':';
     // Try to open the given file name without any extra path from [[file:lex.hpp::ffincludedir]]
-    if (lex->ffincludedir.empty())
+
+	if (lex->ffincludedir.empty())
       nf=f= new ifstream(ff,ios_base::binary); //  modif of win32
 
     // If it worked, set [[file:lex.hpp::filename]] to ff, otherwise try to open it
@@ -1302,8 +1303,9 @@ void  mylex::xxxx::open(mylex *lex,const char * ff)
 
         lgerror("lex: Error input opening file ");
     }
-}
 
+}
+#ifndef kame
 void mylex::xxxx::readin(mylex *lex,const string & s,const string *name, int macroargs)
 {
     filename=name;
@@ -1329,7 +1331,7 @@ void mylex::xxxx::close()
     if(filename && (macroarg==0)) delete filename; // [[file:lex.hpp::filename]]
     f=nf=0;
 }
-
+#endif
 // <<mylex_input_filename>>
 
 void mylex::input(const char *  filename)
@@ -1337,13 +1339,13 @@ void mylex::input(const char *  filename)
     ffassert(level<99 && level >= -1);
     if (level>=0)
         pilesource[level].l =linenumber;
-
     pilesource[level+1].open(this,filename);
     pilesource[level+1].l =0;
     linenumber = 1;
     level++;
-}
 
+}
+#ifndef kame
 // <<mylex_input_string>>
 
 void mylex::input(const string & str,const string * name,int lg)

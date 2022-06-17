@@ -36,7 +36,7 @@ bool waitatend=false;
 extern bool consoleatend;
 bool NoGraphicWindow;
 extern bool echo_edp;
-const char *  check_plugin;
+extern const char *  check_plugin;
 extern long verbosity;
 char *Shell_Space(const char *s);
 

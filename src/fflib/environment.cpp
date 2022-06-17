@@ -21,8 +21,8 @@
 // E-MAIL  : frederic.hecht@sorbonne-universite.fr
 
 #include "stdafx.h"
-#ifndef kame
 #include "environment.hpp"
+#ifndef kame
 #include "iostream"
 #include <iostream>
 #include <fstream>
@@ -378,23 +378,30 @@ string     ffprefsuffix ="pref";
     if(verbosity>10) cout << " --  GetEnvironment: verbosity is set to " << verbosity  << endl;
 
  }
+#endif
 const char *check_plugin=0;
 void EnvironmentLoad() {
     if(check_plugin) {
+#ifndef kame
         bool ok=load(check_plugin);
         if(ok) exit(0);
-        else exit(1); }
-    EnvironmentData::iterator toload=ffenvironment.find("load");
-    if(  toload != ffenvironment.end())
-
-	for (OneEnvironmentData::iterator i=toload->second.begin(); i != toload->second.end(); ++i)
-	{
-	    if(verbosity) cout << "PreEnv load :"<< *i << endl;
-	    load(*i);
+        else exit(1); 
+#endif
 	}
 
-}
+    EnvironmentData::iterator toload=ffenvironment.find("load");
 
+	if (toload != ffenvironment.end()) {
+#ifndef kame
+		for (OneEnvironmentData::iterator i = toload->second.begin(); i != toload->second.end(); ++i)
+		{
+			if (verbosity) std::cout << "PreEnv load :" << *i << std::endl;
+			load(*i);
+		}
+#endif
+	}
+}
+#ifndef kame
 // from ffapi to env. F. Hecht ..
 #include "ffapi.hpp"
 #include <dirent.h>

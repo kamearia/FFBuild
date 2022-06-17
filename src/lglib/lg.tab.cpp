@@ -45,6 +45,7 @@
 #include "stdafx.h"
 #include "InitFunct.hpp"
 #include "AFunction.hpp"
+#include "environment.hpp"
 #ifndef kame
 /* Identify Bison output.  */
 #define YYBISON 1
@@ -3573,18 +3574,19 @@ void init_lgmesh() ;
 void init_lgmesh3() ;
 void init_algo();
 bool withrgraphique = false;
-
+#endif
 /// <<Compile>> Called by mainff(). Activates the bison parser by calling yyparse()
 int Compile()
 {
+	int retvalue = 0;
 
   // see [[YYSTYPE]] [[yylval]] [[lglval]]
   extern   YYSTYPE *plglval;  // modif FH
-
+#ifndef kame
   /// plglval is allocated at [[file:../fflib/global.cpp::plglval]]
   plglval = &lglval;
 
-  int retvalue=0;
+
 
   // <<initialize_currentblock>>
 
@@ -3636,8 +3638,10 @@ int Compile()
       cerr << "Strange catch exception ???\n";
       cerr << " at exec line  " << TheCurrentLine << " mpirank: " <<mpirank << endl;
     }
+#endif
   return retvalue;
 }
+#ifndef kame
 static void SetcppIo()
 {
 
@@ -3775,14 +3779,14 @@ int mainff (int  argc, char **argv)
 
    if(init_lgparallele)  init_lgparallele();
   //  callInitsFunct() ; //  init for dynamique libs ...
-
+#endif
    if(verbosity>2 || ((mpirank==0)&& verbosity)  )  cout << endl;
-  zzzfff->input(cc); // [[file:../fflib/lex.cpp::mylex_input_filename]]
-  EnvironmentLoad(); // just before compile [[file:~/ff/src/fflib/environment.cpp::EnvironmentLoad]]
+	zzzfff->input(cc); // [[file:../fflib/lex.cpp::mylex_input_filename]]
+	EnvironmentLoad(); // just before compile [[file:~/ff/src/fflib/environment.cpp::EnvironmentLoad]]
 
   retvalue= Compile(); // [[Compile]]
    // cout << " xxxxx " <<  retvalue << " " << ThePlotStream << endl;
-
+#ifndef kame
   //if(end_parallele) end_parallele();
   ff_finalize();
   //  currentblock->close(currentblock).eval(thestack);
