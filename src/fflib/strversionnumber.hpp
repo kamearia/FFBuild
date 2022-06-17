@@ -25,13 +25,25 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef STRVERSIONNUMBER_HPP
-#define STRVERSIONNUMBER_HPP
+#pragma once
 
 #include <string>
 using namespace std;
 
+#define xstrg(s) strg(s)
+#define strg(s) #s
+
 double VersionNumber();
 string StrVersionNumber();
 
-#endif//STRVERSIONNUMBER_HPP
+double VersionNumber() {
+	return VersionFreeFem;
+}
+
+string StrVersionNumber() {
+	ostringstream version;
+	version.precision(8);
+	version << xstrg(VersionFreeFem)
+		<< " (VersionFreeFemDate - git GitVersion)";
+	return version.str();
+}

@@ -90,7 +90,6 @@ using namespace std;
 #include "AnyType.hpp"
 #include "CodeAlloc.hpp"
 #ifndef kame
-#include "String.hpp"
 
 
 class basicForEachType;

@@ -153,6 +153,7 @@
     <ClInclude Include="..\src\fflib\array_init.hpp" />
     <ClInclude Include="..\src\fflib\array_tlp.hpp" />
     <ClInclude Include="..\src\fflib\CodeAlloc.hpp" />
+    <ClInclude Include="..\src\fflib\environment.hpp" />
     <ClInclude Include="..\src\fflib\error.hpp" />
     <ClInclude Include="..\src\fflib\ffapi.hpp" />
     <ClInclude Include="..\src\fflib\ffstack.hpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\src\fflib\Operator.hpp" />
     <ClInclude Include="..\src\fflib\showverb.hpp" />
     <ClInclude Include="..\src\fflib\String.hpp" />
+    <ClInclude Include="..\src\fflib\strversionnumber.hpp" />
     <ClInclude Include="..\src\fflib\throwassert.hpp" />
     <ClInclude Include="..\src\Graphics\getprog-unix.hpp" />
     <ClInclude Include="..\src\Graphics\mode_open.hpp" />

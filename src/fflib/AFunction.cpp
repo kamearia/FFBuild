@@ -2060,11 +2060,13 @@ C_F0  opSum::code2(const basicAC_F0 &args) const
 	return C_F0(TheOperators,"[]",v);
 
 }
+#endif
 //  to be sure new and delele be in see dll for windows
 string  *newstring(){string * p=new string();
     if(verbosity>999999) cout << p << "=newstring() " <<endl;;
       return p ;
 }
+
 string  *newstring(const string & c){
     string * p=new string(c);
     if(verbosity>999999) cout <<  p << "=newstring((string) "<< c << ") \n";
@@ -2073,7 +2075,7 @@ string  *newstring(const char * c){
      string * p=new string(c);
     if(verbosity>999999) cout << p << "=newstring((char*)  "<< c << " ) \n";
     return p;}
-#endif
+
 void   freestring(const string * c){
     if(verbosity>999999) cout << c << "freestring(  "<< *c <<") \n";
     delete c;}

@@ -40,6 +40,7 @@
 #include "lg.tab.hpp"
 
 #include "lex.hpp"
+#include "environment.hpp"
 #ifndef kame
 extern YYSTYPE *plglval;
 
@@ -582,7 +583,7 @@ char * mylex::match(int i)
     };
     return buf;
 }
-
+#endif
 bool mylex::AddMacro(string m,string def)
 {
     bool ok=1;
@@ -605,6 +606,7 @@ bool mylex::AddMacro(string m,string def)
     }
     return ok;
 }
+#ifndef kame
 bool mylex::SetMacro(int &ret)
 {
     char endmacro[]="EndMacro";
@@ -1370,7 +1372,7 @@ bool mylex::close()
     linenumber = pilesource[level].l;
     return true;
 }
-
+#endif
 mylex::~mylex()
 {
     delete listMacroDef;
@@ -1381,6 +1383,7 @@ mylex::~mylex()
         strdata.pop();
     }
 }
+
 
 mylex::mylex(ostream & out,bool eecho,const KN<String> *pargs)
     :
@@ -1414,18 +1417,19 @@ mylex::mylex(ostream & out,bool eecho,const KN<String> *pargs)
     }
 };
 
-mylex * Newlex(  ostream & out,bool eecho,KN<String> * args)
+mylex * Newlex(ostream & out, bool eecho, KN<String> * args)
 {
-    return new mylex(out,eecho,args);
+	   return new mylex(out,eecho,args);
 }
+#ifndef kame
 void Destroylex(mylex * m)
 {
     delete m;
 }
+#endif
 ostream & mylex::ShowStack(ostream & f)
 {
     for (int i=0; i<level; ++i)
         if(  pilesource[i].filename ) f << " \t"<<i<<"\t"<<" in " << *pilesource[i].filename<< " line : " <<  pilesource[i].l << endl;
     return f;
 }
-#endif

@@ -28,7 +28,7 @@ int main(int  argc, char **argv)
 	init_ptr_parallelepmi();
 #endif
 //	return mainff(argc, argv); // [[file:lg.ypp::mainff]]
-	char      fn[1024];
-	if (getprog(fn, argc, argv))
+//	char      fn[1024];
+//	if (getprog(fn, argc, argv))
 		return mainff(argc, argv);
 }

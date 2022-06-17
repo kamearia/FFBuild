@@ -82,9 +82,9 @@ float scalj(int j);
 //int pStrCopy (StringPtr p1, StringPtr p2);
 int execute(char* what);
 //int DoMouseDown (int windowPart, WindowPtr whichWindow, EventRecord *myEvent);
-#endif
+
 char Getijc(int & x,int & y);
-#ifndef kame
+
 void postexit();
 
 static int  cube6[7][3] ={ {255,0,0},{255,255,0},{0,255,0},
@@ -149,9 +149,9 @@ int getcolor();
 void putpixel(int ix,int iy, int couleur);
 int scalx(float x);
 int scaly(float y);
-#endif
+
 void rattente (int);
-#ifndef kame
+
 BOOL inittext(VOID);
 
 BOOL ShowOpenDialogBox(char *fileName);
@@ -549,6 +549,7 @@ void couleur(int c)
 int LaCouleur(){return cstatic;}
 #endif
 //* Control on the graphic window
+#ifndef kame
 void rattente(int waitm)
 {
    int i=0, j=0;
@@ -609,6 +610,7 @@ char Getijc(int & x,int & y)
  //	cout << " x = " << x << " y = " << y  << " char = " << ((unsigned char)char1 > 127 ? '*': char1) << ")" << endl;
  	return char1;
 }
+#endif
 #ifndef kame
 char Getxyc(float &x,float &y)
 {
@@ -692,7 +694,7 @@ void initgraphique(void)
   INITGRAPH = 1;
   // cout << flush << "end  inigraphique " << endl;
 }
-#endif
+
 void closegraphique(void)
 {
 	if(INITGRAPH) {
@@ -704,8 +706,8 @@ void closegraphique(void)
 //    DestroyWindow(hWnd);
 	}
 }
-#ifndef kame
-void GetScreenSize(int & ix,int &iy)
+
+#ifndef kamevoid GetScreenSize(int & ix,int &iy)
 {
   ix = width ;
   iy = height;
@@ -1570,5 +1572,7 @@ int  execute (const char * str)
 
 void setgrey(bool gg ){grey=gg;}
 int getgrey(){ return grey;}
+
+#endif
 
 #endif

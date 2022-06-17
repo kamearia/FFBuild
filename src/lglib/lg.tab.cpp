@@ -251,7 +251,7 @@ class Iden;
 #include "environment.hpp"
 extern long storageused();
     extern FILE *ThePlotStream;
-    extern KN<String> *pkarg;
+extern KN<String> *pkarg;
 
 class Routine;
 bool load(string s);
@@ -3636,7 +3636,7 @@ extern  bool echo_edp;
 
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
 
-int mainff (int  argc, char **argv)
+int mainffx (int  argc, char **argv)
 {
 #ifndef _WIN32
   	signal(SIGXCPU, signalCPUHandler);

@@ -44,6 +44,7 @@ extern long mpisize,mpirank;
 #include "String.hpp"
 using namespace std;
 extern void CompileError(string msg, aType r);
+class String;
 /// <<mylex>>
 class mylex : public CodeAlloc { 
   public:
@@ -102,7 +103,7 @@ class mylex : public CodeAlloc {
   list<MapMacroDef> *listMacroDef;
   list<MapMacroParam> *listMacroParam;
   public:
-	class String;
+
   mylex(ostream & out,bool eecho=true,const KN<String> *pargs=0 );
   string token() const;
   void print(ostream &f) const; 
@@ -178,7 +179,7 @@ private:
   
 } ;
 
-#ifndef kame
+
 mylex * Newlex(  ostream & out,bool =true,KN<String> * args=0);
  void Destroylex(mylex * m);
 
@@ -187,4 +188,4 @@ mylex * Newlex(  ostream & out,bool =true,KN<String> * args=0);
 
 extern mylex *zzzfff;
 
-#endif
+

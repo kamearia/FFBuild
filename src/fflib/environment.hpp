@@ -25,14 +25,14 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#pragma once
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
 #endif
 
-#ifndef ENVIRONMENT_HPP_
-#define ENVIRONMENT_HPP_
+//#ifndef ENVIRONMENT_HPP_
+//#define ENVIRONMENT_HPP_
 
 #include <string>
 #include <list>
@@ -48,5 +48,5 @@ bool EnvironmentInsert(std::string key,std::string item,std::string before);
 void GetEnvironment();
 void EnvironmentLoad();
 
-#endif // ENVIRONMENT_HPP_
+//#endif // ENVIRONMENT_HPP_
 

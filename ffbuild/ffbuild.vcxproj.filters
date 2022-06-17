@@ -102,6 +102,12 @@
     <ClInclude Include="..\src\fflib\ffapi.hpp">
       <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fflib\strversionnumber.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\environment.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp">

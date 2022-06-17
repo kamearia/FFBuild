@@ -30,6 +30,7 @@
 #include "stdafx.h"
 #include "AFunction.hpp"
 #include "String.hpp"
+#include "environment.hpp"
 #ifndef kame
 #include <iostream>
 #include <cstdio>
@@ -137,9 +138,9 @@ long npichon2d=0, npichon3d=0;
 long npichon2d1=0, npichon3d1=0;
 
  FILE *ThePlotStream=0; //  Add for new plot. FH oct 2008
-
-  KN<String> *pkarg;//  for the list of argument  mars 2010
 #endif
+  KN<String> *pkarg;//  for the list of argument  mars 2010
+
  Map_type_of_map map_type_of_map ; //  to store te type
 
 Map_type_of_map map_pair_of_type ; //  to store te type
@@ -195,12 +196,12 @@ CodeAlloc ** CodeAlloc::mem=0;
 size_t CodeAlloc::memoryusage=0;
 bool CodeAlloc::sort=true;
 bool  CodeAlloc::cleanning=false;
-#ifndef kame
+
 bool echo_edp=true; // add F.H of remove script dump
 
 //  add F. Hecht
 EnvironmentData  ffenvironment;
-#endif
+
 basicForEachType *basicForEachType::tnull=0;
 
 E_F0 *E_F0::tnull=0;

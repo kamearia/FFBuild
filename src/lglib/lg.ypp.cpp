@@ -31,12 +31,15 @@
 #include "stdafx.h"
 #include "getprog-unix.hpp"
 #include "String.hpp"
+#include "lex.hpp"
+
 
 	extern void rattente(int);
 	extern void closegraphique(void);
 //extern  long mpirank;
 //extern long verbosity
 #ifndef kame
+#include "strversionnumber.hpp"
 #include <config.h>
 #include <iostream>
 #include  <complex>
@@ -82,7 +85,9 @@ class Iden;
 
 extern long storageused();
     extern FILE *ThePlotStream;
-    extern KN<String> *pkarg;
+#endif
+extern KN<String> *pkarg;
+#ifndef kame
 
 class Routine;
 bool load(string s);
@@ -932,11 +937,12 @@ static void SetcppIo()
 // pour l'environement.
 #endif
 extern const char *  prognamearg;
-#ifndef kame
+
 extern  bool echo_edp;
-#endif
+
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
 
+extern int getprog(char *fn, int argc, char **argv);
 int mainff (int  argc, char **argv)
 {
 #ifndef _WIN32
@@ -963,9 +969,9 @@ int mainff (int  argc, char **argv)
  // ShowAlloc("begin main ",lg000);
 #endif
   int retvalue=0;
-
-   ff_atend(fingraphique);
 #ifndef kame
+   ff_atend(fingraphique);
+
    if (initparallele)initparallele(argc,argv);
 
   CPUcompileInit= CPUtime();
@@ -975,18 +981,20 @@ int mainff (int  argc, char **argv)
 //  local=&xlocal;
   lexdebug = false;
   lgdebug = false;
-
+#endif
   char *  cc= new char [1024];
   //  istream * ccin=0;
   if ( ! (getprog(cc,argc,argv) >0)  ) // [[file:~/ff/src/Graphics/getprog-unix.hpp::getprog]]
     {
+#ifndef kame
       cout << "-- FreeFem++ v" << StrVersionNumber() << " (error parameter!)\n"  ;
       if(ThePlotStream) {ffapi::ff_pclose(ThePlotStream); ThePlotStream=0;}
+#endif
       return 1;
     }
 
   if(verbosity && (mpirank==0)) {
-      cout << "-- FreeFem++ v" << StrVersionNumber() << endl;
+      cout << "-- FreeFem++ v" << "?.?"/* StrVersionNumber()*/ << endl;
       cout << "   file : " << cc ;
       if(verbosity>1) cout << " " << " verbosity= " << verbosity ;
       cout  << endl;
@@ -1012,6 +1020,7 @@ int mainff (int  argc, char **argv)
 */
 //  les motsclefs
    zzzfff->Add("include",INCLUDE);
+#ifndef kame
    zzzfff->Add("load",LOAD);
    zzzfff->Add("while",WHILE);
    zzzfff->Add("for",FOR);
