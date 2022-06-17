@@ -26,7 +26,11 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
+using namespace std;
+#include "BamgFreeFem.hpp"
+#include "AFunction.hpp"
+#ifndef kame
 #include "ff++.hpp"
 #include "AFunction_ext.hpp"
 
@@ -1480,11 +1484,12 @@ basicAC_F0::name_and_type  MeshCarre2f::name_param[]= {
 	{  "label", &typeid(KN_<long> )},
 	{  "region", &typeid(long)}
     };
-
+#endif
    void  MeshErrorIO(ios& )
 {
    ExecError("Mesh IO Error ");
 }
+#ifndef kame
 
 inline pmesh *  initMesh(pmesh * const & p, string * const & s) {
   Mesh * m;
@@ -1965,9 +1970,13 @@ class  OneOperator1s_np : public OneOperator {
     OneOperator1s_np(func  ff):
       OneOperator(map_type[typeid(R).name()],map_type[typeid(A).name()]),f(ff){}
 };
+#endif
+extern long verbosity;
+extern long  mpirank;
 void init_lgmesh() {
-  if(verbosity&&(mpirank==0) )  cout <<"lg_mesh ";
+  if(verbosity&&(mpirank==0) )  std::cout <<"lg_mesh ";
   bamg::MeshIstreamErrorHandler = MeshErrorIO;
+#ifndef kame
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<E_BorderN>>);
  Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<MeshL>>);
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMeshArray>);
@@ -2028,4 +2037,5 @@ void init_lgmesh() {
   TheOperators->Add("<-",
 		    new OneOperator2_<pmesh*,pmesh*,pmesh >(&set_copy_incr));
   init_glumesh2D();
+#endif
 }

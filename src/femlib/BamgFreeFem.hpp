@@ -26,14 +26,13 @@
  ref:ANR-07-CIS7-002-01
  */
 
-#ifndef FREEFEMBAMG_H_
-#define FREEFEMBAMG_H_
-
+#pragma once
+#include <ios>
 namespace bamg {
-  extern void (*MeshIstreamErrorHandler)(ios &);
+  extern void (*MeshIstreamErrorHandler)(std::ios &);
   class Triangles;
 }
-
+#ifndef kame
 
 const Fem2D::Mesh *ReadMeshbamg(string *const & s);
 const Fem2D::Mesh *ReadTriangulate( string *const &s);
@@ -53,4 +52,4 @@ const Fem2D::Mesh *BuildMeshBorder(Stack stack, E_BorderN const *const &b);
 const Fem2D::Mesh *MoveTheMesh(const Fem2D::Mesh &Th, const KN_<double> &u, const KN_<double> &v);
 const Fem2D::Mesh *buildmeshbamg(string *const &s, int =0);
 
-#endif //FREEFEMBAMG_H_
+#endif

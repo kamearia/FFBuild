@@ -19,9 +19,6 @@
     <Filter Include="ソース ファイル\src\fflib">
       <UniqueIdentifier>{c85adb0e-35ef-450d-8719-015559d7180f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\src\lglib">
-      <UniqueIdentifier>{77fe4da3-1387-4326-8486-aa14db4f4a3b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\src">
       <UniqueIdentifier>{c8f0b508-d58c-4c3a-9af0-a8b8ca680827}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,15 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\src\Graphics">
       <UniqueIdentifier>{12569fbe-c43b-49a0-8ef2-21da44de9713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\src\lglib">
+      <UniqueIdentifier>{698aae55-91da-4b72-9660-b39b692f10c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\src\femlib">
+      <UniqueIdentifier>{54116d60-f39f-42a6-9c31-7d02dfdd728d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\src\bamglib">
+      <UniqueIdentifier>{2a1b52e5-9ad9-4c6c-b4db-92b18348ffdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +114,15 @@
     <ClInclude Include="..\src\fflib\environment.hpp">
       <Filter>ヘッダー ファイル\src\fflib</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\fflib\InitFunct.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\fflib\lgmesh.hpp">
+      <Filter>ヘッダー ファイル\src\fflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\femlib\BamgFreeFem.hpp">
+      <Filter>ヘッダー ファイル\src\femlib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\fflib\CodeAlloc.cpp">
@@ -137,14 +152,8 @@
     <ClCompile Include="..\src\Graphics\ff-win32.cpp">
       <Filter>ソース ファイル\src\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\lglib\lg.ypp.cpp">
-      <Filter>ソース ファイル\src\lglib</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\fflib\environment.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\lglib\mymain.cpp">
-      <Filter>ソース ファイル\src\lglib</Filter>
     </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>ソース ファイル</Filter>
@@ -157,6 +166,21 @@
     </ClCompile>
     <ClCompile Include="..\src\Graphics\Pcrgraph.cpp">
       <Filter>ソース ファイル\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lglib\mymain.cpp">
+      <Filter>ソース ファイル\src\lglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\lglib\lg.tab.cpp">
+      <Filter>ソース ファイル\src\lglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\InitFunct.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\fflib\lgmesh.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\Meshio.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

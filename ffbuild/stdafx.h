@@ -7,6 +7,7 @@
 
 #include "targetver.h"
 
+#include <ios>
 #include <iostream>
 #include <cstdio>
 #include <cmath>

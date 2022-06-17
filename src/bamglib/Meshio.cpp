@@ -25,13 +25,18 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
+#ifndef kame
 #include "meshtype.h"
 #include "Meshio.h"
+#endif
+#include "BamgFreeFem.hpp"
 namespace bamg {
-
+#ifndef kame
   const char *OFortranUnFormattedFile::unkown("unknown file name");
-  void (*MeshIstreamErrorHandler)(ios &) = 0;
+#endif
+  void (*MeshIstreamErrorHandler)(std::ios &) = 0;
+#ifndef kame
   ///////////////////////////////////////////////////////////
   void WriteStr(ostream &out, char *str) {
     int i = 0;
@@ -326,5 +331,6 @@ namespace bamg {
     MeshError(900);
     //  throw(ErrorMesh("exit",1));
   }
+#endif
 
 }    // end of namespace bamg

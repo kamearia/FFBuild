@@ -147,6 +147,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\femlib\BamgFreeFem.hpp" />
     <ClInclude Include="..\src\femlib\RNM.hpp" />
     <ClInclude Include="..\src\fflib\AFunction.hpp" />
     <ClInclude Include="..\src\fflib\AnyType.hpp" />
@@ -157,7 +158,9 @@
     <ClInclude Include="..\src\fflib\error.hpp" />
     <ClInclude Include="..\src\fflib\ffapi.hpp" />
     <ClInclude Include="..\src\fflib\ffstack.hpp" />
+    <ClInclude Include="..\src\fflib\InitFunct.hpp" />
     <ClInclude Include="..\src\fflib\lex.hpp" />
+    <ClInclude Include="..\src\fflib\lgmesh.hpp" />
     <ClInclude Include="..\src\fflib\Operator.hpp" />
     <ClInclude Include="..\src\fflib\showverb.hpp" />
     <ClInclude Include="..\src\fflib\String.hpp" />
@@ -170,6 +173,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\bamglib\Meshio.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
     <ClCompile Include="..\src\fflib\array_complex.cpp" />
@@ -179,11 +183,13 @@
     <ClCompile Include="..\src\fflib\environment.cpp" />
     <ClCompile Include="..\src\fflib\ffapi.cpp" />
     <ClCompile Include="..\src\fflib\global.cpp" />
+    <ClCompile Include="..\src\fflib\InitFunct.cpp" />
     <ClCompile Include="..\src\fflib\lex.cpp" />
+    <ClCompile Include="..\src\fflib\lgmesh.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />
     <ClCompile Include="..\src\Graphics\Pcrgraph.cpp" />
-    <ClCompile Include="..\src\lglib\lg.ypp.cpp" />
+    <ClCompile Include="..\src\lglib\lg.tab.cpp" />
     <ClCompile Include="..\src\lglib\mymain.cpp" />
     <ClCompile Include="test.cpp" />
   </ItemGroup>

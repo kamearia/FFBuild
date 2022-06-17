@@ -117,9 +117,9 @@ typedef pair<aType,  E_F0  *>  Type_Expr ;// to store the type and the expressio
 #endif
  void lgerror (const char* s) ;  
  extern void CompileError(string msg="",aType r=0);
-#ifndef kame
+
  void ExecError(string msg="");
-#endif 
+ 
 struct UnId {
   const char * id;
   aType r;
@@ -3160,12 +3160,12 @@ inline void CompileError(string msg,aType r){
  string m= r ? msg + "  type: " + r->name() : msg ;
    lgerror(m.c_str());
  }
-#ifndef kame
+
  inline void ExecError(string msg){ 
   // cerr << "Fatal ExecError: " << msg << endl;
    throw(ErrorExec(msg.c_str(),1));
  }
-#endif 
+
 const  Function1 NotReturnOfthisType = reinterpret_cast<Function1>(1); 
 
 inline Expression basicForEachType::OnReturn(Expression f) const {

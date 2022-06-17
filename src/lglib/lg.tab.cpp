@@ -43,6 +43,9 @@
    define necessary library symbols; they are noted "INFRINGES ON
    USER NAME SPACE" below.  */
 #include "stdafx.h"
+#include "InitFunct.hpp"
+#include "AFunction.hpp"
+#ifndef kame
 /* Identify Bison output.  */
 #define YYBISON 1
 
@@ -128,8 +131,10 @@
    };
 #endif
 /* Tokens.  */
+#endif
 #define IF 258
 #define ELSE 259
+#ifndef kame
 #define SET 260
 #define GTGT 261
 #define LTLT 262
@@ -148,13 +153,18 @@
 #define DNUM 275
 #define CNUM 276
 #define ID 277
+#endif
 #define FESPACEID 278
+#ifndef kame
 #define IDPARAM 279
 #define STRING 280
+#endif
 #define ENDOFFILE 281
 #define INCLUDE 282
 #define LOAD 283
+#ifndef kame
 #define BIDON 284
+#endif
 #define FOR 285
 #define WHILE 286
 #define BREAK 287
@@ -163,6 +173,7 @@
 #define TRY 290
 #define CATCH 291
 #define THROW 292
+#ifndef kame
 #define TYPE 293
 #define FUNCTION 294
 #define FESPACE 295
@@ -177,7 +188,9 @@
 #define DOTMULEQ 304
 #define DOTDIVEQ 305
 #define ARROW 306
+#endif
 #define BORDER 307
+#ifndef kame
 #define SOLVE 308
 
 
@@ -213,11 +226,21 @@
      along with Freefem++; if not, write to the Free Software
      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
      */
+#endif
+#include "stdafx.h"
+#include "getprog-unix.hpp"
+#include "String.hpp"
+#include "lex.hpp"
 
+   extern void rattente(int);
+   extern void closegraphique(void);
+
+#ifndef kame
 //KAME #include <config.h>
 #include <iostream>
 #include  <complex>
 #include <string>
+
   // for reset cout,cin  in windows  dll
 #ifdef _WIN32
 //KAME #include <ext/stdio_filebuf.h>
@@ -236,7 +259,10 @@ class Iden;
 #include <alloca.h>
 #endif
 #endif
+
+#endif
 #include "RNM.hpp"
+#ifndef kame
 
 #include "AFunction.hpp"
 //  to reserve space to graphical pointer function
@@ -251,7 +277,9 @@ class Iden;
 #include "environment.hpp"
 extern long storageused();
     extern FILE *ThePlotStream;
+#endif
 extern KN<String> *pkarg;
+#ifndef kame
 
 class Routine;
 bool load(string s);
@@ -297,7 +325,7 @@ int ShowAlloc(const char *s,size_t &);
 
 inline int yylex()  {return zzzfff->scan();}
 inline int lineno() {return zzzfff->lineno();}
-
+#endif
 extern bool withrgraphique;
 
 /// <<fingraphique>>
@@ -308,7 +336,7 @@ inline void fingraphique()
     rattente(1);
     closegraphique();
   }}
-
+#ifndef kame
 void lgerror (const char* s) ;
 
 
@@ -316,7 +344,7 @@ void lgerror (const char* s) ;
 void (*initparallele)(int &argc, char **& argv)=0 ;
 void (*init_lgparallele)()=0;
 //void (*end_parallele)()=0;
-
+#endif
 // Add dec 2014
 #include <vector>
 typedef void (*AtEnd)();
@@ -331,7 +359,7 @@ void ff_atend(AtEnd f)
 {
     AtFFEnd.push_back(f);
 }
-
+#ifndef kame
 #include <csignal>
 void signalCPUHandler( int signum ) {
     ff_finalize();
@@ -3629,14 +3657,16 @@ static void SetcppIo()
 #endif
    ios::sync_with_stdio();
 }
-
+#endif
 // pour l'environement.
 extern const char *  prognamearg;
 extern  bool echo_edp;
 
+extern int getprog(char *fn, int argc, char **argv);
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
-
-int mainffx (int  argc, char **argv)
+extern Polymorphic * TheOperators;
+extern void init_lgmesh();
+int mainff (int  argc, char **argv)
 {
 #ifndef _WIN32
   	signal(SIGXCPU, signalCPUHandler);
@@ -3648,16 +3678,21 @@ int mainffx (int  argc, char **argv)
   if(mpirank !=0) verbosity=0;
 
   // ALH - 14/10/8 - This breaks FFCS output redirection
-#ifndef ENABLE_FFCS
+#ifndef kame
+  //#ifndef ENABLE_FFCS
   SetcppIo();
+  //#endif
 #endif
 
+#ifndef kame
   GetEnvironment(); // [[file:~/ff/src/fflib/environment.cpp::GetEnvironment]]
 //    vvold=verbosity;
   if(mpirank !=0) verbosity=0;
   //  size_t lg000;
  // ShowAlloc("begin main ",lg000);
+#endif
   int retvalue=0;
+#ifndef kame
    ff_atend(fingraphique);
    if (initparallele)initparallele(argc,argv);
 
@@ -3668,21 +3703,23 @@ int mainffx (int  argc, char **argv)
 //  local=&xlocal;
   lexdebug = false;
   lgdebug = false;
-
+#endif
   char *  cc= new char [1024];
   //  istream * ccin=0;
   if ( ! (getprog(cc,argc,argv) >0)  ) // [[file:~/ff/src/Graphics/getprog-unix.hpp::getprog]]
     {
+#ifndef kame
       cout << "-- FreeFem++ v" << StrVersionNumber() << " (error parameter!)\n"  ;
       if(ThePlotStream) {ffapi::ff_pclose(ThePlotStream); ThePlotStream=0;}
-      return 1;
+#endif
+	  return 1;
     }
 
-  if(verbosity && (mpirank==0)) {
-      cout << "-- FreeFem++ v" << StrVersionNumber() << endl;
-      cout << "   file : " << cc ;
-      if(verbosity>1) cout << " " << " verbosity= " << verbosity ;
-      cout  << endl;
+  if (verbosity && (mpirank == 0)) {
+	  cout << "-- FreeFem++ v" << "?.?"/* StrVersionNumber()*/ << endl;
+	  cout << "   file : " << cc;
+	  if (verbosity>1) cout << " " << " verbosity= " << verbosity;
+	  cout << endl;
   }
 
     KN<String> karg(argc);
@@ -3703,6 +3740,7 @@ int mainffx (int  argc, char **argv)
   else
     zzzfff = new  mylex(cin,cout) ;
 */
+
 //  les motsclefs
    zzzfff->Add("include",INCLUDE);
    zzzfff->Add("load",LOAD);
@@ -3720,11 +3758,14 @@ int mainffx (int  argc, char **argv)
    zzzfff->Add("try",TRY);
    zzzfff->Add("catch",CATCH);
    zzzfff->Add("throw",THROW);
+
 //   Init_map_type();
    if(verbosity>2 || ( (mpirank==0) && verbosity ) ) cout << " Load: ";
    callInitsFunct() ; //  init for dynamique libs ...
+
   // init_lgfem() ;
    init_lgmesh() ;
+#ifndef kame
    init_lgmesh3() ;
    init_algo();
 
@@ -3754,6 +3795,7 @@ int mainffx (int  argc, char **argv)
   Destroylex( zzzfff);
   delete [] cc;
    // ClearMem();
+#endif
   return retvalue;
 }
 
