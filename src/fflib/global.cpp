@@ -153,11 +153,11 @@ Map_type_of_map map_pair_of_type ; //  to store te type
 mylex *zzzfff;
 #ifndef kame
 bool lexdebug;
-
+#endif
 /// <<plglval>> see [[file:../lglib/lg.ypp::YYSTYPE]] and [[file:../lglib/lg.ypp::yylval]]
 #include "lg.tab.hpp"
 YYSTYPE *plglval;
-#endif
+
  int TheCurrentLine=-1; // unset: by default
 
 //int NbNewVarWithDel =0; // add FH sep 2016 (bof bof global variable not got but hard to set in E_F0 or C_F0
@@ -175,11 +175,11 @@ YYSTYPE *plglval;
 TableOfIdentifier Global;
 
  long E_Border::Count =0;
-
+#endif
 /// <<tables_of_identifier>> declared at [[file:AFunction.hpp::tables_of_identifier]]
 typedef list<TableOfIdentifier *> ListOfTOfId;
 ListOfTOfId tables_of_identifier;
-
+#ifndef kame
 const int AC_F0::MaxSize=1024; // maximal number of parameters
 
 

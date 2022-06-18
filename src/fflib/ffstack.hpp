@@ -53,8 +53,9 @@ const int ExprPtrs = 4;
 const int NbPtrs = 5;
 
 
-
+#endif
 const int BeginOffset = 6;
+#ifndef kame
 //  0 : MeshPoint pointeur 
 //  1 : ParamPtrOffset
 //  2 : Truc les matrice elementaire

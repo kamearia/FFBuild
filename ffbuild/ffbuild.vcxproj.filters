@@ -182,6 +182,9 @@
     <ClCompile Include="..\src\bamglib\Meshio.cpp">
       <Filter>ソース ファイル\src\bamglib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\femlib\CheckPtr.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

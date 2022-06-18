@@ -27,7 +27,7 @@
  void* operator new (std::size_t size, const std::nothrow_t& nothrow_value) noexcept;
  p
  */
-
+#include "stdafx.h"
 #include <cstdlib>
 
 static long verbosity;
@@ -49,6 +49,7 @@ static long StorageUsed()
 
 }
 #ifndef NCHECKPTR
+
 #define DEBUGUNALLOC 1
 // -*- Mode : c++ -*-
 //
@@ -102,7 +103,6 @@ void exitalloc(int i)
 // TO SHOW ALL ALLOCATION
 // #define SHOWALLOC
 //  TO DEBUG ALL UN DELETE POINETUR
-
 
 int UnShowAlloc =1;
 

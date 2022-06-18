@@ -268,7 +268,9 @@ class basicForEachType : public CodeAlloc {
     { f << '<' << e.name() << '>' ;return f;}
     void Show(ostream & f) const ;
      const char * name() const  { return this!=tnull  ?  ktype->name() :"NULL" ;}
-     virtual bool CastingFrom(const basicForEachType * t) const ;
+#ifndef kame
+	 virtual bool CastingFrom(const basicForEachType * t) const ;
+#endif
      //  modif FH -----  A TESTER  // 
      virtual bool SametypeRight(const basicForEachType * t) const {return  (this == t) || (t == un_ptr_type) || (t == type_C_F0);}
 //     virtual Type_Expr init(const Type_Expr & te) const { return Type_Expr(0,0);}
@@ -1720,7 +1722,7 @@ class E_BorderN :public E_F0mps { public:
    int cas;// 0 long , 1, KN_ , 2 : Array // FH april 14 ..
    Expression  n;
    const E_BorderN * next;
-    
+#ifndef kame    
     static   int Cas(C_F0  nn)
     {
         if( atype<long>()->CastingFrom(nn.left())) return 0;
@@ -1736,6 +1738,7 @@ class E_BorderN :public E_F0mps { public:
         else CompileError(" Number of element of a border ( longn , int array, [ ] array ");
         return -1; // bug
     }
+#endif
     E_BorderN(const E_Border *  bb, C_F0  nn,const E_BorderN * nx=0) ;
     E_BorderN(const E_BorderN & bb,const E_BorderN * nx)
     : b(bb.b),cas(bb.cas),n(bb.n),next(nx)
@@ -1982,10 +1985,10 @@ inline  C_F0 TableOfIdentifier::NewID(aType r,Key k, C_F0 & c,const ListOfId & l
    { return r->Initialization(New(k,r->SetParam(c,&l,top),del));}
    
 /// <<tables_of_identifier>> allocated at [[file:global.cpp::tables_of_identifier]]
-
-typedef list<TableOfIdentifier *> ListOfTOfId;    
+#endif
+typedef list<TableOfIdentifier *> ListOfTOfId;   
 extern list<TableOfIdentifier *> tables_of_identifier;
-
+#ifndef kame
 /// [[file:AFunction2.cpp::Find]]
 
 C_F0 Find(const char * name);
@@ -2129,7 +2132,7 @@ aType TypeArray(aType c,aType b,aType a);
 aType TypeTemplate(aType,aType);
 #endif
 void Init_map_type();
-#ifndef kame
+
 
 /// <<Block>>
 
@@ -2140,7 +2143,7 @@ class Block { //
    size_t  top,topmax;
    TableOfIdentifier table;
    ListOfTOfId::iterator itabl;
- 
+
 public:
    //  list of variable
    size_t OffSet(size_t ssize) {
@@ -2205,6 +2208,7 @@ template<class T>
    //vectorOfInst * newclose(Block *& c) ;// sep 2016 FH
     
  static  CC_F0  close(Block *& c,C_F0  );
+#ifndef kame
  static  CC_F0  close(Block *& c,CListOfInst  ); /* {
      tables_of_identifier.erase(itabl);      
      c=fatherblock;
@@ -2218,9 +2222,10 @@ template<class T>
    C_F0 Find(const char * k) const  {return table.Find(k);}
    ~Block(); //{}
     int nIdWithDelete() const { return table.nIdWithDelete;}
+#endif
 }; 
 
-
+#ifndef kame
 
 /// <<OneOperator1>> To know the meaning of OneOperator name extensions, see [[OneOperator]]. The template arguments to
 /// OneOperator classes are identical to the types of the arguments of the C++ function that is called from the
@@ -3109,7 +3114,7 @@ class  OneOpCast: public OneOperator {
     OneOpCast(CastFunc  ff): OneOperator(ff->r,ff->a),f(ff){}
 };
 */
-#endif
+
 // 
 
 inline  bool  basicForEachType::CastingFrom(aType t) const  {
@@ -3118,7 +3123,7 @@ inline  bool  basicForEachType::CastingFrom(aType t) const  {
      else if( t ==  type_C_F0 ) return true; // FH do work .... 09 / 2012 (use of ellispe ...)
      return casting->FindSameR(ArrayOfaType(t,false)); // uses [[casting]] [[file:AFunction2.cpp::FindSameR]]
   }
-#ifndef kame
+
 inline  void CerrCast(const pair<const basicForEachType*,const E_F1_funcT_Type *> & i)
 { 
    cerr << "\t" <<  *i.first << ":" << i.second << endl;

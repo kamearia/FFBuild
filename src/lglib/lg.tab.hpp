@@ -149,9 +149,11 @@
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-#ifndef kame
 typedef union YYSTYPE
+
+#ifndef kame
 #line 163 "lg.ypp"
+#endif
 {
  double dnum;
 
@@ -161,7 +163,7 @@ typedef union YYSTYPE
  /* <<YYSTYPE_str>> */
  char * str;
  char oper[8];
-
+#ifndef kame
  /* <<YYSTYPE_cexp>> [[file:../fflib/AFunction.hpp::CC_F0]] */
  CC_F0 cexp;
 
@@ -175,7 +177,7 @@ typedef union YYSTYPE
 
  /* <<YYSTYPE_cinst>> refers to [[file:~/ff/src/fflib/AFunction.hpp::CListOfInst]] */
  CListOfInst cinst;
-
+#endif
  Block * block;
 
  /* <<YYSTYPE_clist_id>> [[file:~/ff/src/fflib/AFunction.hpp::ListOfId]] */
@@ -185,14 +187,16 @@ typedef union YYSTYPE
 
  vectorOfInst * endb;
 }
+#ifndef kame
 /* Line 1529 of yacc.c.  */
 #line 189 "lg.tab.hpp"
+#endif
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
-#endif
+
 #ifndef kame
 extern YYSTYPE lglval;
 #endif

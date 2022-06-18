@@ -466,10 +466,12 @@ basicForEachType::basicForEachType(const type_info  & k,
  TableOfIdentifier:: ~TableOfIdentifier() {}
 #ifndef kame
 
-Block::Block(Block * f):fatherblock(f),top(f?f->top:BeginOffset*sizeof(void*)),topmax(top)
+#endif
+ Block::Block(Block * f):fatherblock(f),top(f?f->top:BeginOffset*sizeof(void*)),topmax(top)
     {
       itabl=tables_of_identifier.insert(tables_of_identifier.begin(),&table);
     }
+#ifndef kame
 Block::~Block(){}
 
    vectorOfInst * Block::snewclose(Block *& c) {
@@ -502,7 +504,7 @@ CC_F0  Block::close(Block *& c,C_F0  ins)
      rr=inst;
      return rr;
  }
-
+#endif
    Block * Block::open(Block *& cb)
    {
     Block *  ncb = new Block(cb);
@@ -511,7 +513,7 @@ CC_F0  Block::close(Block *& c,C_F0  ins)
     return cb = ncb;
    }
 
-
+#ifndef kame
 const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
   {
     if( this != &Global) {
@@ -587,11 +589,13 @@ bool ArrayOfaType::WithOutCast( const ArrayOfaType & a) const
 
 bool ArrayOfaType::WithCast( const ArrayOfaType & a,int nbcast) const
  {
+#ifndef kame
    if (  ( !ellipse && (a.n != n))  || (ellipse && n > a.n) ) return false;
      for (int i=0;i<n;i++)
      if ( a.t[i]->SametypeRight(t[i])) ;
      else if (! t[i]->CastingFrom(a.t[i])) return false;
          else if ( --nbcast <0) return false;
+#endif
    return true;
  }
 

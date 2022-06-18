@@ -128,7 +128,9 @@ C_F0  fespacetype;
 
 bool fespacecomplex;
 int fespacedim;
+#endif
 extern int UnShowAlloc;
+#ifndef kame
 int ShowAlloc(const char *s,size_t &);
 // <<yylex>> Connection from grammar to lexer object zzzfff [[file:../fflib/lex.hpp::zzzfff]] of class mylex
 // [[file:../fflib/lex.hpp::class mylex]]. Method mylex::scan() is implemented at [[file:../fflib/lex.cpp::mylex_scan]]
