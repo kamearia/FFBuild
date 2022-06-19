@@ -66,8 +66,8 @@
 /* Substitute the variable and function names.  */
 #ifndef kame
 #define yyparse lgparse
-#endif
 #define yylex   lglex
+#endif
 #define yyerror lgerror
 #define yylval  lglval
 #define yychar  lgchar
@@ -330,8 +330,9 @@ extern int UnShowAlloc;
 int ShowAlloc(const char *s,size_t &);
 // <<yylex>> Connection from grammar to lexer object zzzfff [[file:../fflib/lex.hpp::zzzfff]] of class mylex
 // [[file:../fflib/lex.hpp::class mylex]]. Method mylex::scan() is implemented at [[file:../fflib/lex.cpp::mylex_scan]]
-
+#endif
 inline int yylex()  {return zzzfff->scan();}
+#ifndef kame
 inline int lineno() {return zzzfff->lineno();}
 #endif
 extern bool withrgraphique;
@@ -1045,7 +1046,7 @@ static const yytype_int16 yydefgoto[] =
      204,    45,   440,   362,   181,   182,    46,    47,    48,    49,
       50,   168,   156,   169,    64,    51,    52,    53,    54
 };
-
+#endif
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
 #define YYPACT_NINF -253
@@ -1100,7 +1101,7 @@ static const yytype_int16 yypact[] =
      560,  -253,  -253,  -253,   586,  -253,   561,   565,  -253,  -253,
      567,  -253,   568,  -253,   648,  -253,  -253
 };
-
+#ifndef kame
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
@@ -1499,7 +1500,7 @@ while (YYID (0))
 # endif
 #endif
 
-
+#endif
 /* YYLEX -- calling `yylex' with the right arguments.  */
 
 #ifdef YYLEX_PARAM
@@ -1508,7 +1509,7 @@ while (YYID (0))
 # define YYLEX yylex ()
 #endif
 
-#endif
+
 /* Enable debugging if requested.  */
 #if YYDEBUG
 #ifndef kame
@@ -2143,7 +2144,7 @@ yysetstate:
 	}
 
 	YYDPRINTF ((stderr, "Entering state %d\n", yystate));
-#ifndef kame
+
 	goto yybackup;
 
 /*-----------.
@@ -2156,6 +2157,7 @@ yybackup:
 
   /* First try to decide what to do without reference to look-ahead token.  */
 	yyn = yypact[yystate];
+
 	if (yyn == YYPACT_NINF)
 		goto yydefault;
 
@@ -2167,7 +2169,7 @@ yybackup:
 		YYDPRINTF ((stderr, "Reading a token: "));
 		yychar = YYLEX;
     }
-
+#ifndef kame
 	if (yychar <= YYEOF)
     {
 		yychar = yytoken = YYEOF;
@@ -2217,7 +2219,9 @@ yybackup:
 /*-----------------------------------------------------------.
 | yydefault -- do the default action for the current state.  |
 `-----------------------------------------------------------*/
+#endif
 yydefault:
+#ifndef kame
 	yyn = yydefact[yystate];
 	if (yyn == 0)
 		goto yyerrlab;

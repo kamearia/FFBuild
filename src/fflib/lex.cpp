@@ -248,8 +248,10 @@ int mylex::basescanprint(int lvl)
     if (! lexdebug && echo && lvl==0 ) print(cout);
     return r;
 }
+#endif
 int mylex::basescan()
 {
+
     //  extern long mpirank;
 
     int c;
@@ -257,6 +259,7 @@ int mylex::basescan()
     buf[1]=0;
     buf[2]=0;
     buf[3]=0;
+#ifndef kame
 debut:
     TheCurrentLine=linenumber;
     // modif FH
@@ -468,7 +471,11 @@ debut:
         if(lexdebug)  cout << "Special '" <<  plglval->oper << "' " << ret << " ";
     }
     typetoken=ret;
+
     return ret;
+#else
+	return 1;
+#endif
 }
 
 // <<mylex_scan1>>
@@ -479,6 +486,7 @@ int mylex::scan1()
 // bool echo = mpirank == 0;
 
     int ret= basescan(); // [[mylex_basescan]]
+#ifndef kame
     if(debugmacro)  cout << " scan1 " << ret << " " << token() << " " << ID << endl;
     while ( ret == ID  && (
                 SetMacro(ret) // correction mars 2014 FH
@@ -487,7 +495,7 @@ int mylex::scan1()
             )
           )
         ; // correction mars 2014 FH
-
+#endif
     return ret;
 }
 
@@ -496,7 +504,7 @@ int mylex::scan(int lvl)
 {
 
     int ret= scan1();
-
+#ifndef kame
     // ID defined at [[file:../lglib/lg.ypp::ID]] and detected at [[found_an_identifier]]
     if ( ret == ID)
     {
@@ -523,10 +531,10 @@ int mylex::scan(int lvl)
     }
 
     if (! lexdebug && echo && lvl==0 ) print(cout);
-
+#endif
     return ret;
 }
-
+#ifndef kame
 string mylex::token() const
 {
     int i=-1;
