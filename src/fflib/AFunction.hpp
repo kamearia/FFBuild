@@ -776,7 +776,7 @@ class ForTypeAnyType:  public basicForEachType{public:
       bool CastingFrom(const basicForEachType * ) const {return true;}
 	  C_F0 CastTo(const C_F0 & e) const {return e;}     
 };
-#ifndef kame
+
 
 //  for  cast and get value associed to a pointer  
 
@@ -784,11 +784,11 @@ class ForTypeAnyType:  public basicForEachType{public:
 template<class A,class B> 
   AnyType Cast(Stack,const AnyType &b) { 
     return   SetAny<A>(static_cast<A>(GetAny<B>(b)));}
-    
+ 
 template<class A,class B,A F(const  B &)> 
   AnyType FCast(Stack s,const AnyType &b) { 
     return   SetAny<A>(Add2StackOfPtr2Free(s,F(GetAny<B>(b))));}
-#endif    
+   
 template<class A> 
   AnyType UnRef(Stack,const AnyType &a) { 
     return   SetAny<A>(*PGetAny<A>(a));}
@@ -796,15 +796,13 @@ template<class A>
 template<class A,class B> 
   AnyType UnRef(Stack,const AnyType &a) { 
     return   SetAny<A>(*GetAny<B>(a));}
-#ifndef kame    
-    
+     
 template<class A> 
   AnyType UnRefCopyPtr(Stack s,const AnyType &a) { 
     A ** ppa=PGetAny<A*>(a);
     A * pc = *ppa ? new A(**ppa) : nullptr;
     return   SetPtrAny(Add2StackOfPtr2Free(s,pc)) ;}
-       
-#endif   
+        
 template<class A> AnyType Initialize(Stack,const AnyType &x){
   A * a=PGetAny<A>(x);
   A *b=new A;// 
@@ -1286,13 +1284,13 @@ template<class R> class GValue:public E_F0
   bool EvaluableWithOutStack() const {return true;} // 
   
 };
-
+#endif
 //  a constante value 
 template<class R> int ccompare(const R & a,const R& b){ return a==b ?  0 :( a<b ? -1 : +1);}
 template<class R> int ccompare(const complex<R> & a,const complex<R>& b){ 
   int c=ccompare(a.real(),b.real()); 
   return c==0 ? ccompare(a.imag(),b.imag()): c ;}
-  
+
 template<class R> class EConstant:public E_F0
  { 
   const R v;
@@ -1311,7 +1309,7 @@ template<class R> class EConstant:public E_F0
        } 
    ostream & dump(ostream &f) const { f << " ((" <<typeid(R).name()  << ") " << v << ") " ;return f;}  
 };
-
+#ifndef kame
 
 
 
@@ -1377,14 +1375,14 @@ template<class R> class PPValue:public E_F0
   PPValue(R ** pp):p(pp) {}
 };
 
-
+#endif
 template<class R>
 Type_Expr CPValue(R & v)
  {
    throwassert(map_type[typeid(R*).name()]);
-  return make_pair(map_type[typeid(R*).name()],new PValue<R>(&v));
+  return std::make_pair(map_type[typeid(R*).name()],new PValue<R>(&v));
  }
-
+#ifndef kame
 template<class R>
 Type_Expr dCPValue(R * v)
 {
@@ -1397,7 +1395,7 @@ Type_Expr CPPValue(R *& v)
    throwassert(map_type[typeid(R*).name()]);
   return make_pair(map_type[typeid(R*).name()],new PPValue<R>(&v));
  }
-
+#endif
 // <<CConstant>> returns [[Type_Expr]]
 template<class R >
 Type_Expr CConstant(const R & v)
@@ -1405,7 +1403,7 @@ Type_Expr CConstant(const R & v)
   throwassert(map_type[typeid(R).name()]);
   return make_pair(map_type[typeid(R).name()],new  EConstant<R>(v));
  }
-
+#ifndef kame
 /// <<CC_F0>>, same as [[C_F0]] but without constructor/destructor to be used in union [[file:../lglib/lg.ypp::YYSTYPE]]
 class vectorOfInst;
 class CC_F0 {
@@ -1510,11 +1508,9 @@ AnyType TTry(Stack s ,E_F0 * i0,E_F0 * i1,E_F0 * i2,E_F0 * notuse);
 
 
 /// <<Global>> Contains all FreeFem++ language keywords. Definition in [[file:global.cpp::Global]], uses [[TableOfIdentifier]]
-
+#endif
 extern TableOfIdentifier Global;
 
-
-#endif
 template<class T> 
 inline C_F0 to(const C_F0 & a) { return map_type[typeid(T).name()]->CastTo(a);}
 #ifndef kame

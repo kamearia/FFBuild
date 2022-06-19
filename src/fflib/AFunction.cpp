@@ -66,6 +66,7 @@ double myjn(long n, double x){ return jn((int) n,x);}
 // F. Hecht fev. 2015 ...
 #endif
 #include "AFunction.hpp"
+#include "InitFunct.hpp"
 extern Polymorphic * TheOperators,
 					*TheRightOperators;//=new Polymorphic();
 extern basicForEachType *  typevarreal;
@@ -126,9 +127,9 @@ long storagetotal()
 // end add mach 2014 ...
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
-
+#endif
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
-
+#ifndef kame
 extern int TheCurrentLine; // unset: by default
 extern long mpisize,mpirank;
 
@@ -213,7 +214,7 @@ class  OneOperator_border : public OneOperator {public:
             return  new E_Border(a);}
     OneOperator_border(): OneOperator(atype<const E_Border *>(),true) {}
 };
-
+#endif
 class  OneOperator_border_label : public OneOperator {public:
   class Op : public E_F0 {public:
    const  E_Border *b;
@@ -225,7 +226,7 @@ class  OneOperator_border_label : public OneOperator {public:
         return new Op(b);}
     OneOperator_border_label(): OneOperator(atype<long>(),atype<const E_Border *>()) {}
 };
-
+#ifndef kame
 template<class RR> RR LIncremantation(RR* a){ return ++(*a);}
 template<class RR> RR RIncremantation(RR* a){ return (*a)++;}
 template<class RR> RR LDecremantation(RR* a){ return --(*a);}
@@ -1090,7 +1091,7 @@ void Init_map_type()
     Dcl_Type<ios::openmode>();
 
     // <<known_variable_types>> les types des variables
-#ifndef kame
+
   zzzfff->Add("real",typevarreal=atype<double*>());
   zzzfff->Add("int",atype<long*>());
   zzzfff->Add("complex",typevarcomplex=atype<Complex*>());
@@ -1099,8 +1100,8 @@ void Init_map_type()
   zzzfff->Add("ifstream",atype<istream**>());
   zzzfff->Add("ofstream",atype<ostream**>());
   zzzfff->AddF("func",atype<C_F0>());
-#endif
-#ifndef kame
+
+
 
 //  end of know types
 
@@ -1119,7 +1120,6 @@ void Init_map_type()
        new E_F1_funcT<long,ostream_seekp>(Cast<long,ostream_seekp>),
        new E_F1_funcT<long,istream_seekg>(Cast<long,istream_seekg>)
        );
-
 
      map_type[typeid(double).name()]->AddCast(
        new E_F1_funcT<double,double*>(UnRef<double>),
@@ -1148,7 +1148,7 @@ void Init_map_type()
        );
 
      map_type[typeid(long).name()]->AddCast(new OneOperator_border_label);
-
+#ifndef kame
      Global.New("verbosity",CPValue<long>(verbosity));
 
      Global.New("searchMethod",CPValue<long>(searchMethod)); //pichon
@@ -1156,7 +1156,6 @@ void Init_map_type()
      Global.New("lockOrientation",CPValue<bool>(lockOrientation));
      extern long newconvect3;// def in global.cpp
      Global.New("newconvect",CPValue<long>(newconvect3)); //pichon
-
      // <<cout>> uses [[file:AFunction.hpp::CConstant]]
      Global.New("cout",CConstant<ostream*>(&cout));
 
@@ -1741,10 +1740,10 @@ void Init_map_type()
      ShowAlloc("ClearMem: end" , lg);
 
  }
-
+#endif
 // <<addingInitFunct>>
 static addingInitFunct TheaddingInitFunct(-10000,Init_map_type);
-
+#ifndef kame
 C_F0  opVI::code2(const basicAC_F0 &args) const
 {
     Expression p=args[1];

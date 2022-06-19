@@ -169,11 +169,11 @@ YYSTYPE *plglval;
 #endif
  Polymorphic * TheOperators=0, //=new Polymorphic(),
              * TheRightOperators=0;//=new Polymorphic();
-#ifndef kame
+
 /// <<Global>> Contains all FreeFem++ language keywords. Declaration in [[file:AFunction.hpp::Global]]
 
 TableOfIdentifier Global;
-
+#ifndef kame
  long E_Border::Count =0;
 #endif
 /// <<tables_of_identifier>> declared at [[file:AFunction.hpp::tables_of_identifier]]
