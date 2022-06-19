@@ -41,6 +41,7 @@ using namespace std;
 inline void Check_Kn(const char * str,const char * file,int line)
 {
  cerr << "CHECK_KN: " << str << " in file: " << file << ", line " << line <<endl;
+
 #ifdef VersionFreeFem
     ffassert(0);
 #else

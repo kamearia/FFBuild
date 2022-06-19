@@ -28,7 +28,7 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #pragma once
-#ifndef kame
+
 // with New version of macro expansion more simple and more stable 
 // FH jan 2005
 
@@ -36,7 +36,6 @@
 extern bool lexdebug;
 extern long mpisize,mpirank;
 
-#endif
 
 #include "AnyType.hpp"
 #include "CodeAlloc.hpp"

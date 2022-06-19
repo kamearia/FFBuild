@@ -163,18 +163,18 @@ typedef union YYSTYPE
  /* <<YYSTYPE_str>> */
  char * str;
  char oper[8];
-#ifndef kame
+
  /* <<YYSTYPE_cexp>> [[file:../fflib/AFunction.hpp::CC_F0]] */
  CC_F0 cexp;
-
+#ifndef kame
  Routine   *routine;
-
+#endif
  /* <<YYSTYPE_args>> [[file:~/ff/src/fflib/AFunction.hpp::AC_F0]] */
  AC_F0 args;
 
  /* <<YYSTYPE_type>> refers to [[file:~/ff/src/fflib/AnyType.hpp::aType]] */
  aType type;
-
+#ifndef kame
  /* <<YYSTYPE_cinst>> refers to [[file:~/ff/src/fflib/AFunction.hpp::CListOfInst]] */
  CListOfInst cinst;
 #endif

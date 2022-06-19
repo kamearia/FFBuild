@@ -36,6 +36,7 @@ using namespace std;
 double VersionNumber();
 string StrVersionNumber();
 
+#define VersionFreeFem 1.1
 double VersionNumber() {
 	return VersionFreeFem;
 }

@@ -79,12 +79,12 @@ inline double CPUtime(){
 }
 #endif
 extern long verbosity;  // level off printing
-#ifndef kame
 extern long searchMethod; //pichon
+#ifndef kame
 extern bool  withrgraphique;
+#endif
 extern bool lockOrientation; // lock the element orientation
 
-#endif
 using namespace std;
 #include "ffstack.hpp"
 #include "AnyType.hpp"
@@ -112,9 +112,7 @@ class basicAC_F0;
 typedef complex<double> Complex;
 /// <<Type_Expr>> [[file:AnyType.hpp::aType]] [[E_F0]]
 typedef pair<aType,  E_F0  *>  Type_Expr ;// to store the type and the expression  29042005 FH
-#ifndef kame
  int  FindType(const char * name) ; 
-#endif
  void lgerror (const char* s) ;  
  extern void CompileError(string msg="",aType r=0);
 
@@ -711,7 +709,7 @@ private:
   C_F0( Expression ff ): f(ff),r(0) {}
 };
 
-#ifndef kame
+
 
 // for bison [[CListOfInst]]
 class CListOfInst;
@@ -720,7 +718,7 @@ class CListOfInst;
  //  f => t||f
  //  t => t
  //  (a =>b)  <=>  (!a || b )
-#endif 
+ 
 //  warning ------------------
 class ForTypeVoid:  public basicForEachType{public:
     ForTypeVoid():basicForEachType(typeid(void),0,0,0,0,0) {}
@@ -1346,7 +1344,7 @@ class LocalVariablePlus : public LocalVariable { public:
   LocalVariablePlus(size_t o,aType tt,const  U & d) 
    : LocalVariable(o,tt),data(d) {}
 };
-
+#endif
 //  global variable bof bof 
 template<class T> class PValue:public E_F0
  { 
@@ -1355,7 +1353,7 @@ template<class T> class PValue:public E_F0
   AnyType operator()(Stack  ) const { return p;}
   PValue(T * pp):p(pp) {}
 };
-
+#ifndef kame
 
 //  global variable bof bof
 //  value througth  a pointeur   add F.H  july 2014
@@ -1403,7 +1401,7 @@ Type_Expr CConstant(const R & v)
   throwassert(map_type[typeid(R).name()]);
   return make_pair(map_type[typeid(R).name()],new  EConstant<R>(v));
  }
-#ifndef kame
+
 /// <<CC_F0>>, same as [[C_F0]] but without constructor/destructor to be used in union [[file:../lglib/lg.ypp::YYSTYPE]]
 class vectorOfInst;
 class CC_F0 {
@@ -1508,7 +1506,7 @@ AnyType TTry(Stack s ,E_F0 * i0,E_F0 * i1,E_F0 * i2,E_F0 * notuse);
 
 
 /// <<Global>> Contains all FreeFem++ language keywords. Definition in [[file:global.cpp::Global]], uses [[TableOfIdentifier]]
-#endif
+
 extern TableOfIdentifier Global;
 
 template<class T> 
@@ -1885,8 +1883,7 @@ inline ArrayOfaType::ArrayOfaType(const basicAC_F0 & aa) : n(aa.size()),t(n ? (n
    for (int i=0;i<n;i++) t[i]=aa[i].left();}
   
 inline ArrayOfaType::ArrayOfaType(const ArrayOfaType & aa) : n(aa.n),t(n<=4?tt:new aType[n]),ellipse(aa.ellipse) { 
-   for (int i=0;i<n;i++) t[i]=aa.t[i];}   
-#ifndef kame 
+   for (int i=0;i<n;i++) t[i]=aa.t[i];}    
 
 inline C_F0 TableOfIdentifier::Find(const char * name) const  {
     const_iterator i=m.find(name); 
@@ -1902,7 +1899,7 @@ inline C_F0 TableOfIdentifier::Find(const char * name,const basicAC_F0 & args) c
 //  les initialisation   x = y   ( passe par l'operateur binaire <-  dans TheOperators
 //   les initialisation   x(y)   ( passe par l'operateur unaire <-  du type de x
 //   -------
-#endif
+
 inline size_t align8(size_t &off) 
 { 
   size_t o= off %8 ;
@@ -1984,11 +1981,11 @@ inline  C_F0 TableOfIdentifier::NewID(aType r,Key k, C_F0 & c,const ListOfId & l
 #endif
 typedef list<TableOfIdentifier *> ListOfTOfId;   
 extern list<TableOfIdentifier *> tables_of_identifier;
-#ifndef kame
+
 /// [[file:AFunction2.cpp::Find]]
 
 C_F0 Find(const char * name);
-  
+#ifndef kame 
 inline  C_F0 basicForEachType::Find(const char * k) const
   {  C_F0 r( ti.Find(k));
      //if (r.Empty()) {cerr << " no member " <<k << " in type " << name() << endl; CompileError("  ");}
@@ -2518,12 +2515,16 @@ public:
     OneOperator(map_type[typeid(R).name()],map_type[typeid(A).name()],map_type[typeid(B).name()])
     {pref = 100;}
 };
+
+#endif
+#ifndef kame
 template<typename C,class MI=OneBinaryOperatorMI,class MIx=evalE_F2 >
 class  OneBinaryOperator : public OneOperator{
 	typedef  typename C::result_type R;
 	typedef typename C::first_argument_type A;
 	typedef typename C::second_argument_type B;
 	aType t0,t1; // type of template modif FH mars 2006 
+
 	class Op : public E_F0 {
 		typedef typename C::first_argument_type A;
 		typedef typename C::second_argument_type B;
@@ -2534,40 +2535,41 @@ class  OneBinaryOperator : public OneOperator{
 			{return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));}
     //   optim  eval MI ...  juin 2007 FH ...
 		AnyType eval(Stack s, bool & meshidenp)  const 
-    {return  MIx::eval(s,this,a,b,meshidenp);}
+			{return  MIx::eval(s,this,a,b,meshidenp);}
     // fi optime 
-    Op(Expression aa,Expression bb) : a(aa),b(bb) {} 
-    bool MeshIndependent() const { return MI::MeshIndependent(a,b);}
-    bool ReadOnly() const { return MI::ReadOnly()  ;} 
-    int Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) 
-    {
-      int rr = find(m);
-      if (rr) return rr;          
-      int Opa = a->Optimize(l,m,n);          
-      int Opb =b->Optimize(l,m,n);
-      return insert(new Opt(*this,Opa,Opb),l,m,n);       
-    } 
-    int compare (const E_F0 *t) const { 
-      int rr;
-      const  Op * tt=dynamic_cast<const Op *>(t);
-      if (tt ) rr =   clexico(a->compare(tt->a),b->compare(tt->b));
-      else rr = E_F0::compare(t);
+		Op(Expression aa,Expression bb) : a(aa),b(bb) {} 
+		bool MeshIndependent() const { return MI::MeshIndependent(a,b);}
+		bool ReadOnly() const { return MI::ReadOnly()  ;} 
+		int Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) 
+		{
+			int rr = find(m);
+			if (rr) return rr;          
+			int Opa = a->Optimize(l,m,n);          
+			int Opb =b->Optimize(l,m,n);
+			return insert(new Opt(*this,Opa,Opb),l,m,n);       
+		} 
+		int compare (const E_F0 *t) const { 
+			int rr;
+			const  Op * tt=dynamic_cast<const Op *>(t);
+			if (tt ) rr =   clexico(a->compare(tt->a),b->compare(tt->b));
+			else rr = E_F0::compare(t);
       // cout << "cmp E_F0_Func1 " << rr << endl;
-      return rr;
-    } // to give a order in instuction 
+			return rr;
+		} // to give a order in instuction 
     // int Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) const;  // build optimisation
     
-    virtual ostream & dump(ostream &f) const  { 
-      f << "Op<" << typeid(C).name() 
-	<< ">   \n\t\t\t( a= "<< *a<< ")  \n\t\t\t(b= "<< *b << ") "  ;
-      return f; }
-  };
+		virtual ostream & dump(ostream &f) const  { 
+			f << "Op<" << typeid(C).name() 
+			<< ">   \n\t\t\t( a= "<< *a<< ")  \n\t\t\t(b= "<< *b << ") "  ;
+			return f; }
+	};
+
     // build optimisation
-  class Opt: public Op  { public :
-    size_t ia,ib;  
-    Opt(const  Op &t,size_t iaa,size_t ibb) 
-      : Op(t) ,
-	ia(iaa),ib(ibb) {}
+	class Opt: public Op  { public :
+		size_t ia,ib;  
+		Opt(const  Op &t,size_t iaa,size_t ibb) 
+			: Op(t) ,
+			ia(iaa),ib(ibb) {}
 /*
     AnyType operator()(Stack s)  const 
     {
@@ -2583,28 +2585,30 @@ class  OneBinaryOperator : public OneOperator{
   }; 
 */ //KAME
   //   aType r; //  return type 
-public: 
-  E_F0 * code(const basicAC_F0 & args) const 
-  { //cout << "A op B \n" ;
-    if ( args.named_parameter && !args.named_parameter->empty()  ) 
-	CompileError( " They are used Named parameter ");
+	public: 
+		E_F0 * code(const basicAC_F0 & args) const 
+		{ //cout << "A op B \n" ;
+			if ( args.named_parameter && !args.named_parameter->empty()  ) 
+			CompileError( " They are used Named parameter ");
  
-    return  new Op(t0->CastTo(args[0]),t1->CastTo(args[1]));} 
-  OneBinaryOperator(): 
-    OneOperator(map_type[typeid(R).name()],map_type[typeid(A).name()],map_type[typeid(B).name()]), 
-    t0(t[0]),
-    t1(t[1]) 
-  {pref = SameType<A,B>::OK ;}
+			return  new Op(t0->CastTo(args[0]),t1->CastTo(args[1]));} 
+		OneBinaryOperator(): 
+		OneOperator(map_type[typeid(R).name()],map_type[typeid(A).name()],map_type[typeid(B).name()]), 
+			t0(t[0]),
+			t1(t[1]) 
+		{pref = SameType<A,B>::OK ;}
   
-  OneBinaryOperator(aType tt0,aType tt1):  
-    OneOperator(map_type[typeid(R).name()],
+		OneBinaryOperator(aType tt0,aType tt1):  
+		OneOperator(map_type[typeid(R).name()],
                 tt0 ? tt0  : map_type[typeid(A).name()] ,
                 tt1 ? tt1  : map_type[typeid(B).name()]), 
-    t0(map_type[typeid(A).name()]),
-    t1(map_type[typeid(B).name()])
-   {pref = SameType<A,B>::OK ;}
+				t0(map_type[typeid(A).name()]),
+				t1(map_type[typeid(B).name()])
+		{pref = SameType<A,B>::OK ;}
 
-};
+	};
+#endif
+#ifndef kame
 //-------------
 template<typename R>
 class  Operator_Aritm_If : public OneOperator{

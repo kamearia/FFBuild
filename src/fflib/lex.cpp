@@ -41,13 +41,13 @@
 
 #include "lex.hpp"
 #include "environment.hpp"
-#ifndef kame
+
 extern YYSTYPE *plglval;
 
 //  New version of macro expantion more classical
 //  and more  simple
 // FH Jan. 2005
-#endif
+
 static const bool debugmacro = false;
 
 void  mylex::Add(Key k,int i)
@@ -76,7 +76,7 @@ void  mylex::AddSpace(Key k,aType t)
     Check(!t,k,"FESPACE");
     Add(k,FESPACE,t);
 }
-
+#endif
 // <<mylex_InMotClef>> looks in MotClef for the token contained in buf (buf is set by by [[mylex_basescan]]) and returns
 // its type as t and the grammar token id as r (eg [[file:~/ff/src/lglib/lg.ypp::TYPE]]).
 
@@ -97,7 +97,7 @@ bool mylex::InMotClef  (aType & t, int & r) const
         return true;
     }
 }
-
+#ifndef kame
 // alh - 5/4/15 - <<mylex::InMotClef_string>> [[file:lex.hpp::InMotClef_string]] Same as [[mylex_InMotClef]], but checks
 // another buffer than buf
 bool mylex::InMotClef(const char *b,aType &t,int &r)const
@@ -241,7 +241,7 @@ int mylex::EatCommentAndSpace(string *data)
     while (incomment);
     return (c==EOF) ? c : sep;
 }
-#ifndef kame
+
 // <<mylex_basescan>>
 int mylex::basescanprint(int lvl)
 {
@@ -249,7 +249,7 @@ int mylex::basescanprint(int lvl)
     if (! lexdebug && echo && lvl==0 ) print(cout);
     return r;
 }
-#endif
+
 int mylex::basescan()
 {
 
@@ -286,7 +286,6 @@ debut:
     // <<found_a_number>>
     else if (isdigit(c) || (c=='.' && isdigit(nc)))
     {
-#ifndef kame
         int i=1;
         buf[0]=c;
         bool real= (c=='.');
@@ -315,7 +314,6 @@ debut:
             plglval->lnum = atoi(buf),ret=LNUM;
 
         if(lexdebug) cout << " NUM : " << buf  << " "<<endl;
-#endif
     }
 
     // <<found_an_identifier>>
@@ -329,7 +327,6 @@ debut:
             erreur ("Identifier too long");
         buf[i] = 0;
     }
-#ifndef kame
     // <<found_a_string>>
     else if (c=='"')
     {
@@ -474,7 +471,6 @@ debut:
         if(lexdebug)  cout << "Special '" <<  plglval->oper << "' " << ret << " ";
     }
     typetoken=ret;
-#endif
     return ret;
 }
 
@@ -486,7 +482,7 @@ int mylex::scan1()
 // bool echo = mpirank == 0;
 
     int ret= basescan(); // [[mylex_basescan]]
-#ifndef kame
+
     if(debugmacro)  cout << " scan1 " << ret << " " << token() << " " << ID << endl;
     while ( ret == ID  && (
                 SetMacro(ret) // correction mars 2014 FH
@@ -495,7 +491,7 @@ int mylex::scan1()
             )
           )
         ; // correction mars 2014 FH
-#endif
+
     return ret;
 }
 
@@ -504,7 +500,7 @@ int mylex::scan(int lvl)
 {
 
     int ret= scan1();
-#ifndef kame
+
     // ID defined at [[file:../lglib/lg.ypp::ID]] and detected at [[found_an_identifier]]
     if ( ret == ID)
     {
@@ -520,7 +516,6 @@ int mylex::scan(int lvl)
             plglval->str = newcopy(buf);
         }
     }
-
     if ( ret =='{')
     {
         listMacroDef->push_back( MapMacroDef() );
@@ -531,10 +526,10 @@ int mylex::scan(int lvl)
     }
 
     if (! lexdebug && echo && lvl==0 ) print(cout);
-#endif
+
     return ret;
 }
-#ifndef kame
+
 string mylex::token() const
 {
     int i=-1;
@@ -591,7 +586,7 @@ char * mylex::match(int i)
     };
     return buf;
 }
-#endif
+
 bool mylex::AddMacro(string m,string def)
 {
     bool ok=1;
@@ -614,7 +609,7 @@ bool mylex::AddMacro(string m,string def)
     }
     return ok;
 }
-#ifndef kame
+
 bool mylex::SetMacro(int &ret)
 {
     char endmacro[]="EndMacro";
@@ -622,129 +617,129 @@ bool mylex::SetMacro(int &ret)
 
     bool rt=false;
     int oldmacro=1;
-    if (strncmp(buf,"macro",6)==0 || (oldmacro=strncmp(buf,newmacro,9))==0 )
-    {
-        if(echo)  print(cout);
-        char *macroname=newcopy(match(ID));
-        int nbparam =0;
-        MacroData macroparm;
+	if (strncmp(buf, "macro", 6) == 0 || (oldmacro = strncmp(buf, newmacro, 9)) == 0)
+	{
+		if (echo)  print(cout);
+		char *macroname = newcopy(match(ID));
+		int nbparam = 0;
+		MacroData macroparm;
 
-        int rr=basescanprint();
-        string def;
-        if (rr!='(')
-            def += buf;
-        else
-        {
-            // a '(' after macro name
-            rr =  basescanprint();
+		int rr = basescanprint();
+		string def;
+		if (rr != '(')
+			def += buf;
+		else
+		{
+			// a '(' after macro name
+			rr = basescanprint();
 
-            if (rr != ')' )
-                do
-                {
-                    if (nbparam++>= 100)
-                    {
-                        cerr << "in macro " <<macroname << endl;
-                        ErrorScan(" Too much (more than 100) parameters");
-                    }
+			if (rr != ')')
+				do
+				{
+					if (nbparam++ >= 100)
+					{
+						cerr << "in macro " << macroname << endl;
+						ErrorScan(" Too much (more than 100) parameters");
+					}
 
-                    if (rr != ID)
-                    {
-                        cerr <<" Erreur waiting of an ID: " << buf << " " << rr <<  endl;
-                        erreur("in macro def: waiting for a ID");
-                    }
-                    macroparm.d.push_back(buf);
-                    rr =  basescanprint();
-                    if (rr  == ')') break;
-                    if ( rr != ',') erreur("in macro def: waiting  , or  ) ");
-                    rr =  basescanprint();
+					if (rr != ID)
+					{
+						cerr << " Erreur waiting of an ID: " << buf << " " << rr << endl;
+						erreur("in macro def: waiting for a ID");
+					}
+					macroparm.d.push_back(buf);
+					rr = basescanprint();
+					if (rr == ')') break;
+					if (rr != ',') erreur("in macro def: waiting  , or  ) ");
+					rr = basescanprint();
 
-                }
-                while(1);
-        }
-        int kmacro=0;
+				} while (1);
+		}
+		int kmacro = 0;
 
-        macroparm.l = linenumber;
-        macroparm.f = file();
-        do
-        {
-            int lk=0,nl=0;
-            string item;
-            int i = source().get();
-            if (i == EOF)
-            {
-                cerr << "in macro " <<macroname <<  endl;
-                ErrorScan(" ENDOFFILE in macro definition. remark:a macro end with // or EndMacro");
-            }
-            int ii = source().peek();
-            if(isNLCR(source(),i))
-            {
-                linenumber++;
-                nl=1;
-            }
-            else if(isalpha(i) && isalpha(ii) )  //  Modif F.H
-            {
-                item = char(i);
-                i = source().get();
-                while(isalpha(i))
-                {
-                    item += char(i);
-                    i = source().get();
-                }
-                if( item == newmacro)  kmacro++;
-                if( item == endmacro)
-                {
-                    if (kmacro==0)
-                    {
-                        if(echo)cout <<item ;
-                        source().putback(i);
-                        break;
-                    }
-                    kmacro--;
-                }
-                if(echo) cout << item ;
-                def += item;
-                item ="";
-                ii = source().peek();
-            }
+		macroparm.l = linenumber;
+		macroparm.f = file();
+		do
+		{
+			int lk = 0, nl = 0;
+			string item;
+			int i = source().get();
+			if (i == EOF)
+			{
+				cerr << "in macro " << macroname << endl;
+				ErrorScan(" ENDOFFILE in macro definition. remark:a macro end with // or EndMacro");
+			}
+			int ii = source().peek();
+			if (isNLCR(source(), i))
+			{
+				linenumber++;
+				nl = 1;
+			}
+			else if (isalpha(i) && isalpha(ii))  //  Modif F.H
+			{
+				item = char(i);
+				i = source().get();
+				while (isalpha(i))
+				{
+					item += char(i);
+					i = source().get();
+				}
+				if (item == newmacro)  kmacro++;
+				if (item == endmacro)
+				{
+					if (kmacro == 0)
+					{
+						if (echo)cout << item;
+						source().putback(i);
+						break;
+					}
+					kmacro--;
+				}
+				if (echo) cout << item;
+				def += item;
+				item = "";
+				ii = source().peek();
+			}
 
-            if(oldmacro)
-            {
-                if (i == '/' && ii == '/')
-                {
-                    source().putback('/');
-                    break;
-                }
-            }
+			if (oldmacro)
+			{
+				if (i == '/' && ii == '/')
+				{
+					source().putback('/');
+					break;
+				}
+			}
 
-            def +=char(i);
-            if(echo)cout << char(i) ;
-            if(echo && nl==1) cout << setw(5) <<linenumber << " # " ;
+			def += char(i);
+			if (echo)cout << char(i);
+			if (echo && nl == 1) cout << setw(5) << linenumber << " # ";
 
-        }
-        while(1);
-        macroparm.d.push_back(def);
-        if (nbparam)
-            if(echo) cout << " )  " ;
-        MapMacroDef & MacroDef =listMacroDef->back();
-        MapMacroDef::const_iterator i=MacroDef.find(macroname);
-        if ( i == MacroDef.end() )
-            MacroDef[macroname]=macroparm;
-        else
-        {
-            cerr << "ERREUR in macro name:" <<macroname << endl;
-            ErrorScan(" The macro already exists, sorry");
-        }
-        rt=true;
-        ret= basescan();
-    }
+		} while (1);
+		macroparm.d.push_back(def);
+		if (nbparam)
+			if (echo) cout << " )  ";
+		MapMacroDef & MacroDef = listMacroDef->back();
+		MapMacroDef::const_iterator i = MacroDef.find(macroname);
+		if (i == MacroDef.end())
+			MacroDef[macroname] = macroparm;
+		else
+		{
+			cerr << "ERREUR in macro name:" << macroname << endl;
+			ErrorScan(" The macro already exists, sorry");
+		}
+		rt = true;
+		ret = basescan();
+	}
     return rt;
 }
+
 std::string trim(std::string s, const char* t = " \t\n\r\f\v")
 {
     s.erase(0, s.find_first_not_of(t));
     s.erase(s.find_last_not_of(t) + 1);
     return s;
 }
+
 bool mylex::IFMacroId(bool isnot,string & id,bool withval ,string &val)
 { //  check value
     bool rt=false;
@@ -773,6 +768,7 @@ bool mylex::IFMacroId(bool isnot,string & id,bool withval ,string &val)
     }
     return exist == (isnot==0);
 }
+
 bool mylex::IFMacroArgs(int lvl)
 {  //  wait for  string : ([!]ID [,val] )
     bool isnot=0;
@@ -837,6 +833,7 @@ bool mylex::IFMacroArgs(int lvl)
     return IFMacroId(isnot,id,withval,val);
     }
 }
+
 bool mylex::IFMacro(int &ret)
 {
     // A faire !!!! F.H
@@ -1221,7 +1218,7 @@ bool mylex::CallMacro(int &ret)
         }
     return false;
 }
-#endif
+
 void  mylex::xxxx::open(mylex *lex,const char * ff)
 {
 
@@ -1313,7 +1310,7 @@ void  mylex::xxxx::open(mylex *lex,const char * ff)
     }
 
 }
-#ifndef kame
+
 void mylex::xxxx::readin(mylex *lex,const string & s,const string *name, int macroargs)
 {
     filename=name;
@@ -1329,7 +1326,7 @@ void mylex::xxxx::readin(mylex *lex,const string & s,const string *name, int mac
         lgerror("lex: Error readin macro ");
     }
 }
-#endif
+
 void mylex::xxxx::close()
 {
     // ALH_BUG Why does this segfault under Windows? Probably needs valgrind to find out.
@@ -1355,7 +1352,7 @@ void mylex::input(const char *  filename)
 }
 #ifndef kame
 // <<mylex_input_string>>
-
+#endif
 void mylex::input(const string & str,const string * name,int lg)
 {
 
@@ -1370,7 +1367,7 @@ void mylex::input(const string & str,const string * name,int lg)
     level++;
 
 }
-#endif
+
 bool mylex::close()
 {
     if(debugmacro )

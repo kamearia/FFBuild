@@ -366,7 +366,7 @@ void Polymorphic::Add(const char * op,Value *pp) const
 
 }
 
-
+#endif
 // <<FindType>>
  int  FindType(const char * name)
    {
@@ -399,7 +399,7 @@ C_F0 Find(const char * name)
     CompileError();
     return r;
 }
-
+#ifndef kame
 vectorOfInst* TableOfIdentifier::newdestroy()
 {
  int k=0;
@@ -513,7 +513,7 @@ CC_F0  Block::close(Block *& c,C_F0  ins)
     return cb = ncb;
    }
 
-#ifndef kame
+
 const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
   {
     if( this != &Global) {
@@ -543,6 +543,8 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
       }
       return v;
   }
+
+#ifndef kame
  void  TableOfIdentifier::Add(Key k,Key op,OneOperator *p0,OneOperator *p1,
       OneOperator *p2,OneOperator *p3,OneOperator *p4,OneOperator *p5,OneOperator *p6)
   {

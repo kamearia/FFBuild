@@ -88,11 +88,11 @@ struct Op2_divv: public binary_function<A,B,R> {
        {cerr <<  a << "/" << b << " : " <<  typeid(A).name()  << " " << typeid(B).name()
              << " " << typeid(R).name() << endl;ExecError(" Div by 0");}
      return (a / b);} };
-
+#endif
 template<class R>
 struct Op2_pipe: public binary_function<R,R,R> {
     static R f(const R & a,const R & b)  {   return (a | b);} };
-
+#ifndef kame
 template<class R,class A=R,class B=A> 
 struct Op2_mod: public binary_function<A,B,R> { 
   static R f(const A & a,const B & b)  { return ((R)a % (R)b);} }; 

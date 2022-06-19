@@ -326,11 +326,10 @@ bool fespacecomplex;
 int fespacedim;
 #endif
 extern int UnShowAlloc;
-#ifndef kame
 int ShowAlloc(const char *s,size_t &);
 // <<yylex>> Connection from grammar to lexer object zzzfff [[file:../fflib/lex.hpp::zzzfff]] of class mylex
 // [[file:../fflib/lex.hpp::class mylex]]. Method mylex::scan() is implemented at [[file:../fflib/lex.cpp::mylex_scan]]
-#endif
+
 inline int yylex()  {return zzzfff->scan();}
 #ifndef kame
 inline int lineno() {return zzzfff->lineno();}
@@ -461,13 +460,13 @@ typedef union YYSTYPE
 #ifdef short
 # undef short
 #endif
-
+#endif
 #ifdef YYTYPE_UINT8
 typedef YYTYPE_UINT8 yytype_uint8;
 #else
 typedef unsigned char yytype_uint8;
 #endif
-
+#ifndef kame
 #ifdef YYTYPE_INT8
 typedef YYTYPE_INT8 yytype_int8;
 #elif (defined __STDC__ || defined __C99__FUNC__ \
@@ -674,25 +673,26 @@ union yyalloc
     while (YYID (0))
 
 #endif
-
+#endif
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  90
+
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   1185
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  79
+#ifndef kame
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  49
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  221
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  477
-
+#endif
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   308
-
 #define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
@@ -731,7 +731,7 @@ static const yytype_uint8 yytranslate[] =
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
       65,    66,    67,    68,    69,    70,    71,    72,    73
 };
-
+#ifndef kame
 #if YYDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
@@ -926,6 +926,8 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
+#endif
+
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
@@ -1046,7 +1048,7 @@ static const yytype_int16 yydefgoto[] =
      204,    45,   440,   362,   181,   182,    46,    47,    48,    49,
       50,   168,   156,   169,    64,    51,    52,    53,    54
 };
-#endif
+
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
 #define YYPACT_NINF -253
@@ -1101,7 +1103,7 @@ static const yytype_int16 yypact[] =
      560,  -253,  -253,  -253,   586,  -253,   561,   565,  -253,  -253,
      567,  -253,   568,  -253,   648,  -253,  -253
 };
-#ifndef kame
+
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
@@ -1362,7 +1364,7 @@ static const yytype_int16 yycheck[] =
       24,    25,    26,    14,    15,    16,    17,    18,    19,    20,
       21,    22,    23,    24,    25,    26
 };
-
+#ifndef kame
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
@@ -1421,10 +1423,11 @@ static const yytype_uint8 yystos[] =
 #define yyclearin	(yychar = YYEMPTY)
 #endif
 #define YYEMPTY		(-2)
-#ifndef kame
+
 #define YYEOF		0
 
 #define YYACCEPT	goto yyacceptlab
+#ifndef kame
 #define YYABORT		goto yyabortlab
 #define YYERROR		goto yyerrorlab
 
@@ -1668,6 +1671,7 @@ do {					\
    multiple parsers can coexist.  */
 int yydebug;
 #else /* !YYDEBUG */
+
 # define YYDPRINTF(Args)
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_STACK_PRINT(Bottom, Top)
@@ -2167,10 +2171,10 @@ yybackup:
 	if (yychar == YYEMPTY)
     {
 		YYDPRINTF ((stderr, "Reading a token: "));
-		yychar = YYLEX;
+		yychar = YYLEX /*yylex ()*/;
     }
-#ifndef kame
-	if (yychar <= YYEOF)
+
+	if (yychar <= YYEOF /* 0 */)
     {
 		yychar = yytoken = YYEOF;
 		YYDPRINTF ((stderr, "Now at end of input.\n"));
@@ -2184,12 +2188,13 @@ yybackup:
   /* If the proper action on seeing token YYTOKEN is to reduce or to
      detect an error, take that action.  */
   yyn += yytoken;
-	if (yyn < 0 || YYLAST < yyn || yycheck[yyn] != yytoken)
+	if (yyn < 0 || YYLAST /*1185*/< yyn || yycheck[yyn] != yytoken)
 		goto yydefault;
 	yyn = yytable[yyn];
+
 	if (yyn <= 0)
     {
-		if (yyn == 0 || yyn == YYTABLE_NINF)
+		if (yyn == 0 || yyn == YYTABLE_NINF /*-4 */)
 			goto yyerrlab;
 		yyn = -yyn;
 		goto yyreduce;
@@ -2219,9 +2224,8 @@ yybackup:
 /*-----------------------------------------------------------.
 | yydefault -- do the default action for the current state.  |
 `-----------------------------------------------------------*/
-#endif
+
 yydefault:
-#ifndef kame
 	yyn = yydefact[yystate];
 	if (yyn == 0)
 		goto yyerrlab;
@@ -2247,8 +2251,10 @@ yyreduce:
 
 
 	YY_REDUCE_PRINT (yyn);
+
 	switch (yyn)
     {
+#ifndef kame
         case 2:
 //#line 329 "lg.ypp"
 		{
@@ -3139,12 +3145,12 @@ yyreduce:
 //#line 713 "lg.ypp"
     {(yyval.args) = 0;;}
     break;
-
+#endif
   case 173:
 //#line 714 "lg.ypp"
     {(yyval.args) = Find((yyvsp[(1) - (1)].str));;}
     break;
-
+#ifndef kame
   case 174:
 //#line 715 "lg.ypp"
     {(yyval.args) = Find((yyvsp[(1) - (1)].str));;}
@@ -3239,22 +3245,23 @@ yyreduce:
 //#line 749 "lg.ypp"
     {(yyval.cexp)=C_F0(TheOperators,(yyvsp[(2) - (2)].oper),(yyvsp[(1) - (2)].cexp));;}
     break;
-
+#endif
   case 196:
 //#line 757 "lg.ypp"
     {(yyval.cexp)=Find((yyvsp[(1) - (1)].str));;}
     break;
+#ifndef kame
 
   case 197:
 //#line 761 "lg.ypp"
     {(yyval.cexp)= CConstant((yyvsp[(1) - (1)].lnum));;}
     break;
-
+#endif
   case 198:
 //#line 762 "lg.ypp"
     {(yyval.cexp)= CConstant((yyvsp[(1) - (1)].dnum));;}
     break;
-
+#ifndef kame
   case 199:
 //#line 763 "lg.ypp"
     {(yyval.cexp)= CConstant(complex<double>(0,(yyvsp[(1) - (1)].dnum)));;}
@@ -3384,7 +3391,7 @@ yyreduce:
 			{ (yyval.cexp)=C_F0(TheOperators,"[]",(yyvsp[(2) - (3)].args));;}
 		break;
 
-
+#endif
 /* Line 1267 of yacc.c.  */
 //#line 3316 "lg.tab.cpp"
 		default: break;
@@ -3412,12 +3419,12 @@ yyreduce:
 
 	goto yynewstate;
 
-
 /*------------------------------------.
 | yyerrlab -- here on detecting error |
 `------------------------------------*/
 yyerrlab:
   /* If not already recovering from an error, report this error.  */
+#ifndef kame
 	if (!yyerrstatus)
     {
 		++yynerrs;
@@ -3548,11 +3555,12 @@ yyerrlab1:
 		yystate = yyn;
 		goto yynewstate;
 
-
+#endif
 /*-------------------------------------.
 | yyacceptlab -- YYACCEPT comes here.  |
 `-------------------------------------*/
-		yyacceptlab:
+	yyacceptlab:
+#ifndef kame
 		yyresult = 0;
 		goto yyreturn;
 
@@ -3644,7 +3652,7 @@ int Compile()
 		UnShowAlloc =0;
 
 		retvalue=yyparse(); // grammar analysis starting from [[start_symbol]]
-#ifndef kame
+
 		if(retvalue==0){
 			if(currentblock)
 				{retvalue=1; if(!mpirank) cerr <<  "Error:a block is not close" << endl; }
@@ -3661,7 +3669,7 @@ int Compile()
 				}
 			}
 		}
-#endif
+
 	}
 
 	catch (Error & e)
@@ -3671,7 +3679,7 @@ int Compile()
 	cerr << "error " << e.what()
 	     << "\n code = "<<  retvalue << " mpirank: " <<mpirank  << endl;
     }
-#ifndef kame
+
   catch(std::ios_base::failure & e)
     {
       cerr << "std  catch io failure \n what : " << e.what() << endl;;
@@ -3688,7 +3696,7 @@ int Compile()
       cerr << "Strange catch exception ???\n";
       cerr << " at exec line  " << TheCurrentLine << " mpirank: " <<mpirank << endl;
     }
-#endif
+
   return retvalue;
 }
 #ifndef kame

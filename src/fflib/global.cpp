@@ -132,10 +132,10 @@ using namespace std;
 /// <<verbosity>>
 #endif
 long verbosity = 1;
-#ifndef kame
 long searchMethod = 0; //pichon
 long npichon2d=0, npichon3d=0;
 long npichon2d1=0, npichon3d1=0;
+#ifndef kame
 
  FILE *ThePlotStream=0; //  Add for new plot. FH oct 2008
 #endif
@@ -146,14 +146,14 @@ long npichon2d1=0, npichon3d1=0;
 Map_type_of_map map_pair_of_type ; //  to store te type
 
  basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
-#ifndef kame
+
 /// <<zzzfff>> see [[file:lex.hpp::mylex]]
-#endif
+
 #include "lex.hpp"
 mylex *zzzfff;
-#ifndef kame
+
 bool lexdebug;
-#endif
+
 /// <<plglval>> see [[file:../lglib/lg.ypp::YYSTYPE]] and [[file:../lglib/lg.ypp::yylval]]
 #include "lg.tab.hpp"
 YYSTYPE *plglval;
@@ -179,11 +179,9 @@ TableOfIdentifier Global;
 /// <<tables_of_identifier>> declared at [[file:AFunction.hpp::tables_of_identifier]]
 typedef list<TableOfIdentifier *> ListOfTOfId;
 ListOfTOfId tables_of_identifier;
-#ifndef kame
+
 const int AC_F0::MaxSize=1024; // maximal number of parameters
 
-
-#endif
 map<const string,basicForEachType *> map_type;
 #ifndef kame
 bool showCPU= false;
@@ -205,16 +203,17 @@ EnvironmentData  ffenvironment;
 basicForEachType *basicForEachType::tnull=0;
 
 E_F0 *E_F0::tnull=0;
-#ifndef kame
+
 long newconvect3=0;// old convect 3d
-#endif
+
 CodeAlloc *CodeAlloc::tnull=0;
 #ifndef kame
 #include <RefCounter.hpp>
 RefCounter *RefCounter::tnull=0;
+#endif
 double ff_tgv=1e30;
 bool lockOrientation=true;
-
+#ifndef kame
 void InitMeshPoint(void * p)
 {
     EF23::MeshPoint*mps=static_cast<EF23::MeshPoint*>(p);

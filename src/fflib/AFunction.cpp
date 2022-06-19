@@ -28,6 +28,7 @@
 #include "stdafx.h"
 #include "String.hpp"
 #include "lex.hpp"
+#include "strversionnumber.hpp"
 extern mylex *zzzfff;
 #ifndef kame
 //#pragma dont_inline on
@@ -140,9 +141,11 @@ extern double genrand_real2(void);
 extern double genrand_real3(void);
 extern double  genrand_res53(void) ;
 
-
+#endif
 // FH  for g++ 3.4  the prototypage  have change
-double  VersionNumber();
+//extern double  VersionNumber();
+
+#ifndef kame
 double Imag(const  complex<double> & z){ return imag(z);}
 double Real(const  complex<double> & z){ return real(z);}
 #endif
@@ -1032,7 +1035,9 @@ double diffnp(const double & aa, const double & bb) { return aa<0. && 0.<bb ? bb
 double invdiffnp(const double & aa, const double & bb) { return aa<0. && 0.<bb  ? 1./max(bb-aa,1e-30) : 0.;}//  Corr 08/18  G. Sadaka
 double invdiff(const double & aa, const double & bb) { double d= aa-bb; return abs(d) < 1e-30 ? d : 1/d;}
 double invdiff(const double & aa, const double & bb,const double &eps) { double d= aa-bb; return abs(d) < eps ? d : 1/d;}
+#endif
 extern double ff_tgv; // Add FH jan 2018
+#ifndef kame
 double sign(double x){return (x>0.)-(x<0.); }// Add FH jan 2018
 long sign(long x){return (x>0)-(x<0); }// Add FH jan 2018
 //KAME bool ffsignbit(long x){return signbit(x);}
@@ -1148,27 +1153,29 @@ void Init_map_type()
        );
 
      map_type[typeid(long).name()]->AddCast(new OneOperator_border_label);
-#ifndef kame
-     Global.New("verbosity",CPValue<long>(verbosity));
 
+     Global.New("verbosity",CPValue<long>(verbosity));
      Global.New("searchMethod",CPValue<long>(searchMethod)); //pichon
      Global.New("tgv",CPValue<double>(ff_tgv));
      Global.New("lockOrientation",CPValue<bool>(lockOrientation));
      extern long newconvect3;// def in global.cpp
      Global.New("newconvect",CPValue<long>(newconvect3)); //pichon
+
      // <<cout>> uses [[file:AFunction.hpp::CConstant]]
      Global.New("cout",CConstant<ostream*>(&cout));
-
      Global.New("cerr",CConstant<ostream*>(&cerr));// add jan 2014 FH.
      Global.New("cin",CConstant<istream*>(&cin));
      Global.New("append",CConstant<ios::openmode>(ios::app));
      Global.New("binary",CConstant<ios::openmode>(ios::binary)); // add FH april 2014
+#ifndef kame
      TheOperators->Add("|",new OneBinaryOperator<Op2_pipe<ios::openmode> >); // add FH april 2014
+#endif
      Global.New("endl",CConstant<const char*>("\n"));
      Global.New("true",CConstant<bool>(true));
      Global.New("false",CConstant<bool>(false));
      Global.New("pi",CConstant<double>(3.14159265358979323846264338328));
      Global.New("version",CConstant<double>(VersionNumber()));
+#ifndef kame
 
      Global.New("showCPU",CPValue<bool>(showCPU));
      Global.New("CPUTime",CConstant<bool*>(&showCPU));
