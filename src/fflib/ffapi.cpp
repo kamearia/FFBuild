@@ -141,17 +141,21 @@ FILE *ffapi_ff_popen(const char *command, const char *type){
       return f;
 #endif
   }
-#ifndef kame
+#endif
   // <<ffapi_ff_pclose>>
 static  int ffapi_ff_pclose(FILE *stream){
 #ifdef FFLANG
     // nothing to close in FFCS
     return 0;
 #else
+#ifndef kame
     return pclose(stream);
+#else
+	return fclose(stream);
+#endif
 #endif
   }
-
+#ifndef kame
 static  size_t ffapi_fwriteinit(const void *ptr, size_t size, size_t nmemb,FILE *stream){
 
     // printf() is useful for debug because it is not redirected through
@@ -243,7 +247,7 @@ static  void ffapi_wintextmode(FILE *f){
 #ifndef FFLANG
 #ifdef _WIN32
     // need #include <fcntl.h>
-    _setmode(fileno(f),O_TEXT);	
+    _setmode(fileno(f),_O_TEXT);	
 #endif
 #endif
   }
@@ -294,7 +298,6 @@ static  bool ffapi_protectedservermode(){
     return false;
 #endif
   }
-#endif
   // <<init>> [[file:ffapi.hpp::init]] called by [[file:../lglib/mymain.cpp::ffapi::init]]
   void init(){
 #ifndef kame
@@ -307,7 +310,9 @@ static  bool ffapi_protectedservermode(){
     ffapi::newplot = ffapi::ffapi_newplot;
 
     ffapi::ff_popen = ffapi::ffapi_ff_popen;
+#endif
     ffapi::ff_pclose = ffapi::ffapi_ff_pclose; // <<ff_pclose>>
+#ifndef kame
     ffapi::fwriteinit = ffapi::ffapi_fwriteinit;
     ffapi::ff_fwrite = ffapi::ffapi_ff_fwrite;
     ffapi::ff_fflush = ffapi::ffapi_ff_fflush;

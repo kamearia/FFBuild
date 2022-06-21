@@ -74,6 +74,8 @@
 #define yydebug lgdebug
 #define yynerrs lgnerrs
 
+int(*ffapi::ff_pclose)(FILE *stream);
+
 #ifndef kame
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -281,9 +283,9 @@ class Iden;
 #include "lgfem.hpp"
 #include "lex.hpp"
 #include "environment.hpp"
-extern long storageused();
-    extern FILE *ThePlotStream;
 #endif
+extern long storageused();
+extern FILE *ThePlotStream;
 extern KN<String> *pkarg;
 #ifndef kame
 
@@ -347,12 +349,12 @@ inline void fingraphique()
 #ifndef kame
 void lgerror (const char* s) ;
 
-
+#endif
  // mpi ptr to function ...
 void (*initparallele)(int &argc, char **& argv)=0 ;
 void (*init_lgparallele)()=0;
 //void (*end_parallele)()=0;
-#endif
+
 // Add dec 2014
 #include <vector>
 typedef void (*AtEnd)();
@@ -3699,7 +3701,7 @@ int Compile()
 
   return retvalue;
 }
-#ifndef kame
+
 static void SetcppIo()
 {
 
@@ -3719,7 +3721,7 @@ static void SetcppIo()
 #endif
    ios::sync_with_stdio();
 }
-#endif
+
 // pour l'environement.
 extern const char *  prognamearg;
 extern  bool echo_edp;
@@ -3740,19 +3742,17 @@ int mainff (int  argc, char **argv)
   if(mpirank !=0) verbosity=0;
 
   // ALH - 14/10/8 - This breaks FFCS output redirection
-#ifndef kame
+
   //#ifndef ENABLE_FFCS
   SetcppIo();
   //#endif
-#endif
 
-#ifndef kame
   GetEnvironment(); // [[file:~/ff/src/fflib/environment.cpp::GetEnvironment]]
 //    vvold=verbosity;
   if(mpirank !=0) verbosity=0;
   //  size_t lg000;
  // ShowAlloc("begin main ",lg000);
-#endif
+
   int retvalue=0;
 #ifndef kame
    ff_atend(fingraphique);
@@ -3844,9 +3844,10 @@ int mainff (int  argc, char **argv)
 
   retvalue= Compile(); // [[Compile]]
    // cout << " xxxxx " <<  retvalue << " " << ThePlotStream << endl;
-#ifndef kame
+
   //if(end_parallele) end_parallele();
   ff_finalize();
+
   //  currentblock->close(currentblock).eval(thestack);
  // fingraphique();
   // FFCS: divert stream to FFCS
@@ -3854,6 +3855,7 @@ int mainff (int  argc, char **argv)
     ffapi::ff_pclose(ThePlotStream);
     ThePlotStream=0;
   }
+#ifndef kame
   Destroylex( zzzfff);
   delete [] cc;
    // ClearMem();

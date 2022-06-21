@@ -20,7 +20,7 @@
 #endif
 #include "ffapi.hpp"
 extern long mpirank;
-FILE *ThePlotStream; // Add for new plot. FH oct 2008
+extern FILE *ThePlotStream; // Add for new plot. FH oct 2008
 #ifndef kame
 #include "strversionnumber.hpp"
 #include <string>

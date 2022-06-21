@@ -55,7 +55,7 @@ extern mylex *zzzfff;
 // for exec routine
 #include "rgraph.hpp"
 #include "InitFunct.hpp"
-
+#endif
 vector<pair<const E_Routine*,int> > *debugstack=0;
 
 
@@ -90,7 +90,7 @@ class vectorOfInst : public  E_F0mps { public:
   vectorOfInst(const vectorOfInst &);
   void operator=(const vectorOfInst &);
 };
-
+#ifndef kame
 double  VersionNumber();
 
 OneOperator::pair_find OneOperator::Find(const ArrayOfaType & at)const
@@ -399,7 +399,7 @@ C_F0 Find(const char * name)
     CompileError();
     return r;
 }
-#ifndef kame
+
 vectorOfInst* TableOfIdentifier::newdestroy()
 {
  int k=0;
@@ -419,7 +419,7 @@ vectorOfInst* TableOfIdentifier::newdestroy()
   ffassert(j==k);
  return l;
 }
-
+#ifndef kame
 C_F0  TableOfIdentifier::destroy() {return C_F0(newdestroy());}
 #endif
 void TableOfIdentifier::clear()
@@ -464,14 +464,12 @@ basicForEachType::basicForEachType(const type_info  & k,
  TableOfIdentifier::TableOfIdentifier() : listofvar(0),nIdWithDelete(0) {}
 
  TableOfIdentifier:: ~TableOfIdentifier() {}
-#ifndef kame
 
-#endif
  Block::Block(Block * f):fatherblock(f),top(f?f->top:BeginOffset*sizeof(void*)),topmax(top)
     {
       itabl=tables_of_identifier.insert(tables_of_identifier.begin(),&table);
     }
-#ifndef kame
+
 Block::~Block(){}
 
    vectorOfInst * Block::snewclose(Block *& c) {
@@ -504,7 +502,7 @@ CC_F0  Block::close(Block *& c,C_F0  ins)
      rr=inst;
      return rr;
  }
-#endif
+
    Block * Block::open(Block *& cb)
    {
     Block *  ncb = new Block(cb);
@@ -772,6 +770,7 @@ AnyType E_Routine::operator()(Stack s)  const  {
    // ... ou alors changer le return ???? qui doit copie le resultat.. (voir)
    return ret;
 }
+#endif
 extern Block *currentblock;// def in lg.ypp
 void ListOfInst::Add(const C_F0 & ins) {
     if( (!ins.Empty()) ) {
@@ -801,7 +800,7 @@ void ListOfInst::Add(const C_F0 & ins) {
 }
 
 /// <<ListOfInst::operator()>> Iteratively calls each item in the local array #list of type #Expression
-
+extern bool showCPU;
 AnyType ListOfInst::operator()(Stack s) const {
     AnyType r;
     int i;
@@ -838,7 +837,7 @@ AnyType ListOfInst::operator()(Stack s) const {
 	throw;
     }
     return r;}
-#endif
+
 /*
 extern long mpisize;
 extern long mpirank;
@@ -848,7 +847,6 @@ using namespace std;
 */
 void ShowDebugStack()
  {
-#ifndef kame
    if (mpisize)
    cerr << "  current line = " << TheCurrentLine
         << " mpirank " << mpirank << " / " << mpisize <<endl;
@@ -861,7 +859,6 @@ void ShowDebugStack()
         cerr << " call " << debugstack->at(i).first->name<< "  at  line "
              <<debugstack->at(i).second << endl;
      }
-#endif
  }
 
 

@@ -1,1 +1,1 @@
-x;
+cout<< "x" << endl;

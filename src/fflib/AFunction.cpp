@@ -1175,6 +1175,7 @@ void Init_map_type()
      Global.New("false",CConstant<bool>(false));
      Global.New("pi",CConstant<double>(3.14159265358979323846264338328));
      Global.New("version",CConstant<double>(VersionNumber()));
+
 #ifndef kame
 
      Global.New("showCPU",CPValue<bool>(showCPU));

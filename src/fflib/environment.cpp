@@ -22,6 +22,7 @@
 
 #include "stdafx.h"
 #include "environment.hpp"
+using namespace std;
 #ifndef kame
 #include "iostream"
 #include <iostream>
@@ -32,9 +33,9 @@
 #endif
 // set in getprog-unix.hpp in Graphic dir
 const char *prognamearg = 0;
-#ifndef kame
-extern void (*initparallele)(int &, char **&); // to know if mpiversion ...
 
+extern void (*initparallele)(int &, char **&); // to know if mpiversion ...
+#ifndef kame
 #ifdef PURE_WIN32
 #include <windows.h>
 #endif
@@ -45,6 +46,7 @@ extern void (*initparallele)(int &, char **&); // to know if mpiversion ...
 using namespace std;
 bool load(string s);
 
+#endif
 const char SLACH = '/';
 const char BACKSLACH = '\\';
 #ifdef PURE_WIN32
@@ -52,9 +54,9 @@ const char dirsep = BACKSLACH, dirnsep = SLACH;
 #else
 const char dirnsep = BACKSLACH, dirsep = SLACH;
 #endif
-
+#ifndef kame
 #include <sys/stat.h>
-
+#endif
 int dirExists (const string & path) {
   struct stat info;
 
@@ -81,6 +83,7 @@ string TransDir (string dir, string adddir="") {
     dir = adddir + dirsep + dir.substr(1);
   return dir;
 }
+
 
 template<typename T>
 void show (const char *s, const T &l, const char *separateur="\n") {
@@ -378,7 +381,7 @@ string     ffprefsuffix ="pref";
     if(verbosity>10) cout << " --  GetEnvironment: verbosity is set to " << verbosity  << endl;
 
  }
-#endif
+
 const char *check_plugin=0;
 void EnvironmentLoad() {
     if(check_plugin) {

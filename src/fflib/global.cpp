@@ -136,9 +136,9 @@ long searchMethod = 0; //pichon
 long npichon2d=0, npichon3d=0;
 long npichon2d1=0, npichon3d1=0;
 #ifndef kame
-
- FILE *ThePlotStream=0; //  Add for new plot. FH oct 2008
 #endif
+ FILE *ThePlotStream=0; //  Add for new plot. FH oct 2008
+
   KN<String> *pkarg;//  for the list of argument  mars 2010
 
  Map_type_of_map map_type_of_map ; //  to store te type
@@ -183,10 +183,9 @@ ListOfTOfId tables_of_identifier;
 const int AC_F0::MaxSize=1024; // maximal number of parameters
 
 map<const string,basicForEachType *> map_type;
-#ifndef kame
+
 bool showCPU= false;
 
-#endif
 #include "CodeAlloc.hpp"
 size_t CodeAlloc::nb=0, CodeAlloc::lg=0,CodeAlloc::nbpx=0,CodeAlloc::chunk=2048;
 size_t CodeAlloc::nbt,CodeAlloc::nbdl=0;

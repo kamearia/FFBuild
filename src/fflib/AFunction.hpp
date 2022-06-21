@@ -65,7 +65,7 @@ extern bool showCPU;
 */
 // #include <ctime> 
 #include "CodeAlloc.hpp"
-
+#endif
 inline double CPUtime(){
     /*
 #ifdef SYSTIMES
@@ -77,7 +77,7 @@ inline double CPUtime(){
      */
       return ((double) std::clock())/CLOCKS_PER_SEC;
 }
-#endif
+
 extern long verbosity;  // level off printing
 extern long searchMethod; //pichon
 #ifndef kame
@@ -2201,7 +2201,7 @@ template<class T>
    //vectorOfInst * newclose(Block *& c) ;// sep 2016 FH
     
  static  CC_F0  close(Block *& c,C_F0  );
-#ifndef kame
+
  static  CC_F0  close(Block *& c,CListOfInst  ); /* {
      tables_of_identifier.erase(itabl);      
      c=fatherblock;
@@ -2215,7 +2215,7 @@ template<class T>
    C_F0 Find(const char * k) const  {return table.Find(k);}
    ~Block(); //{}
     int nIdWithDelete() const { return table.nIdWithDelete;}
-#endif
+
 }; 
 
 #ifndef kame
@@ -3090,13 +3090,13 @@ inline C_F0 &operator +=(C_F0 &a,const C_F0 &b)
    C_F0 r=C_F0(TheOperators,"+",a,b);
    a=r;
    return a;}
-   
+
+#endif 
 //inline  bool CC_F0::Empty() const {return !f || f->Empty();}
 inline  void CC_F0::operator=(const CListOfInst& c) 
   { C_F0 cc=c;f=cc.f;r=cc.r;}
 inline   CListOfInst &  CListOfInst::operator+=(const CC_F0 & a)
-  { if( !a.Empty()){ f->Add(a);r=a.left();};return *this;} 
-#endif  
+  { if( !a.Empty()){ f->Add(a);r=a.left();};return *this;}   
 inline Type_Expr basicForEachType::SetParam(const C_F0 & ,const ListOfId * ,size_t & ) const
      { cerr << " int basicForEachType " << name() << endl; 
        InternalError("basicForEachType::SetParam non defined");  }//return make_pair<aType,const E_F0  *>(c.left(),c.LeftValue());}
@@ -3180,25 +3180,25 @@ inline Expression basicForEachType::OnReturn(Expression f) const {
     else return new  E_F0_Func1(DoOnReturn,f);
     return 0; 
 }
-#ifndef kame
+
 
 inline  void CC_F0::operator=(const AC_F0& a) {  f=new E_Array(a); r= atype<E_Array>();};
-
+#ifndef kame
 inline  UnId::UnId(const char * idd,const C_F0 & ee,aType rr=0,bool reff=false) 
   :id(idd),r(rr),e(ee),array(0),re(ee.left()) ,ref(reff){}
 
-
+#endif
 class E_exception : public exception { public:
   enum CODE_exception { UNKNOWN,e_break,e_continue,e_return} ;
   CODE_exception code;  
   AnyType r; // for return 
   public:
-  E_exception(CODE_exception c,AnyType rr=Nothing) : code(c),r(rr)  {}
+  E_exception(CODE_exception c, AnyType rr/*=Nothing*/) : code(c),r(rr)  {}
   int type() {return code;}
   virtual const char *  what() const throw() { return "E_exception (break,continue or return) "; }
   ~E_exception() throw() {}
 };
-
+#ifndef kame
 
 class E_throw : public E_F0mps { public:
    E_exception::CODE_exception kind;    
@@ -3229,6 +3229,7 @@ class E_block :  public E_F0mps { public:
    
 };
 */
+#endif
 class Routine;
 class E_Routine :  public E_F0mps { public:
   ListOfInst * code;
@@ -3246,6 +3247,7 @@ class E_Routine :  public E_F0mps { public:
   operator aType ()  const{ return rt;}         
 
 };
+#ifndef kame
 
 /// <<Routine>> used in [[file:../lglib/lg.ypp::YYSTYPE]]
 
