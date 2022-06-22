@@ -82,9 +82,9 @@ float scalj(int j);
 //int pStrCopy (StringPtr p1, StringPtr p2);
 int execute(char* what);
 //int DoMouseDown (int windowPart, WindowPtr whichWindow, EventRecord *myEvent);
-
+#endif
 char Getijc(int & x,int & y);
-
+#ifndef kame
 void postexit();
 
 static int  cube6[7][3] ={ {255,0,0},{255,255,0},{0,255,0},
@@ -610,8 +610,8 @@ char Getijc(int & x,int & y)
  //	cout << " x = " << x << " y = " << y  << " char = " << ((unsigned char)char1 > 127 ? '*': char1) << ")" << endl;
  	return char1;
 }
-#endif
-#ifndef kame
+
+
 char Getxyc(float &x,float &y)
 {
   char c=' ';

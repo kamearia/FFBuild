@@ -29,6 +29,7 @@
 #include "String.hpp"
 #include "lex.hpp"
 #include "strversionnumber.hpp"
+#include "Operator.hpp"
 extern mylex *zzzfff;
 #ifndef kame
 //#pragma dont_inline on
@@ -1167,9 +1168,9 @@ void Init_map_type()
      Global.New("cin",CConstant<istream*>(&cin));
      Global.New("append",CConstant<ios::openmode>(ios::app));
      Global.New("binary",CConstant<ios::openmode>(ios::binary)); // add FH april 2014
-#ifndef kame
+
      TheOperators->Add("|",new OneBinaryOperator<Op2_pipe<ios::openmode> >); // add FH april 2014
-#endif
+
      Global.New("endl",CConstant<const char*>("\n"));
      Global.New("true",CConstant<bool>(true));
      Global.New("false",CConstant<bool>(false));

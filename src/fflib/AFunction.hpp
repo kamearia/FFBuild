@@ -1008,10 +1008,10 @@ template<class A0>
  bool MeshIndependent() const { return a->MeshIndependent();  }    
 
 };
-
+#endif
 inline int clexico(int i,int j) { return i==0 ? j : i;}
 inline int clexico(int i,int j,int k) { int ll=clexico(i,j);  return  ll==0 ? k : ll;}
-
+#ifndef kame
 template<class R,class TA0,class TA1>
  class E_F_F0F0 :public  E_F0 { public:
    template <class T> struct remove_reference     {typedef T type;};
@@ -2273,6 +2273,7 @@ struct OneBinaryOperator_Traits {
   typedef C::first_argument_type A;
   typedef C::second_argument_type B;
 };*/
+#endif
 //   the greatest pref win ...
 template<class A,class B>  struct SameType { static const int OK=0;};
 template<class A>  struct SameType<A,A> { static const int OK=1;};
@@ -2289,7 +2290,7 @@ template<>  struct SameType<Complex,Complex> { static const int OK=40;};
 //template<>  struct SameType<bool,Complex> { static const int OK=41;};
 //template<>  struct SameType<Complex,bool> { static const int OK=41;};
 template<>  struct SameType<string*,string*> { static const int OK=50;};
-
+#ifndef kame
 template <typename Arg1, typename Arg2,typename Arg3, class Result>
 struct ternary_function
 {
@@ -2407,11 +2408,12 @@ class  OneTernaryOperator3 : public OneOperator{
 
 
 
-
+#endif
 struct OneBinaryOperatorMI {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return true;}
 };
+#ifndef kame
 struct OneBinaryOperatorMIWO {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return false;}
@@ -2493,14 +2495,14 @@ public:
    {pref = SameType<A,B>::OK ;}
 
 };
-
+#endif
 struct evalE_F2 {
    static AnyType eval(Stack s,const E_F0 * ab,const E_F0 * a,const E_F0 * b, bool & meshidenp) 
    {
        return ab->E_F0::eval(s,meshidenp); 
    }
 };
-
+#ifndef kame
 // Add FH juin 2020 
 template<typename A,typename B>
 class  OneBinaryOperatorBug : public OneOperator{
@@ -2517,7 +2519,7 @@ public:
 };
 
 #endif
-#ifndef kame
+
 template<typename C,class MI=OneBinaryOperatorMI,class MIx=evalE_F2 >
 class  OneBinaryOperator : public OneOperator{
 	typedef  typename C::result_type R;
@@ -2526,6 +2528,7 @@ class  OneBinaryOperator : public OneOperator{
 	aType t0,t1; // type of template modif FH mars 2006 
 
 	class Op : public E_F0 {
+	public:
 		typedef typename C::first_argument_type A;
 		typedef typename C::second_argument_type B;
 		typedef  typename C::result_type Result;
@@ -2570,20 +2573,20 @@ class  OneBinaryOperator : public OneOperator{
 		Opt(const  Op &t,size_t iaa,size_t ibb) 
 			: Op(t) ,
 			ia(iaa),ib(ibb) {}
-/*
-    AnyType operator()(Stack s)  const 
-    {
-      // cout <<  "Opt2 ::: " << ia << " "<< ib << " f = " 
-      //      <<  GetAny<double>(SetAny<R>(C::f( *static_cast<A *>(static_cast<void*>(static_cast<char *>(s)+ia)) , 
-      //                     *static_cast<B *>(static_cast<void*>(static_cast<char *>(s)+ib))))) << endl;
+
+		AnyType operator()(Stack s)  const 
+		{
+			// cout <<  "Opt2 ::: " << ia << " "<< ib << " f = " 
+			//      <<  GetAny<double>(SetAny<R>(C::f( *static_cast<A *>(static_cast<void*>(static_cast<char *>(s)+ia)) , 
+			//                     *static_cast<B *>(static_cast<void*>(static_cast<char *>(s)+ib))))) << endl;
       
-      
-      return SetAny<R>( C::f( *static_cast<A *>(static_cast<void*>(static_cast<char *>(s)+ia)) , 
-			      *static_cast<B *>(static_cast<void*>(static_cast<char *>(s)+ib)) ) );}  
+		return SetAny<R>( C::f( *static_cast<A *>(static_cast<void*>(static_cast<char *>(s)+ia))  , 
+			      *static_cast<B *>(static_cast<void*>(static_cast<char *>(s)+ib)) ) );
+		}  
     
     
   }; 
-*/ //KAME
+
   //   aType r; //  return type 
 	public: 
 		E_F0 * code(const basicAC_F0 & args) const 
@@ -2607,7 +2610,7 @@ class  OneBinaryOperator : public OneOperator{
 		{pref = SameType<A,B>::OK ;}
 
 	};
-#endif
+
 #ifndef kame
 //-------------
 template<typename R>

@@ -7,8 +7,9 @@
 
 #include "targetver.h"
 
-#include <io.h>
+#include <cstdarg>
 #include <fcntl.h>
+#include <io.h>
 #include <ios>
 #include <iostream>
 #include <fstream>

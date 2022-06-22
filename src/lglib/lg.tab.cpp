@@ -48,6 +48,7 @@
 #include "environment.hpp"
 #include "lg.tab.hpp"
 
+
 /* Identify Bison output.  */
 #define YYBISON 1
 
@@ -64,10 +65,8 @@
 #define YYLSP_NEEDED 0
 
 /* Substitute the variable and function names.  */
-#ifndef kame
 #define yyparse lgparse
 #define yylex   lglex
-#endif
 #define yyerror lgerror
 #define yylval  lglval
 #define yychar  lgchar
@@ -321,7 +320,9 @@ Block *currentblock;
 const int sizeStackOfLoop=100;
 Block * StackOfLoop[sizeStackOfLoop];
 // end ADD
+#endif
 double CPUcompileInit =0;
+#ifndef kame
 //class pfes;
 C_F0  fespacetype;
 bool fespacecomplex;
@@ -335,18 +336,17 @@ int ShowAlloc(const char *s,size_t &);
 inline int yylex()  {return zzzfff->scan();}
 #ifndef kame
 inline int lineno() {return zzzfff->lineno();}
-#endif
 extern bool withrgraphique;
-
+#endif
 /// <<fingraphique>>
-
+#ifndef kame
 inline void fingraphique()
  { if(withrgraphique)
    { withrgraphique=false;
     rattente(1);
     closegraphique();
   }}
-#ifndef kame
+
 void lgerror (const char* s) ;
 
 #endif
@@ -3612,10 +3612,7 @@ yyreturn:
 
 } // yypqarse
 
-#ifndef kame
 //#line 810 "lg.ypp"
-
-
 
 #include <fstream>
 using namespace std;
@@ -3625,6 +3622,7 @@ void ForDebug()
   int i=0;
   i++;
 }
+#ifndef kame
 //extern void ShowAlloc(const char *s, size_t lg);
 //extern void ShowNbAlloc(const char *s);
 void init_lgfem() ;
@@ -3730,6 +3728,7 @@ extern int getprog(char *fn, int argc, char **argv);
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
 extern Polymorphic * TheOperators;
 extern void init_lgmesh();
+int lgdebug;
 int mainff (int  argc, char **argv)
 {
 #ifndef _WIN32
@@ -3756,24 +3755,27 @@ int mainff (int  argc, char **argv)
   int retvalue=0;
 #ifndef kame
    ff_atend(fingraphique);
-   if (initparallele)initparallele(argc,argv);
+#endif
+  if (initparallele)initparallele(argc,argv);
 
   CPUcompileInit= CPUtime();
+#ifndef kame
   withrgraphique = false;
+#endif
    atexit(ForDebug);
 //  AllFunctions::maptype  xlocal;
 //  local=&xlocal;
   lexdebug = false;
   lgdebug = false;
-#endif
+
   char *  cc= new char [1024];
   //  istream * ccin=0;
   if ( ! (getprog(cc,argc,argv) >0)  ) // [[file:~/ff/src/Graphics/getprog-unix.hpp::getprog]]
     {
-#ifndef kame
-      cout << "-- FreeFem++ v" << StrVersionNumber() << " (error parameter!)\n"  ;
+
+	  cout << "-- FreeFem++ v" << "?.?" /* StrVersionNumber()*/ << " (error parameter!)\n"  ;
       if(ThePlotStream) {ffapi::ff_pclose(ThePlotStream); ThePlotStream=0;}
-#endif
+
 	  return 1;
     }
 

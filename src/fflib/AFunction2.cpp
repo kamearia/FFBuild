@@ -28,7 +28,8 @@
 #include "stdafx.h"
 //#pragma dont_inline on
 //#pragma inline_depth(1)
-#include <iostream>
+
+
 #include "AFunction.hpp"
 #include "lex.hpp"
 #include "showverb.hpp"
@@ -338,7 +339,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
     OneOperator::OneOperator(aType rr,const ListOfId *l)
       : ArrayOfaType(l),r(rr),next(0),pref(0)
       {throwassert(rr );}
-#ifndef kame
+
 void Polymorphic::Addp (const char *op, Value pp, ...) const {
   pair<iterator,bool> p = m.insert(pair<const Key, Value>(op, pp));
   Value f = p.first->second;
@@ -350,7 +351,7 @@ void Polymorphic::Addp (const char *op, Value pp, ...) const {
     *f += *pp;
   va_end(ap);
 }
-
+#ifndef kame
 void Polymorphic::Add(const char * op,Value *pp) const
 {
   if (*pp)
