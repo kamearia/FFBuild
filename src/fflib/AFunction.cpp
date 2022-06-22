@@ -30,6 +30,8 @@
 #include "lex.hpp"
 #include "strversionnumber.hpp"
 #include "Operator.hpp"
+#include "ffstack.hpp"
+#include "RNM.hpp"
 extern mylex *zzzfff;
 #ifndef kame
 //#pragma dont_inline on
@@ -163,13 +165,16 @@ template<class T> inline T Min (const T &a,const T & b,const T & c,const T & d){
 template<class T> inline T Max (const T &a,const T & b,const T & c,const T & d){return Max(Max(a,b),Max(c,d));}
 
 template<class T> inline T Square (const T &a){return a*a;}
-
+#endif
 struct SubArray2: public binary_function<long,long,SubArray> {
   static SubArray f(const long & a,const long & b)  {
     return SubArray(b-a+1,a);} };
+
 struct SubArray3: public ternary_function<long,long,long,SubArray> {
   static SubArray f(Stack s,const long & a,const long & b,const long & c)  {
    return SubArray((b-a+1)/c,a,c);} };
+
+#ifndef kame
 
 #ifdef OLDCPP
 template<class T> inline
@@ -196,7 +201,7 @@ inline void MyAssert(int i,char * ex,char * file,long line)
     cout << "CompileError assertion :  " << ex << " in file " << file << "  line = " << line << endl;
      CompileError();}
  }
-
+#endif
 template<class R>
 class  OneOperatorConst : public OneOperator {
     E_F0 * e;
@@ -204,7 +209,7 @@ class  OneOperatorConst : public OneOperator {
     E_F0 * code(const basicAC_F0 & ) const  { return  e;}
     OneOperatorConst(E_F0 * ee):  OneOperator(map_type[typeid(R).name()]),e(ee){}
 };
-
+#ifndef kame
 class  OneOperator_array : public OneOperator {public:
     E_F0 * code(const basicAC_F0 & a) const
      { return  new E_Array(a);}
@@ -561,7 +566,7 @@ long genrand_int32(void);
 void init_genrand(unsigned long);
 long genrandint (long  s) { init_genrand( (unsigned long ) s); return 0;}
 long genrandint32 () {return (long)  genrand_int32();}
-
+#endif
 template<class A,class B,bool RO=true>
 struct  MIMul {
   static bool MeshIndependent(Expression a,Expression b)
@@ -593,7 +598,7 @@ struct  MIMul {
   static bool ReadOnly() { return RO;}
 
 };
-
+#ifndef kame
 
 // add frev 2007
 class opTrans : public OneOperator{
@@ -861,7 +866,7 @@ C_F0  formalMatDet(const basicAC_F0 &args)
     return  C_F0();
 
 }
-
+#endif
 //  Add juin  2007
 template<class A,class B=A,class R=A>
 struct evalE_mul {
@@ -880,6 +885,7 @@ struct evalE_mul {
 	return SetAny<R>(static_cast<R>(rr));
     }
 };
+#ifndef kame
 istream *Getline(istream * f, string ** s)
 {
     if( *s==0) *s=newstring();
@@ -1177,8 +1183,6 @@ void Init_map_type()
      Global.New("pi",CConstant<double>(3.14159265358979323846264338328));
      Global.New("version",CConstant<double>(VersionNumber()));
 
-#ifndef kame
-
      Global.New("showCPU",CPValue<bool>(showCPU));
      Global.New("CPUTime",CConstant<bool*>(&showCPU));
      // def de Zero et One
@@ -1190,7 +1194,6 @@ void Init_map_type()
        new OneOperatorConst<char>(new EConstant<char>(':')),
        new OneBinaryOperator<SubArray2>,
        new OneTernaryOperator3<SubArray3>);
-
 
      TheOperators->Add("+",
        new OneBinaryOperator<Op2_add<long,long,long> >,
@@ -1207,6 +1210,7 @@ void Init_map_type()
        new OneBinaryOperator<Op2_add<Complex,long,Complex> > ,
        new OneBinaryOperator_st<Op2_padd<string,string*,string*> >  // a changer to do FH string * mars 2006
        );
+
      TheOperators->Add("-",
        new OneBinaryOperator<Op2_sub<long,long,long> >,
        new OneBinaryOperator<Op2_sub<double,double,double> >,
@@ -1236,6 +1240,7 @@ void Init_map_type()
        new OneBinaryOperator<Op2_mul<long,long,bool> >,
        new OneBinaryOperator<Op2_mul<long,bool,long> >
        );
+
     // add missing operation jan 2017 FH.
     TheOperators->Add("*",
                       new OneBinaryOperator<Op2_mul<Complex,Complex,bool> >,
@@ -1326,7 +1331,7 @@ void Init_map_type()
      TheOperators->Add("!",
        new OneUnaryOperator<Op1_not<bool > >
      );
-
+#ifndef kame
      TheOperators->Add("&&", new OneBinaryOperator<Op2_and > );
      TheOperators->Add("&", new OneBinaryOperator<Op2_and > );
      TheOperators->Add("||", new OneBinaryOperator<Op2_or> );

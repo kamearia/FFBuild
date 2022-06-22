@@ -69,9 +69,10 @@ const int BeginOffset = 6;
 /// <<Stack>>
 typedef void *Stack;
 
-#ifndef kame
+
 
  const Stack  NullStack=0;
+#ifndef kame
 //typedef StackType& Stack;
 inline Stack pvoid2Stack(void * pv) { return pv;}
 

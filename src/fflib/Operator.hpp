@@ -27,20 +27,23 @@
  */
 
 #pragma once
+typedef void * Stack;
+#include "AFunction.hpp"
+using namespace std;
 #ifndef kame
 #if defined(__GNUC__) && __GNUC__+0 >= 3
 inline double pow(double x,long l) { return pow(x,(double)l);}
 #endif
 
-
+#endif  
 template<class R,class A=R> 
 struct Op1_neg: public unary_function<A,R> { 
   static R f(const A & a)  { return - (R)a;} }; 
-  
+
 template<class R,class A=R> 
 struct Op1_plus: public unary_function<A,R> { 
   static R f(const A & a)  { return + (R)a;} }; 
-  
+ 
 template<class A> 
 struct Op1_not: public unary_function<A,bool> { 
   static bool f(const A & a)  { return ! (bool)a;} }; 
@@ -52,7 +55,7 @@ struct Op2_add: public binary_function<A,B,R> {
 template<class R,class A=R,class B=A> 
 struct Op2_sub: public binary_function<A,B,R> { 
   static R f(const A & a,const B & b)  { return ((R)a - (R)b);} }; 
-
+#ifndef kame
 template<class R,class A=R,class B=A>
 struct Op2_DotDiv: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  { return DotDiv((R)a, (R)b);} };
@@ -61,18 +64,19 @@ template<class R,class A=R,class B=A>
 struct Op2_DotStar: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  { return DotStar((R)a, (R)b);} };
 
-
+#endif
 template<class R,class A=R,class B=A>
 struct Op2_mul: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
   // cout << a << " * " << b <<" => "  << ((R)a * (R)b) << endl;
   return ((R)a * (R)b);} }; 
+#ifndef kame
 template<class R,class A,class B>
 struct Op2_mull: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
   // cout << a << " * " << b <<" => "  << ((R)a * (R)b) << endl;
   return (a * b);} };
-
+#endif
 template<class R,class A=R,class B=A>
 struct Op2_div: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
@@ -80,7 +84,7 @@ struct Op2_div: public binary_function<A,B,R> {
        {cerr <<  a << "/" << b << " : " <<  typeid(A).name()  << " " << typeid(B).name() 
              << " " << typeid(R).name() << endl;ExecError(" Div by 0");}
      return ((R)a / (R)b);} };
-
+#ifndef kame
 template<class R,class A,class B >
 struct Op2_divv: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
@@ -92,7 +96,7 @@ struct Op2_divv: public binary_function<A,B,R> {
 template<class R>
 struct Op2_pipe: public binary_function<R,R,R> {
     static R f(const R & a,const R & b)  {   return (a | b);} };
-#ifndef kame
+
 template<class R,class A=R,class B=A> 
 struct Op2_mod: public binary_function<A,B,R> { 
   static R f(const A & a,const B & b)  { return ((R)a % (R)b);} }; 
@@ -126,21 +130,20 @@ struct Op2_eq: public binary_function<A,B,bool> {
 template<class A,class B=A> 
 struct Op2_ne: public binary_function<A,B,bool> { 
   static bool f(const A & a,const B & b)  { return a  != b;} }; 
-
+#ifndef kame
 struct Op2_and: public binary_function<bool,bool,bool> { 
   static bool f(const bool & a,const bool & b)  { return a  && b;} }; 
   
 struct Op2_or: public binary_function<bool,bool,bool> { 
   static bool f(const bool & a,const bool & b)  { return a  || b;} }; 
 
-
+#endif
 template<class R,class A,class B> 
 struct Op2_padd: public binary_function<A,B,R*> { 
   static R * f(Stack s,const A & a,const B & b)  { 
    R* r= Add2StackOfPtr2Free(s, a || b ? new R ((a ? *a : nullptr) + (b ? *b : nullptr)) : nullptr);
   // delete a,delete b;
   return r;} }; 
-
 
 template<class A,class B=A> 
 struct Op2_plt: public binary_function<A,B,bool> { 
@@ -180,11 +183,10 @@ struct Op2_pne: public binary_function<A,B,bool> {
   // delete a,delete b;
   return r;} }; 
 
-
 template<class R,class A=R,class B=A>
 struct Op2_pow: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  { return R(pow(a,b));}};
-  
+#ifndef kame 
 
 
 template<class A>
@@ -731,11 +733,11 @@ template<class R,class A=R,class B=A>
 struct Op2_sub_pn: public binary_function<A,B,R*> { 
   static R* f(const A & a,const B & b)  { return new R(a - *b);} };   
 
-
+#endif
 template<class R,class A=R,class B=A,class C=A> 
 struct Op3_p: public ternary_function<A,B,C,R*> { 
   static R* f(Stack s,const A & a,const B & b,const  C & c )  { return new R(a,b,c);} };   
-
+#ifndef kame
 template<class R,class A=R,class B=A> 
 struct Op2_p: public binary_function<A,B,R*> { 
   static R* f(const A & a,const B & b)  { return new R(a,b);} };   

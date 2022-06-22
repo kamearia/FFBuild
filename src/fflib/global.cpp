@@ -162,11 +162,9 @@ YYSTYPE *plglval;
 
 //int NbNewVarWithDel =0; // add FH sep 2016 (bof bof global variable not got but hard to set in E_F0 or C_F0
  long mpisize=0,mpirank=0;
-#ifndef kame
 
    C_F0 *pOne=0,*pZero=0,*pminusOne=0;
 // const C_F0 & One(*pOne), &Zero(*pZero);
-#endif
  Polymorphic * TheOperators=0, //=new Polymorphic(),
              * TheRightOperators=0;//=new Polymorphic();
 

@@ -48,7 +48,9 @@
 #include <string>
 #include <cstdlib>
 #include <algorithm>
+#endif
 extern bool showCPU;
+#ifndef kame
 
 
 # include <ctime>
@@ -166,11 +168,10 @@ typedef deque<UnId> ListOfId;
 #ifndef kame
 /// Doxygen doc
 extern Polymorphic * TheOperators, * TheRightOperators;
-
+#endif
 //  -------------
 extern  C_F0 *pOne,*pZero,*pminusOne;
 
-#endif
 typedef void * Stack;
 typedef   AnyType (* Function1)(Stack, const AnyType &);
 
@@ -1011,7 +1012,7 @@ template<class A0>
 #endif
 inline int clexico(int i,int j) { return i==0 ? j : i;}
 inline int clexico(int i,int j,int k) { int ll=clexico(i,j);  return  ll==0 ? k : ll;}
-#ifndef kame
+
 template<class R,class TA0,class TA1>
  class E_F_F0F0 :public  E_F0 { public:
    template <class T> struct remove_reference     {typedef T type;};
@@ -1060,7 +1061,6 @@ class E_F_F0F0_Opt: public E_F_F0F0<R,TA0,TA1>  { public :
   
 };     
        
-
 template<class R,class TA0,class TA1>
    int E_F_F0F0<R,TA0,TA1>::Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) 
     {
@@ -1071,7 +1071,7 @@ template<class R,class TA0,class TA1>
        return insert(new E_F_F0F0_Opt<R,TA0,TA1>(*this,a0->Optimize(l,m,n),a1->Optimize(l,m,n)),l,m,n);
     }
 // add modif for xlc++
-
+#ifndef kame
 
 
 template<class R,class A0>
@@ -2244,7 +2244,7 @@ class  OneOperator1 : public OneOperator {
       t0( map_type[typeid(A).name()] ), f(ff) {pref=ppref;}
 };
 
-
+#endif
 template<class R,class A=R,class B=A,class CODE=E_F_F0F0<R,A,B> >
 class  OneOperator2 : public OneOperator {
     aType r,t0,t1; //  return type 
@@ -2266,7 +2266,7 @@ class  OneOperator2 : public OneOperator {
       t0( map_type[typeid(A).name()] ),t1(map_type[typeid(B).name()] ), f(ff) {}
       
 };
-
+#ifndef kame
 /*template<typename C>
 struct OneBinaryOperator_Traits {
   typedef C::result_type R;
@@ -2290,7 +2290,7 @@ template<>  struct SameType<Complex,Complex> { static const int OK=40;};
 //template<>  struct SameType<bool,Complex> { static const int OK=41;};
 //template<>  struct SameType<Complex,bool> { static const int OK=41;};
 template<>  struct SameType<string*,string*> { static const int OK=50;};
-#ifndef kame
+
 template <typename Arg1, typename Arg2,typename Arg3, class Result>
 struct ternary_function
 {
@@ -2299,7 +2299,7 @@ struct ternary_function
 	typedef Arg3   third_argument_type;
 	typedef Result result_type;
 };
-
+#ifndef kame
 template <typename Arg1, typename Arg2,typename Arg3,typename Arg4 , class Result>
 struct quad_function
 {
@@ -2375,7 +2375,7 @@ public:
 		) {}
 };
 
-
+#endif
 template<typename T >
 class  OneTernaryOperator3 : public OneOperator{
   typedef typename T::result_type R;
@@ -2407,8 +2407,6 @@ class  OneTernaryOperator3 : public OneOperator{
 };
 
 
-
-#endif
 struct OneBinaryOperatorMI {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return true;}
@@ -2418,6 +2416,7 @@ struct OneBinaryOperatorMIWO {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return false;}
 };
+#endif
 // ----------  operator with stack ??? for auto delete
 template<typename C,class MI=OneBinaryOperatorMI>
 class  OneBinaryOperator_st : public OneOperator{
@@ -2495,7 +2494,7 @@ public:
    {pref = SameType<A,B>::OK ;}
 
 };
-#endif
+
 struct evalE_F2 {
    static AnyType eval(Stack s,const E_F0 * ab,const E_F0 * a,const E_F0 * b, bool & meshidenp) 
    {
@@ -2727,6 +2726,7 @@ class bUnary_Op : public C { public:
        
     };
 */ 
+#endif
 template<class C>
 class Unary_Op : public E_F0 { public:
 
@@ -2762,8 +2762,6 @@ class Unary_Op : public E_F0 { public:
        
     };
 
-
-
 template<class C,class Op=Unary_Op<C> > 
 class  OneUnaryOperator : public OneOperator{
   typedef typename C::result_type R;
@@ -2779,7 +2777,7 @@ class  OneUnaryOperator : public OneOperator{
       tA(map_type[typeid(A).name()])
       {}
 };
-
+#ifndef kame
 template<class R,class A=R,class CODE=E_F_F0s_<R,A> >
 class  OneOperator1s_ : public OneOperator {
     typedef  R (*func)(Stack stack, const A &) ; 
