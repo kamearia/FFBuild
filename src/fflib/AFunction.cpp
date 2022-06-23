@@ -1054,6 +1054,7 @@ bool  pswap(T *a,T *b) {swap(*a,*b);return 0; }
 long lrintc(Complex x) { return lrint(real(x));}
 long lroundc(Complex x) { return lround(real(x));}
 #endif
+extern double VersionNumber();
 void Init_map_type()
 {
    TheOperators=new Polymorphic(),

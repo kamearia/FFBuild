@@ -147,8 +147,9 @@ static int init_ff_graph_ptr_func()
   return 1;
 }
 //  to call the init function before main
+#ifndef kame
 static int init_ff_graph_ptr_func_call = init_ff_graph_ptr_func();
-
+#endif
 #define getcadre getcadre_
 #define GetScreenSize GetScreenSize_
 #define Getxyc Getxyc_

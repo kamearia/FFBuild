@@ -143,9 +143,12 @@ extern bool withrgraphique;
 /// <<fingraphique>>
 
 inline void fingraphique()
- { if(withrgraphique)
+ {
+  if(withrgraphique)
    { withrgraphique=false;
+#ifndef kame
     rattente(1);
+#endif
     closegraphique();
   }}
 #ifndef kame

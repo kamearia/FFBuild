@@ -224,13 +224,13 @@ int(*ffapi::ff_pclose)(FILE *stream);
 #include "String.hpp"
 #include "lex.hpp"
 
-   extern void rattente(int);
-   extern void closegraphique(void);
+extern void rattente(int);
+extern void closegraphique(void);
 
-#ifndef kame
+
 //KAME #include <config.h>
-#include <iostream>
-#include  <complex>
+//KAME#include <iostream>
+//KAME#include  <complex>
 #include <string>
 
   // for reset cout,cin  in windows  dll
@@ -240,10 +240,11 @@ int(*ffapi::ff_pclose)(FILE *stream);
 #include <cstdio>
 #endif
 
-#include "error.hpp"
-class Iden;
-#include "strversionnumber.hpp"
-#include "InitFunct.hpp"
+//KAME #include "error.hpp"
+//KAME class Iden;
+//KAME #include "strversionnumber.hpp"
+//KAME #include "InitFunct.hpp"
+
 #ifdef __MWERKS__
 #ifdef __INTEL__
 #include <malloc.h>
@@ -251,11 +252,9 @@ class Iden;
 #include <alloca.h>
 #endif
 #endif
+//KAME #include "RNM.hpp"
 
-#endif
-#include "RNM.hpp"
-#ifndef kame
-
+/* //KAME
 #include "AFunction.hpp"
 //  to reserve space to graphical pointer function
 #include "rgraph.hpp"
@@ -267,29 +266,32 @@ class Iden;
 #include "lgfem.hpp"
 #include "lex.hpp"
 #include "environment.hpp"
-#endif
+*/  //KAME
+
+
 extern long storageused();
 extern FILE *ThePlotStream;
 extern KN<String> *pkarg;
-#ifndef kame
+
 
 class Routine;
 bool load(string s);
 
- template <class R,int d> class FE;
- template <class R,int d,int i> class FE_;
+template <class R,int d> class FE;
+template <class R,int d,int i> class FE_;
 
 extern mylex *zzzfff;
 // modif FH for window to have 1 dll  for mpi and none mpi ..
 extern  void (*initparallele)(int &, char **&);
 extern  void (*init_lgparallele)();
+
 // extern  void (*end_parallele)();
 //
 #ifdef HAVE_LIBARPACK
   void init_eigenvalue();
 #endif
 
-  aType dcltype;
+aType dcltype;
 const int nbembtype=10;
 aType rettype[nbembtype];
 Block * routineinblock[nbembtype]; // Add FH july 2005 pb clean on return
@@ -297,51 +299,54 @@ int kkembtype=-1;
 int inloopcount=0;
 
 /// <<currentblock>> Block class from [[file:../fflib/AFunction.hpp::Block]]
-#endif
 Block *currentblock;
-#ifndef kame
+
 // Add FH july 2005
 //  problem clean variable after break,continue and return.
 const int sizeStackOfLoop=100;
 Block * StackOfLoop[sizeStackOfLoop];
 // end ADD
-#endif
+
 double CPUcompileInit =0;
-#ifndef kame
+
 //class pfes;
 C_F0  fespacetype;
 bool fespacecomplex;
 int fespacedim;
-#endif
 extern int UnShowAlloc;
 int ShowAlloc(const char *s,size_t &);
 // <<yylex>> Connection from grammar to lexer object zzzfff [[file:../fflib/lex.hpp::zzzfff]] of class mylex
 // [[file:../fflib/lex.hpp::class mylex]]. Method mylex::scan() is implemented at [[file:../fflib/lex.cpp::mylex_scan]]
 
 inline int yylex()  {return zzzfff->scan();}
-#ifndef kame
 inline int lineno() {return zzzfff->lineno();}
+
 extern bool withrgraphique;
-#endif
+
 /// <<fingraphique>>
-#ifndef kame
+extern void rattente(int);
 inline void fingraphique()
- { if(withrgraphique)
-   { withrgraphique=false;
-    rattente(1);
-    closegraphique();
-  }}
+{
+#ifndef kame
+	if (withrgraphique)
+	{
+		withrgraphique = false;
+
+		rattente(1);
+		closegraphique();
+	}
+#endif
+  }
 
 void lgerror (const char* s) ;
 
-#endif
  // mpi ptr to function ...
 void (*initparallele)(int &argc, char **& argv)=0 ;
 void (*init_lgparallele)()=0;
 //void (*end_parallele)()=0;
 
 // Add dec 2014
-#include <vector>
+//KAME #include <vector>
 typedef void (*AtEnd)();
 vector<AtEnd> AtFFEnd;
 void ff_finalize()
@@ -354,16 +359,14 @@ void ff_atend(AtEnd f)
 {
     AtFFEnd.push_back(f);
 }
-#ifndef kame
-#include <csignal>
+
+//KAME #include <csignal>
 void signalCPUHandler( int signum ) {
     ff_finalize();
     std::cout << "Cputime limit exceeded:  (" << signum << ") received.\n";
     
     exit(24);
 }
-
-#endif
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -375,7 +378,7 @@ void signalCPUHandler( int signum ) {
 # undef YYERROR_VERBOSE
 # define YYERROR_VERBOSE 1
 #else
-# define YYERROR_VERBOSE 0
+# define YYERROR_VERBOSE 1
 #endif
 
 /* Enabling the token table.  */
@@ -383,11 +386,8 @@ void signalCPUHandler( int signum ) {
 # define YYTOKEN_TABLE 0
 #endif
 
-#ifndef kame
-
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-
 //#line 163 "lg.ypp"
 {
  double dnum;
@@ -398,7 +398,7 @@ typedef union YYSTYPE
  /* <<YYSTYPE_str>> */
  char * str;
  char oper[8];
-#ifndef kame
+
  /* <<YYSTYPE_cexp>> [[file:../fflib/AFunction.hpp::CC_F0]] */
  CC_F0 cexp;
 
@@ -412,7 +412,7 @@ typedef union YYSTYPE
 
  /* <<YYSTYPE_cinst>> refers to [[file:~/ff/src/fflib/AFunction.hpp::CListOfInst]] */
  CListOfInst cinst;
-#endif
+
  Block * block;
 
  /* <<YYSTYPE_clist_id>> [[file:~/ff/src/fflib/AFunction.hpp::ListOfId]] */
@@ -422,19 +422,18 @@ typedef union YYSTYPE
 
  vectorOfInst * endb;
 }
-#ifndef kame
+
 /* Line 193 of yacc.c.  */
 //#line 401 "lg.tab.cpp"
-#endif
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
 
-#endif
 
-#ifndef kame
+
+
 
 /* Copy the second part of user declarations.  */
 
@@ -445,7 +444,7 @@ typedef union YYSTYPE
 #ifdef short
 # undef short
 #endif
-#endif
+
 #ifdef YYTYPE_UINT8
 typedef YYTYPE_UINT8 yytype_uint8;
 #else
@@ -466,8 +465,7 @@ typedef YYTYPE_UINT16 yytype_uint16;
 #else
 typedef unsigned short int yytype_uint16;
 #endif
-#ifndef kame
-#endif
+
 #ifdef YYTYPE_INT16
 typedef YYTYPE_INT16 yytype_int16;
 #else
@@ -488,7 +486,6 @@ typedef short int yytype_int16;
 #  define YYSIZE_T unsigned int
 # endif
 #endif
-#ifndef kame
 
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
@@ -506,32 +503,33 @@ typedef short int yytype_int16;
 
 /* Suppress unused-variable warnings by "using" E.  */
 #if ! defined lint || defined __GNUC__
-# define YYUSE(e) ((void) (e))
+#	define YYUSE(e) ((void) (e))
 #else
 # define YYUSE(e) /* empty */
 #endif
 
 /* Identity function, used to suppress warnings about constant conditions.  */
+/*  //KAME
 #ifndef lint
-# define YYID(n) (n)
+#	define YYID(n) (n)
 #else
-#if (defined __STDC__ || defined __C99__FUNC__ \
-     || defined __cplusplus || defined _MSC_VER)
-static int
-YYID (int i)
-#else
-static int
-YYID (i)
-    int i;
+#	if (defined __STDC__ || defined __C99__FUNC__ \
+		|| defined __cplusplus || defined _MSC_VER)
+		static int
+		YYID (int i)
+	#else
+		static int
+		YYID (i)
+		int i;
+	#endif
+	{
+	return i;
+	}
 #endif
-{
-  return i;
-}
-#endif
+*/ //KAME
 
-#endif
 int YYID(int i) { return 1; }
-#ifndef kame
+
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
 
@@ -599,7 +597,7 @@ void *malloc (YYSIZE_T); /* INFRINGES ON USER NAME SPACE */
 void free (void *); /* INFRINGES ON USER NAME SPACE */
 #   endif
 #  endif
-# endif
+
 #endif /* ! defined yyoverflow || YYERROR_VERBOSE */
 
 
@@ -640,6 +638,7 @@ union yyalloc
       while (YYID (0))
 #  endif
 # endif
+#endif
 
 /* Relocate STACK from its old location to the new one.  The
    local variables YYSIZE and YYSTACKSIZE give the old and new number of
@@ -658,7 +657,8 @@ union yyalloc
     while (YYID (0))
 
 #endif
-#endif
+
+
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  90
 
@@ -667,14 +667,14 @@ union yyalloc
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  79
-#ifndef kame
+
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  49
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  221
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  477
-#endif
+
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   308
@@ -1415,7 +1415,7 @@ static const yytype_uint8 yystos[] =
 
 #define YYABORT		goto yyabortlab
 #define YYERROR		goto yyerrorlab
-#ifndef kame
+
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
@@ -1488,7 +1488,7 @@ while (YYID (0))
 # endif
 #endif
 
-#endif
+
 /* YYLEX -- calling `yylex' with the right arguments.  */
 
 #ifdef YYLEX_PARAM
@@ -1500,12 +1500,12 @@ while (YYID (0))
 
 /* Enable debugging if requested.  */
 #if YYDEBUG
-#ifndef kame
+
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYFPRINTF fprintf
 # endif
-#endif
+
 
 # define YYDPRINTF(Args)			\
 do {						\
@@ -1515,7 +1515,7 @@ do {						\
 
 
 
-#ifndef kame
+
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
 do {									  \
   if (yydebug)								  \
@@ -1663,12 +1663,12 @@ int yydebug;
 # define YY_REDUCE_PRINT(Rule)
 #endif /* !YYDEBUG */
 
-#endif
+
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
 #ifndef	YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
-#ifndef kame
+
 /* YYMAXDEPTH -- maximum size the stacks can grow to (effective only
    if the built-in stack extension method is used).
 
@@ -1680,7 +1680,7 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
+#ifndef kame
 
 #if YYERROR_VERBOSE
 
@@ -3555,8 +3555,9 @@ yyerrlab1:
 yyabortlab:
 		yyresult = 1;
 		goto yyreturn;
-
+#endif
 #ifndef yyoverflow
+
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -3564,8 +3565,9 @@ yyabortlab:
 		yyerror (YY_("memory exhausted"));
 		yyresult = 2;
   /* Fall through.  */
-#endif
 
+#endif
+#ifndef kame
 yyreturn:
 		if (yychar != YYEOF && yychar != YYEMPTY)
 			yydestruct ("Cleanup: discarding lookahead",
@@ -3711,7 +3713,7 @@ extern int getprog(char *fn, int argc, char **argv);
 /// <<mainff>> Called by [[file:mymain.cpp::mymain]] and calls [[Compile]] to run the FF language parser
 extern Polymorphic * TheOperators;
 extern void init_lgmesh();
-int lgdebug;
+
 int mainff (int  argc, char **argv)
 {
 #ifndef _WIN32
@@ -3735,10 +3737,10 @@ int mainff (int  argc, char **argv)
   //  size_t lg000;
  // ShowAlloc("begin main ",lg000);
 
-  int retvalue=0;
-#ifndef kame
+  int retvalue = 0;
+
    ff_atend(fingraphique);
-#endif
+
   if (initparallele)initparallele(argc,argv);
 
   CPUcompileInit= CPUtime();
@@ -3755,7 +3757,6 @@ int mainff (int  argc, char **argv)
   //  istream * ccin=0;
   if ( ! (getprog(cc,argc,argv) >0)  ) // [[file:~/ff/src/Graphics/getprog-unix.hpp::getprog]]
     {
-
 	  cout << "-- FreeFem++ v" << "?.?" /* StrVersionNumber()*/ << " (error parameter!)\n"  ;
       if(ThePlotStream) {ffapi::ff_pclose(ThePlotStream); ThePlotStream=0;}
 
@@ -3819,10 +3820,10 @@ int mainff (int  argc, char **argv)
 #ifdef HAVE_LIBARPACK
    init_eigenvalue();
 #endif
-
+#endif
    if(init_lgparallele)  init_lgparallele();
   //  callInitsFunct() ; //  init for dynamique libs ...
-#endif
+
    if(verbosity>2 || ((mpirank==0)&& verbosity)  )  cout << endl;
 	zzzfff->input(cc); // [[file:../fflib/lex.cpp::mylex_input_filename]]
 	EnvironmentLoad(); // just before compile [[file:~/ff/src/fflib/environment.cpp::EnvironmentLoad]]

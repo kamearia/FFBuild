@@ -219,3 +219,19 @@ void InitMeshPoint(void * p)
 
 string *def_solver=0,*def_solver_sym=0, *def_solver_sym_dp=0;
 #endif
+
+#define VersionFreeFem 1.1
+
+double VersionNumber() {
+	return VersionFreeFem;
+}
+#define xstrg(s) strg(s)
+#define strg(s) #s
+
+string StrVersionNumber() {
+	ostringstream version;
+	version.precision(8);
+	version << xstrg(VersionFreeFem)
+		<< " (VersionFreeFemDate - git GitVersion)";
+	return version.str();
+}

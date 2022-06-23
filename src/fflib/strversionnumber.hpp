@@ -33,10 +33,13 @@ using namespace std;
 #define xstrg(s) strg(s)
 #define strg(s) #s
 
+#ifndef kame
+// to global.cpp
 double VersionNumber();
 string StrVersionNumber();
 
 #define VersionFreeFem 1.1
+
 double VersionNumber() {
 	return VersionFreeFem;
 }
@@ -48,3 +51,4 @@ string StrVersionNumber() {
 		<< " (VersionFreeFemDate - git GitVersion)";
 	return version.str();
 }
+#endif
