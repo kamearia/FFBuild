@@ -1438,7 +1438,7 @@ void Init_map_type()
        new OneBinaryOperator<Op_ReadP<string>,OneBinaryOperatorMIWO >
 
        );
-
+#endif
      TheOperators->Add("<<",
        new OneBinaryOperator<Print<bool> >,
        new OneBinaryOperator<Print<long> >,
@@ -1446,7 +1446,7 @@ void Init_map_type()
        new OneBinaryOperator<Print<Complex> >,
        new OneBinaryOperator<PrintP<string*> >  //  FH string * mars 2006
        );
-
+#ifndef kame
 
      TheRightOperators->Add("++",
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&RIncremantation<long>));
@@ -1714,15 +1714,18 @@ void Init_map_type()
 
   atype<MyMapSS*>()->SetTypeLoop(atype<string**>(),atype<string**>());
 
-
+#endif
   tables_of_identifier.push_back(&Global);
 
   TheOperators->Add("<<",new OneBinaryOperator<PrintP<MyMapSS*> >);
+#ifndef kame
 
   TheOperators->Add("{}",new ForAllLoop<E_ForAllLoopMapSS >);
   // add setw feb 2015 FH
   Global.Add("setw","(",new OneOperator1<OP_setw,long>(defOP_setw));
+#endif
   TheOperators->Add("<<", new OneBinaryOperator<Print<OP_setw> >);
+#ifndef kame
 #endif
 }
 

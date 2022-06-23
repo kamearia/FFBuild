@@ -75,7 +75,6 @@
 
 int(*ffapi::ff_pclose)(FILE *stream);
 
-#ifndef kame
 /* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
@@ -139,7 +138,6 @@ int(*ffapi::ff_pclose)(FILE *stream);
 
 #define IF 258
 #define ELSE 259
-#ifndef kame
 #define SET 260
 #define GTGT 261
 #define LTLT 262
@@ -158,18 +156,13 @@ int(*ffapi::ff_pclose)(FILE *stream);
 #define DNUM 275
 #define CNUM 276
 #define ID 277
-#endif
 #define FESPACEID 278
-#ifndef kame
 #define IDPARAM 279
 #define STRING 280
-#endif
 #define ENDOFFILE 281
 #define INCLUDE 282
 #define LOAD 283
-#ifndef kame
 #define BIDON 284
-#endif
 #define FOR 285
 #define WHILE 286
 #define BREAK 287
@@ -178,7 +171,6 @@ int(*ffapi::ff_pclose)(FILE *stream);
 #define TRY 290
 #define CATCH 291
 #define THROW 292
-#ifndef kame
 #define TYPE 293
 #define FUNCTION 294
 #define FESPACE 295
@@ -193,15 +185,8 @@ int(*ffapi::ff_pclose)(FILE *stream);
 #define DOTMULEQ 304
 #define DOTDIVEQ 305
 #define ARROW 306
-#endif
 #define BORDER 307
-#ifndef kame
 #define SOLVE 308
-#endif
-
-#endif
-
-#ifndef kame
 
 /* Copy the first part of user declarations.  */
 //#line 3 "lg.ypp"
@@ -233,7 +218,7 @@ int(*ffapi::ff_pclose)(FILE *stream);
      along with Freefem++; if not, write to the Free Software
      Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
      */
-#endif
+
 #include "stdafx.h"
 #include "getprog-unix.hpp"
 #include "String.hpp"
@@ -403,9 +388,7 @@ void signalCPUHandler( int signum ) {
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 
-#ifndef kame
 //#line 163 "lg.ypp"
-#endif
 {
  double dnum;
 
@@ -468,7 +451,7 @@ typedef YYTYPE_UINT8 yytype_uint8;
 #else
 typedef unsigned char yytype_uint8;
 #endif
-#ifndef kame
+
 #ifdef YYTYPE_INT8
 typedef YYTYPE_INT8 yytype_int8;
 #elif (defined __STDC__ || defined __C99__FUNC__ \
@@ -483,7 +466,7 @@ typedef YYTYPE_UINT16 yytype_uint16;
 #else
 typedef unsigned short int yytype_uint16;
 #endif
-
+#ifndef kame
 #endif
 #ifdef YYTYPE_INT16
 typedef YYTYPE_INT16 yytype_int16;
@@ -733,7 +716,7 @@ static const yytype_uint8 yytranslate[] =
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
       65,    66,    67,    68,    69,    70,    71,    72,    73
 };
-#ifndef kame
+
 #if YYDEBUG
 /* YYPRHS[YYN] -- Index of the first RHS symbol of rule number YYN in
    YYRHS.  */
@@ -928,7 +911,7 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#endif
+
 
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
@@ -1366,7 +1349,7 @@ static const yytype_int16 yycheck[] =
       24,    25,    26,    14,    15,    16,    17,    18,    19,    20,
       21,    22,    23,    24,    25,    26
 };
-#ifndef kame
+
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
@@ -1423,16 +1406,16 @@ static const yytype_uint8 yystos[] =
 
 #define yyerrok		(yyerrstatus = 0)
 #define yyclearin	(yychar = YYEMPTY)
-#endif
+
 #define YYEMPTY		(-2)
 
 #define YYEOF		0
 
 #define YYACCEPT	goto yyacceptlab
-#ifndef kame
+
 #define YYABORT		goto yyabortlab
 #define YYERROR		goto yyerrorlab
-
+#ifndef kame
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
@@ -3268,12 +3251,12 @@ yyreduce:
 //#line 763 "lg.ypp"
     {(yyval.cexp)= CConstant(complex<double>(0,(yyvsp[(1) - (1)].dnum)));;}
     break;
-
+#endif
   case 200:
 //#line 764 "lg.ypp"
     {(yyval.cexp)= CConstant<const char *>((yyvsp[(1) - (1)].str));;}
     break;
-
+#ifndef kame
   case 201:
 //#line 769 "lg.ypp"
     {(yyval.cexp)=C_F0((yyvsp[(1) - (4)].cexp),(yyvsp[(2) - (4)].oper),(yyvsp[(3) - (4)].args));;}

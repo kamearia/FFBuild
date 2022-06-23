@@ -318,11 +318,12 @@ struct Op_WriteKN<double> : public binary_function<ostream*,KN<double>*,ostream*
     }
 };
 */
+#endif
 template<class A>
 struct Print: public binary_function<ostream*,A,ostream*> {
   static ostream* f(ostream* const  & a,const A & b)  { *a << b;  return a;}
 };
-
+#ifndef kame
 //  ---------------------------------------------
 template<class A>
 struct set_eq: public binary_function<A*,A,A*> {
@@ -588,7 +589,7 @@ struct set_eq_arraypd_div: public binary_function<A,B,A> {
    delete b;
    return a;}
 };
-
+#endif
 template<class A>
 struct PrintP: public binary_function<ostream*,A,ostream*> {
     static ostream* f(ostream* const  & a,const A & b)  {  if(b) *a << *b; 
@@ -596,6 +597,7 @@ struct PrintP: public binary_function<ostream*,A,ostream*> {
   //delete b; mars 2006 FH 
    return a;}
 };
+#ifndef kame
 template<class A>
 struct PrintPnd: public binary_function<ostream*,A,ostream*> {
   static ostream* f(ostream* const  & a,const A & b)  
