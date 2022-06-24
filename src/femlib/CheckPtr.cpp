@@ -48,6 +48,7 @@ static long StorageUsed()
 #endif
 
 }
+
 #ifndef NCHECKPTR
 
 #define DEBUGUNALLOC 1

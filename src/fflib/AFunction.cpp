@@ -99,6 +99,8 @@ extern basicForEachType *  typevarreal;
 #ifdef HAVE_TIMES
 #include <ctime>
 #endif
+
+#endif
 long storageused()
 {
 #if HAVE_MSTATS
@@ -114,6 +116,8 @@ long storageused()
 #endif
 
 }
+
+#ifndef kame
 long storagetotal()
 {
 #if HAVE_MSTATS
@@ -1717,6 +1721,24 @@ void Init_map_type()
 
 #endif
   tables_of_identifier.push_back(&Global);
+
+  /*
+  decltype(tables_of_identifier)::iterator it=tables_of_identifier.begin();
+  for (; it != tables_of_identifier.end(); ++it) {
+	  TableOfIdentifier *t = it;
+	  TableOfIdentifier::maptype::iterator itt= ((t.m)->begin();
+	  
+	  t->nbt;
+	  for (; itt != (t.m)->end(); ++itt)
+	  {
+		  *itt;
+	  }
+//	  std::cout << *i << std::endl;
+  }
+  */
+
+
+
 
   TheOperators->Add("<<",new OneBinaryOperator<PrintP<MyMapSS*> >);
 #ifndef kame

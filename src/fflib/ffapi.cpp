@@ -155,7 +155,7 @@ static  int ffapi_ff_pclose(FILE *stream){
 #endif
 #endif
   }
-#ifndef kame
+
 static  size_t ffapi_fwriteinit(const void *ptr, size_t size, size_t nmemb,FILE *stream){
 
     // printf() is useful for debug because it is not redirected through
@@ -181,7 +181,7 @@ static  size_t ffapi_fwriteinit(const void *ptr, size_t size, size_t nmemb,FILE 
 #endif
     return ff_fwrite(ptr,size,nmemb,stream);
   }
-#endif
+
 static  size_t ffapi_ff_fwrite(const void *ptr, size_t size, size_t nmemb,FILE *stream){
 #ifdef FFLANG
 
@@ -312,9 +312,9 @@ static  bool ffapi_protectedservermode(){
     ffapi::ff_popen = ffapi::ffapi_ff_popen;
 #endif
     ffapi::ff_pclose = ffapi::ffapi_ff_pclose; // <<ff_pclose>>
-#ifndef kame
     ffapi::fwriteinit = ffapi::ffapi_fwriteinit;
     ffapi::ff_fwrite = ffapi::ffapi_ff_fwrite;
+#ifndef kame
     ffapi::ff_fflush = ffapi::ffapi_ff_fflush;
     ffapi::ff_ferror = ffapi::ffapi_ff_ferror;
     ffapi::ff_feof = ffapi::ffapi_ff_feof;

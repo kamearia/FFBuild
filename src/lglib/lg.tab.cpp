@@ -73,7 +73,7 @@
 #define yydebug lgdebug
 #define yynerrs lgnerrs
 
-int(*ffapi::ff_pclose)(FILE *stream);
+//int(*ffapi::ff_pclose)(FILE *stream);
 
 /* Tokens.  */
 #ifndef YYTOKENTYPE
@@ -386,6 +386,7 @@ void signalCPUHandler( int signum ) {
 # define YYTOKEN_TABLE 0
 #endif
 
+
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
 //#line 163 "lg.ypp"
@@ -430,8 +431,6 @@ typedef union YYSTYPE
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
 #endif
-
-
 
 
 
@@ -528,7 +527,7 @@ typedef short int yytype_int16;
 #endif
 */ //KAME
 
-int YYID(int i) { return 1; }
+int YYID(int i) { return 0; }
 
 
 #if ! defined yyoverflow || YYERROR_VERBOSE
@@ -1976,14 +1975,14 @@ int
 yyparse(void)
 #else
 int
-yyparse ()
+yyparse()
 
 #endif
 #endif
 
 #endif
 
-
+extern vector<pair<const E_Routine*, int> > *debugstack;
 int yyparse()
 {
 
@@ -2034,9 +2033,9 @@ int yyparse()
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
 	int yylen = 0;
-
+#ifndef kame
 	YYDPRINTF ((stderr, "Starting parse\n"));
-
+#endif
 	yystate = 0;
 	yyerrstatus = 0;
 	yynerrs = 0;
@@ -2239,9 +2238,10 @@ yyreduce:
 
 	switch (yyn)
     {
-#ifndef kame
+
         case 2:
 //#line 329 "lg.ypp"
+
 		{
 			if(  ffapi::ff_justcompile) exit(0);
     // clean FH  mach 2014
@@ -2255,21 +2255,23 @@ yyreduce:
                         // <<close_final_block>>
                        // $1+=currentblock->close(currentblock);
 			(yyvsp[(1) - (2)].cinst).setclose(Block::snewclose(currentblock));// Sep 2016 FH
-            if(verbosity>2 || ( (mpirank==0) && verbosity)) cout << " sizestack + 1024 =" << sizestack << "  ( " << sizestack-1024 <<" )\n" ;
+
+			if(verbosity>2 || ( (mpirank==0) && verbosity)) cout << " sizestack + 1024 =" << sizestack << "  ( " << sizestack-1024 <<" )\n" ;
             size_t lg0,lg1;
             ffapi::ifchtmpdir(); // change  to tmp after compile FH sep 2015 ...
             int NbPtr = ShowAlloc("init execution ",lg0); // number of un delele ptr
             debugstack= new vector<pair<const E_Routine*,int> >;
             size_t stu0=storageused(); // get Storage usage
 			UnShowAlloc =0;// add FH for parallee
+
             if(verbosity>2  || ( (mpirank==0) && verbosity) ) cout << endl;
             {
 
                             // <<create_global_FF_stack>> calls [[file:../fflib/ffstack.hpp::newStack]]
 
 				Stack stack = newStack(sizestack);
-
                 double CPUcompile= CPUtime();
+
                 try {
 
                           // <<evaluate_parsed_FF_script>> calls [[file:../fflib/AFunction.hpp::CListOfInst::eval]]
@@ -2297,7 +2299,9 @@ yyreduce:
                 deleteStack(stack);
 
                         //debugstack.clear()
+
 			}
+
             fingraphique();
 			//FFCS: divert stream to FFCS
 			if(ThePlotStream) {ffapi::ff_pclose(ThePlotStream); ThePlotStream=0;}
@@ -2309,9 +2313,11 @@ yyreduce:
 
 			if (verbosity && (NbPtr || (stu1>100000) )) { cout << " ######## We forget of deleting   " << NbPtr
 			                      << " Nb pointer,   " <<  lg1-lg0 << "Bytes " << " ,  mpirank " << mpirank << ", memory leak ="<< stu1 <<  endl;}
-			return 0;;}
-		break;
+			return 0;;
 
+		}
+		break;
+#ifndef kame
 		case 4:
 //#line 403 "lg.ypp"
 			{(yyval.cinst) = (yyvsp[(1) - (1)].cexp);;}
@@ -3841,11 +3847,11 @@ int mainff (int  argc, char **argv)
     ffapi::ff_pclose(ThePlotStream);
     ThePlotStream=0;
   }
-#ifndef kame
+
   Destroylex( zzzfff);
   delete [] cc;
    // ClearMem();
-#endif
+
   return retvalue;
 }
 

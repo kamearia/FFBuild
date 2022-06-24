@@ -35,9 +35,9 @@
 #include <iostream>
 #include <cstdio>
 
-
+#endif
 namespace ffapi {
-
+#ifndef kame
     //  void init) ();
     // need #include <iostream>
     // need #include <sstream>
@@ -56,9 +56,9 @@ namespace ffapi {
 
     /// Initiate graphical pipe output. I need a separate function for this to warn ffcs to check the corresponding ffglut
     /// magic number
-
+#endif
     size_t (*fwriteinit)(const void *ptr, size_t size, size_t nmemb,FILE *stream);
-
+#ifndef kame
     /// Indicates the begining of a new plot to avoid sending socket control data with each plot item.
 
     void (*newplot)();
@@ -66,10 +66,11 @@ namespace ffapi {
     /// Redefinition of standard system calls
 #endif
     FILE *(*ff_popen)(const char *command, const char *type);
-#ifndef kame
-  int (*ff_pclose)(FILE *stream); // [[file:ffapi.cpp::ff_pclose]]
+
+	int (*ff_pclose)(FILE *stream); // [[file:ffapi.cpp::ff_pclose]]
     size_t (*ff_fwrite)(const void *ptr, size_t size, size_t nmemb,FILE *stream);
-    int (*ff_fflush)(FILE *stream);
+#ifndef kame
+	int (*ff_fflush)(FILE *stream);
     int (*ff_ferror)(FILE *stream);
     int (*ff_feof)(FILE *stream);
 
@@ -95,9 +96,9 @@ namespace ffapi {
     /// commands) are not allowed.
 
     bool (*protectedservermode)();
-
+#endif
 }
-
+#ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>

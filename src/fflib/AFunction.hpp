@@ -1463,39 +1463,41 @@ public:
 
 /// <<CListOfInst>> used in [[file:../lglib/lg.ypp::YYSTYPE]]
 
-class CListOfInst{
+class CListOfInst {
 private:
 
-    /// class [[ListOfInst]]
-    ListOfInst * f;
+	/// class [[ListOfInst]]
+	ListOfInst * f;
 
-  const basicForEachType *r;
+	const basicForEachType *r;
 
 public:
-  void operator=(const CC_F0 &a){
-    f=new ListOfInst();     
-    if( !a.Empty() ) {
-      f->Add(a);
-      r=a.left(); }}
-  CListOfInst & operator+=(const CC_F0 & a);//{ if( !a.Empty()){ f->Add(a);r=a.left();};return *this;}
-  void setclose( vectorOfInst * fin) {
-      assert(f);
-      if(verbosity>99999) cout << "CListOfInst: setclose  n " << f->size() << " " << f << " " << fin << endl;
-      f->setclose(fin);
-      
-  }
-  operator C_F0 () const  { return C_F0(f,r);}
-  operator ListOfInst * () const  { return f;}
+	void operator=(const CC_F0 &a) {
+		f = new ListOfInst();
+		if (!a.Empty()) {
+			f->Add(a);
+			r = a.left();
+		}
+	}
+	CListOfInst & operator+=(const CC_F0 & a);//{ if( !a.Empty()){ f->Add(a);r=a.left();};return *this;}
+	void setclose(vectorOfInst * fin) {
+		assert(f);
+		if (verbosity > 99999) cout << "CListOfInst: setclose  n " << f->size() << " " << f << " " << fin << endl;
+		f->setclose(fin);
 
-  /// <<CListOfInst::eval>> Called by yyparse() at [[file:../lglib/lg.ypp::start_symbol]] to evaluate the
-  /// complete expression tree when reaching the end of its "start" symbol. It calls ListOfInst::operator()() at
-  /// [[ListOfInst::operator()]] for its private [[ListOfInst]] pointer #f.
+	}
+	operator C_F0 () const { return C_F0(f, r); }
+	operator ListOfInst * () const { return f; }
 
-  void eval(Stack s) {(*f)(s);}
+	/// <<CListOfInst::eval>> Called by yyparse() at [[file:../lglib/lg.ypp::start_symbol]] to evaluate the
+	/// complete expression tree when reaching the end of its "start" symbol. It calls ListOfInst::operator()() at
+	/// [[ListOfInst::operator()]] for its private [[ListOfInst]] pointer #f.
 
-  int size() const {return f->size();}
-  Expression * ptr() const {return f->ptr();}
-  int * nlines() const { return f->nlines();}
+	void eval(Stack s) { (*f)(s); }
+
+	int size() const { return f->size(); }
+	Expression * ptr() const { return f->ptr(); }
+	int * nlines() const { return f->nlines(); }
 };
 
 

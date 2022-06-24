@@ -1428,12 +1428,12 @@ mylex * Newlex(ostream & out, bool eecho, KN<String> * args)
 {
 	   return new mylex(out,eecho,args);
 }
-#ifndef kame
+
 void Destroylex(mylex * m)
 {
     delete m;
 }
-#endif
+
 ostream & mylex::ShowStack(ostream & f)
 {
     for (int i=0; i<level; ++i)

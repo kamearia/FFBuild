@@ -43,11 +43,12 @@
 //   a adresse sizeof(void *) 
 // 
 //
+#endif
 //  Offset in (void *)
 const int MeshPointStackOffset =0;
 const int ParamPtrOffset = 1;
 const int ElemMatPtrOffset = 2;
-#endif
+
 const int ExprPtrs = 4;
 #ifndef kame
 const int NbPtrs = 5;
@@ -117,7 +118,7 @@ struct StackType;
 
 /// Stack used by CListOfInst::eval()
 typedef StackType & Stack;
-
+#endif 
 struct StackType {
  size_t lg;
  char * stack; 
@@ -131,17 +132,19 @@ struct StackType {
  T * Offset(size_t offset){ return (T*) (void*) (stack+offset);}
  template<class T> 
  T *& ptr(size_t offset){ return (T* &) ((void**) (void *) stack)[offset];}
+
  StackType(size_t ll) :lg(ll),stack(new char[ll]),MeshPointStack(new char[1000]) 
   {
+#ifndef kame
   long * p= ptr<long>(0);
   long l4=lg/sizeof(long);
   for (int i = 0;i< l4;i++) p[i]=0;
-
+#endif
   ptr<char>(MeshPointStackOffset)=MeshPointStack;
   }
  void clean() { delete []stack; delete [] MeshPointStack; }
 };
-
+#ifndef kame
 inline Stack pvoid2Stack(void * pv) { return *static_cast<StackType *>(pv) ;}
 static  StackType * NullStackPtr= 0;
 static StackType & NullStack(*NullStackPtr);
@@ -387,6 +390,9 @@ T * Add2StackOfPtr2FreeA(Stack s,T * p)
 //  ---------------------------------------------------
 #ifndef NEWFFSTACK
 extern void InitMeshPoint(void *p);
+#endif
+
+
 /// <<newStack>>
 inline Stack newStack(size_t l)
  {
@@ -430,8 +436,9 @@ inline void deleteStack(Stack s)
  {
    // delete [] (((char **)  s)[MeshPointStackOffset]);
   //  delete [] (char *) s;
+#ifndef kame
  s.clean();
+#endif
  }  
 
-#endif
 #endif

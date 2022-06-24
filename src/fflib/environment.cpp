@@ -437,13 +437,13 @@ long chtmpdir()
 bool ff_justcompile=false;
 bool ff_ch2edpdtmpir=0;
 
-#ifndef kame
+
 void ifchtmpdir()
 {
     if(ff_ch2edpdtmpir) {
     }
 }
-#endif;
+
 }
 
 #ifdef TESTMAIN
