@@ -135,11 +135,11 @@ struct StackType {
 
  StackType(size_t ll) :lg(ll),stack(new char[ll]),MeshPointStack(new char[1000]) 
   {
-#ifndef kame
-  long * p= ptr<long>(0);
+//KAME  long * p = ptr<long>(0);
+  long * p = (long *)stack;
   long l4=lg/sizeof(long);
   for (int i = 0;i< l4;i++) p[i]=0;
-#endif
+
   ptr<char>(MeshPointStackOffset)=MeshPointStack;
   }
  void clean() { delete []stack; delete [] MeshPointStack; }

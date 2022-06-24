@@ -73,6 +73,7 @@
 #define yydebug lgdebug
 #define yynerrs lgnerrs
 
+extern Polymorphic * TheOperators;
 //int(*ffapi::ff_pclose)(FILE *stream);
 
 /* Tokens.  */
@@ -3044,12 +3045,12 @@ yyreduce:
 //#line 685 "lg.ypp"
     {(yyval.cexp)=C_F0(TheOperators,(yyvsp[(2) - (3)].oper),(yyvsp[(1) - (3)].cexp),(yyvsp[(3) - (3)].cexp));;}
     break;
-
+#endif
   case 155:
 //#line 686 "lg.ypp"
     {(yyval.cexp)=C_F0(TheOperators,(yyvsp[(2) - (3)].oper),(yyvsp[(1) - (3)].cexp),(yyvsp[(3) - (3)].cexp));;}
     break;
-
+#ifndef kame
   case 156:
 //#line 687 "lg.ypp"
     {(yyval.cexp)=C_F0(TheOperators,(yyvsp[(2) - (3)].oper),(yyvsp[(1) - (3)].cexp),(yyvsp[(3) - (3)].cexp));;}

@@ -1493,7 +1493,8 @@ public:
 	/// complete expression tree when reaching the end of its "start" symbol. It calls ListOfInst::operator()() at
 	/// [[ListOfInst::operator()]] for its private [[ListOfInst]] pointer #f.
 
-	void eval(Stack s) { (*f)(s); }
+	void eval(Stack s) { 
+		(*f)(s); }
 
 	int size() const { return f->size(); }
 	Expression * ptr() const { return f->ptr(); }
@@ -2003,8 +2004,6 @@ inline  C_F0 basicForEachType::Initialization(const Type_Expr & e) const
        }
    return C_F0(new  E_F0_Func1(InitExp,e.second),this);        
   }
-#ifndef kame  
-
     
 //inline  AnyType Args2(const AnyType &,const  AnyType & b) {return b;}
 class E_comma : public E_F0 {public:
@@ -2108,7 +2107,7 @@ inline	  C_F0::C_F0(const C_F0 & e,const char *nm)
 	       }
 	       
 	   }
-#endif
+
 inline  E_F0 * C_F0::LeftValue() const {
     return f;
 }

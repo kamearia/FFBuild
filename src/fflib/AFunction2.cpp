@@ -91,7 +91,7 @@ class vectorOfInst : public  E_F0mps { public:
   vectorOfInst(const vectorOfInst &);
   void operator=(const vectorOfInst &);
 };
-#ifndef kame
+
 double  VersionNumber();
 
 OneOperator::pair_find OneOperator::Find(const ArrayOfaType & at)const
@@ -126,7 +126,7 @@ OneOperator::pair_find OneOperator::FindWithOutCast(const ArrayOfaType & at)cons
            w=oo;}
       return make_pair(w,n);
 }
-#endif
+
 // <<FindSameR>>
 OneOperator* OneOperator::FindSameR(const ArrayOfaType & at)
  {
@@ -171,7 +171,7 @@ void OneOperator::Show(const ArrayOfaType & at,ostream &f) const
          else if (np != 1)
            f << " We have ambiguity " << n << endl;
  }
-#ifndef kame
+
 const  OneOperator * Polymorphic::Find(const char *op, const  ArrayOfaType &at) const
   {
     const_iterator i=m.find(op);
@@ -199,7 +199,6 @@ const  OneOperator * Polymorphic::FindWithOutCast(const char *op, const  ArrayOf
       if(nf) { cerr << "\n Warning ambiguity Polymorphic FindWithOutCast "<<op<< " "<<  nf << endl;  Show(op,at,cerr);}
     return 0;
   }
-
 
 void Polymorphic::Show(const char *op,const ArrayOfaType & at,ostream &f)  const
     {
@@ -260,7 +259,6 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const C_F0 & aa)
 }
 
 // <<C_F0_constructor_binary_operator>> operator binaire
-/*
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b)
 {
   C_F0 tab[2]={a,b};
@@ -270,7 +268,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
   // [[file:AFunction.hpp::C_F0_constructor_pop_char_basicAC_F0_decl]]
   *this=C_F0(pop,op,p);
 }
-*/  //KAME
+
 //  operator trinaire
 /*
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b,const  C_F0 & c)
@@ -281,7 +279,7 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & 
   *this= C_F0(pop,op,p);
 }
 */ //KAME
-#endif
+
  OneOperator::~OneOperator(){
        OneOperator * d=next;
        next=0;
