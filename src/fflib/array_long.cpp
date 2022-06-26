@@ -23,7 +23,7 @@
 #include "AnyType.hpp"
 #include "AFunction.hpp"
 #include "array_tlp.hpp"
-#ifndef kame
+
 #include "array_tlp.hpp"
 #include "array_init.hpp"
 const basicForEachType *aatypeknlongp;
@@ -41,7 +41,7 @@ void initArrayDCL() {
   ArrayDCL<long>();
 }
 */
-#endif
+
 aType aaaa_knlp;
 void initArrayDCLlong() {
   // ArrayOperator<long>();
@@ -140,10 +140,12 @@ long findall(const  KN_<long> & a,  const long &v,  KN<long> * const &  pI)
 }
 
 
-
+#endif
+extern Polymorphic * TheOperators;
 void initArrayOperatorlong()
 {
   typedef long K;
+#ifndef kame
   Dcl_Type< Eye > ();// OK this is the fist array def ..
   Global.Add("eye","(",new OneOperator1<Eye,long>(fEye));
   Global.Add("eye","(",new OneOperator2<Eye,long>(fEye));
@@ -195,8 +197,8 @@ void initArrayOperatorlong()
   TheOperators->Add("<-", new InitMapfromArray<MyMap<String,String>*, string *, string*, true> );
 
   TheOperators->Add("<<", new OneBinaryOperator<PrintPnd<KN<String> * > >); // add may 2018 FH
+#endif
 }
 
 // void xxxx() {
 // }
-#endif

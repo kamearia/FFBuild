@@ -262,23 +262,25 @@ C_F0::C_F0(const Polymorphic * pop,const char *op,const C_F0 & aa)
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b)
 {
   C_F0 tab[2]={a,b};
+/*
+  C_F0 *q = new C_F0[2];
+  *q = a;
+  *(q + 1) = b;
+*/
   basicAC_F0 p;
-  p=make_pair<int,C_F0*>(2,tab);
-
+  p = make_pair<int, C_F0 *>(2, & *tab);
   // [[file:AFunction.hpp::C_F0_constructor_pop_char_basicAC_F0_decl]]
   *this=C_F0(pop,op,p);
 }
 
 //  operator trinaire
-/*
 C_F0::C_F0(const Polymorphic * pop,const char *op,const  C_F0 & a,const  C_F0 & b,const  C_F0 & c)
 {
   C_F0 tab[3]={a,b,c};
   basicAC_F0  p;
-  p=make_pair<int,C_F0*>(3,tab);
+  p=make_pair<int,C_F0*>(3,& *tab);
   *this= C_F0(pop,op,p);
 }
-*/ //KAME
 
  OneOperator::~OneOperator(){
        OneOperator * d=next;
@@ -588,13 +590,11 @@ bool ArrayOfaType::WithOutCast( const ArrayOfaType & a) const
 
 bool ArrayOfaType::WithCast( const ArrayOfaType & a,int nbcast) const
  {
-#ifndef kame
    if (  ( !ellipse && (a.n != n))  || (ellipse && n > a.n) ) return false;
      for (int i=0;i<n;i++)
      if ( a.t[i]->SametypeRight(t[i])) ;
      else if (! t[i]->CastingFrom(a.t[i])) return false;
          else if ( --nbcast <0) return false;
-#endif
    return true;
  }
 
@@ -810,7 +810,7 @@ AnyType ListOfInst::operator()(Stack s) const {
 	{
 	    TheCurrentLine=linenumber[i]  ;
             r=(*list[i])(s);
-	    sptr->clean(); // modif FH mars 2006  clean Ptr
+//KAME	    sptr->clean(); // modif FH mars 2006  clean Ptr
 	    s1=CPUtime();
 	    if (showCPU)
              cout << " CPU: "<< i <<" " << linenumber[i] <<  ": " << s1-s0 << "s" << " " << s1-ss0 << "s" << " / " << " " <<lsldel[i] << " " << mpirank << endl;

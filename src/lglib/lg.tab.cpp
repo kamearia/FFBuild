@@ -2034,9 +2034,9 @@ int yyparse()
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
 	int yylen = 0;
-#ifndef kame
+
 	YYDPRINTF ((stderr, "Starting parse\n"));
-#endif
+
 	yystate = 0;
 	yyerrstatus = 0;
 	yynerrs = 0;
@@ -2147,13 +2147,13 @@ yybackup:
   /* First try to decide what to do without reference to look-ahead token.  */
 	yyn = yypact[yystate];
 
-	if (yyn == YYPACT_NINF)
+	if (yyn == YYPACT_NINF/* -253 */)
 		goto yydefault;
 
   /* Not known => get a look-ahead token if don't already have one.  */
 
   /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
-	if (yychar == YYEMPTY)
+	if (yychar == YYEMPTY/* -2 */)
     {
 		YYDPRINTF ((stderr, "Reading a token: "));
 		yychar = YYLEX /*yylex ()*/;
@@ -2185,7 +2185,7 @@ yybackup:
 		goto yyreduce;
     }
 
-	if (yyn == YYFINAL)
+	if (yyn == YYFINAL/* 90 */)
 		YYACCEPT;
 
   /* Count tokens shifted since error; after three, turn off error
@@ -2197,8 +2197,8 @@ yybackup:
 	YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
 
   /* Discard the shifted token unless it is eof.  */
-	if (yychar != YYEOF)
-		yychar = YYEMPTY;
+	if (yychar != YYEOF /* 0 */)
+		yychar = YYEMPTY /* -2 */;
 
 	yystate = yyn;
 	*++yyvsp = yylval;
@@ -2276,6 +2276,7 @@ yyreduce:
                 try {
 
                           // <<evaluate_parsed_FF_script>> calls [[file:../fflib/AFunction.hpp::CListOfInst::eval]]
+
 					(yyvsp[(1) - (2)].cinst).eval(stack);
                 }
                 catch ( E_exception & e)  {
@@ -2318,12 +2319,12 @@ yyreduce:
 
 		}
 		break;
-#ifndef kame
+
 		case 4:
 //#line 403 "lg.ypp"
 			{(yyval.cinst) = (yyvsp[(1) - (1)].cexp);;}
 		break;
-
+#ifndef kame
 		case 5:
 //#line 404 "lg.ypp"
 			{(yyval.cinst) = ((yyvsp[(1) - (2)].cinst)+=(yyvsp[(2) - (2)].cexp));;}
@@ -3242,13 +3243,12 @@ yyreduce:
 //#line 757 "lg.ypp"
     {(yyval.cexp)=Find((yyvsp[(1) - (1)].str));;}
     break;
-#ifndef kame
 
   case 197:
 //#line 761 "lg.ypp"
     {(yyval.cexp)= CConstant((yyvsp[(1) - (1)].lnum));;}
     break;
-#endif
+
   case 198:
 //#line 762 "lg.ypp"
     {(yyval.cexp)= CConstant((yyvsp[(1) - (1)].dnum));;}

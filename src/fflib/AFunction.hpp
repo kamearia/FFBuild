@@ -103,8 +103,7 @@ class ListOfInst;
 class Polymorphic;
 #endif
 class OneOperator;
-#ifndef kame
-#endif
+
 class E_F0;  //  une instruction exec time 
 /// <<Expression>> is used as the type of the local list contained in ListOfInst 
 
@@ -267,9 +266,8 @@ class basicForEachType : public CodeAlloc {
     { f << '<' << e.name() << '>' ;return f;}
     void Show(ostream & f) const ;
      const char * name() const  { return this!=tnull  ?  ktype->name() :"NULL" ;}
-#ifndef kame
 	 virtual bool CastingFrom(const basicForEachType * t) const ;
-#endif
+
      //  modif FH -----  A TESTER  // 
      virtual bool SametypeRight(const basicForEachType * t) const {return  (this == t) || (t == un_ptr_type) || (t == type_C_F0);}
 //     virtual Type_Expr init(const Type_Expr & te) const { return Type_Expr(0,0);}
@@ -2535,7 +2533,16 @@ class  OneBinaryOperator : public OneOperator{
 		Expression a,b;
 	public:
 		AnyType operator()(Stack s)  const 
-			{return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));}
+		{
+			cout << "Type of C: " << typeid(C).name() << endl;
+			cout << "Type of A: "<< typeid(A).name()<< endl;
+			cout << "Type of B: " << typeid(B).name() << endl;
+			cout << "Type of R: " << typeid(R).name() << endl;
+			cout << "Type of (*a)(s): " << typeid((*a)(s)).name() << endl;
+			return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));
+		}
+
+
     //   optim  eval MI ...  juin 2007 FH ...
 		AnyType eval(Stack s, bool & meshidenp)  const 
 			{return  MIx::eval(s,this,a,b,meshidenp);}
@@ -3118,14 +3125,14 @@ class  OneOpCast: public OneOperator {
 */
 
 // 
-
+#endif
 inline  bool  basicForEachType::CastingFrom(aType t) const  {
      throwassert( t);
      if ( t == this) return true;
      else if( t ==  type_C_F0 ) return true; // FH do work .... 09 / 2012 (use of ellispe ...)
      return casting->FindSameR(ArrayOfaType(t,false)); // uses [[casting]] [[file:AFunction2.cpp::FindSameR]]
   }
-
+#ifndef kame
 inline  void CerrCast(const pair<const basicForEachType*,const E_F1_funcT_Type *> & i)
 { 
    cerr << "\t" <<  *i.first << ":" << i.second << endl;

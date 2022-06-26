@@ -456,15 +456,14 @@ class OP_setw { public:
     OP_setw(long ww) :w(ww) {}
     friend   ostream & operator<<(ostream & f,const OP_setw& op) { return f << setw(op.w);}
 };
-#ifndef kame
- OP_setw defOP_setw(long i) {return OP_setw(i);}
 
+ OP_setw defOP_setw(long i) {return OP_setw(i);}
 
  ostream_precis ostream_precision(ostream **f){ return ostream_precis(*f);}
   ostream_precis ostream_precision(ostream *f){ return ostream_precis(f);}
  long get_precis( ostream_precis  pf) { return pf.f->precision();}
  long set_precis( ostream_precis  pf, long  l) { return pf.f->precision(l);}
-#endif
+
 class ostream_seekp { public:
     ostream_seekp(ostream * ff) :f(ff) {}
     ostream * f;
@@ -1180,8 +1179,9 @@ void Init_map_type()
      Global.New("append",CConstant<ios::openmode>(ios::app));
      Global.New("binary",CConstant<ios::openmode>(ios::binary)); // add FH april 2014
 
+#ifndef kame
      TheOperators->Add("|",new OneBinaryOperator<Op2_pipe<ios::openmode> >); // add FH april 2014
-
+#endif
      Global.New("endl",CConstant<const char*>("\n"));
      Global.New("true",CConstant<bool>(true));
      Global.New("false",CConstant<bool>(false));
@@ -1194,12 +1194,12 @@ void Init_map_type()
      pZero = new  C_F0(CConstant<double>(0.0));
      pOne = new  C_F0(CConstant<double>(1.0));
      pminusOne = new  C_F0(CConstant<double>(-1.0));
-
+#ifndef kame
      TheOperators->Add(":",
        new OneOperatorConst<char>(new EConstant<char>(':')),
        new OneBinaryOperator<SubArray2>,
        new OneTernaryOperator3<SubArray3>);
-
+#endif
      TheOperators->Add("+",
        new OneBinaryOperator<Op2_add<long,long,long> >,
        new OneBinaryOperator<Op2_add<double,double,double> >,
@@ -1359,8 +1359,9 @@ void Init_map_type()
        new Operator_Aritm_If<Complex >,
        new Operator_Aritm_If<string* >  // (OK???)  to do FH string * mars 2006
        );
-
+#endif
      initArrayOperatorlong();
+#ifndef kame
      initArrayOperatordouble();
      initArrayOperatorComplex();
      initStringOperator();
@@ -1747,7 +1748,7 @@ void Init_map_type()
   // add setw feb 2015 FH
   Global.Add("setw","(",new OneOperator1<OP_setw,long>(defOP_setw));
 #endif
-  TheOperators->Add("<<", new OneBinaryOperator<Print<OP_setw> >);
+  TheOperators->Add( "<<", new OneBinaryOperator<Print<OP_setw> >);
 #ifndef kame
 #endif
 }
