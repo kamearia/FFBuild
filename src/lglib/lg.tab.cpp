@@ -230,8 +230,8 @@ extern void closegraphique(void);
 
 
 //KAME #include <config.h>
-//KAME#include <iostream>
-//KAME#include  <complex>
+#include <iostream>
+#include  <complex>
 #include <string>
 
   // for reset cout,cin  in windows  dll
@@ -328,15 +328,14 @@ extern bool withrgraphique;
 extern void rattente(int);
 inline void fingraphique()
 {
-#ifndef kame
 	if (withrgraphique)
 	{
 		withrgraphique = false;
-
+#ifndef kame
 		rattente(1);
 		closegraphique();
-	}
 #endif
+	}
   }
 
 void lgerror (const char* s) ;
@@ -1893,7 +1892,7 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 #endif /* YYERROR_VERBOSE */
 
 #endif
-#ifndef kame
+
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
 `-----------------------------------------------*/
@@ -1925,7 +1924,7 @@ yydestruct (yymsg, yytype, yyvaluep)
     }
 }
 
-#endif
+
 /* Prevent warnings from -Wmissing-prototypes.  */
 
 #ifdef YYPARSE_PARAM
@@ -1951,19 +1950,16 @@ YYSTYPE yylval;
 /* Number of syntax errors so far.  */
 int yynerrs;
 
-#ifndef kame
+extern vector<pair<const E_Routine*, int> > *debugstack;
 
 /*----------.
 | yyparse.  |
 `----------*/
 
 #ifdef YYPARSE_PARAM
-
-
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
-int
-yyparse (void *YYPARSE_PARAM)
+int yyparse (void *YYPARSE_PARAM)
 #else
 int
 yyparse (YYPARSE_PARAM)
@@ -1981,10 +1977,6 @@ yyparse()
 #endif
 #endif
 
-#endif
-
-extern vector<pair<const E_Routine*, int> > *debugstack;
-int yyparse()
 {
 
 	int yystate;
@@ -2092,10 +2084,7 @@ yysetstate:
 		}
 #else /* no yyoverflow */
 # ifndef YYSTACK_RELOCATE
-		1;
-#ifndef kame
 		goto yyexhaustedlab;
-#endif;
 # else
 		/* Extend the stack our own way.  */
 		if (YYMAXDEPTH <= yystacksize)
@@ -2126,10 +2115,9 @@ yysetstate:
 
 		YYDPRINTF((stderr, "Stack size increased to %lu\n",
 			(unsigned long int) yystacksize));
-#ifndef kame
+
 		if (yyss + yystacksize - 1 <= yyssp)
 			YYABORT;
-#endif
 	}
 
 	YYDPRINTF ((stderr, "Entering state %d\n", yystate));
@@ -3552,7 +3540,7 @@ yyerrlab1:
 | yyacceptlab -- YYACCEPT comes here.  |
 `-------------------------------------*/
 	yyacceptlab:
-#ifndef kame
+
 		yyresult = 0;
 		goto yyreturn;
 
@@ -3562,7 +3550,7 @@ yyerrlab1:
 yyabortlab:
 		yyresult = 1;
 		goto yyreturn;
-#endif
+
 #ifndef yyoverflow
 
 /*-------------------------------------------------.
@@ -3574,7 +3562,7 @@ yyabortlab:
   /* Fall through.  */
 
 #endif
-#ifndef kame
+
 yyreturn:
 		if (yychar != YYEOF && yychar != YYEMPTY)
 			yydestruct ("Cleanup: discarding lookahead",
@@ -3597,7 +3585,7 @@ yyreturn:
 	if (yymsg != yymsgbuf)
 		YYSTACK_FREE (yymsg);
 #endif
-#endif
+
   /* Make sure YYID is used.  */
 	return YYID(yyresult);
 
@@ -3621,8 +3609,9 @@ void init_lgfem() ;
 void init_lgmesh() ;
 void init_lgmesh3() ;
 void init_algo();
-bool withrgraphique = false;
 #endif
+bool withrgraphique = false;
+
 /// <<Compile>> Called by mainff(). Activates the bison parser by calling yyparse()
 int Compile()
 {
