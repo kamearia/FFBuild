@@ -85,7 +85,10 @@ T * Stack_offset (Stack stack,size_t offset)
 // <<Stack_Ptr>>
 template<class T>
 T * & Stack_Ptr (Stack stack,size_t offset)  
-  {return   (T * &)  (((void **) stack)[offset]);}
+  {
+	size_t o = offset;
+	return (T * &)  (((void **) stack)[offset]);
+}
 
 void ShowType(ostream & f);
 #ifndef kame
@@ -136,6 +139,7 @@ struct StackType {
  StackType(size_t ll) :lg(ll),stack(new char[ll]),MeshPointStack(new char[1000]) 
   {
 //KAME  long * p = ptr<long>(0);
+// clear the stack 
   long * p = (long *)stack;
   long l4=lg/sizeof(long);
   for (int i = 0;i< l4;i++) p[i]=0;

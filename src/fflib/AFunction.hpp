@@ -2534,11 +2534,13 @@ class  OneBinaryOperator : public OneOperator{
 	public:
 		AnyType operator()(Stack s)  const 
 		{
-			cout << "Type of string *: " << typeid(string *).name() << endl;
 			cout << "Type of C: " << typeid(C).name() << endl;
 			cout << "Type of A: "<< typeid(A).name()<< endl;
 			cout << "Type of B: " << typeid(B).name() << endl;
 			cout << "Type of R: " << typeid(R).name() << endl;
+			cout << "Type of *C::f: " << typeid(*C::f).name() << endl;
+			A aa=GetAny<A>((*a)(s));
+			B bb=GetAny<B>((*b)(s));
 			cout << "Type of (*a)(s): " << typeid((*a)(s)).name() << endl;
 			return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));
 		}

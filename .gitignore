@@ -391,4 +391,6 @@ ffbuild/.vs/*
 *.ilk
 *.pch
 *.ipch
+src.origin/*
+*.bin
 # End:
