@@ -1115,7 +1115,7 @@ template<class R,class A0,class E=E_F0>
     operator aType () const { return atype<R>();}         
     
 };
-
+#endif
 template<class R,class A0,class A1,class E=E_F0>
  class E_F_F0F0_ :public  E { public:
   typedef  R (*func)(const  A0 &,const  A1 & ) ; 
@@ -1129,6 +1129,7 @@ template<class R,class A0,class A1,class E=E_F0>
       {return E::MeshIndependent() && a0->MeshIndependent() && a1->MeshIndependent();} //
  
 };
+#ifndef kame
 // FH Add 07/2008 
 //   class with add 1 to the refcounter  for  mesh . 
 template<class R,class A0,class A1,class E=E_F0>
@@ -2407,12 +2408,12 @@ struct OneBinaryOperatorMI {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return true;}
 };
-#ifndef kame
+
 struct OneBinaryOperatorMIWO {
   static bool MeshIndependent(Expression a,Expression b)   { return a->MeshIndependent() && b->MeshIndependent();}
   static bool ReadOnly() { return false;}
 };
-#endif
+
 // ----------  operator with stack ??? for auto delete
 template<typename C,class MI=OneBinaryOperatorMI>
 class  OneBinaryOperator_st : public OneOperator{
@@ -2811,11 +2812,8 @@ class  OneOperator1_ : public OneOperator {
     
 };
 
+#endif
 template<class R,class A,class B,class E> class E_F_F0F0_;
-
-
-
-
 template<class R,class A=R,class B=A,class CODE=E_F_F0F0_<R,A,B,E_F0> >
 class  OneOperator2_ : public OneOperator {
     aType t0,t1; //  return type  type de f,  f(t1, t2)
@@ -2840,7 +2838,7 @@ class  OneOperator2_ : public OneOperator {
       t0( map_type[typeid(A).name()] ),t1(map_type[typeid(B).name()] ), f(ff) {}
       
 };
-
+#ifndef kame
 template<class R,class A=R,class B=A,class C=B,class CODE=E_F_F0F0F0_<R,A,B,C,E_F0> >
 class  OneOperator3_ : public OneOperator {
    // aType r; //  return type 

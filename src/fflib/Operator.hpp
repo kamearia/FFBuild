@@ -323,13 +323,13 @@ template<class A>
 struct Print: public binary_function<ostream*,A,ostream*> {
   static ostream* f(ostream* const  & a,const A & b)  { *a << b;  return a;}
 };
-#ifndef kame
+
 //  ---------------------------------------------
 template<class A>
 struct set_eq: public binary_function<A*,A,A*> {
   static A* f(A* const  & a,const A & b)  { *a = b; return a;}
 };
-
+#ifndef kame
 template<class A,class B>
 struct set_eqq: public binary_function<A,B,A> {
   static A f(const A & a,const B & b)  {A aa(a); aa = b; return aa;}
@@ -360,7 +360,8 @@ struct set_eq_div: public binary_function<A*,B,A*> {
   static A* f(A* const  & a,const B & b)  { *a /= b; return a;}
 };
 
-
+#endif
+extern string  *newstring(const string & c);
 struct set_peqstring: public binary_function<string**,string*,string**> {
   static string** f(string** const  & a, string * const & b)  {
     if(*a != b )
@@ -373,7 +374,7 @@ struct set_peqstring: public binary_function<string**,string*,string**> {
     }
      return a;}
 };
-
+#ifndef kame
 //  ---------------------------------------------
 template<class A,class B>
 struct set_eqarrayp: public binary_function<A*,B,A*> {
@@ -620,16 +621,16 @@ template<class R,class A>  R * set_eqdestroy_incr(R* a,A b){
   if(*a) (**a).destroy() ;//  le cas debile Th=Th doit marcher
    // cout << " set_eqdestroy " << a << " " << b << endl;
   ( *a =b); return a;}
-  
+#endif  
 template<class R>  R * set_copy( R* const & a,const R & b){ 
  SHOWVERB( cout << " set_copy " << typeid(R).name() << " " << &b << endl);
   memcpy(a,&b,sizeof(R)); return a;}
-
+#ifndef kame
 template<class R>  R ** set_copy_new( R** const & a,const R * & b){ 
     SHOWVERB( cout << " set_copy_new " << typeid(R).name() << " " << &b << endl);
     *a= new R(*b);
    return a;}
-
+#endif
 template<class R>  R * set_copyp( R* const & a,const R & b){ 
  SHOWVERB( cout << " set_copy " << typeid(R).name() << " " << &b << endl);
   // memcpy(a,&b,sizeof(R));
@@ -645,7 +646,7 @@ template<class R>  R ** set_copyp_new( R**  a,R*  b){
   //  cerr << "  -> " << *a << endl; 
   return a;
   }
-
+#ifndef kame
 template<class R>  R ** set_copy_incr( R** const & a, R * const & b){ 
    *a=b;
     SHOWVERB( cout << "set_copy_incr  " << b << " dans  "<< a << endl);

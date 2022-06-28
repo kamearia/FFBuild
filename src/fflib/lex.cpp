@@ -48,7 +48,7 @@ extern YYSTYPE *plglval;
 //  and more  simple
 // FH Jan. 2005
 
-static const bool debugmacro = true;
+static const bool debugmacro = false;
 
 void  mylex::Add(Key k,int i)
 {

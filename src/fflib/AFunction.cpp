@@ -264,7 +264,7 @@ template<class R,class RR>
 struct Op1_new_pstring: public unary_function<string*,R> {
   static R f(string * const & a)  {R r =  new RR(a->c_str());
     return r;} };
-
+#endif
 template<class R,class RR>
 struct Op2_set_pstring: public binary_function<R,string*,R> {
   static R  f(R const & p,string * const & a)  {*p =  new RR(a->c_str());
@@ -278,7 +278,7 @@ struct Op2_set_pstringiomode: public ternary_function<R,string*,ios::openmode,R>
   static R  f(Stack s,R const & p,string * const & a,const ios::openmode & mode)
    {*p =  new RR(a->c_str(),mode);
     return p;} };
-
+#ifndef kame
 AnyType FWhile(Stack s ,Expression test,Expression ins)
 {
   bool sptrclean=true;
@@ -1343,7 +1343,7 @@ void Init_map_type()
      TheOperators->Add("|", new OneBinaryOperator<Op2_or> );
 
       // Unary_Op_Comparaision
-
+#endif
      TheOperators->Add("=",
        new OneBinaryOperator<set_eq<bool> ,OneBinaryOperatorMIWO >,
        new OneBinaryOperator<set_eq<long> ,OneBinaryOperatorMIWO>,
@@ -1351,7 +1351,7 @@ void Init_map_type()
        new OneBinaryOperator<set_eq<Complex> ,OneBinaryOperatorMIWO>,
        new OneBinaryOperator<set_peqstring ,OneBinaryOperatorMIWO>  // FH string * mars 2006
        );
-
+#ifndef kame
      TheOperators->Add("?:",
        new Operator_Aritm_If<bool >,
        new Operator_Aritm_If<long >,
@@ -1462,6 +1462,7 @@ void Init_map_type()
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&LIncremantation<long>));
      TheOperators->Add("--",
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&LDecremantation<long>));
+#endif
 //   init
      TheOperators->Add("<-",
        new OneOperator2<string**,string**,string*>(&set_copyp_new<string>),  //  FH string * mars 2006
@@ -1474,7 +1475,7 @@ void Init_map_type()
        new OneTernaryOperator3<Op2_set_pstringiomode<ostream**,ofstream> >  ,    //  FH string * mars 2006
        new OneTernaryOperator3<Op2_set_pstringiomode<istream**,ifstream> >   //  FH string * april  2014
        );
-
+#ifndef kame
      atype<istream* >()->AddCast( new E_F1_funcT<istream*,istream**>(UnRef<istream* >));
      atype<ostream* >()->AddCast( new E_F1_funcT<ostream*,ostream**>(UnRef<ostream* >));
 
