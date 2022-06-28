@@ -2467,12 +2467,12 @@ yyreduce:
 //#line 448 "lg.ypp"
     {(yyval.cexp)=currentblock->NewVar<LocalVariable>((yyvsp[(1) - (1)].str),dcltype);;}
     break;
-
+#endif
   case 42:
 //#line 449 "lg.ypp"
     {(yyval.cexp)=currentblock->NewVar<LocalVariable>((yyvsp[(1) - (3)].str),dcltype,(yyvsp[(3) - (3)].cexp));;}
     break;
-
+#ifndef kame
   case 43:
 //#line 450 "lg.ypp"
     {(yyval.cexp)=currentblock->NewVar<LocalVariable>((yyvsp[(1) - (4)].str),dcltype,(yyvsp[(3) - (4)].args));(yyvsp[(3) - (4)].args).destroy();;}
@@ -2681,12 +2681,12 @@ yyreduce:
 //#line 522 "lg.ypp"
     {(yyval.cexp)=C_F0((yyvsp[(1) - (3)].cexp),(yyvsp[(3) - (3)].cexp));;}
     break;
-
+#endif
   case 86:
 //#line 525 "lg.ypp"
     {dcltype=(yyvsp[(1) - (1)].type);;}
     break;
-
+#ifndef kame
   case 87:
 //#line 525 "lg.ypp"
     {(yyval.cexp)=(yyvsp[(3) - (4)].cexp);;}

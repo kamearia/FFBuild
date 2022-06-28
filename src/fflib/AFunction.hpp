@@ -1305,9 +1305,6 @@ template<class R> class EConstant:public E_F0
        } 
    ostream & dump(ostream &f) const { f << " ((" <<typeid(R).name()  << ") " << v << ") " ;return f;}  
 };
-#ifndef kame
-
-
 
 
 //  the variable offset / stack (local variable)
@@ -1328,7 +1325,7 @@ template<class R> class EConstant:public E_F0
     }
 };
 
-
+#ifndef kame
 class LocalVariableFES : public LocalVariable { public:
   size_t data;
   LocalVariableFES(size_t o,aType tt,const  size_t & d) 
@@ -1907,7 +1904,7 @@ inline size_t align8(size_t &off)
   off += o ? 8-o : 0;
  return off;
 }
-#ifndef kame
+
 
 template<class T>
 inline Type_Expr  NewVariable(aType t,size_t &off) 
@@ -1918,7 +1915,7 @@ inline Type_Expr  NewVariable(aType t,size_t &off)
    off += t->un_ptr_type->size; // correction 16/09/2003 merci ÅERichard MICHEL
    return  Type_Expr(t,new T(o,t));
 } 
-
+#ifndef kame
 template<class T>
 inline Type_Expr  NewVariable(aType t,size_t &off,const basicAC_F0 &args) 
 { 
@@ -1935,7 +1932,7 @@ inline Type_Expr  NewVariable(aType t,size_t &off,const U & data)
    return  Type_Expr(t,new T(o,t,data));
 }
 //extern int NbNewVarWithDel; // def in global.cpp sep 2016 FH.
-
+#endif
 template<class T>   
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const C_F0 &i) 
    {
@@ -1969,7 +1966,7 @@ template<class T>
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top) 
    { //  if( t-> ExistDestroy()) NbNewVarWithDel++;
        return t->Initialization(New(k,NewVariable<T>(t,top))); }
-
+#ifndef kame
 // save a expression 
 inline  C_F0 TableOfIdentifier::NewID(aType r,Key k, C_F0 & c,size_t &top, bool del ) 
    {  New(k,(make_pair<aType, E_F0  *>(c.left(),c.LeftValue())),del);return 0; }
@@ -2534,14 +2531,6 @@ class  OneBinaryOperator : public OneOperator{
 	public:
 		AnyType operator()(Stack s)  const 
 		{
-			cout << "Type of C: " << typeid(C).name() << endl;
-			cout << "Type of A: "<< typeid(A).name()<< endl;
-			cout << "Type of B: " << typeid(B).name() << endl;
-			cout << "Type of R: " << typeid(R).name() << endl;
-			cout << "Type of *C::f: " << typeid(*C::f).name() << endl;
-			A aa=GetAny<A>((*a)(s));
-			B bb=GetAny<B>((*b)(s));
-			cout << "Type of (*a)(s): " << typeid((*a)(s)).name() << endl;
 			return  SetAny<R>(static_cast<R>(C::f( GetAny<A>((*a)(s)) , GetAny<B>((*b)(s)))));
 		}
 
