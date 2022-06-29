@@ -119,7 +119,7 @@ long storageused()
 
 }
 
-#ifndef kame
+
 long storagetotal()
 {
 #if HAVE_MSTATS
@@ -137,7 +137,6 @@ long storagetotal()
 // end add mach 2014 ...
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
-#endif
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
 #ifndef kame
 extern int TheCurrentLine; // unset: by default
@@ -154,10 +153,9 @@ extern double  genrand_res53(void) ;
 // FH  for g++ 3.4  the prototypage  have change
 //extern double  VersionNumber();
 
-#ifndef kame
+
 double Imag(const  complex<double> & z){ return imag(z);}
 double Real(const  complex<double> & z){ return real(z);}
-#endif
 const  basicForEachType * basicForEachType::type_C_F0 =0; //  for any type un formal operation .... FH add 09/2012
 
 // FH
@@ -197,10 +195,11 @@ double preal( Complex * const& p){return real(*p);}
 template<class A,class B>  A Build(B b) {  return A(b);}
 
 
-
+#endif
 
 long Exit(long i) {throw(ErrorExit("Exit",i));return 0;}
 bool Assert(bool b) {if (!b) throw(ErrorExec("exec assert",1));return true;}
+#ifndef kame
 
 inline void MyAssert(int i,char * ex,char * file,long line)
 {if (i) {
@@ -253,9 +252,9 @@ template<class RR,class B>
 inline   string ** get_elements( MyMap<String,String> *  const  &  a,string*  const   & b)
  { String* Sret=  &((*a)[*b]); // correction FH feb 2004
     return Sret->getap();}
-
+#endif
 template<class RR> RR Abs(RR a) { return a<0?-a:a;}
-
+#ifndef kame
 template<class R,class A,class B>
 R *MakePtrWithDel( A  const & a)
 { R *r= new B(a->c_str());
@@ -405,7 +404,7 @@ inline  void ShowOn_cerr(const pair<const char * ,const OneOperator *> & i)
    cerr << "\t" <<  *i.first << ":" <<  endl;
    i.second->Show(cerr);
 }
-
+#endif
 void ShowKeyWord(ostream & f )
  {
    zzzfff->dump(f);
@@ -439,7 +438,7 @@ ostream* dumptable(ostream* f)
   return f;
 }
 
-
+#ifndef kame
 long exec(string *s)
     {
       int r=execute(s->c_str());
@@ -906,7 +905,7 @@ template<>
 class ForEachType<void *>:  public basicForEachType{public:// correction july 2009..... FH  Hoooo....  (Il y a un bug DUR DUR FH  ...)
     ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(void *),sizeof(void *),0,0,iv,id,OOnReturn) { }
 };
-
+#endif
 inline double walltime(){
     // add for Pichon mars 2010
     time_t currentWallTime;
@@ -919,7 +918,7 @@ inline long fftime()
     time_t tloc;
     return time(&tloc);
 }
-#endif
+
 long ffstrtol(string* p)
 {
     char * pe;
@@ -1641,7 +1640,7 @@ void Init_map_type()
 
      Global.Add("atan","(",new OneOperator2<double>(atan2));
      Global.Add("sqrt","(",new OneOperator1<double>(sqrt,2));
-     Global.Add("abs","(",new OneOperator1<double>(Abs<double>));
+     Global.Add("abs","(",new OneOperator1<double>(Abs));
      Global.Add("abs","(",new OneOperator1<long>(Abs));
      Global.Add("cos","(",new OneOperator1_<Complex>(cos));
      Global.Add("sin","(",new OneOperator1_<Complex>(sin));
@@ -1651,7 +1650,7 @@ void Init_map_type()
      Global.Add("log","(",new OneOperator1_<Complex>(log));
      Global.Add("tan","(",new OneOperator1_<Complex>(tan));
      Global.Add("exp","(",new OneOperator1_<Complex>(exp));
-#ifndef kame
+
     Global.Add("pow","(",new OneBinaryOperator<Op2_pow<Complex,Complex,Complex> >);
                 //new OneOperator2_<Complex,Complex>(pow ));
      Global.Add("sqrt","(",new OneOperator1_<Complex>(sqrt,0));
@@ -1663,7 +1662,7 @@ void Init_map_type()
 
      Global.Add("imag","(",new OneOperator1_<double,Complex>(Imag));
      //  Big probleme  real is a type
-     Add<double>("<--","(",new OneOperator1_<double,Complex>(Real));
+	 Add<double>("<--","(",new OneOperator1_<double,Complex>(Real));
 
      Global.Add("abs","(",new OneOperator1_<double,Complex>(abs));
 
@@ -1679,10 +1678,12 @@ void Init_map_type()
     Global.Add("storagetotal","(",new OneOperator0<long>(storagetotal));
 
      Global.Add("dumptable","(",new OneOperator1<ostream*,ostream*>(dumptable));
+#ifndef kame
      Global.Add("exec","(",new OneOperator1<long,string* >(exec));  //FH string * mars 2006
      Global.Add("system","(",new OneOperator1<long,string* >(exec));  //FH string fevr 2011
-
+#endif
      Global.Add("polar","(",new OneOperator2_<Complex,double,double>(polar));
+#ifndef kame
  // rand generator ---
   unsigned long init[4]={0x123, 0x234, 0x345, 0x456}, length=4;
   init_by_array(init, length);
@@ -1751,8 +1752,9 @@ void Init_map_type()
 
   TheOperators->Add("{}",new ForAllLoop<E_ForAllLoopMapSS >);
   // add setw feb 2015 FH
-  Global.Add("setw","(",new OneOperator1<OP_setw,long>(defOP_setw));
 #endif
+  Global.Add("setw","(",new OneOperator1<OP_setw,long>(defOP_setw));
+
   TheOperators->Add( "<<", new OneBinaryOperator<Print<OP_setw> >);
 #ifndef kame
 #endif

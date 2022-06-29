@@ -1070,8 +1070,6 @@ template<class R,class TA0,class TA1>
        return insert(new E_F_F0F0_Opt<R,TA0,TA1>(*this,a0->Optimize(l,m,n),a1->Optimize(l,m,n)),l,m,n);
     }
 // add modif for xlc++
-#ifndef kame
-
 
 template<class R,class A0>
  class E_F_F0_ :public  E_F0 { public:
@@ -1087,6 +1085,7 @@ template<class R,class A0>
       {return a->MeshIndependent();} // 
     
 };
+#ifndef kame
 // add FH 07/2008  for pmesh clean 
 template<class R,class A0>
 class E_F_F0_Add2RC :public  E_F0 { public:
@@ -1617,7 +1616,7 @@ class AC_F0: public basicAC_F0 { //  a Array of [[C_F0]]
         a=0;named_parameter=0;}
   
 }; 
-
+extern Polymorphic * TheOperators;  //KAME
 class  basicAC_F0_wa : public basicAC_F0 { public:
  template<bool...> struct pack { };
  template<class... T>
@@ -1691,9 +1690,10 @@ class TransE_Array:  public E_F0 {  public:
     TransE_Array(const E_Array * e): v(e) {ffassert(e);}
     AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
 };
-#ifndef kame
+
 // fin nov 2007
 //  add 2010 feb.  FH
+
 inline C_F0 TryConj(const C_F0 & c) {
     //   here put the conj   operator ...
     ArrayOfaType at(c.left());
@@ -1706,7 +1706,7 @@ inline C_F0 TryConj(const C_F0 & c) {
     }
     
     return c; }
-#endif
+
 // fin add 2010 feb.
 // avril 2007
 class PlotStream;  
@@ -2298,7 +2298,7 @@ struct ternary_function
 	typedef Arg3   third_argument_type;
 	typedef Result result_type;
 };
-#ifndef kame
+
 template <typename Arg1, typename Arg2,typename Arg3,typename Arg4 , class Result>
 struct quad_function
 {
@@ -2308,7 +2308,7 @@ struct quad_function
 	typedef Arg4   fourth_argument_type;
 	typedef Result result_type;
 };
-
+#ifndef kame
 template<typename T,class CODE >
 class  OneTernaryOperator : public OneOperator{
   typedef typename T::result_type R;
@@ -2779,7 +2779,7 @@ class  OneUnaryOperator : public OneOperator{
       tA(map_type[typeid(A).name()])
       {}
 };
-#ifndef kame
+
 template<class R,class A=R,class CODE=E_F_F0s_<R,A> >
 class  OneOperator1s_ : public OneOperator {
     typedef  R (*func)(Stack stack, const A &) ; 
@@ -2813,7 +2813,7 @@ class  OneOperator1_ : public OneOperator {
     
 };
 
-#endif
+
 template<class R,class A,class B,class E> class E_F_F0F0_;
 template<class R,class A=R,class B=A,class CODE=E_F_F0F0_<R,A,B,E_F0> >
 class  OneOperator2_ : public OneOperator {
@@ -3071,13 +3071,13 @@ template<class T>
      return map_type[typeid(T).name()] = new ForEachType<T>(iv,id,Onreturn); 
     
    }
-#ifndef kame
+
 template<class T>
   void Add(const char * k,const char * op,OneOperator *p0,OneOperator *p1=0,
       OneOperator *p2=0,OneOperator *p3=0,OneOperator *p4=0,
       OneOperator *p5=0,OneOperator *p6=0)  
      {atype<T>()->Add(k,op,p0,p1,p2,p3,p4,p5,p6);}     
-
+#ifndef kame
 inline C_F0 operator *(const C_F0 &a,const C_F0 &b)
 {    
   return a==*pOne ? b : ( b ==*pOne ? a : C_F0(TheOperators,"*",a,b)) ;}
@@ -3280,7 +3280,7 @@ class TypeLineFunction: public ForEachType<C_F0> {
     {  return C_F0(); }  // nothing to initialize 
     
 };
-#ifndef kame
+
 
 class E_F0_Optimize : public E_F0 { 
   deque<pair<Expression,int> > l;
@@ -3341,7 +3341,7 @@ public:
   virtual  operator aType ()  const { return  *(l.back().first);}   // the type of the expression  
 }; 
  
-#endif 
+
 inline    int E_F0::find(const MapOfE_F0 & m)  {  //  exp
        // cout << " ffff :" ;
         MapOfE_F0::const_iterator i= m.find(this); 
@@ -3388,7 +3388,7 @@ void ClearMem();
 #endif
 // <<OneOperator_code2>>
 inline C_F0  OneOperator::code2(const basicAC_F0 &a) const  {return C_F0(code(a),r);}	
-#ifndef kame
+
 template<class R>
 class  OneOperator0 : public OneOperator {public:
     class E_F0_F :public  E_F0 { public:
@@ -3412,7 +3412,7 @@ public:
 	return  new E_F0_F(f);} 
     OneOperator0(func  ff): OneOperator(map_type[typeid(R).name()]),f(ff){}
 };
-
+#ifndef kame
 template<class R >
 Type_Expr CVariable(R  (*ff)() )
 {

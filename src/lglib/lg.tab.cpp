@@ -2493,12 +2493,12 @@ yyreduce:
 //#line 458 "lg.ypp"
     { (yyval.args)=Find((yyvsp[(1) - (2)].str));;}
     break;
-
+#endif
   case 47:
 //#line 459 "lg.ypp"
     { (yyval.args)=Find((yyvsp[(1) - (2)].str));;}
     break;
-
+#ifndef kame
   case 48:
 //#line 460 "lg.ypp"
     { (yyval.args)=Find((yyvsp[(1) - (2)].str));;}
@@ -3810,7 +3810,7 @@ int mainff (int  argc, char **argv)
    callInitsFunct() ; //  init for dynamique libs ...
 
   // init_lgfem() ;
-   init_lgmesh() ;
+  // init_lgmesh() ;
 #ifndef kame
    init_lgmesh3() ;
    init_algo();

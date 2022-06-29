@@ -125,7 +125,7 @@ void  mylex::Add(Key k,int r,aType t)
     ffassert(ii==MotClef.end());
     MotClef.insert(pair<const Key,Value>(k,Value(r,t)));
 }
-#ifndef kame
+
 // <<dump>>
 void mylex::dump(ostream & f )
 {
@@ -135,7 +135,7 @@ void mylex::dump(ostream & f )
         f << "      " << i->first << " " << i->second.first << " " <<  i->second.second->name() << endl;
     }
 }
-#endif
+
 inline bool isNLCR(istream & f,int c)
 {
     // eat  CR NL or NL CR paire

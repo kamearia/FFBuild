@@ -1,5 +1,6 @@
-string p="123";
-cout << p<<"  "<<  strtod(p)/2 << "  "<< strtol(p)/2 << endl;
+cout << abs(-1.2)<< endl;
+//string p="123";
+//cout << p<<"  "<<  strtod(p)/2 << "  "<< strtol(p)/2 << endl;
 //cout  << atof("1.234") << endl;
 //cout << " cos(pi/4)="<< cos(pi/4)  << endl;
 /*

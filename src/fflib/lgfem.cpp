@@ -26,6 +26,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #ifdef __MWERKS__
 #pragma optimization_level 0
 #endif
@@ -35,6 +36,7 @@
 #include <cfloat>
 
 #include "error.hpp"
+
 #include "AFunction.hpp"
 #include "AFunction_ext.hpp"
 #include "rgraph.hpp"
@@ -56,6 +58,7 @@
 
 #include "lex.hpp"
 #include "lgfem.hpp"
+#ifndef kame
 #include "lgmesh3.hpp"
 #include "lgsolver.hpp"
 #include "problem.hpp"
@@ -63,9 +66,9 @@
 #include "AddNewFE.h"
 #include "array_resize.hpp"
 #include "PlotStream.hpp"
-
+#endif
 using namespace std;
-
+extern Polymorphic * TheOperators;  //KAME
 // add for the gestion of the endianness of the file.
 // PlotStream::fBytes PlotStream::zott; //0123;
 // PlotStream::hBytes PlotStream::zottffss; //012345678;
