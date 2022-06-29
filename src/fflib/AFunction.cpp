@@ -89,7 +89,9 @@ extern basicForEachType *  typevarreal;
 #include <queue>
 
 #include "array_init.hpp"
+#endif
 #include "AFunction_ext.hpp"
+#ifndef kame
 // Add FH to get memroy used in test .. march 2014
 #if __APPLE__
 #include <malloc/malloc.h>
@@ -157,7 +159,7 @@ double Imag(const  complex<double> & z){ return imag(z);}
 double Real(const  complex<double> & z){ return real(z);}
 #endif
 const  basicForEachType * basicForEachType::type_C_F0 =0; //  for any type un formal operation .... FH add 09/2012
-#ifndef kame
+
 // FH
 
 template<class T> inline T Max (const T &a,const T & b){return a > b ? a : b;}
@@ -169,7 +171,7 @@ template<class T> inline T Min (const T &a,const T & b,const T & c,const T & d){
 template<class T> inline T Max (const T &a,const T & b,const T & c,const T & d){return Max(Max(a,b),Max(c,d));}
 
 template<class T> inline T Square (const T &a){return a*a;}
-#endif
+
 struct SubArray2: public binary_function<long,long,SubArray> {
   static SubArray f(const long & a,const long & b)  {
     return SubArray(b-a+1,a);} };
@@ -239,12 +241,12 @@ class  OneOperator_border_label : public OneOperator {public:
         return new Op(b);}
     OneOperator_border_label(): OneOperator(atype<long>(),atype<const E_Border *>()) {}
 };
-#ifndef kame
+
 template<class RR> RR LIncremantation(RR* a){ return ++(*a);}
 template<class RR> RR RIncremantation(RR* a){ return (*a)++;}
 template<class RR> RR LDecremantation(RR* a){ return --(*a);}
 template<class RR> RR RDecremantation(RR* a){ return (*a)--;}
-
+#ifndef kame
 template<class RR,class B>
  RR * New_form_string(string * s) {B * r=  new B(s);freestring(s);return r;}// correct Mars 2011 remove * if delete
 
@@ -278,7 +280,7 @@ struct Op2_set_pstringiomode: public ternary_function<R,string*,ios::openmode,R>
   static R  f(Stack s,R const & p,string * const & a,const ios::openmode & mode)
    {*p =  new RR(a->c_str(),mode);
     return p;} };
-#ifndef kame
+
 AnyType FWhile(Stack s ,Expression test,Expression ins)
 {
   bool sptrclean=true;
@@ -352,7 +354,7 @@ AnyType FIf(Stack s ,Expression test,Expression i1,Expression i2,Expression )
 
   return a;
  }
-
+#ifndef kame
 
 #endif
 aType TypeArray(aType b,aType a)
@@ -917,6 +919,7 @@ inline long fftime()
     time_t tloc;
     return time(&tloc);
 }
+#endif
 long ffstrtol(string* p)
 {
     char * pe;
@@ -929,6 +932,7 @@ long ffstrtol(string* p)
     return r;
 
 }
+
 long ffstrtol(string* p,long d)
 {
     char * pe;
@@ -962,7 +966,7 @@ double NaN() {return nan("");}// add march 2012
 int ShowAlloc(const char *s,size_t & lg);
 long ShowAlloc1(string *  s,long * np) { size_t lg; long  n= ShowAlloc(s->c_str(),lg); *np=lg; return n;}
 long ShowAlloc1(string *  s) { size_t lg; long  n= ShowAlloc(s->c_str(),lg); return n;}
-
+#ifndef kame
 class E_ForAllLoopMapSS
 {  public:
     typedef String K;
@@ -1039,15 +1043,16 @@ class E_ForAllLoopMapSS
 double dist(const double & aa, const double & bb) { return sqrt( aa*aa+bb*bb);}
 double dist(const double & aa, const double & bb,const double & cc) { return sqrt(aa*aa+bb*bb+cc*cc);}
 // Add Jan 2017 FH
+#endif
 double diffpos(const double & aa, const double & bb) { return aa<bb ? bb-aa : 0.;}
 double invdiffpos(const double & aa, const double & bb) { return aa<bb ? 1./(bb-aa) : 0.;}
 double diffnp(const double & aa, const double & bb) { return aa<0. && 0.<bb ? bb-aa : 0.;}//  Corr 08/18  G. Sadaka
 double invdiffnp(const double & aa, const double & bb) { return aa<0. && 0.<bb  ? 1./max(bb-aa,1e-30) : 0.;}//  Corr 08/18  G. Sadaka
 double invdiff(const double & aa, const double & bb) { double d= aa-bb; return abs(d) < 1e-30 ? d : 1/d;}
 double invdiff(const double & aa, const double & bb,const double &eps) { double d= aa-bb; return abs(d) < eps ? d : 1/d;}
-#endif
+
 extern double ff_tgv; // Add FH jan 2018
-#ifndef kame
+
 double sign(double x){return (x>0.)-(x<0.); }// Add FH jan 2018
 long sign(long x){return (x>0)-(x<0); }// Add FH jan 2018
 //KAME bool ffsignbit(long x){return signbit(x);}
@@ -1056,7 +1061,7 @@ template<typename T>
 bool  pswap(T *a,T *b) {swap(*a,*b);return 0; }
 long lrintc(Complex x) { return lrint(real(x));}
 long lroundc(Complex x) { return lround(real(x));}
-#endif
+
 extern double VersionNumber();
 void Init_map_type()
 {
@@ -1179,9 +1184,8 @@ void Init_map_type()
      Global.New("append",CConstant<ios::openmode>(ios::app));
      Global.New("binary",CConstant<ios::openmode>(ios::binary)); // add FH april 2014
 
-#ifndef kame
      TheOperators->Add("|",new OneBinaryOperator<Op2_pipe<ios::openmode> >); // add FH april 2014
-#endif
+
      Global.New("endl",CConstant<const char*>("\n"));
      Global.New("true",CConstant<bool>(true));
      Global.New("false",CConstant<bool>(false));
@@ -1194,12 +1198,12 @@ void Init_map_type()
      pZero = new  C_F0(CConstant<double>(0.0));
      pOne = new  C_F0(CConstant<double>(1.0));
      pminusOne = new  C_F0(CConstant<double>(-1.0));
-#ifndef kame
+
      TheOperators->Add(":",
        new OneOperatorConst<char>(new EConstant<char>(':')),
        new OneBinaryOperator<SubArray2>,
        new OneTernaryOperator3<SubArray3>);
-#endif
+
      TheOperators->Add("+",
        new OneBinaryOperator<Op2_add<long,long,long> >,
        new OneBinaryOperator<Op2_add<double,double,double> >,
@@ -1336,14 +1340,12 @@ void Init_map_type()
      TheOperators->Add("!",
        new OneUnaryOperator<Op1_not<bool > >
      );
-#ifndef kame
      TheOperators->Add("&&", new OneBinaryOperator<Op2_and > );
      TheOperators->Add("&", new OneBinaryOperator<Op2_and > );
      TheOperators->Add("||", new OneBinaryOperator<Op2_or> );
      TheOperators->Add("|", new OneBinaryOperator<Op2_or> );
 
       // Unary_Op_Comparaision
-#endif
      TheOperators->Add("=",
        new OneBinaryOperator<set_eq<bool> ,OneBinaryOperatorMIWO >,
        new OneBinaryOperator<set_eq<long> ,OneBinaryOperatorMIWO>,
@@ -1351,7 +1353,7 @@ void Init_map_type()
        new OneBinaryOperator<set_eq<Complex> ,OneBinaryOperatorMIWO>,
        new OneBinaryOperator<set_peqstring ,OneBinaryOperatorMIWO>  // FH string * mars 2006
        );
-#ifndef kame
+
      TheOperators->Add("?:",
        new Operator_Aritm_If<bool >,
        new Operator_Aritm_If<long >,
@@ -1359,13 +1361,13 @@ void Init_map_type()
        new Operator_Aritm_If<Complex >,
        new Operator_Aritm_If<string* >  // (OK???)  to do FH string * mars 2006
        );
-#endif
+
      initArrayOperatorlong();
 #ifndef kame
      initArrayOperatordouble();
      initArrayOperatorComplex();
      initStringOperator();
-
+#endif
 
      TheOperators->Add("+=",
        new OneBinaryOperator<set_eq_add<long>,OneBinaryOperatorMIWO >,
@@ -1394,7 +1396,7 @@ void Init_map_type()
        new OneBinaryOperator<set_eq_div<double>,OneBinaryOperatorMIWO >,
        new OneBinaryOperator<set_eq_div<Complex>,OneBinaryOperatorMIWO >
      );
-
+#ifndef kame
      TheOperators->Add("+",
        new AddBorderOperator
        );
@@ -1452,7 +1454,7 @@ void Init_map_type()
        new OneBinaryOperator<Print<Complex> >,
        new OneBinaryOperator<PrintP<string*> >  //  FH string * mars 2006
        );
-#ifndef kame
+
 
      TheRightOperators->Add("++",
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&RIncremantation<long>));
@@ -1462,7 +1464,7 @@ void Init_map_type()
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&LIncremantation<long>));
      TheOperators->Add("--",
        new OneOperator1<long,long*, E_F_F0<long,long*,false> >(&LDecremantation<long>));
-#endif
+
 //   init
      TheOperators->Add("<-",
        new OneOperator2<string**,string**,string*>(&set_copyp_new<string>),  //  FH string * mars 2006
@@ -1543,7 +1545,7 @@ void Init_map_type()
 
      TheOperators->Add("[]",new OneOperator_array );
      TheOperators->Add("[border]",new OneOperator_border );
-
+#endif
     Global.Add("cos","(",new OneOperator1<double>(cos,2));
     Global.Add("square","(",new OneOperator1<long,long,E_F_F0<long,const long &> >(Square));// add FH Mai 2011
     Global.Add("square","(",new OneOperator1<double,double,E_F_F0<double,const double &> >(Square));
@@ -1582,6 +1584,7 @@ void Init_map_type()
      Global.Add("acos","(",new OneOperator1<double>(acos));
      Global.Add("asinh","(",new OneOperator1<double>(asinh));
      Global.Add("acosh","(",new OneOperator1<double>(acosh));
+
 #ifdef HAVE_ERFC
      Global.Add("erf","(",new OneOperator1<double>(erf));
      Global.Add("erfc","(",new OneOperator1<double>(erfc));
@@ -1599,6 +1602,7 @@ void Init_map_type()
       Global.Add("y1","(",new OneOperator1<double>(y1));
       Global.Add("yn","(",new OneOperator2<double,long,double>(myyn));
 #endif
+
      Global.Add("exp","(",new OneOperator1<double>(exp));
      Global.Add("log","(",new OneOperator1<double>(log));
      Global.Add("log10","(",new OneOperator1<double>(log10));
@@ -1637,7 +1641,7 @@ void Init_map_type()
 
      Global.Add("atan","(",new OneOperator2<double>(atan2));
      Global.Add("sqrt","(",new OneOperator1<double>(sqrt,2));
-     Global.Add("abs","(",new OneOperator1<double>(Abs));
+     Global.Add("abs","(",new OneOperator1<double>(Abs<double>));
      Global.Add("abs","(",new OneOperator1<long>(Abs));
      Global.Add("cos","(",new OneOperator1_<Complex>(cos));
      Global.Add("sin","(",new OneOperator1_<Complex>(sin));
@@ -1647,7 +1651,7 @@ void Init_map_type()
      Global.Add("log","(",new OneOperator1_<Complex>(log));
      Global.Add("tan","(",new OneOperator1_<Complex>(tan));
      Global.Add("exp","(",new OneOperator1_<Complex>(exp));
-
+#ifndef kame
     Global.Add("pow","(",new OneBinaryOperator<Op2_pow<Complex,Complex,Complex> >);
                 //new OneOperator2_<Complex,Complex>(pow ));
      Global.Add("sqrt","(",new OneOperator1_<Complex>(sqrt,0));

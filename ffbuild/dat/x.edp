@@ -1,3 +1,26 @@
+string p="123";
+cout << p<<"  "<<  strtod(p)/2 << "  "<< strtol(p)/2 << endl;
+//cout  << atof("1.234") << endl;
+//cout << " cos(pi/4)="<< cos(pi/4)  << endl;
+/*
+int n=5;
+n--;
+//cout << " n++ ="<< n++  << endl;
+cout << " n ="<< n  << endl;
+cout << " ++n ="<< ++n  << endl;
+*/
+/*
+cout << "(n+=3)= " << n<< endl;
+cout << "  n++ ="<< n++  << endl;
+cout << "  ++n ="<< ++n  << endl;
+*/
+/*
+cout << "2^10=" << (2^10) << endl;
+cout << "  false? true : false=" << false? true : false<< endl;
+cout << "true&&true=" << true&&true<< "  true&&false=" << true&&false<< "  false&&true=" << false&&true<< "  false&&false=" << false&&false << endl;
+cout << "true||true=" << true||true<< "  true||false=" << true||false<< "  false||true=" << false||true<< "  false||false=" << false||false << endl;
+cout << "pi=" << pi << endl;
 int q=11/2;
 cout<<q<< "\n"<< endl;
+*/
 

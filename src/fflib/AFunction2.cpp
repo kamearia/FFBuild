@@ -37,6 +37,7 @@ using namespace std;
 extern long mpirank;
 extern long verbosity;
 extern mylex *zzzfff;
+extern Polymorphic * TheOperators;
 #ifndef kame
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
@@ -543,7 +544,7 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
       return v;
   }
 
-#ifndef kame
+
  void  TableOfIdentifier::Add(Key k,Key op,OneOperator *p0,OneOperator *p1,
       OneOperator *p2,OneOperator *p3,OneOperator *p4,OneOperator *p5,OneOperator *p6)
   {
@@ -562,7 +563,7 @@ const  Type_Expr &   TableOfIdentifier::New(Key k,const Type_Expr & v,bool del)
       }
       p->Add(op,p0,p1,p2,p3,p4,p5,p6);
   }
-#endif
+
  ArrayOfaType::ArrayOfaType(const ListOfId * l)
   : n(l->size()),t(new aType[n]),ellipse(false)
  {
@@ -969,7 +970,6 @@ void lgerror (const char* s)
 	}
       throw(ErrorCompile(s,zzzfff->lineno(),zzzfff->YYText() ));
   }
-#ifndef kame
 
 
  C_F0 ForAll(Block *cb,ListOfId * id,C_F0  m)
@@ -1035,7 +1035,7 @@ void lgerror (const char* s)
     args+=instt;
     return C_F0(TheOperators,"{}",args);
 }
-#endif
+
 void InitLoop()
 {
      Dcl_Type<PolymorphicLoop*>(0);

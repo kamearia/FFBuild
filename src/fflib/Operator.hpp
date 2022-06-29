@@ -130,14 +130,13 @@ struct Op2_eq: public binary_function<A,B,bool> {
 template<class A,class B=A> 
 struct Op2_ne: public binary_function<A,B,bool> { 
   static bool f(const A & a,const B & b)  { return a  != b;} }; 
-#ifndef kame
+
 struct Op2_and: public binary_function<bool,bool,bool> { 
   static bool f(const bool & a,const bool & b)  { return a  && b;} }; 
   
 struct Op2_or: public binary_function<bool,bool,bool> { 
   static bool f(const bool & a,const bool & b)  { return a  || b;} }; 
 
-#endif
 template<class R,class A,class B> 
 struct Op2_padd: public binary_function<A,B,R*> { 
   static R * f(Stack s,const A & a,const B & b)  { 
@@ -339,7 +338,7 @@ template<class A,class B>
 struct set_eqq_add: public binary_function<A,B,A> {
   static A f(const A & a,const B & b)  {A aa(a); aa += b; return aa;}
 };
-
+#endif
 template<class A>
 struct set_eq_add: public binary_function<A*,A,A*> {
   static A* f(A* const  & a,const A & b)  { *a += b; return a;}
@@ -360,7 +359,7 @@ struct set_eq_div: public binary_function<A*,B,A*> {
   static A* f(A* const  & a,const B & b)  { *a /= b; return a;}
 };
 
-#endif
+
 extern string  *newstring(const string & c);
 struct set_peqstring: public binary_function<string**,string*,string**> {
   static string** f(string** const  & a, string * const & b)  {

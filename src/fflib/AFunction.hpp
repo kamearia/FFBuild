@@ -30,6 +30,7 @@
 #pragma once
 //file afonction.h
 #define Nothing (void *)0;
+//#define Nothing NULL;
 #include "showverb.hpp" 
 #include "RNM.hpp" 
 #ifndef kame
@@ -895,7 +896,7 @@ template<class A> AnyType Initialize(Stack,const AnyType &x,const AnyType &y){
   return  PtrtoAny(a);
 }
  
-
+#endif
   
 class E_F0_CFunc2 :public  E_F0mps { public:
    CFunction2  f2;
@@ -918,7 +919,7 @@ class E_F0_CFunc4 :public  E_F0mps { public:
 
 };
 
-
+#ifndef kame
 
 template<class R,class A>
  class E_F1_F :public  E_F1 { public:
@@ -937,7 +938,7 @@ template<class R,class A0,class A1>
   AnyType operator()(Stack s,AnyType & a0,AnyType & a1)  const 
     {return SetAny<R>(f(GetAny<A0>(a0),GetAny<A1>(a1)));}  
 };
-
+#endif
 template<class R,class TA0,bool RO=true>
  class E_F_F0 :public  E_F0 { public:
    template <class T> struct remove_reference     {typedef T type;};
@@ -992,7 +993,7 @@ template<class R,class TA0,bool RO>
        return insert(new E_F_F0_Opt<R,TA0,RO>(*this,a->Optimize(l,m,n)),l,m,n);       
     } 
 // fin modif xlc++ 
-
+#ifndef kame
 template<class A0>
  class E_VF_F0 :public  E_F0 { public:
   typedef  void (*func)(  A0 ) ; 
@@ -1145,6 +1146,7 @@ bool MeshIndependent() const
 {return E::MeshIndependent() && a0->MeshIndependent() && a1->MeshIndependent();} //
 
 };
+#endif
 // FH end 07/2008 
 template<class R,class A0,class A1,class A2,class E=E_F0>
  class E_F_F0F0F0_ :public  E { public:
@@ -1160,7 +1162,7 @@ template<class R,class A0,class A1,class A2,class E=E_F0>
       {return E::MeshIndependent() && a0->MeshIndependent() && a1->MeshIndependent()&& a2->MeshIndependent();} //
 
 };
-
+#ifndef kame
 template<class R,class A0,class A1,class A2,class E=E_F0>
  class E_F_stackF0F0F0_ :public  E_F0mps { public:
   typedef  R (*func)(Stack, const  A0 &,const  A1 & , const A2 &) ; 
@@ -1510,7 +1512,7 @@ extern TableOfIdentifier Global;
 
 template<class T> 
 inline C_F0 to(const C_F0 & a) { return map_type[typeid(T).name()]->CastTo(a);}
-#ifndef kame
+
 
 /*
 inline C_F0 toBool(const C_F0 & a)    {return ATYPE(bool)->CastTo(a);}
@@ -1528,7 +1530,7 @@ inline C_F0 FIf(C_F0 i0,C_F0 i1) {return C_F0(new E_F0_CFunc4(FIf,to<bool>(i0),i
 //inline  C_F0 C_F0::PtrValue() const{ 
 //   if (!(r && r->un_ptr)) { cerr << "PtrValue: Not a Left value " << *r << endl;CompileError();} 
 //   return C_F0(new  E_F0_Func1(r->un_ptr->f,f),r->un_ptr->r);}
-#endif
+
 /// <<basicAC_F0>> version de base d'un tableau d'un parametres pour les operateurs unaire, binaire, pas d'allocation
 
 class basicAC_F0 {
@@ -1967,7 +1969,7 @@ template<class T>
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top) 
    { //  if( t-> ExistDestroy()) NbNewVarWithDel++;
        return t->Initialization(New(k,NewVariable<T>(t,top))); }
-#ifndef kame
+
 // save a expression 
 inline  C_F0 TableOfIdentifier::NewID(aType r,Key k, C_F0 & c,size_t &top, bool del ) 
    {  New(k,(make_pair<aType, E_F0  *>(c.left(),c.LeftValue())),del);return 0; }
@@ -1977,20 +1979,20 @@ inline  C_F0 TableOfIdentifier::NewID(aType r,Key k, C_F0 & c,const ListOfId & l
    { return r->Initialization(New(k,r->SetParam(c,&l,top),del));}
    
 /// <<tables_of_identifier>> allocated at [[file:global.cpp::tables_of_identifier]]
-#endif
+
 typedef list<TableOfIdentifier *> ListOfTOfId;   
 extern list<TableOfIdentifier *> tables_of_identifier;
 
 /// [[file:AFunction2.cpp::Find]]
 
 C_F0 Find(const char * name);
-#ifndef kame 
+ 
 inline  C_F0 basicForEachType::Find(const char * k) const
   {  C_F0 r( ti.Find(k));
      //if (r.Empty()) {cerr << " no member " <<k << " in type " << name() << endl; CompileError("  ");}
      return r; }
 inline C_F0  basicForEachType::Find(const char * k,const basicAC_F0 & args) const {return ti.Find(k,args);}
-#endif
+
 inline  C_F0 basicForEachType::Initialization(const Type_Expr & e) const 
   {
      if(!InitExp) 
@@ -2215,7 +2217,7 @@ template<class T>
 
 }; 
 
-#ifndef kame
+
 
 /// <<OneOperator1>> To know the meaning of OneOperator name extensions, see [[OneOperator]]. The template arguments to
 /// OneOperator classes are identical to the types of the arguments of the C++ function that is called from the
@@ -2241,7 +2243,7 @@ class  OneOperator1 : public OneOperator {
       t0( map_type[typeid(A).name()] ), f(ff) {pref=ppref;}
 };
 
-#endif
+
 template<class R,class A=R,class B=A,class CODE=E_F_F0F0<R,A,B> >
 class  OneOperator2 : public OneOperator {
     aType r,t0,t1; //  return type 
@@ -2611,7 +2613,6 @@ class  OneBinaryOperator : public OneOperator{
 
 	};
 
-#ifndef kame
 //-------------
 template<typename R>
 class  Operator_Aritm_If : public OneOperator{
@@ -2688,7 +2689,7 @@ public:
     OneOperator(map_type[typeid(R).name()],map_type[typeid(bool).name()],map_type[typeid(B).name()],map_type[typeid(B).name()])
   {pref = SameType<B,B>::OK ;}
 };
-
+#ifndef kame
 /* essai d'unification des classes 
 
 template<class R,class A,R ff(A),class AA=A> 
@@ -2838,7 +2839,7 @@ class  OneOperator2_ : public OneOperator {
       t0( map_type[typeid(A).name()] ),t1(map_type[typeid(B).name()] ), f(ff) {}
       
 };
-#ifndef kame
+
 template<class R,class A=R,class B=A,class C=B,class CODE=E_F_F0F0F0_<R,A,B,C,E_F0> >
 class  OneOperator3_ : public OneOperator {
    // aType r; //  return type 
@@ -2872,7 +2873,7 @@ class  OneOperator3_ : public OneOperator {
     f(ff) {pref=ppref;}
 
 };
-
+#ifndef kame
 // <<OneOperatorCode>> utilise [[E_F0]]. la class code doit contenir
 /*
   class CODE: public E_F0 {
@@ -3185,19 +3186,18 @@ inline  void CC_F0::operator=(const AC_F0& a) {  f=new E_Array(a); r= atype<E_Ar
 #ifndef kame
 inline  UnId::UnId(const char * idd,const C_F0 & ee,aType rr=0,bool reff=false) 
   :id(idd),r(rr),e(ee),array(0),re(ee.left()) ,ref(reff){}
-
 #endif
+
 class E_exception : public exception { public:
   enum CODE_exception { UNKNOWN,e_break,e_continue,e_return} ;
   CODE_exception code;  
   AnyType r; // for return 
   public:
-  E_exception(CODE_exception c, AnyType rr/*=Nothing*/) : code(c),r(rr)  {}
+  E_exception(CODE_exception c, AnyType rr=(void *)0 /*Nothing*/) : code(c),r(rr)  {}
   int type() {return code;}
   virtual const char *  what() const throw() { return "E_exception (break,continue or return) "; }
   ~E_exception() throw() {}
 };
-#ifndef kame
 
 class E_throw : public E_F0mps { public:
    E_exception::CODE_exception kind;    
@@ -3210,7 +3210,7 @@ class E_throw : public E_F0mps { public:
    operator aType () const { return atype<void>();} 
       
  } ;
-
+#ifndef kame
 /*
 class E_block :  public E_F0mps { public:
   const int n;
@@ -3421,10 +3421,10 @@ Type_Expr CVariable(R  (*ff)() )
 }
 #endif
 void InitLoop();
-#ifndef kame
+
 C_F0 ForAll(Block *,ListOfId * id,C_F0  m);
 C_F0 ForAll(C_F0  loop,C_F0  inst);
-#endif
+
 class PolymorphicLoop:public Polymorphic {
 public:
     typedef Expression Exp;
