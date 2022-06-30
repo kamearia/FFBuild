@@ -1,5 +1,5 @@
-int a(123);
-cout << "a= "<< a << endl;
+int a=123;
+//cout << "a= "<< a << endl;
 //cout << abs(-1.2)<< endl;
 //string p="123";
 //cout << p<<"  "<<  strtod(p)/2 << "  "<< strtol(p)/2 << endl;

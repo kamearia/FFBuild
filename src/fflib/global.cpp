@@ -172,9 +172,9 @@ YYSTYPE *plglval;
 /// <<Global>> Contains all FreeFem++ language keywords. Declaration in [[file:AFunction.hpp::Global]]
 
 TableOfIdentifier Global;
-#ifndef kame
+
  long E_Border::Count =0;
-#endif
+
 /// <<tables_of_identifier>> declared at [[file:AFunction.hpp::tables_of_identifier]]
 typedef list<TableOfIdentifier *> ListOfTOfId;
 ListOfTOfId tables_of_identifier;

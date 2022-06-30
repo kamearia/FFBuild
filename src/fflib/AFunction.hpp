@@ -1717,7 +1717,7 @@ class E_BorderN :public E_F0mps { public:
    int cas;// 0 long , 1, KN_ , 2 : Array // FH april 14 ..
    Expression  n;
    const E_BorderN * next;
-#ifndef kame    
+   
     static   int Cas(C_F0  nn)
     {
         if( atype<long>()->CastingFrom(nn.left())) return 0;
@@ -1733,7 +1733,7 @@ class E_BorderN :public E_F0mps { public:
         else CompileError(" Number of element of a border ( longn , int array, [ ] array ");
         return -1; // bug
     }
-#endif
+
     E_BorderN(const E_Border *  bb, C_F0  nn,const E_BorderN * nx=0) ;
     E_BorderN(const E_BorderN & bb,const E_BorderN * nx)
     : b(bb.b),cas(bb.cas),n(bb.n),next(nx)
@@ -1798,7 +1798,7 @@ static C_F0 to(int cas, C_F0 nn)
     
   void BoundingBox(Stack stack,double  &xmin,double & xmax, double & ymin,double & ymax, double & zmin,double & zmax) const ;
 };
-#ifndef kame
+
 class AddBorderOperator: public  OneOperator{
   typedef const E_BorderN * A;
     public: 
@@ -1815,7 +1815,6 @@ class AddBorderOperator: public  OneOperator{
 
 };
 
-#endif
 class  OneOperator_borderN : public OneOperator {public:
     const  E_Border * theborder;int cas;
     E_F0 * code(const basicAC_F0 & a) const 
@@ -1868,11 +1867,11 @@ class E_Border  :public Polymorphic  {  public:
     return  SetAny<const  E_Border *>(this);}
   double length(Stack ) const { ffassert(0);return 0.0; /* a faire */ }
 };
-#ifndef kame
+
 
 inline  E_BorderN::E_BorderN(const E_Border *bb, C_F0  nn,const E_BorderN * nx)
 :b(bb),cas(Cas(nn)),n(to(cas,nn) ),next(nx) { /* cout << "  -- E_BorderN  : cas " << cas << endl; */ throwassert(b);}
-
+#ifndef kame
 inline  double E_BorderN::from(Stack stack) const {return b->xfrom ? GetAny<double>((*b->xfrom)(stack)): double(0.0);}
 inline  double  E_BorderN::to(Stack stack) const {return b->xto? GetAny<double>((*b->xto)(stack)): b->length(stack) ;}
 inline  double *  E_BorderN::var(Stack stack) const {return b->xvar ? GetAny<double*>((*b->xvar)(stack)): (double*) 0 ;}

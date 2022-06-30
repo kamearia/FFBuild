@@ -141,7 +141,7 @@ unsigned long genrand_int32(void) {
 
   return y;
 }
-
+#endif
 /* generates a random number on [0,0x7fffffff]-interval */
 long genrand_int31(void) { return (long)(genrand_int32( ) >> 1); }
 
@@ -168,6 +168,7 @@ double genrand_res53(void) {
   unsigned long a = genrand_int32( ) >> 5, b = genrand_int32( ) >> 6;
   return (a * 67108864.0 + b) * (1.0 / 9007199254740992.0);
 }
+#ifndef kame
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 /*
 int main(void)

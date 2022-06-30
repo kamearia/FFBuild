@@ -91,7 +91,7 @@ bool mylex::InMotClef  (aType & t, int & r) const
     }
     else
     {
-		if(verbosity>=1)
+		if(verbosity>1)
 		 cout << "name:" << i->first << "  id:" << i->second.first << " type:" << i->second.second->name() << endl;
         r=i->second.first;
         t=i->second.second;

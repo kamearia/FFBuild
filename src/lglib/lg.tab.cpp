@@ -1924,6 +1924,11 @@ yydestruct (yymsg, yytype, yyvaluep)
 	break;
     }
 }
+
+class LexStatus {
+public: 
+	YYSTYPE yylval;
+};
 
 
 /* Prevent warnings from -Wmissing-prototypes.  */
@@ -1941,6 +1946,7 @@ int yyparse (void);
 int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
+
 
 /* The look-ahead symbol.  */
 int yychar;

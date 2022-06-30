@@ -138,7 +138,7 @@ long storagetotal()
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
-#ifndef kame
+
 extern int TheCurrentLine; // unset: by default
 extern long mpisize,mpirank;
 
@@ -149,7 +149,6 @@ extern double genrand_real2(void);
 extern double genrand_real3(void);
 extern double  genrand_res53(void) ;
 
-#endif
 // FH  for g++ 3.4  the prototypage  have change
 //extern double  VersionNumber();
 
@@ -214,7 +213,7 @@ class  OneOperatorConst : public OneOperator {
     E_F0 * code(const basicAC_F0 & ) const  { return  e;}
     OneOperatorConst(E_F0 * ee):  OneOperator(map_type[typeid(R).name()]),e(ee){}
 };
-#ifndef kame
+
 class  OneOperator_array : public OneOperator {public:
     E_F0 * code(const basicAC_F0 & a) const
      { return  new E_Array(a);}
@@ -228,7 +227,7 @@ class  OneOperator_border : public OneOperator {public:
             return  new E_Border(a);}
     OneOperator_border(): OneOperator(atype<const E_Border *>(),true) {}
 };
-#endif
+
 class  OneOperator_border_label : public OneOperator {public:
   class Op : public E_F0 {public:
    const  E_Border *b;
@@ -260,12 +259,12 @@ R *MakePtrWithDel( A  const & a)
 { R *r= new B(a->c_str());
   delete a;
   return r;}
-
+#endif
 template<class R,class RR>
 struct Op1_new_pstring: public unary_function<string*,R> {
   static R f(string * const & a)  {R r =  new RR(a->c_str());
     return r;} };
-#endif
+
 template<class R,class RR>
 struct Op2_set_pstring: public binary_function<R,string*,R> {
   static R  f(R const & p,string * const & a)  {*p =  new RR(a->c_str());
@@ -477,7 +476,7 @@ class istream_seekg { public:
     istream * f;
     operator long () const {return f->tellg();}
 };
-#ifndef kame
+
 ostream_seekp ff_oseekp(ostream **f){ return ostream_seekp(*f);}
 ostream_seekp ff_oseekp(ostream *f){ return ostream_seekp(f);}
 istream_seekg ff_iseekg(istream **f){ return istream_seekg(*f);}
@@ -487,17 +486,17 @@ long ffseekp( ostream_seekp  pf, long  l) {  pf.f->clear();long ll= pf.f->tellp(
 long fftellp( ostream_seekp  pf) { pf.f->clear(); return pf.f->tellp() ;}
 long ffseekg( istream_seekg  pf, long  l) { pf.f->clear(); return pf.f->seekg(l),l;}
 long fftellg( istream_seekg  pf) { return pf.f->tellg() ;}
-#endif
+
  class istream_good { public:
   istream_good(istream * ff) :f(ff) {}
   istream * f;
   operator bool () const {return f->good();}
  };
-#ifndef kame
+
  inline istream_good to_istream_good(istream **f){ return istream_good(*f);}
  inline istream_good to_istream_good(istream *f){ return istream_good(f);}
-
   inline long get_good( istream_good  pf) { return pf.f->good();}
+
   inline bool get_eof(istream ** p){ return (**p).eof();}
   long filelength(istream ** p) {
       istream *f = *p;
@@ -507,6 +506,7 @@ long fftellg( istream_seekg  pf) { return pf.f->tellg() ;}
       f->seekg (where);
       return length;
   }
+
   bool eatspace(istream ** p){
     istream *f = *p;
     int c;
@@ -538,6 +538,7 @@ inline ostream *set_os_flush(ostream *f)
 {
     (*f).flush()  ; return f;
 }
+
 template< ostream_manipulateur pf>
 inline ostream *set_os1(ostream *f)
 {
@@ -564,7 +565,7 @@ public:
   OneOperator_0(func  ff): OneOperator(map_type[typeid(R).name()]),f(ff){}
 };
 
-
+#ifndef kame
 void init_by_array(unsigned long init_key[], int key_length);
 long genrand_int32(void);
 void init_genrand(unsigned long);
@@ -648,7 +649,7 @@ public:
     E_F0 *  code(const basicAC_F0 & ) const {ffassert(0);}
     C_F0  code2(const basicAC_F0 &args) const;
 };
-
+#endif
 class opFormal : public OneOperator{
 public:
     AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
@@ -658,6 +659,7 @@ public:
     E_F0 *  code(const basicAC_F0 & ) const {ffassert(0);}
     C_F0  code2(const basicAC_F0 &args) const { return (*thecode2)(args);}
 };
+#ifndef kame
 // fin frev 2007
 // nov 2007   v[i]
 class opVI : public OneOperator{
@@ -752,7 +754,7 @@ C_F0  formalMatCofactor(const basicAC_F0 &args)
 
 
 }
-
+#endif
 C_F0  formalMatTrace(const basicAC_F0 &args)
 {
     bool ta =args[0].left()==atype<TransE_Array>();
@@ -802,7 +804,7 @@ C_F0  formalMatTrace(const basicAC_F0 &args)
 
 }
 
-
+#ifndef kame
 C_F0  formalMatDet(const basicAC_F0 &args)
 {
     bool ta =args[0].left()==atype<TransE_Array>();
@@ -889,7 +891,7 @@ struct evalE_mul {
 	return SetAny<R>(static_cast<R>(rr));
     }
 };
-#ifndef kame
+
 istream *Getline(istream * f, string ** s)
 {
     if( *s==0) *s=newstring();
@@ -905,7 +907,7 @@ template<>
 class ForEachType<void *>:  public basicForEachType{public:// correction july 2009..... FH  Hoooo....  (Il y a un bug DUR DUR FH  ...)
     ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(void *),sizeof(void *),0,0,iv,id,OOnReturn) { }
 };
-#endif
+
 inline double walltime(){
     // add for Pichon mars 2010
     time_t currentWallTime;
@@ -1395,11 +1397,11 @@ void Init_map_type()
        new OneBinaryOperator<set_eq_div<double>,OneBinaryOperatorMIWO >,
        new OneBinaryOperator<set_eq_div<Complex>,OneBinaryOperatorMIWO >
      );
-#ifndef kame
+
      TheOperators->Add("+",
        new AddBorderOperator
        );
-    
+#ifndef kame    
       // add frev 2007
       TheOperators->Add("\'", new opTrans);
 
@@ -1476,7 +1478,7 @@ void Init_map_type()
        new OneTernaryOperator3<Op2_set_pstringiomode<ostream**,ofstream> >  ,    //  FH string * mars 2006
        new OneTernaryOperator3<Op2_set_pstringiomode<istream**,ifstream> >   //  FH string * april  2014
        );
-#ifndef kame
+
      atype<istream* >()->AddCast( new E_F1_funcT<istream*,istream**>(UnRef<istream* >));
      atype<ostream* >()->AddCast( new E_F1_funcT<ostream*,ostream**>(UnRef<ostream* >));
 
@@ -1501,6 +1503,7 @@ void Init_map_type()
 		       new OneOperator2<long,ostream_seekp,long>(ffseekp));
     Add<istream_seekg>("(","",new OneOperator1<long,istream_seekg>(fftellg),
 		       new OneOperator2<long,istream_seekg,long>(ffseekg));
+
     // end add  jan 2010 ..
     Add<ostream_precis>("(","",new OneOperator1<long,ostream_precis>(get_precis),
                                 new OneOperator2<long,ostream_precis,long>(set_precis));
@@ -1515,6 +1518,7 @@ void Init_map_type()
         Add<istream**>("eatspace",".",new OneOperator1<bool,istream**>(eatspace));
        Add<istream**>("length",".",new OneOperator1<long,istream**>(filelength));
 // add v 2.8
+
      Add<ostream**>("scientific",".",new OneOperator1<ostream**,ostream**>(set_os<scientific>));
      Add<ostream**>("fixed",".",new OneOperator1<ostream**,ostream**>(set_os<fixed>));
      Add<ostream**>("showbase",".",new OneOperator1<ostream**,ostream**>(set_os<showbase>));
@@ -1536,15 +1540,17 @@ void Init_map_type()
     Global.Add("getline","(",new OneOperator2<istream*,istream*,string **>(Getline));
 // add 2.16
      Global.Add("trace","(",new opFormal(atype<E_Array>(),formalMatTrace ));
+#ifndef kame
      Global.Add("det","(",new opFormal(atype<E_Array>(),formalMatDet ));
 // end add
-
+#
     // add 3.20
     Global.Add("Cofactor","(",new opFormal(atype<E_Array>(),formalMatCofactor ));
 
      TheOperators->Add("[]",new OneOperator_array );
-     TheOperators->Add("[border]",new OneOperator_border );
 #endif
+     TheOperators->Add("[border]",new OneOperator_border );
+
     Global.Add("cos","(",new OneOperator1<double>(cos,2));
     Global.Add("square","(",new OneOperator1<long,long,E_F_F0<long,const long &> >(Square));// add FH Mai 2011
     Global.Add("square","(",new OneOperator1<double,double,E_F_F0<double,const double &> >(Square));
@@ -1687,7 +1693,6 @@ void Init_map_type()
  // rand generator ---
   unsigned long init[4]={0x123, 0x234, 0x345, 0x456}, length=4;
   init_by_array(init, length);
-
   Global.Add("randint32","(",new OneOperator_0<long>(genrandint32));
   Global.Add("randint31","(",new OneOperator_0<long>(genrand_int31));
   Global.Add("randreal1","(",new OneOperator_0<double>(genrand_real1));
