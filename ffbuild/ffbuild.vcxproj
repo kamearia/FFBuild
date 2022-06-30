@@ -186,6 +186,7 @@
     <ClCompile Include="..\src\fflib\global.cpp" />
     <ClCompile Include="..\src\fflib\InitFunct.cpp" />
     <ClCompile Include="..\src\fflib\lex.cpp" />
+    <ClCompile Include="..\src\fflib\lgfem.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />

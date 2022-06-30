@@ -959,8 +959,10 @@ class MeshPoint : public MeshPointBase { public:
   };
 
 ostream & operator << ( ostream &,const  MeshPoint & )  ;
+
 inline static MeshPoint* MeshPointStack(Stack s) {void * p= static_cast<void **>(s)[MeshPointStackOffset];throwassert(p); return static_cast<MeshPoint*>( p);}
 inline static void MeshPointStack(Stack s,MeshPoint* mp) {*static_cast<MeshPoint**>(static_cast<void *>(s)) = mp;}
+
 #ifdef NEWFFSTACK
 inline static MeshPoint* MeshPointStack(void * s) {void * p= static_cast<void **>(s)[MeshPointStackOffset];throwassert(p); return static_cast<MeshPoint*>( p);}
 inline static void MeshPointStack( void *s,MeshPoint* mp) {*static_cast<MeshPoint**>(static_cast<void *>(s)) = mp;}

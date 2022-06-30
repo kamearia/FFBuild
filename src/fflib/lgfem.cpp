@@ -55,10 +55,9 @@
 #include <set>
 #include <map>
 #include <vector>
-
+#ifndef kame
 #include "lex.hpp"
 #include "lgfem.hpp"
-#ifndef kame
 #include "lgmesh3.hpp"
 #include "lgsolver.hpp"
 #include "problem.hpp"
@@ -66,7 +65,7 @@
 #include "AddNewFE.h"
 #include "array_resize.hpp"
 #include "PlotStream.hpp"
-#endif
+
 using namespace std;
 extern Polymorphic * TheOperators;  //KAME
 // add for the gestion of the endianness of the file.
@@ -210,7 +209,7 @@ void dump_table( ) {
 //   }
 //   return (viso[i] = v);
 // }
-
+#endif
 class LinkToInterpreter {
  public:
   Type_Expr P;
@@ -236,6 +235,7 @@ class LinkToInterpreter {
 };
 
 LinkToInterpreter *l2interpreter;
+#ifndef kame
 
 using namespace Fem2D;
 using namespace EF23;
@@ -261,6 +261,8 @@ class E_P_Stack_P : public E_F0mps {
   }
   operator aType( ) const { return atype< R3 * >( ); }
 };
+#endif
+using namespace Fem2D;
 class E_P_Stack_Px : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -279,6 +281,7 @@ class E_P_Stack_Py : public E_F0mps {
 
   operator aType( ) const { return atype< R * >( ); }
 };
+
 class E_P_Stack_Pz : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -288,7 +291,7 @@ class E_P_Stack_Pz : public E_F0mps {
 
   operator aType( ) const { return atype< R * >( ); }
 };
-
+#ifndef kame
 class E_P_Stack_N : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -340,6 +343,7 @@ class E_P_Stack_Region : public E_F0mps {
 
   operator aType( ) const { return atype< long * >( ); }
 };
+#endif
 class E_P_Stack_Label : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -349,6 +353,7 @@ class E_P_Stack_Label : public E_F0mps {
 
   operator aType( ) const { return atype< long * >( ); }
 };
+#ifndef kame
 class E_P_Stack_Mesh : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -3103,19 +3108,24 @@ class pb2mat : public E_F0 {
     }
   }
 };
-
+#endif
 LinkToInterpreter::LinkToInterpreter( ) {
   // P,N,x,y,z,label,region,nu_triangle;
+#ifndef kame
   P = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_P);
+#endif
   x = make_Type_Expr(atype< R * >( ), new E_P_Stack_Px);
   y = make_Type_Expr(atype< R * >( ), new E_P_Stack_Py);
-  z = make_Type_Expr(atype< R * >( ), new E_P_Stack_Pz);
+  z = make_Type_Expr(atype< R * >(), new E_P_Stack_Pz);
+#ifndef kame
   N = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_N);
   Nt = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Nt);
   Ns = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Ns);
   Tl = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Tl);
   region = make_Type_Expr(new E_P_Stack_Region, atype< long * >( ));
+#endif
   label = make_Type_Expr(new E_P_Stack_Label, atype< long * >( ));
+#ifndef kame
   nu_triangle = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Triangle);
   nu_vertex = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Vertex);
   nu_edge = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Edge);
@@ -3125,10 +3135,12 @@ LinkToInterpreter::LinkToInterpreter( ) {
   area = make_Type_Expr(atype< R >( ), new E_P_Stack_areaTriangle);
   volume = make_Type_Expr(atype< R >( ), new E_P_Stack_VolumeTet);
   inside = make_Type_Expr(atype< R >( ), new E_P_Stack_inside);
+#endif
   Global.New("x", x);
   Global.New("y", y);
   Global.New("z", z);
   Global.New("label", label);
+#ifndef kame
   Global.New("region", region);
   Global.New("notaregion", CConstant< long >(lnotaregion));
   Global.New("nuTriangle", nu_triangle);
@@ -3161,8 +3173,9 @@ LinkToInterpreter::LinkToInterpreter( ) {
                make_Type_Expr(atype< long >( ), new E_P_Stack_TypeBE< 2 >));    // Add FH jan 2018
     Global.New("uniqueBE",
                make_Type_Expr(atype< double >( ), new E_P_Stack_uniqueBE));    // Add FH juin 2012 
+#endif
 }
-
+#ifndef kame
 template< class K >
 struct set_eqmatrice_creuse_fbl
   : public binary_function< Matrice_Creuse< K > *, const Matrice_Creuse< K > *, const C_args * > {
@@ -5741,6 +5754,7 @@ R3 toR3(const  R& a,const  R& b,const  R &c){return R3(a,b,c);}
 R3 toR3(const  R3& a,const  R3& b){return R3(a,b);}
 
 R3 NElement(lgBoundaryEdge const & a) {  return R3(a.NBoundaryElement()); }//  add Jan 2022
+#endif
 
 void init_lgfem( ) {
   if (verbosity && (mpirank == 0)) cout << "lg_fem ";
@@ -5749,21 +5763,24 @@ void init_lgfem( ) {
   cadna_init(-1);    // pas de fichier
 #endif
 
-  Dcl_Type< MeshPoint * >( );
+	Dcl_Type< MeshPoint * >( );
     Dcl_TypeandPtr< R3  >(0,0,::InitializeDef<R3>,0);
     Dcl_TypeandPtr< R2  >(0,0,::InitializeDef<R2>,0);
-   Dcl_Type< Transpose<R3 *> >();
-   Dcl_Type< Transpose<R3> >();
-
-   Dcl_TypeandPtr< pmesh >(0, 0, ::InitializePtr< pmesh >, ::DestroyPtr< pmesh >,
+	Dcl_Type< Transpose<R3 *> >();
+	Dcl_Type< Transpose<R3> >();
+#ifndef kame
+	Dcl_TypeandPtr< pmesh >(0, 0, ::InitializePtr< pmesh >, ::DestroyPtr< pmesh >,
                           AddIncrement< pmesh >, NotReturnOfthisType);
-  Dcl_TypeandPtr< pmesh3 >(0, 0, ::InitializePtr< pmesh3 >, ::DestroyPtr< pmesh3 >,
+	Dcl_TypeandPtr< pmesh3 >(0, 0, ::InitializePtr< pmesh3 >, ::DestroyPtr< pmesh3 >,
                            AddIncrement< pmesh3 >, NotReturnOfthisType);
-  Dcl_TypeandPtr< pmeshS >(0, 0, ::InitializePtr< pmeshS >, ::DestroyPtr< pmeshS >,
+	Dcl_TypeandPtr< pmeshS >(0, 0, ::InitializePtr< pmeshS >, ::DestroyPtr< pmeshS >,
                            AddIncrement< pmeshS >, NotReturnOfthisType);
   Dcl_TypeandPtr< pmeshL >(0, 0, ::InitializePtr< pmeshL >, ::DestroyPtr< pmeshL >,
                            AddIncrement< pmeshL >, NotReturnOfthisType);
+#endif
+#ifndef kame
   Dcl_Type< lgVertex >( );
+
   Dcl_Type< lgElement >( );
   Dcl_Type< lgElement::Adj >( );
 
@@ -6776,8 +6793,9 @@ void init_lgfem( ) {
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
   init_lgmat( );
   init_mesh_array( );
-
+#endif
   l2interpreter = new LinkToInterpreter;
+#ifndef kame
   using namespace FreeFempp;
   FreeFempp::TypeVarForm< double >::Global = new TypeVarForm< double >( );
   FreeFempp::TypeVarForm< Complex >::Global = new TypeVarForm< Complex >( );
@@ -6852,8 +6870,9 @@ void init_lgfem( ) {
   TEF2dto3d[FindFE2("P0")] = &DataFE< Mesh3 >::P0;
   TEF2dto3d[FindFE2("P1b")] = &P1bLagrange3d;
   TEF2dto3d[FindFE2("RT0")] = &RT03d;
+#endif
 }
-
+#ifndef kame
 void clean_lgfem( ) {
   delete l2interpreter;
   delete FreeFempp::TypeVarForm< double >::Global;
@@ -7317,3 +7336,5 @@ namespace Fem2D {
 #include "InitFunct.hpp"
 
 static addingInitFunct TheaddingInitFunct(-20, init_lgfem);
+
+#endif

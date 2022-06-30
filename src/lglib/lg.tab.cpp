@@ -3604,14 +3604,14 @@ void ForDebug()
   int i=0;
   i++;
 }
-#ifndef kame
+
 //extern void ShowAlloc(const char *s, size_t lg);
 //extern void ShowNbAlloc(const char *s);
 void init_lgfem() ;
 void init_lgmesh() ;
 void init_lgmesh3() ;
 void init_algo();
-#endif
+
 bool withrgraphique = false;
 
 /// <<Compile>> Called by mainff(). Activates the bison parser by calling yyparse()
@@ -3809,7 +3809,7 @@ int mainff (int  argc, char **argv)
    if(verbosity>2 || ( (mpirank==0) && verbosity ) ) cout << " Load: ";
    callInitsFunct() ; //  init for dynamique libs ...
 
-  // init_lgfem() ;
+   init_lgfem() ;
   // init_lgmesh() ;
 #ifndef kame
    init_lgmesh3() ;

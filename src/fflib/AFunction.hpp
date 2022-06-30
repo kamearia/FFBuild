@@ -182,11 +182,11 @@ typedef   AnyType (* CFunction4)(Stack,  E_F0 *, E_F0 *, E_F0 *, E_F0 *);
 
 Expression NewExpression(Function1,Expression);
 Expression NewExpression(Function2,Expression,Expression);
-#ifndef kame
+
 
 inline Type_Expr make_Type_Expr(aType t, E_F0  * e) {return make_pair(t,e);}
 inline Type_Expr make_Type_Expr( E_F0  * e,aType t) {return make_pair(t,e);}
-#endif
+
 struct Keyless : binary_function<const char *,const char *, bool>
    { 
     typedef const char * Key;
