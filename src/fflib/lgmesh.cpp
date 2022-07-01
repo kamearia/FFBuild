@@ -1974,9 +1974,10 @@ class  OneOperator1s_np : public OneOperator {
 extern long verbosity;
 extern long  mpirank;
 void init_lgmesh() {
+#ifndef kame
   if(verbosity&&(mpirank==0) )  std::cout <<"lg_mesh ";
   bamg::MeshIstreamErrorHandler = MeshErrorIO;
-#ifndef kame
+
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<E_BorderN>>);
  Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<MeshL>>);
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMeshArray>);

@@ -55,9 +55,9 @@
 #include <set>
 #include <map>
 #include <vector>
-#ifndef kame
 #include "lex.hpp"
 #include "lgfem.hpp"
+#ifndef kame
 #include "lgmesh3.hpp"
 #include "lgsolver.hpp"
 #include "problem.hpp"
@@ -6194,7 +6194,9 @@ void init_lgfem( ) {
   // <<mesh_keyword>> pmesh is a pointer to Mesh [[file:../femlib/fem.hpp::class Mesh]] defined at
   // [[file:lgfem.hpp::typedef Mesh pmesh]]
   // pmesh is a pointer to Mesh
+#endif
   zzzfff->Add("mesh", atype< pmesh * >( ));
+#ifndef kame
   // pmesh3 is a pointer to Mesh3 defined at [[file:lgfem.hpp::typedef Mesh3 pmesh3]]
   zzzfff->Add("mesh3", atype< pmesh3 * >( ));
   // pmeshS is a pointer to MeshS defined at [[file:lgfem.hpp::typedef MeshS pmeshS]]

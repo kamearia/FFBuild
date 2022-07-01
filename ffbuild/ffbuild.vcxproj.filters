@@ -179,14 +179,11 @@
     <ClCompile Include="..\src\fflib\lgmesh.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\bamglib\Meshio.cpp">
-      <Filter>ソース ファイル\src\bamglib</Filter>
+    <ClCompile Include="..\src\fflib\lgfem.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
     <ClCompile Include="..\src\femlib\CheckPtr.cpp">
       <Filter>ソース ファイル\src\femlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\fflib\lgfem.cpp">
-      <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
