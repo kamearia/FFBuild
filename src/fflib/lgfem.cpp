@@ -5608,7 +5608,7 @@ template< class A, class B >
 AnyType First(Stack, const AnyType &b) {
   return SetAny< A >(GetAny< B >(b).first);
 }
-
+#endif
 template< class K >
 AnyType AddIncrement(Stack stack, const AnyType &a) {
   K m = GetAny< K >(a);
@@ -5617,7 +5617,7 @@ AnyType AddIncrement(Stack stack, const AnyType &a) {
   if (verbosity > 1) cout << "AddIncrement:: increment + Add2StackOfPtr2FreeRC " << endl;
   return a;
 }
-
+#ifndef kame
 // FE 3D volume
 Type_Expr CConstantTFE3(const EConstantTypeOfFE3::T &v) {
   throwassert(map_type[typeid(EConstantTypeOfFE3::T).name( )]);
@@ -5768,9 +5768,10 @@ void init_lgfem( ) {
     Dcl_TypeandPtr< R2  >(0,0,::InitializeDef<R2>,0);
 	Dcl_Type< Transpose<R3 *> >();
 	Dcl_Type< Transpose<R3> >();
-#ifndef kame
+
 	Dcl_TypeandPtr< pmesh >(0, 0, ::InitializePtr< pmesh >, ::DestroyPtr< pmesh >,
                           AddIncrement< pmesh >, NotReturnOfthisType);
+#ifndef kame
 	Dcl_TypeandPtr< pmesh3 >(0, 0, ::InitializePtr< pmesh3 >, ::DestroyPtr< pmesh3 >,
                            AddIncrement< pmesh3 >, NotReturnOfthisType);
 	Dcl_TypeandPtr< pmeshS >(0, 0, ::InitializePtr< pmeshS >, ::DestroyPtr< pmeshS >,
@@ -6185,8 +6186,7 @@ void init_lgfem( ) {
   Add< lgBoundaryEdge >("whoinElement", ".", new OneOperator1_< long, lgBoundaryEdge >(EdgeElement));
 
   // New FF language types. zzzfff is defined at [[file:lex.hpp::zzzfff]] as a pointer to an object
-  // of class mylex
-  // [[file:lex.hpp::class mylex]]. zzzfff->Add() is at [[file:lex.cpp::void mylex Add Key k aType
+  // of class myle // [[file:lex.hpp::class mylex]]. zzzfff->Add() is at [[file:lex.cpp::void mylex Add Key k aType
   // t]]. The lexer will then be called from the parser via [[file:../lglib/lg.ypp::yylex]]
 
   zzzfff->Add("R3", atype< R3 * >( ));

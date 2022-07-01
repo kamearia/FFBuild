@@ -860,7 +860,7 @@ template<class A> inline AnyType InitP(Stack,const AnyType &x){
   return  Nothing;
 }
 #ifndef kame
-
+#endif
 template<class A> inline AnyType  DestroyPtr(Stack,const AnyType &x) {
   const A *  a=PGetAny<A>(x);
   SHOWVERB(cout << "DestroyPtr " << typeid(A).name() << *a  << endl);
@@ -869,7 +869,7 @@ template<class A> inline AnyType  DestroyPtr(Stack,const AnyType &x) {
 
   return  Nothing; 
 };
-#endif
+
 template<class A> inline AnyType DeletePtr(Stack,const AnyType &x) {
   const A *  a=PGetAny<A>(x);
  SHOWVERB( cout << "DeletePtr " << typeid(A).name() << *a  << endl);

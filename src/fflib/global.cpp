@@ -205,10 +205,10 @@ E_F0 *E_F0::tnull=0;
 long newconvect3=0;// old convect 3d
 
 CodeAlloc *CodeAlloc::tnull=0;
-#ifndef kame
+
 #include <RefCounter.hpp>
 RefCounter *RefCounter::tnull=0;
-#endif
+
 double ff_tgv=1e30;
 bool lockOrientation=true;
 #ifndef kame
