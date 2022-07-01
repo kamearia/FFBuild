@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D"CMAKE"  /D"kame" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib;C:\EMSolution\FreeFem\FreeFem-sources\src\lglib;C:\EMSolution\FreeFem\FreeFem-sources\ffbuild;C:\EMSolution\FreeFem\FreeFem-sources\src\Graphics</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib;C:\EMSolution\FreeFem\FreeFem-sources\src\lglib;C:\EMSolution\FreeFem\FreeFem-sources\ffbuild;C:\EMSolution\FreeFem\FreeFem-sources\src\Graphics;C:\EMSolution\FreeFem\FreeFem-sources\src\bamglib</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -173,6 +173,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />

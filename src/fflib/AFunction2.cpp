@@ -907,7 +907,7 @@ E_F0 * Routine::code(const basicAC_F0 & args) const
 
    return new E_Routine(this,args);
 }
-
+#endif
 void basicAC_F0::SetNameParam(int n,name_and_type *l , Expression * e) const
 {
  int k=0;
@@ -956,7 +956,6 @@ void basicAC_F0::SetNameParam(int n,name_and_type *l , Expression * e) const
    }
 }
 
-#endif
 //  change FH to bluid .dll
 
 void lgerror (const char* s)

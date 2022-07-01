@@ -28,21 +28,19 @@
  */
 #include "stdafx.h"
 using namespace std;
-#include "BamgFreeFem.hpp"
+
 #include "AFunction.hpp"
-#ifndef kame
 #include "ff++.hpp"
 #include "AFunction_ext.hpp"
-
-
 #include "lgmesh.hpp"
+#include "BamgFreeFem.hpp"
 
 using Fem2D::Mesh;
 using Fem2D::MeshPoint;
 
 extern bool NoWait;
 
-typedef Mesh const * pmesh;
+typedef class Mesh const * pmesh;
 
 template<class TP=E_BorderN>
 class classBuildMesh :  public E_F0mps { public:
@@ -56,7 +54,7 @@ class classBuildMesh :  public E_F0mps { public:
 
    Expression getborders;
 
-    long arg(int i,Stack stack,long a) const{ return nargs[i] ? GetAny<long>( (*nargs[i])(stack) ): a;}
+   long arg(int i,Stack stack,long a) const{ return nargs[i] ? GetAny<long>( (*nargs[i])(stack) ): a;}
    bool arg(int i,Stack stack,bool a) const{ return nargs[i] ? GetAny<bool>( (*nargs[i])(stack) ): a;}
    double arg(int i,Stack stack,double a) const{ return nargs[i] ? GetAny<double>( (*nargs[i])(stack) ): a;}
    KNM<double>* arg(int i,Stack stack,KNM<double>* p) const{ return nargs[i] ? GetAny<KNM<double>*>( (*nargs[i])(stack) ): p;}
@@ -69,11 +67,13 @@ class classBuildMesh :  public E_F0mps { public:
 
     static ArrayOfaType  typeargs() { return  ArrayOfaType(atype<const TP *>());}
     static  E_F0 * f(const basicAC_F0 & args){ return new classBuildMesh(args);}
+
     AnyType operator()(Stack s) const ;
+
     operator aType () const { return atype<Result>();}
 
 };
-
+#ifndef kame
 class classBuildMeshArray :  public E_F0mps { public:
 
     typedef pmesh  Result;
@@ -160,7 +160,7 @@ class classBuildMeshArray :  public E_F0mps { public:
     operator aType () const { return atype<Result>();}
 
 };
-
+#endif
 template<>
 basicAC_F0::name_and_type  classBuildMesh<E_BorderN>::name_param[]= {
     {  "nbvx", &typeid(long)} ,
@@ -170,6 +170,7 @@ basicAC_F0::name_and_type  classBuildMesh<E_BorderN>::name_param[]= {
      {"alea", &typeid(double)},
     {"splitpbedge", &typeid(bool)} // add april 20 FH 
 };
+#ifndef kame
 template<>
 basicAC_F0::name_and_type  classBuildMesh<MeshL>::name_param[]= {
     {  "nbvx", &typeid(long)} ,
@@ -463,21 +464,25 @@ basicAC_F0::name_and_type Op_trunc_mesh::Op::name_param[Op_trunc_mesh::Op::n_nam
      {  "flabel", &typeid(long)},
      {  "fregion", &typeid(long)},
  };
+#endif
 template<class TP>
 AnyType classBuildMesh<TP>::operator()(Stack stack)  const {
     const TP * borders = GetAny<const TP *>((*getborders)(stack));
    long  nbvx         = arg(0,stack,0L);
+#ifndef kame
    int defrb = is_same<MeshL, TP>::value ;
+#endif
    bool  requireborder= arg(3,stack,arg(1,stack,false));// correct 23 nov. 2021 FH
     KNM<double> * p=0;  p=arg(2,stack,p);
     double alea = arg(4,stack,0.);
     bool SplitEdgeWith2Boundary=arg(5,stack,false);
    ffassert(   nbvx >= 0);
+
    return SetAny<pmesh>(Add2StackOfPtr2FreeRC(stack,
                 BuildMesh(stack,borders,false,nbvx,requireborder,p,alea,SplitEdgeWith2Boundary)));
 
 }
-
+#ifndef kame
 AnyType BuildMeshFile::operator()(Stack stack)  const {
      string*  filename = GetAny<string* >((*getfilename)(stack));
     long  nbvx         = arg(0,stack,0);
@@ -1977,8 +1982,9 @@ void init_lgmesh() {
 #ifndef kame
   if(verbosity&&(mpirank==0) )  std::cout <<"lg_mesh ";
   bamg::MeshIstreamErrorHandler = MeshErrorIO;
-
+#endif
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<E_BorderN>>);
+#ifndef kame
  Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<MeshL>>);
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMeshArray>);
   Global.Add("buildmesh","(",new OneOperatorCode<BuildMeshFile>);

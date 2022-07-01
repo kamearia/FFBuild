@@ -41,9 +41,10 @@ const Fem2D::Mesh *bamg2msh(bamg::Triangles* tTh, bool renumbering=false);
 bamg::Triangles *msh2bamg(const Fem2D::Mesh &Th, double cutoffradian=-1.0,long *reqedgeslab=0, int nreqedgeslab=0);
 bamg::Triangles *msh2bamg(const Fem2D::Mesh &Th, double cutoffradian, int nbdfv, int *ndfv,int nbdfe, int *ndfe,
                           long *reqedgeslab=0, int nreqedgeslab=0);
-
+#endif
 const Fem2D::Mesh *BuildMesh(Stack stack, E_BorderN const *const &b, bool justboundary, int nbvmax=0, bool Requiredboundary=true,
                              KNM<double> *pintern=0, double alea=0,bool SplitEdgeWith2Boundary=false);
+#ifndef kame
 const Fem2D::Mesh *BuildMesh(Stack stack, const  Fem2D::MeshL *pmshL , bool justboundary, int nbvmax=0, bool Requiredboundary=true,
                              KNM<double> *pintern=0, double alea=0,bool SplitEdgeWith2Boundary=false);
 const Fem2D::Mesh *BuildMesh(Stack stack, E_BorderN const *const &b, bool Requiredboundary);

@@ -54,6 +54,7 @@ using namespace std;
 #include "PlotStream.hpp"
 #include "BamgFreeFem.hpp"
 #include <set>
+#ifndef kame
 const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
 {
   using namespace bamg;
@@ -839,8 +840,10 @@ const Fem2D::Mesh *  BuildMesh(Stack stack,const  Fem2D::MeshL *pmshL ,  bool ju
 {
     return BuildMesh(stack,&pmshL,1,justboundary,nbvmax,Requiredboundary,pintern,alea, SplitEdgeWith2Boundary);
 }
+#endif
 const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool justboundary,int nbvmax,bool Requiredboundary,KNM<double> *pintern,double alea,bool SplitEdgeWith2Boundary)
 {
+#ifndef kame
     if(alea) Requiredboundary=1;
     int nbvinter=0;
     if( pintern)
@@ -1205,8 +1208,10 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
   ---------- */
   mp=mps;
   return m;
+#endif
+  return 0;
 }
-
+#ifndef kame
 void E_BorderN::BoundingBox(Stack stack,double  &xmin,double & xmax, double & ymin,double & ymax, double & zmin,double & zmax) const
 {
 
@@ -1425,3 +1430,4 @@ const Fem2D::Mesh *  buildmeshbamg( string * const & s, int nbvxin) {
   delete bTh;
   return m;
 }
+#endif

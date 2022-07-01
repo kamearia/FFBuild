@@ -147,7 +147,7 @@ inline const KN_<complex<double> > R2C(const KN_<double>  & vr)
 //  une classe pour transforme une Matrice complex en Matrice  real 
 
 // -----------------------------------------------------------------
-
+#ifndef kame
 template <class MM>
 class MatC2R : public VirtualMatrix<double> { public:
 
@@ -172,7 +172,7 @@ class MatC2R : public VirtualMatrix<double> { public:
 
 
 };
-
+#endif
 #ifdef REOMVE_CODE_V4
 
 template<class R>

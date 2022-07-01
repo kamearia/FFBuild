@@ -2872,7 +2872,7 @@ class  OneOperator3_ : public OneOperator {
     f(ff) {pref=ppref;}
 
 };
-#ifndef kame
+
 // <<OneOperatorCode>> utilise [[E_F0]]. la class code doit contenir
 /*
   class CODE: public E_F0 {
@@ -2894,7 +2894,7 @@ class  OneOperatorCode : public OneOperator {
     OneOperatorCode(aType rr,aType a,aType b,aType c):  OneOperator(rr,a,b,c)  {pref=ppref;}
     
 };
-
+#ifndef kame
 template<class A,class B> struct binary_trait{ typedef  A R  ;}; 
 template<>  struct binary_trait<int,double> { typedef  double R;}; 
 template<>  struct binary_trait<long,double> { typedef  double R;}; 
