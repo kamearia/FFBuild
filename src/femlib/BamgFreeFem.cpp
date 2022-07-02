@@ -992,13 +992,14 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
 
   Gh->nbvx = nbv;
   Gh->nbv = nbv;
-#ifndef kame
+
   Gh->vertices = new GeometricalVertex[nbv];
   throwassert(Gh->nbvx >= Gh->nbv);
   Gh->nbiv = Gh->nbv;
   const Direction NoDirOfSearch;
   //  compression of points
   int kkk;
+
   for ( i=0,kkk=0;kkk<nbvprev;kkk++)
     {
       if (vertices[kkk].color == i) // if new points
@@ -1012,7 +1013,6 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
           Gh->vertices[i].Set();
           if(Requiredboundary)
            Gh->vertices[i].SetRequired();
-
           if(Gh->vertices[i].ReferenceNumber < 0)
             Gh->vertices[i].SetRequired();
 
@@ -1020,6 +1020,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
         }
     }
   throwassert(i==nbv);
+
   R2 zero2(0,0);
   if(verbosity>5)
     cout <<"\t\t"  << "     Record Edges: Nb of Edge " << Gh->nbe <<endl;
@@ -1034,6 +1035,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
     }
   int nnn=0;
   i=0;
+
   for (E_BorderN const * k=b;k;k=k->next)
 
   {    int nbd = k->NbBorder(stack);
@@ -1087,6 +1089,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
 
   throwassert(nnn+nbvinter==nbvprev);
   throwassert(i==Gh->nbe);
+
   // definition  the default of the given mesh size
   if (!hvertices)
     {
@@ -1132,6 +1135,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
     }
   Gh->NbEquiEdges=0;
   Gh->NbCrackedEdges=0;
+#ifndef kame
   const Fem2D::Mesh * m=0;
   if (justboundary)
     m=bamg2msh(*Gh);
