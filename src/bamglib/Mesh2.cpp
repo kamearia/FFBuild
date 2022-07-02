@@ -25,6 +25,8 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
+
 #ifdef __MWERKS__
 #ifdef __INTEL__
 //#pragma global_optimizer off
@@ -50,6 +52,7 @@ long genrand_int31(void);
 void init_genrand(unsigned long);
 #endif
 
+#ifndef kame
 namespace bamg {
 #ifdef _WIN32
 #define random genrand_int31
@@ -141,7 +144,7 @@ namespace bamg {
     throw(ErrorMesh("Bamg", Err, Th));
 #endif
   }
-
+#ifndef kame
   ostream &operator<<(ostream &f, const Triangle &ta) {
     if (CurrentTh)
       f << "[" << CurrentTh->Number(ta) << "::" << CurrentTh->Number(ta.ns[0]) << ","
@@ -158,7 +161,7 @@ namespace bamg {
         << "]";
     return f;
   }
-
+#endif
   void swap(Triangle *t1, Int1 a1, Triangle *t2, Int1 a2, Vertex *s1, Vertex *s2, Icoor2 det1,
             Icoor2 det2) {    // swap
     // --------------------------------------------------------------
@@ -488,7 +491,7 @@ namespace bamg {
     //	<< " " << b <<" " << l0 << " " <<l1 <<endl;
     return er;
   }
-
+#ifndef kame
   Metric Triangles::MetricAt(
     const R2 &A) const {    // if ((vertices <= &v) && (vertices < v+nbv)) return v.m;
     I2 a = toI2(A);
@@ -507,7 +510,7 @@ namespace bamg {
       return Metric(aa, (*t)[0], (*t)[1], (*t)[2]);
     }
   }
-
+#endif
   void ListofIntersectionTriangles::SplitEdge(const Triangles &Bh, const R2 &A, const R2 &B,
                                               int nbegin) {    //  SplitEdge
     //  if(SHOW)  cout << " splitedge " << A << B << " " <<  nbegin << endl;
@@ -752,7 +755,7 @@ namespace bamg {
     }      // for(;;)
 
   }    // routine SplitEdge
-
+#ifndef kame
   int ListofIntersectionTriangles::NewItem(Triangle *tt, Real8 d0, Real8 d1, Real8 d2) {
     int n;
     R2 x(0, 0);
@@ -799,7 +802,7 @@ namespace bamg {
       n = Size - 1;
     return n;
   }
-
+#endif
   Real8 ListofIntersectionTriangles::Length( ) {
     //  cout << " n= " << Size << ":" ;
     assert(Size > 0);
@@ -1322,7 +1325,7 @@ namespace bamg {
     }
     return OnSwap;
   }
-
+#ifndef kame
   Real8 Vertex::Smoothing(Triangles &Th, const Triangles &BTh, Triangle *&tstart, Real8 omega) {
 #ifdef DEBUG
     Int4 NbSwap = 0;
@@ -1427,7 +1430,7 @@ namespace bamg {
     }
     return delta;
   }
-
+#endif
   void Triangles::Add(Vertex &s, Triangle *t, Icoor2 *det3) {
     // -------------------------------------------
     //             s2
@@ -3529,7 +3532,7 @@ namespace bamg {
     CurrentTh = 0;
     //#undef  DRAWING1
   }
-
+#ifndef kame
   void Triangles::GeomToTriangles0(Int4 inbvx) {
     Gh.NbRef++;    // add a ref to GH
 
@@ -3829,7 +3832,7 @@ namespace bamg {
     NewPoints(*this, 0);
     CurrentTh = 0;
   }
-
+#endif
   Edge **Triangles::MakeGeometricalEdgeToEdge( ) {
     assert(Gh.nbe);
     Edge **e = new Edge *[Gh.nbe];
@@ -4963,3 +4966,5 @@ namespace bamg {
   }
 
 }    // namespace bamg
+
+#endif

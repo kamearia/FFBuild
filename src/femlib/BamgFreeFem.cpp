@@ -54,6 +54,7 @@ using namespace std;
 #include "PlotStream.hpp"
 #include "BamgFreeFem.hpp"
 #include <set>
+extern double  genrand_res53(void);
 #ifndef kame
 const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
 {
@@ -391,8 +392,8 @@ Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
   Tn->FillHoleInMesh();
   return Tn;
 }
+#endif
 
-extern double  genrand_res53(void) ;
 double NormalDistrib(double sigma)
 {
     if( sigma <=0.) return 0.;
@@ -400,7 +401,7 @@ double NormalDistrib(double sigma)
     const double TWOPI = 3.14159265358979323846264338328*2.;
     return  sigma*sqrt(-2.0*log(rand))*cos(TWOPI*rand);
 }    // (stack,b,true,0,true); bool Requiredboundary=true, KNM<double> *pintern=0, double alea=0)
-
+#ifndef kame
 const Fem2D::Mesh *  BuildMesh(Stack stack,const  Fem2D::MeshL **ppmshL , int nbmshL, bool justboundary,int nbvmax,bool Requiredboundary,KNM<double> *pintern,double alea,bool SplitEdgeWith2Boundary)
 {
     if(alea) Requiredboundary=1;
@@ -862,7 +863,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
   using bamg::Min;
   using bamg::Pi;
   Fem2D::MeshPoint & mp (*Fem2D::MeshPointStack(stack)), mps = mp;
-#ifndef kame
+
   int nbvx=nbvinter,nbe=0,nbsd=0;
   for (E_BorderN const * k=b;k;k=k->next)
   {
@@ -874,6 +875,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
     nbsd++;
     }
   }
+
   Geometry * Gh =  new Geometry;
 
   if(verbosity>2)
@@ -887,44 +889,45 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
   Gh->MaximalAngleOfCorner =30.00*Pi/180.0;
   Gh->nbv = 0;
   Gh->nbvx = nbvx;
-
   Gh->nbe = nbe;
   Gh->edges = new GeometricalEdge[Gh->nbe];
   bamg::Vertex *vertices =  new Vertex[Gh->nbvx];// correction 2009/07/03
   double lmin= HUGE_VAL;
+
   //  generation des points et des lignes
   i=0;
-  for (E_BorderN const * k=b;k;k=k->next)
-    {
-    int nbd = k->NbBorder(stack);
-    for(int index=0; index<nbd; ++index )
-    {
-      assert(k->b->xfrom); // a faire
-      double & t = *  k->var(stack),tt;
-      double a(k->from(stack)),b(k->to(stack));
-      long * indx = k->index(stack);
-      if(indx) *indx = index;
-      else ffassert(index==0);
-      n=Max(Abs(k->Nbseg(stack,index)),1L);
-      tt=t=a;
-      double delta = (b-a)/n;
-      for ( nn=0;nn<=n;nn++,i++, tt += delta)
-        {
-          t = tt;
-          if (nn==n) t=b; // to remove roundoff error
-            if( nn >0 && nn < n) { t += NormalDistrib(alea); } // Add F. Hecht Juin 2018 for J-M Sac Epee:  jean-marc.sac-epee@univ-lorraine.fr
-          mp.label = k->label();
-          k->code(stack); // compute x,y, label
-          vertices[i].r.x=mp.P.x;
-          vertices[i].r.y=mp.P.y;
-          vertices[i].ReferenceNumber=  mp.label;
-          vertices[i].color = i;
-          if (nn>0) {
-            lmin=min(lmin,Norme2_2( vertices[i].r-vertices[i-1].r));
-          }
-        }
-    }
-}
+  for (E_BorderN const * k = b; k; k = k->next)
+  {
+	  int nbd = k->NbBorder(stack);
+	  for (int index = 0; index < nbd; ++index)
+	  {
+		  assert(k->b->xfrom); // a faire
+		  double & t = *k->var(stack), tt;
+		  double a(k->from(stack)), b(k->to(stack));
+		  long * indx = k->index(stack);
+		  if (indx) *indx = index;
+		  else ffassert(index == 0);
+		  n = Max(Abs(k->Nbseg(stack, index)), 1L);
+		  tt = t = a;
+		  double delta = (b - a) / n;
+		  for (nn = 0; nn <= n; nn++, i++, tt += delta)
+		  {
+			  t = tt;
+			  if (nn == n) t = b; // to remove roundoff error
+			  if (nn > 0 && nn < n) { t += NormalDistrib(alea); } // Add F. Hecht Juin 2018 for J-M Sac Epee:  jean-marc.sac-epee@univ-lorraine.fr
+			  mp.label = k->label();
+			  k->code(stack); // compute x,y, label
+			  vertices[i].r.x = mp.P.x;
+			  vertices[i].r.y = mp.P.y;
+			  vertices[i].ReferenceNumber = mp.label;
+			  vertices[i].color = i;
+			  if (nn > 0) {
+				  lmin = min(lmin, Norme2_2(vertices[i].r - vertices[i - 1].r));
+			  }
+		  }
+	  }
+  }
+
  // add interna point
     if(pintern)
     {
@@ -938,12 +941,14 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
             i++;
                     }
     }
+
   lmin = sqrt(lmin);
   double eps = (lmin)/16.;
   int nbvprev = i;
   long nbv=0;
   Gh->pmin =  vertices[0].r;
   Gh->pmax =  vertices[0].r;
+
   // recherche des extrema des vertices pmin,pmax
   for (i=0;i<nbvprev;i++)
     {
@@ -987,7 +992,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
 
   Gh->nbvx = nbv;
   Gh->nbv = nbv;
-
+#ifndef kame
   Gh->vertices = new GeometricalVertex[nbv];
   throwassert(Gh->nbvx >= Gh->nbv);
   Gh->nbiv = Gh->nbv;

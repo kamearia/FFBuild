@@ -236,3 +236,4 @@ string StrVersionNumber() {
 		<< " (VersionFreeFemDate - git GitVersion)";
 	return version.str();
 }
+

@@ -25,7 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
 // #define TRACETRIANGLE 3
 extern long verbosity;
 //#define strcasecmp strcmp
@@ -39,7 +39,9 @@ using namespace std;
 #include "Mesh2.h"
 #include "QuadTree.h"
 #include "SetOfE4.h"
+
 namespace bamg {
+#ifndef kame
   void Triangles::ConsGeometry(Real8 cutoffradian,
                                int *equiedges)    // construct a geometry if no geo
   {
@@ -470,7 +472,7 @@ namespace bamg {
       cout << " -- nb  required  v in Gh " << nbr << " on " << Gh.nbv << endl;
     }
   }
-
+#endif
   void Geometry::EmptyGeometry( )    // empty geometry
   {
     OnDisk = 0;
@@ -492,6 +494,7 @@ namespace bamg {
     subdomains = 0;
     MaximalAngleOfCorner = 10 * Pi / 180;
   }
+#ifndef kame
 
   Geometry::Geometry(const Geometry &Gh) {
     Int4 i;
@@ -1195,5 +1198,5 @@ namespace bamg {
     }
     return A * ca + B * cb + tg[0] * cta + tg[1] * ctb;
   }
-
+#endif
 }    // namespace bamg

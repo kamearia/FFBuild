@@ -1870,15 +1870,14 @@ class E_Border  :public Polymorphic  {  public:
 
 
 inline  E_BorderN::E_BorderN(const E_Border *bb, C_F0  nn,const E_BorderN * nx)
-:b(bb),cas(Cas(nn)),n(to(cas,nn) ),next(nx) { /* cout << "  -- E_BorderN  : cas " << cas << endl; */ throwassert(b);}
-#ifndef kame
+	:b(bb),cas(Cas(nn)),n(to(cas,nn) ),next(nx) { /* cout << "  -- E_BorderN  : cas " << cas << endl; */ throwassert(b);}
 inline  double E_BorderN::from(Stack stack) const {return b->xfrom ? GetAny<double>((*b->xfrom)(stack)): double(0.0);}
 inline  double  E_BorderN::to(Stack stack) const {return b->xto? GetAny<double>((*b->xto)(stack)): b->length(stack) ;}
 inline  double *  E_BorderN::var(Stack stack) const {return b->xvar ? GetAny<double*>((*b->xvar)(stack)): (double*) 0 ;}
 inline  long *  E_BorderN::index(Stack stack) const {return b->xindex ? GetAny<long*>((*b->xindex)(stack)): (long*) 0 ;}
 inline  void  E_BorderN::code(Stack stack)const {(*b->xcode)(stack);}
 inline  long  E_BorderN::label()const {return b->label;}
-#endif
+
 inline ArrayOfaType::ArrayOfaType(const basicAC_F0 & aa) : n(aa.size()),t(n ? (n<=4 ? tt : new aType[n]):0),ellipse(false) { 
    for (int i=0;i<n;i++) t[i]=aa[i].left();}
   

@@ -46,6 +46,9 @@
     <Filter Include="ソース ファイル\src\bamglib">
       <UniqueIdentifier>{2a1b52e5-9ad9-4c6c-b4db-92b18348ffdf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\src\bamg">
+      <UniqueIdentifier>{3f95c8c4-476d-4f00-b556-12ebd91f35b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -187,6 +190,18 @@
     </ClCompile>
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp">
       <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\MeshGeom.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\Mesh2.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamg\bamg_global.cpp">
+      <Filter>ソース ファイル\src\bamg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\QuadTree.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

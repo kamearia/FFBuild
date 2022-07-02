@@ -173,6 +173,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\bamglib\Mesh2.cpp" />
+    <ClCompile Include="..\src\bamglib\MeshGeom.cpp" />
+    <ClCompile Include="..\src\bamglib\QuadTree.cpp" />
+    <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
