@@ -175,6 +175,9 @@
   <ItemGroup>
     <ClCompile Include="..\src\bamglib\Mesh2.cpp" />
     <ClCompile Include="..\src\bamglib\MeshGeom.cpp" />
+    <ClCompile Include="..\src\bamglib\Meshio.cpp" />
+    <ClCompile Include="..\src\bamglib\MeshWrite.cpp" />
+    <ClCompile Include="..\src\bamglib\Metric.cpp" />
     <ClCompile Include="..\src\bamglib\QuadTree.cpp" />
     <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />

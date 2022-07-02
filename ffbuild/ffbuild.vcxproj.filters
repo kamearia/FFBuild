@@ -203,6 +203,15 @@
     <ClCompile Include="..\src\bamglib\QuadTree.cpp">
       <Filter>ソース ファイル\src\bamglib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\bamglib\MeshWrite.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\Meshio.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\bamglib\Metric.cpp">
+      <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

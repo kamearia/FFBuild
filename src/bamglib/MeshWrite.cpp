@@ -26,6 +26,7 @@
 */
 
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
+#include "stdafx.h"
 #ifndef CMAKE
 #include "config.h"
 #endif
@@ -58,7 +59,7 @@ using namespace H5;
 //-----------------------------ajout format hdf5-----------------------------//
 
 namespace bamg {
-
+#ifndef kame
   void Triangles::Write(const char *filename, const TypeFileMesh typein) const {
     TypeFileMesh type = typein;
     const char *gsuffix = ".gmsh";
@@ -596,6 +597,7 @@ namespace bamg {
       f << *this;
     }
   }
+#endif
   void Triangles::WriteElements(ostream &f, Int4 *reft, Int4 nbInT) const {
     const Triangles &Th = *this;
     // do triangle and quad
@@ -804,7 +806,7 @@ namespace bamg {
     delete[] reft;
     return f;
   }
-
+#ifndef kame
   void Geometry::Write(const char *filename) {
     ofstream f(filename);
     if (f) {
@@ -816,7 +818,7 @@ namespace bamg {
       f << *this;
     }
   }
-
+#endif
   ostream &operator<<(ostream &f, const Geometry &Gh) {
     Int4 NbCorner = 0;
     {

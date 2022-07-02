@@ -1135,18 +1135,25 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
     }
   Gh->NbEquiEdges=0;
   Gh->NbCrackedEdges=0;
-#ifndef kame
+
   const Fem2D::Mesh * m=0;
-  if (justboundary)
-    m=bamg2msh(*Gh);
+  if (justboundary) {
+#ifndef kame
+	  m = bamg2msh(*Gh);
+#endif
+  }
   else
   {
       Gh->AfterRead();
+
       int nbtx= nbvmax ? nbvmax :  (Gh->nbv*Gh->nbv)/9 +1000;
       if(verbosity> 99) cout << " ** Gh = " << endl << *Gh << endl << " *** " <<endl; ;
       Triangles *Th = 0;
+
       try {
+
 	  Th =new Triangles( nbtx ,*Gh);
+#ifndef kame
           if(SplitEdgeWith2Boundary)
           {
               long nbs=1,nbc=0;
@@ -1158,57 +1165,63 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
               
           }
 
-          if(alea) //  Add F. Hecht Juin 2018 for J-M Sac Epee:  jean-marc.sac-epee@univ-lorraine.fr
-          {
-              Th->SetVertexFieldOn();
-              for( int i=0;i<Th->nbv;++i)
-              {
-                  VertexOnGeom *on=0;
-                  if( !(Th->vertices[i].on) ) // we are non on geometry
-                  {
-                      // move a little the  points
-                      Th->vertices[i].r.x += NormalDistrib(alea);
-                      Th->vertices[i].r.y += NormalDistrib(alea);
+		  if (alea) //  Add F. Hecht Juin 2018 for J-M Sac Epee:  jean-marc.sac-epee@univ-lorraine.fr
+		  {
+			  Th->SetVertexFieldOn();
+			  for (int i = 0; i < Th->nbv; ++i)
+			  {
+				  VertexOnGeom *on = 0;
+				  if (!(Th->vertices[i].on)) // we are non on geometry
+				  {
+					  // move a little the  points
+					  Th->vertices[i].r.x += NormalDistrib(alea);
+					  Th->vertices[i].r.y += NormalDistrib(alea);
 
-                  }
-              }
+				  }
+			  }
 
-          }
-
-	  if(0)
-	    {
+		  }
 
 
-	      Th->SetVertexFieldOn();
-	      for( int i=0;i<Th->nbv;++i)
-		{
-		  VertexOnGeom *on=0;
-		  if( (on =Th->vertices[i].on) ) // we are on geometrie
-		    {
-		      if(on->abscisse <0) {
-			  bamg::GeometricalVertex * gv= on->gv;
-		      }
-		      else {// erreur car un point est sur un arete en non un sommet
-			  bamg::GeometricalEdge * ge= on->ge;
-		      }
-		    }
-		}
-	    }
+		  if (0)
+		  {
+
+
+			  Th->SetVertexFieldOn();
+			  for (int i = 0; i < Th->nbv; ++i)
+			  {
+				  VertexOnGeom *on = 0;
+				  if ((on = Th->vertices[i].on)) // we are on geometrie
+				  {
+					  if (on->abscisse < 0) {
+						  bamg::GeometricalVertex * gv = on->gv;
+					  }
+					  else {// erreur car un point est sur un arete en non un sommet
+						  bamg::GeometricalEdge * ge = on->ge;
+					  }
+				  }
+			  }
+		  }
+
           m=bamg2msh(Th,true);
-
+#endif
       }
       catch(...)
       {
+#ifndef kame
 	  Gh->NbRef=0;
 	  delete Gh;
           if(m) delete m;
           if(Th) delete Th;// clean memory ???
 	  cout << " catch Err bamg "  << endl;
 	  throw ;
+#endif
      }
+#ifndef kame
       delete Th;
+#endif
   }
-
+#ifndef kame
   delete Gh;
   /* deja fait  dans bamg2msh
      Fem2D::R2 Pn,Px;

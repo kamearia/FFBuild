@@ -26,17 +26,17 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 #include "stdafx.h"
-#ifndef kame
+
 #include "meshtype.h"
 #include "Meshio.h"
-#endif
+#ifndef kame
 #include "BamgFreeFem.hpp"
-namespace bamg {
-#ifndef kame
-  const char *OFortranUnFormattedFile::unkown("unknown file name");
 #endif
+namespace bamg {
+
+  const char *OFortranUnFormattedFile::unkown("unknown file name");
   void (*MeshIstreamErrorHandler)(std::ios &) = 0;
-#ifndef kame
+
   ///////////////////////////////////////////////////////////
   void WriteStr(ostream &out, char *str) {
     int i = 0;
@@ -51,6 +51,7 @@ namespace bamg {
     }
     out << '"';
   }
+#ifndef kame
   ///////////////////////////////////////////////////////////
   double *ReadbbFile(const char *file, long &nbsol, long &lsol, const int typesol, const int dim) {
 
@@ -130,7 +131,7 @@ namespace bamg {
 
     return sol;
   }
-
+#endif
   void MeshIstream::ShowIoErr(int s) {
     LineError = 1;
     if (CurrentFile) cerr << " In  file " << CurrentFile;
@@ -151,6 +152,7 @@ namespace bamg {
       in.clear(ios::failbit);
     }
   }
+#ifndef kame
   int MeshIstream::IsString(const char *s) {
     int n = 0;
     char c;

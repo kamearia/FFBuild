@@ -543,6 +543,7 @@ namespace bamg {
     }
     return on;
   }
+#endif
   GeometricalEdge *Geometry::ProjectOnCurve(const Edge &e, Real8 s, Vertex &V,
                                             VertexOnGeom &GV) const {
     Real8 save_s = s;
@@ -1198,5 +1199,5 @@ namespace bamg {
     }
     return A * ca + B * cb + tg[0] * cta + tg[1] * ctb;
   }
-#endif
+
 }    // namespace bamg

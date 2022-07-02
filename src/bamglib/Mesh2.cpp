@@ -52,8 +52,9 @@ long genrand_int31(void);
 void init_genrand(unsigned long);
 #endif
 
-#ifndef kame
+
 namespace bamg {
+
 #ifdef _WIN32
 #define random genrand_int31
 #define srandom init_genrand
@@ -91,11 +92,16 @@ namespace bamg {
 
 #endif
 
+Triangles *CurrentTh = 0;
+int Triangles::counter = 0;
+const Direction NoDirOfSearch = Direction();
+long NbUnSwap = 0;
+int ForDebugging = 0;
 #ifdef DEBUG1
   extern int SHOW;    // for debugging
   int SHOW = 0;       // for debugging
 
-#endif
+
 
   int Triangles::counter = 0;
 
@@ -118,7 +124,7 @@ namespace bamg {
     }
   }
 #endif
-
+#endif
   Int4 AGoodNumberPrimeWith(Int4 n) {
     const Int4 BigPrimeNumber[] = {567890359L, 567890431L, 567890437L, 567890461L, 567890471L,
                                    567890483L, 567890489L, 567890497L, 567890507L, 567890591L,
@@ -144,7 +150,8 @@ namespace bamg {
     throw(ErrorMesh("Bamg", Err, Th));
 #endif
   }
-#ifndef kame
+
+
   ostream &operator<<(ostream &f, const Triangle &ta) {
     if (CurrentTh)
       f << "[" << CurrentTh->Number(ta) << "::" << CurrentTh->Number(ta.ns[0]) << ","
@@ -161,7 +168,7 @@ namespace bamg {
         << "]";
     return f;
   }
-#endif
+
   void swap(Triangle *t1, Int1 a1, Triangle *t2, Int1 a2, Vertex *s1, Vertex *s2, Icoor2 det1,
             Icoor2 det2) {    // swap
     // --------------------------------------------------------------
@@ -491,7 +498,8 @@ namespace bamg {
     //	<< " " << b <<" " << l0 << " " <<l1 <<endl;
     return er;
   }
-#ifndef kame
+
+
   Metric Triangles::MetricAt(
     const R2 &A) const {    // if ((vertices <= &v) && (vertices < v+nbv)) return v.m;
     I2 a = toI2(A);
@@ -510,7 +518,7 @@ namespace bamg {
       return Metric(aa, (*t)[0], (*t)[1], (*t)[2]);
     }
   }
-#endif
+#ifndef kame
   void ListofIntersectionTriangles::SplitEdge(const Triangles &Bh, const R2 &A, const R2 &B,
                                               int nbegin) {    //  SplitEdge
     //  if(SHOW)  cout << " splitedge " << A << B << " " <<  nbegin << endl;
@@ -918,7 +926,7 @@ namespace bamg {
     }
     return nbv - nbvold;
   }
-
+#endif
   int SwapForForcingEdge(Vertex *&pva, Vertex *&pvb, TriangleAdjacent &tt1, Icoor2 &dets1,
                          Icoor2 &detsa, Icoor2 &detsb,
                          int &NbSwap) {    // l'arete ta coupe l'arete pva pvb
@@ -1317,14 +1325,17 @@ namespace bamg {
       return 0;
     }
 #endif
+
     if (OnSwap)
       bamg::swap(t1, a1, t2, a2, s1, s2, det1, det2);
     else {
       NbUnSwap++;
       t1->SetMarkUnSwap(a1);
     }
+
     return OnSwap;
   }
+#ifndef kame
 #ifndef kame
   Real8 Vertex::Smoothing(Triangles &Th, const Triangles &BTh, Triangle *&tstart, Real8 omega) {
 #ifdef DEBUG
@@ -1430,6 +1441,8 @@ namespace bamg {
     }
     return delta;
   }
+#endif
+
 #endif
   void Triangles::Add(Vertex &s, Triangle *t, Icoor2 *det3) {
     // -------------------------------------------
@@ -1578,6 +1591,7 @@ namespace bamg {
 #endif
       }
       assert(rswap);
+
     }
 
 #ifdef DEBUG
@@ -1591,7 +1605,7 @@ namespace bamg {
     tt[2]->Draw( );
 #endif
   }
-
+#ifndef kame
   Int4 Triangles::SplitInternalEdgeWithBorderVertices( ) {
     Int4 NbSplitEdge = 0;
     SetVertexFieldOn( );
@@ -1683,6 +1697,7 @@ namespace bamg {
            << endl;
     return NbSplitEdge;
   }
+#endif
   Int4 Triangles::InsertNewPoints(Int4 nbvold, Int4 &NbTSwap) {
     Real8 seuil = 1.414 / 2;    // for two close point
     Int4 i;
@@ -1831,8 +1846,9 @@ namespace bamg {
 #endif
     return nbv - nbvold;
   }
+
   void Triangles::NewPoints(Triangles &Bh, int KeepBackVertex) {    // Triangles::NewPoints
-    Int4 nbtold(nbt), nbvold(nbv);
+	  Int4 nbtold(nbt), nbvold(nbv);
     if (verbosity > 2) cout << "  -- Triangles::NewPoints ";
     if (verbosity > 3) cout << " nbv (in)  on Boundary  = " << nbv << endl;
     Int4 i, k;
@@ -1870,6 +1886,7 @@ namespace bamg {
     // the next traingle on i is  -first_np_or_next_t[i]
     int iter = 0;
     // Big loop
+
     do {
       iter++;
       nbtold = nbt;
@@ -1909,14 +1926,15 @@ namespace bamg {
 
           if (first_np_or_next_t[k] == iter)    // this edge is done before
             continue;                           // next edge of the triangle
-
+#ifndef kame
           // const Int4 NbvOld = nbv;
           lIntTria.SplitEdge(Bh, A, B);
           lIntTria.NewPoints(vertices, nbv, nbvx);
+#endif
         }    // end loop for each edge
 
       }    // for triangle
-
+#ifndef kame
 #ifdef DRAWING1
       cout << "  -------------------------------------------- " << endl;
       inquire( );
@@ -1942,9 +1960,9 @@ namespace bamg {
           ta = Next(Adj(ta));
         } while ((tbegin != (Triangle *)ta));
       }
-
+#endif
     } while (nbv != nbvold);
-
+#ifndef kame
     delete[] first_np_or_next_t;
 
     Int4 NbSwapf = 0, NbSwp;
@@ -2369,7 +2387,8 @@ namespace bamg {
     if (nberr) MeshError(992, this);
 #endif
     cout << " end: Triangles::NewPoints old nbv=" << nbv << endl;
-  }
+#endif  
+}
 
   void Triangles::Insert( ) {
     if (verbosity > 2) cout << " -- Insert initial " << nbv << " vertices " << endl;
@@ -2458,13 +2477,13 @@ namespace bamg {
 #ifdef DRAWING1
       inquire( );
 #endif
-
     }    // fin de boucle en icount
     time2 = CPUtime( );
     if (verbosity > 3)
       cout << " NbSwap of insertion " << NbSwap << " NbSwap/Nbv " << (float)NbSwap / (float)nbv
            << " NbUnSwap " << NbUnSwap << " Nb UnSwap/Nbv " << (float)NbUnSwap / (float)nbv << endl;
     NbUnSwap = 0;
+#ifndef kame
     // construction d'un ordre aleatoire
     //  const int PrimeNumber= (nbv % 999983) ? 1000003: 999983 ;
 #ifdef NBLOOPOPTIM
@@ -2504,12 +2523,15 @@ namespace bamg {
 #ifdef DRAWING1
     inquire( );
 #endif
+
     CurrentTh = OldCurrentTh;
+#endif
   }
 
   void Triangles::ForceBoundary( ) {
     if (verbosity > 2) cout << "  -- ForceBoundary: number of edges " << nbe << endl;
-    int k = 0;
+
+	int k = 0;
     Int4 nbfe = 0, nbswp = 0, Nbswap = 0;
     for (Int4 t = 0; t < nbt; t++)
       if (!triangles[t].det) k++, cerr << " det T " << t << " = " << 0 << endl;
@@ -2548,6 +2570,7 @@ namespace bamg {
     for (Int4 j = 0; j < nbv; j++) Nbswap += vertices[j].Optim(1, 0);
     if (verbosity > 3)
       cout << " Number of inforced edges = " << nbfe << " Nb of Swap " << Nbswap << endl;
+
   }
 
   void Triangles::FindSubDomain(int OutSide = 0) {
@@ -2860,6 +2883,7 @@ namespace bamg {
 
     //#undef DRAWING1
   }
+#ifndef kame
   void Triangles::ReNumberingVertex(Int4 *renu) {
     // warning be carfull because pointeur
     // from on mesh to over mesh
@@ -2969,6 +2993,7 @@ namespace bamg {
     for (it = 0; it < nbt; it++) triangles[it].check( );
 #endif
   }
+#endif
   Int4 Triangles::ConsRefTriangle(Int4 *reft) const {
     assert(reft);
     Triangle *t0, *t;
@@ -2993,7 +3018,7 @@ namespace bamg {
 
     return k;
   }
-
+#ifndef kame
   /*
   void Triangles::ConsLinkTriangle()
   {
@@ -3051,7 +3076,7 @@ namespace bamg {
   }
   */
   Vertex *Triangles::NearestVertex(Icoor1 i, Icoor1 j) { return quadtree->NearestVertex(i, j); }
-
+#endif
   void Triangles::PreInit(Int4 inbvx, char *fname) {
     mysrand(19999999);
     OnDisk = 0;
@@ -3128,7 +3153,7 @@ namespace bamg {
       cout << " Triangles::PreInit() " << nbvx << " " << nbtx << " " << vertices << " " << ordre
            << " " << triangles << endl;
   }
-
+#ifndef kame
   void Triangles::GeomToTriangles1(Int4 inbvx, int KeepBackVertices) {
     //#define DRAWING1
     Gh.NbRef++;    // add a ref to Gh
@@ -3532,7 +3557,7 @@ namespace bamg {
     CurrentTh = 0;
     //#undef  DRAWING1
   }
-#ifndef kame
+#endif
   void Triangles::GeomToTriangles0(Int4 inbvx) {
     Gh.NbRef++;    // add a ref to GH
 
@@ -3555,14 +3580,17 @@ namespace bamg {
     nbv = 0;
     NbVerticesOnGeomVertex = 0;
     NbVerticesOnGeomEdge = 0;
+
     for (i = 0; i < Gh.nbv; i++)
       if (Gh[i].Required( ) && Gh[i].IsThe( )) NbVerticesOnGeomVertex++;
     VerticesOnGeomVertex = new VertexOnGeom[NbVerticesOnGeomVertex];
     //
+
     if (NbVerticesOnGeomVertex > nbvx) {
       cerr << " Too many vertices on geometry " << NbVerticesOnGeomVertex << " > " << nbvx << endl;
       MeshError(1, this);
     }
+
     for (i = 0; i < Gh.nbv; i++)
       if (Gh[i].Required( ) && Gh[i].IsThe( )) {    // Gh  vertices Required
         if (nbv < nbvx) vertices[nbv] = Gh[i];
@@ -3582,235 +3610,252 @@ namespace bamg {
 #ifdef DRAWING1
     reffecran( );
 #endif
+
     // 2 step
     // --step=0 to compute the number of edges + alloc at end
     // --step=1 to construct the edges
-    for (int step = 0; step < 2; step++) {    //  for (int step=0;step<2;step++)
-      Int4 nbex = 0;
-      nbe = 0;
-      Int4 NbVerticesOnGeomEdge0 = NbVerticesOnGeomEdge;
-      //  cout <<  "  -------------- step =" << step << endl;
-      Gh.UnMarkEdges( );
-      NbOfCurves = 0;
-      for (i = 0; i < Gh.nbe; i++) {
-        GeometricalEdge &ei = Gh.edges[i];
-        if (!ei.Dup( ))    // a good curve (not dup )
-          for (int j = 0; j < 2; j++)
-            if (!ei.Mark( ) && ei[j].Required( )) {
-              // warning ei.Mark() can be change in loop for(j=0;j<2;j++)
-              //  cout << " New curve = " << NbOfCurves << endl;
-              Int4 nbvend = 0;
+	for (int step = 0; step < 2; step++) {    //  for (int step=0;step<2;step++)
+		Int4 nbex = 0;
+		nbe = 0;
+		Int4 NbVerticesOnGeomEdge0 = NbVerticesOnGeomEdge;
+		//  cout <<  "  -------------- step =" << step << endl;
+		Gh.UnMarkEdges();
+		NbOfCurves = 0;
 
-              Edge *PreviousNewEdge = 0;
+		for (i = 0; i < Gh.nbe; i++) {
+			GeometricalEdge &ei = Gh.edges[i];
 
-              lstep = -1;    // to do not create points
-              if (ei.Required( )) {
-                if (j == 0) {
-                  if (step == 0)
-                    nbe++;
-                  else {
-                    e = &ei;
-                    a = ei(0)->The( );
-                    b = ei(1)->The( );
-                    assert(edges);
-                    edges[nbe].v[0] = a->to;
-                    edges[nbe].v[1] = b->to;
-                    ;
-                    edges[nbe].ref = e->ref;
-                    edges[nbe].on = e;
-                    edges[nbe].adj[0] = 0;
-                    edges[nbe].adj[1] = 0;
+			if (!ei.Dup())    // a good curve (not dup )
+			for (int j = 0; j < 2; j++)
+			if (!ei.Mark() && ei[j].Required()) {
+
+						// warning ei.Mark() can be change in loop for(j=0;j<2;j++)
+						//  cout << " New curve = " << NbOfCurves << endl;
+				Int4 nbvend = 0;
+				Edge *PreviousNewEdge = 0;
+
+				lstep = -1;    // to do not create points
+
+				if (ei.Required()) {
+					if (j == 0) {
+						if (step == 0)
+							nbe++;
+						else {
+							e = &ei;
+							a = ei(0)->The();
+							b = ei(1)->The();
+							assert(edges);
+							edges[nbe].v[0] = a->to;
+							edges[nbe].v[1] = b->to;
+							edges[nbe].ref = e->ref;
+							edges[nbe].on = e;
+							edges[nbe].adj[0] = 0;
+							edges[nbe].adj[1] = 0;
 #ifdef DRAWING1
-                    edges[nbe].Draw( );
+							edges[nbe].Draw();
 #endif
-                    nbe++;
-                  }
-                }
-              } else {    // on curve ------
-                for (int kstep = 0; kstep <= step;
-                     kstep++) {    // begin  for ( int kstep=0;kstep<= step;kstep++)
-                  // if 2nd step where 2 step
-                  // -- 1 compute le length of the curve
-                  // -- create the points and edge
-                  PreviousNewEdge = 0;
-                  NbNewPoints = 0;
-                  NbEdgeCurve = 0;
-                  assert(nbvend < nbvx);
-                  lcurve = 0;
-                  s = lstep;
-                  int k = j;
-                  e = &ei;
-                  a = ei(k)->The( );
-                  va = a->to;
-                  e->SetMark( );
-                  //  cout << " New curve " ;
+							nbe++;
+						}
+					}
+				}
+				else {    // on curve ------
 
-                  // if SameGeo  We have go in the background geometry
-                  // to find the discretisation of the curve
+					for (int kstep = 0; kstep <= step; kstep++)
+					{    // begin  for ( int kstep=0;kstep<= step;kstep++)
 
-                  for (;;) {
-                    k = 1 - k;
-                    b = (*e)(k)->The( );
-                    AB = b->r - a->r;
-                    Metric MA = background ? BTh.MetricAt(a->r) : a->m;
-                    Metric MB = background ? BTh.MetricAt(b->r) : b->m;
-                    Real8 ledge = (MA(AB) + MB(AB)) / 2;
-                    //
-                    const int MaxSubEdge = 10;
-                    int NbSubEdge = 1;
-                    Real8 lSubEdge[MaxSubEdge];
-                    R2 A, B;
-                    if (ledge < 1.5)
-                      lSubEdge[0] = ledge;
-                    else {
-                      NbSubEdge = Min(MaxSubEdge, (int)(ledge + 0.5));
-                      A = a->r;
-                      Metric MAs = MA, MBs;
-                      // cout << " lSubEdge old=" << ledge
-                      //      << " new " << A << MA << endl;
-                      ledge = 0;
-                      Real8 x = 0, xstep = 1. / NbSubEdge;
-                      for (int kk = 0; kk < NbSubEdge; kk++, A = B, MAs = MBs) {
-                        x += xstep;
-                        B = e->F(k ? x : 1 - x);
-                        MBs = background ? BTh.MetricAt(B) : Metric(1 - x, MA, x, MB);
-                        AB = A - B;
-                        lSubEdge[kk] = (ledge += (MAs(AB) + MBs(AB)) / 2);
-                        // cout << "     " << lSubEdge[kk] << " x " << x
-                        //      << " " << A << B << MA << MB<< endl ;
-                      }
-                      //  cout << endl;
-                    }
+							 // if 2nd step where 2 step
+							 // -- 1 compute le length of the curve
+							 // -- create the points and edge
+						PreviousNewEdge = 0;
+						NbNewPoints = 0;
+						NbEdgeCurve = 0;
+						assert(nbvend < nbvx);
+						lcurve = 0;
+						s = lstep;
+						int k = j;
+						e = &ei;
+						a = ei(k)->The();
+						va = a->to;
+						e->SetMark();
+								//  cout << " New curve " ;
 
-                    Real8 lcurveb = lcurve + ledge;
-                    while (lcurve <= s && s <= lcurveb && nbv < nbvend) {
-                      // New points
+								// if SameGeo  We have go in the background geometry
+								// to find the discretisation of the curve
 
-                      // Real8 aa=(lcurveb-s)/ledge;
-                      // Real8 bb=(s-lcurve)/ledge;
+						for (;;) {
 
-                      Real8 ss = s - lcurve;
-                      // 1) find the SubEdge containing ss by dichotomie
-                      int kk0 = -1, kk1 = NbSubEdge - 1, kkk;
-                      Real8 ll0 = 0, ll1 = ledge, llk;
-                      while (kk1 - kk0 > 1) {
-                        if (ss < (llk = lSubEdge[kkk = (kk0 + kk1) / 2]))
-                          kk1 = kkk, ll1 = llk;
-                        else
-                          kk0 = kkk, ll0 = llk;
-                      }
-                      assert(kk1 != kk0);
+							k = 1 - k;
+							b = (*e)(k)->The();
+							AB = b->r - a->r;
+							Metric MA = background ? BTh.MetricAt(a->r) : a->m;
+							Metric MB = background ? BTh.MetricAt(b->r) : b->m;
+							Real8 ledge = (MA(AB) + MB(AB)) / 2;
+									//
+							const int MaxSubEdge = 10;
+							int NbSubEdge = 1;
+							Real8 lSubEdge[MaxSubEdge];
+							R2 A, B;
+							if (ledge < 1.5)
+								lSubEdge[0] = ledge;
+							else {
+								NbSubEdge = Min(MaxSubEdge, (int)(ledge + 0.5));
+								A = a->r;
+								Metric MAs = MA, MBs;
+										// cout << " lSubEdge old=" << ledge
+										//      << " new " << A << MA << endl;
+								ledge = 0;
+								Real8 x = 0, xstep = 1. / NbSubEdge;
+								for (int kk = 0; kk < NbSubEdge; kk++, A = B, MAs = MBs) {
+									x += xstep;
+									B = e->F(k ? x : 1 - x);
+									MBs = background ? BTh.MetricAt(B) : Metric(1 - x, MA, x, MB);
+									AB = A - B;
+									lSubEdge[kk] = (ledge += (MAs(AB) + MBs(AB)) / 2);
+											// cout << "     " << lSubEdge[kk] << " x " << x
+											//      << " " << A << B << MA << MB<< endl ;
+								}
+										//  cout << endl;
+							}
 
-                      Real8 sbb = (ss - ll0) / (ll1 - ll0);
-                      Real8 bb = (kk1 + sbb) / NbSubEdge, aa = 1 - bb;
+							Real8 lcurveb = lcurve + ledge;
+							while (lcurve <= s && s <= lcurveb && nbv < nbvend) {
+										// New points
 
-                      // new vertex on edge
-                      vb = &vertices[nbv++];
-                      vb->m = Metric(aa, a->m, bb, b->m);
-                      vb->ReferenceNumber = e->ref;
-                      vb->DirOfSearch = NoDirOfSearch;
-                      Real8 abcisse = k ? bb : aa;
-                      vb->r = e->F(abcisse);
-                      VerticesOnGeomEdge[NbVerticesOnGeomEdge++] = VertexOnGeom(*vb, *e, abcisse);
+										// Real8 aa=(lcurveb-s)/ledge;
+										// Real8 bb=(s-lcurve)/ledge;
 
-                      // to take in account the sens of the edge
+								Real8 ss = s - lcurve;
+										// 1) find the SubEdge containing ss by dichotomie
+								int kk0 = -1, kk1 = NbSubEdge - 1, kkk;
+								Real8 ll0 = 0, ll1 = ledge, llk;
+								while (kk1 - kk0 > 1) {
+									if (ss < (llk = lSubEdge[kkk = (kk0 + kk1) / 2]))
+										kk1 = kkk, ll1 = llk;
+									else
+										kk0 = kkk, ll0 = llk;
+								}
+								assert(kk1 != kk0);
 
-                      s += lstep;
-                      edges[nbe].v[0] = va;
-                      edges[nbe].v[1] = vb;
-                      edges[nbe].ref = e->ref;
-                      edges[nbe].on = e;
-                      edges[nbe].adj[0] = PreviousNewEdge;
-                      if (PreviousNewEdge) PreviousNewEdge->adj[1] = &edges[nbe];
+								Real8 sbb = (ss - ll0) / (ll1 - ll0);
+								Real8 bb = (kk1 + sbb) / NbSubEdge, aa = 1 - bb;
+
+										// new vertex on edge
+								vb = &vertices[nbv++];
+								vb->m = Metric(aa, a->m, bb, b->m);
+								vb->ReferenceNumber = e->ref;
+								vb->DirOfSearch = NoDirOfSearch;
+								Real8 abcisse = k ? bb : aa;
+								vb->r = e->F(abcisse);
+								VerticesOnGeomEdge[NbVerticesOnGeomEdge++] = VertexOnGeom(*vb, *e, abcisse);
+
+										// to take in account the sens of the edge
+
+								s += lstep;
+								edges[nbe].v[0] = va;
+								edges[nbe].v[1] = vb;
+								edges[nbe].ref = e->ref;
+								edges[nbe].on = e;
+								edges[nbe].adj[0] = PreviousNewEdge;
+								if (PreviousNewEdge) PreviousNewEdge->adj[1] = &edges[nbe];
 #ifdef DRAWING1
-                      vb->Draw( );
-                      edges[nbe].Draw( );
+								vb->Draw();
+								edges[nbe].Draw();
 #endif
-                      PreviousNewEdge = edges + nbe;
-                      nbe++;
-                      //  remove DEBUG print to find a bug in examples++-tutorial/periodic4.edp
-                      // under windows
-                      //  after this the bug  disappear (version 3.30 on freefem++  23/04/2014  FH
-                      //  problem optimisation, bug in compiler, bug in freefem++
+								PreviousNewEdge = edges + nbe;
+								nbe++;
+										//  remove DEBUG print to find a bug in examples++-tutorial/periodic4.edp
+										// under windows
+										//  after this the bug  disappear (version 3.30 on freefem++  23/04/2014  FH
+										//  problem optimisation, bug in compiler, bug in freefem++
 
-                      if (verbosity > 999) {
-                        cout << " new points " << nbv - 1 << " " << vb->r;
-                        cout << " new edge " << nbe - 1 << " ";
-                        cout << va << vb << " kk0 = " << kk0 << " " << kk1 << " ss=" << ss;
-                        cout << " " << sbb << endl;
-                        cout << "      " << aa << va->r << bb << vb->r
-                             << " length=" << Norme2(va->r - vb->r) << endl;
-                        cout << "      s " << s << " lstep= " << lstep << " ledge= " << ledge
-                             << " lcurve= " << lcurve << endl;
-                      }
-                      //  end of modification ... DF. Hecht 23/04/2014  FH
+								if (verbosity > 999) {
+									cout << " new points " << nbv - 1 << " " << vb->r;
+									cout << " new edge " << nbe - 1 << " ";
+									cout << va << vb << " kk0 = " << kk0 << " " << kk1 << " ss=" << ss;
+									cout << " " << sbb << endl;
+									cout << "      " << aa << va->r << bb << vb->r
+										<< " length=" << Norme2(va->r - vb->r) << endl;
+									cout << "      s " << s << " lstep= " << lstep << " ledge= " << ledge
+												<< " lcurve= " << lcurve << endl;
+								}
+										//  end of modification ... DF. Hecht 23/04/2014  FH
 
-                      va = vb;
-                    }
-                    lcurve = lcurveb;
-                    e->SetMark( );
-                    // cout << e-Gh.edges << ", " << k << " "
-                    //      <<(*e)[k].r <<" " <<(*e)[1-k].r <<" "
-                    //      << lcurve<< ";; " ;
-                    a = b;
-                    if (b->Required( )) break;
-                    int kprev = k;
-                    k = e->SensAdj[kprev];    // next vertices
-                    e = e->Adj[kprev];
-                    assert(e);
-                  }    // for(;;)
-                  vb = b->to;
-                  //            cout << endl;
-                  NbEdgeCurve = Max((Int4)(lcurve + 0.5), (Int4)1);
-                  NbNewPoints = NbEdgeCurve - 1;
-                  if (!kstep) {
-                    NbVerticesOnGeomEdge0 += NbNewPoints;
-                    NbOfCurves++;
-                  }
+								va = vb;
+							}
+							lcurve = lcurveb;
+							e->SetMark();
+									// cout << e-Gh.edges << ", " << k << " "
+									//      <<(*e)[k].r <<" " <<(*e)[1-k].r <<" "
+									//      << lcurve<< ";; " ;
+							a = b;
+							if (b->Required()) break;
+							int kprev = k;
+							k = e->SensAdj[kprev];    // next vertices
+							e = e->Adj[kprev];
+							assert(e);
+						}    // for(;;)
 
-                  nbvend = nbv + NbNewPoints;
+						vb = b->to;
+								//            cout << endl;
+						NbEdgeCurve = Max((Int4)(lcurve + 0.5), (Int4)1);
+						NbNewPoints = NbEdgeCurve - 1;
+						if (!kstep) {
+							NbVerticesOnGeomEdge0 += NbNewPoints;
+							NbOfCurves++;
+						}
 
-                  lstep = lcurve / NbEdgeCurve;
-                  //   cout <<"lstep " << lstep << " lcurve "
-                  //    << lcurve << " NbEdgeCurve " << NbEdgeCurve << " "
-                  //    <<NbVerticesOnGeomEdge0<<" " <<NbVerticesOnGeomEdge<<" step =" <<step<<
-                  //    endl;
-                }
-                // end of curve --
-                if (edges) {    // last edges of the curves
-                  edges[nbe].v[0] = va;
-                  edges[nbe].v[1] = vb;
-                  edges[nbe].ref = e->ref;
-                  edges[nbe].on = e;
-                  edges[nbe].adj[0] = PreviousNewEdge;
-                  edges[nbe].adj[1] = 0;
-                  if (PreviousNewEdge) PreviousNewEdge->adj[1] = &edges[nbe];
+						nbvend = nbv + NbNewPoints;
+
+						lstep = lcurve / NbEdgeCurve;
+								//   cout <<"lstep " << lstep << " lcurve "
+								//    << lcurve << " NbEdgeCurve " << NbEdgeCurve << " "
+								//    <<NbVerticesOnGeomEdge0<<" " <<NbVerticesOnGeomEdge<<" step =" <<step<<
+								//    endl;
+
+					}
+
+							// end of curve --
+					if (edges) {    // last edges of the curves
+						edges[nbe].v[0] = va;
+						edges[nbe].v[1] = vb;
+						edges[nbe].ref = e->ref;
+						edges[nbe].on = e;
+						edges[nbe].adj[0] = PreviousNewEdge;
+						edges[nbe].adj[1] = 0;
+						if (PreviousNewEdge) PreviousNewEdge->adj[1] = &edges[nbe];
 
 #ifdef DRAWING1
-                  edges[nbe].Draw( );
+						edges[nbe].Draw();
 #endif
-                  nbe++;
-                } else
-                  nbe += NbEdgeCurve;
-              }    // end on  curve ---
-            }      // if (edges[i][j].Corner())
-      }            // for (i=0;i<nbe;i++)
-      if (!step) {
-        // cout << "edges " << edges << " VerticesOnGeomEdge " <<VerticesOnGeomEdge << endl;
-        assert(!edges);
-        assert(!VerticesOnGeomEdge);
-        edges = new Edge[nbex = nbe];
-        if (NbVerticesOnGeomEdge0) VerticesOnGeomEdge = new VertexOnGeom[NbVerticesOnGeomEdge0];
-        assert(edges);
-        assert(VerticesOnGeomEdge || NbVerticesOnGeomEdge0 == 0);
-        // do the vertex on a geometrical vertex
-        NbVerticesOnGeomEdge0 = NbVerticesOnGeomEdge;
-      } else
-        assert(NbVerticesOnGeomEdge == NbVerticesOnGeomEdge0);
-      //     cout << " Nb of Curves = " << NbOfCurves << "nbe = " << nbe
-      //	  << "== " << nbex << "  nbv = " << nbv <<  endl;
-      assert(nbex = nbe);
-    }    // for (step=0;step<2;step++)
+						nbe++;
+					}
+					else
+						nbe += NbEdgeCurve;
+
+				}    // end on  curve ---
+
+			}      // if (edges[i][j].Corner())
+
+		}            // for (i=0;i<nbe;i++)
+
+		if (!step) {
+			// cout << "edges " << edges << " VerticesOnGeomEdge " <<VerticesOnGeomEdge << endl;
+			assert(!edges);
+			assert(!VerticesOnGeomEdge);
+			edges = new Edge[nbex = nbe];
+			if (NbVerticesOnGeomEdge0) VerticesOnGeomEdge = new VertexOnGeom[NbVerticesOnGeomEdge0];
+			assert(edges);
+			assert(VerticesOnGeomEdge || NbVerticesOnGeomEdge0 == 0);
+			// do the vertex on a geometrical vertex
+			NbVerticesOnGeomEdge0 = NbVerticesOnGeomEdge;
+		}
+		else
+			assert(NbVerticesOnGeomEdge == NbVerticesOnGeomEdge0);
+		//     cout << " Nb of Curves = " << NbOfCurves << "nbe = " << nbe
+		//	  << "== " << nbex << "  nbv = " << nbv <<  endl;
+		assert(nbex = nbe);
+
+	}    // for (step=0;step<2;step++)
 
 #ifdef DRAWING1
     reffecran( );
@@ -3830,9 +3875,11 @@ namespace bamg {
 #endif
     // NewPointsOld(*this) ;
     NewPoints(*this, 0);
+
     CurrentTh = 0;
-  }
-#endif
+
+}
+
   Edge **Triangles::MakeGeometricalEdgeToEdge( ) {
     assert(Gh.nbe);
     Edge **e = new Edge *[Gh.nbe];
@@ -3972,7 +4019,7 @@ namespace bamg {
     }
     if (Nberr) MeshError(899, this);
   }
-
+#ifndef kame
   void Triangles::FillHoleInMesh( ) {
     Triangles *OldCurrentTh = CurrentTh;
     CurrentTh = this;
@@ -4396,6 +4443,7 @@ namespace bamg {
     return NbSwap;
   }
   */
+#endif
   Int4 Triangle::Optim(Int2 i, int koption) {
     // turne around in positif sens
     Int4 NbSwap = 0;
@@ -4437,7 +4485,7 @@ namespace bamg {
     } while (t != this);
     return NbSwap;
   }
-
+#ifndef kame
   void Triangles::SmoothingVertex(int nbiter, Real8 omega) {
     //  if quatree exist remove it end reconstruct
     if (quadtree) delete quadtree;
@@ -4866,7 +4914,7 @@ namespace bamg {
     assert(NbSubDomains);
     assert(subdomains[0].head && subdomains[0].head->link);
   }
-
+#endif
   Triangle *Triangles::FindTriangleContening(const I2 &B, Icoor2 dete[3],
                                              Triangle *tstart) const {    // in: B
     // out: t
@@ -4967,4 +5015,3 @@ namespace bamg {
 
 }    // namespace bamg
 
-#endif
