@@ -98,7 +98,7 @@ namespace ffapi {
     bool (*protectedservermode)();
 #endif
 }
-#ifndef kame
+
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
@@ -131,7 +131,7 @@ using namespace std;
  bool  NoGraphicWindow=false;
 
 /// <<verbosity>>
-#endif
+
 long verbosity = 1;
 long searchMethod = 0; //pichon
 long npichon2d=0, npichon3d=0;
@@ -211,7 +211,7 @@ RefCounter *RefCounter::tnull=0;
 
 double ff_tgv=1e30;
 bool lockOrientation=true;
-#ifndef kame
+
 void InitMeshPoint(void * p)
 {
     EF23::MeshPoint*mps=static_cast<EF23::MeshPoint*>(p);
@@ -219,7 +219,7 @@ void InitMeshPoint(void * p)
 }
 
 string *def_solver=0,*def_solver_sym=0, *def_solver_sym_dp=0;
-#endif
+
 
 #define VersionFreeFem 1.1
 

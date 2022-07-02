@@ -34,7 +34,7 @@ extern FILE *ThePlotStream; // Add for new plot. FH oct 2008
 const char *edpfilenamearg;
 bool waitatend=false;
 extern bool consoleatend;
-bool NoGraphicWindow;
+extern bool NoGraphicWindow;
 extern bool echo_edp;
 extern const char *  check_plugin;
 extern long verbosity;

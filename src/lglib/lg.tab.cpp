@@ -3816,7 +3816,7 @@ int mainff (int  argc, char **argv)
    callInitsFunct() ; //  init for dynamique libs ...
 
    init_lgfem() ;
-  // init_lgmesh() ;
+   init_lgmesh() ;
 #ifndef kame
    init_lgmesh3() ;
    init_algo();

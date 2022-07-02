@@ -387,15 +387,15 @@ extern void InitMeshPoint(void *p);
 /// <<newStack>>
 inline Stack newStack(size_t l)
 {
-//KAME 	char *  mps;
+	char *  mps;
 	Stack thestack = new char[l];
 	for (size_t i = 0; i< l / sizeof(long); i++) ((long*)thestack)[i] = 0;
-/*  //KAME
+
 	((char **)thestack)[MeshPointStackOffset] = mps = new char[1000];
 	for (int i = 0; i<1000; ++i) mps[i] = 0;
 	//  unset x,y,z
 	InitMeshPoint(mps);
-*/
+
 	// [[WhereStackOfPtr2Free]] [[StackOfPtr2Free]]
 	WhereStackOfPtr2Free(thestack) = new StackOfPtr2Free(thestack);
 

@@ -5,6 +5,8 @@
 // Mesh
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
+buildmesh(a(50));
+end;
 mesh disk = buildmesh(a(50));
 plot(disk);
 

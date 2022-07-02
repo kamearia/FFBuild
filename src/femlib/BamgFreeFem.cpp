@@ -843,7 +843,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack,const  Fem2D::MeshL *pmshL ,  bool ju
 #endif
 const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool justboundary,int nbvmax,bool Requiredboundary,KNM<double> *pintern,double alea,bool SplitEdgeWith2Boundary)
 {
-#ifndef kame
+
     if(alea) Requiredboundary=1;
     int nbvinter=0;
     if( pintern)
@@ -862,7 +862,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
   using bamg::Min;
   using bamg::Pi;
   Fem2D::MeshPoint & mp (*Fem2D::MeshPointStack(stack)), mps = mp;
-
+#ifndef kame
   int nbvx=nbvinter,nbe=0,nbsd=0;
   for (E_BorderN const * k=b;k;k=k->next)
   {
