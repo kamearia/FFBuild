@@ -25,7 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
 #include <cmath>
 #include <cstdlib>
 #include "error.hpp"
@@ -43,7 +43,7 @@ extern long verbosity ;
 extern bool lockOrientation;
 
 namespace  Fem2D {
-
+#ifndef kame
  int  Make(const TypeOfFE ** t,int k,KN<R2> & P,KN<int> & I)
  {
    typedef  TypeOfFE::IPJ IPJ;
@@ -1024,7 +1024,7 @@ FESpace::FESpace(const Mesh & TTh,const TypeOfFE ** tef,int k,int nbdfv,const in
        renum();
     Show();
      }
-
+#endif
 void ConstructDataFElement::renum(const long *r,int l)
  {
    ffassert(this);
@@ -1042,7 +1042,7 @@ void ConstructDataFElement::renum(const long *r,int l)
        delete [] n;
     }
  }
-
+#ifndef kame
  void TypeOfFEProduit::FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat & PHat,RNMK_ & val) const
  {
    int n=teb.NbDoF;
@@ -1687,5 +1687,5 @@ void init_static_FE()
    extern void init_FE_P2h() ;
   init_FE_P2h() ;
 }
-
+#endif
 } // fin de namespace Fem2D

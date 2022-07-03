@@ -28,6 +28,7 @@
 // E-MAIL :   Frederic.Hecht@Inria.fr
 //
 // ORIG-DATE:     Dec 97
+#include "stdafx.h"
 #include <cmath>
 #include <cstdlib>
 #include "error.hpp"

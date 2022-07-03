@@ -25,6 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #include <cmath>
 #include "error.hpp"
 #include <iostream>
@@ -1000,6 +1001,7 @@ int Mesh::renum()
  	err = -1 : memory alloc pb; err = -3: fatal erreur  gibbs 2 : pb racine
 */
 {
+#ifndef kame
     long   pfold=0, pfnew=0;
     long* ptvois=NULL;
     long* vois=NULL;
@@ -1090,6 +1092,8 @@ int Mesh::renum()
      }
   delete [] r;
   return err;
+#endif
+  return 0;
 }
 int FESpace::renum()
 /* --------

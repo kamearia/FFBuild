@@ -518,12 +518,11 @@ int ForDebugging = 0;
       return Metric(aa, (*t)[0], (*t)[1], (*t)[2]);
     }
   }
-#ifndef kame
+
   void ListofIntersectionTriangles::SplitEdge(const Triangles &Bh, const R2 &A, const R2 &B,
                                               int nbegin) {    //  SplitEdge
     //  if(SHOW)  cout << " splitedge " << A << B << " " <<  nbegin << endl;
     Triangle *tbegin, *t;
-
     Icoor2 deta[3], deti, detj;
     Real8 ba[3];
     int nbt = 0, ifirst = -1, ilast;
@@ -566,87 +565,89 @@ int ForDebugging = 0;
         }
       }                       // find the nearest boundary edge  of the vertex A
     }                         // end not optimisation
-    if (t->det < 0) {         // outside departure
-      while (t->det < 0) {    // intersection boundary edge and a,b,
-        k = (*t)(0) ? (((*t)(1) ? ((*t)(2) ? -1 : 2) : 1)) : 0;
-        assert(k >= 0);
-        ocut = OppositeEdge[k];
-        i = VerticesOfTriangularEdge[ocut][0];
-        j = VerticesOfTriangularEdge[ocut][1];
-        vi = (*t)[i];
-        vj = (*t)[j];
-        deti = bamg::det(a, b, vi);
-        detj = bamg::det(a, b, vj);
-        //  if(SHOW) {  penthickness(3);
-        // 	Move(vi);Line(vj);CurrentTh->inquire();penthickness(1);
-        //         cout << Bh.Number(tbegin) << " " << Bh.Number(t) << " i= " << i <<" j= " <<  j <<
-        //         " k=" << k
-        //       	   << " deti= " << deti << " detj= " << detj
-        // 	     << " v = " << Bh.Number((*t)[i]) << (*t)[i].r <<  " " << Bh.Number((*t)[j]) <<
-        // (*t)[j].r  << endl;}
-        if (deti > 0)    // go to  i direction on gamma
-          ocut = PreviousEdge[ocut];
-        else if (detj <= 0)    // go to j direction on gamma
-          ocut = NextEdge[ocut];
-        TriangleAdjacent tadj = t->Adj(ocut);
-        t = tadj;
-        iedge = tadj;
-        if (t == tbegin) {    //
-          double ba, bb;
-          if (verbosity > 7)
-            cout << " SplitEdge: All the edges " << A << B << nbegin << det(vi, vj, b)
-                 << " deti= " << deti << " detj=" << detj << endl;
-          TriangleAdjacent edge = CloseBoundaryEdge(a, t, ba, bb);
-          Vertex &v0 = *edge.EdgeVertex(0), &v1 = *edge.EdgeVertex(1);
-          NewItem(A, Metric(ba, v0, bb, v1));
-          return;
-          /*
-          cerr << nbegin <<  det(vi,vj,b) << " deti= " << deti <<  " detj=" <<detj << endl;
-          cerr << "SplitEdge on boucle A" << A << " B = " << B << endl;
 
-  #ifdef DRAWING
-          reffecran();
-          Bh.Draw();
-          penthickness(5);
-          Move(A);
-          Line(B);
-          penthickness(1);
+	if (t->det < 0) {         // outside departure
+		while (t->det < 0) {    // intersection boundary edge and a,b,
+			k = (*t)(0) ? (((*t)(1) ? ((*t)(2) ? -1 : 2) : 1)) : 0;
+			assert(k >= 0);
+			ocut = OppositeEdge[k];
+			i = VerticesOfTriangularEdge[ocut][0];
+			j = VerticesOfTriangularEdge[ocut][1];
+			vi = (*t)[i];
+			vj = (*t)[j];
+			deti = bamg::det(a, b, vi);
+			detj = bamg::det(a, b, vj);
+			//  if(SHOW) {  penthickness(3);
+			// 	Move(vi);Line(vj);CurrentTh->inquire();penthickness(1);
+			//         cout << Bh.Number(tbegin) << " " << Bh.Number(t) << " i= " << i <<" j= " <<  j <<
+			//         " k=" << k
+			//       	   << " deti= " << deti << " detj= " << detj
+			// 	     << " v = " << Bh.Number((*t)[i]) << (*t)[i].r <<  " " << Bh.Number((*t)[j]) <<
+			// (*t)[j].r  << endl;}
+			if (deti > 0)    // go to  i direction on gamma
+				ocut = PreviousEdge[ocut];
+			else if (detj <= 0)    // go to j direction on gamma
+				ocut = NextEdge[ocut];
+			TriangleAdjacent tadj = t->Adj(ocut);
+			t = tadj;
+			iedge = tadj;
+			if (t == tbegin) {    //
+				double ba, bb;
+				if (verbosity > 7)
+					cout << " SplitEdge: All the edges " << A << B << nbegin << det(vi, vj, b)
+					<< " deti= " << deti << " detj=" << detj << endl;
+				TriangleAdjacent edge = CloseBoundaryEdge(a, t, ba, bb);
+				Vertex &v0 = *edge.EdgeVertex(0), &v1 = *edge.EdgeVertex(1);
+				NewItem(A, Metric(ba, v0, bb, v1));
+				return;
+				/*
+				cerr << nbegin <<  det(vi,vj,b) << " deti= " << deti <<  " detj=" <<detj << endl;
+				cerr << "SplitEdge on boucle A" << A << " B = " << B << endl;
 
-          Bh.inquire();
-          penthickness(5);
-          Move(A);
-          Line(B);
-          penthickness(1);
-          Bh.inquire();
-  #endif
-          MeshError(997);*/
-        }
-      }    //  end while (t->det <0)
-      // theoriticaly we have: deti =<0 and detj>0
+		#ifdef DRAWING
+				reffecran();
+				Bh.Draw();
+				penthickness(5);
+				Move(A);
+				Line(B);
+				penthickness(1);
 
-      // computation of barycentric coor
-      // test if the point b is on size on t
-      // we revert vi,vj because vi,vj is def in Adj triangle
-      if (det(vi, vj, b) >= 0) {
-        if (verbosity > 7) cout << " SplitEdge: all AB outside " << A << B << endl;
-        t = tbegin;
-        Real8 ba, bb;
-        TriangleAdjacent edge = CloseBoundaryEdge(b, t, ba, bb);
-        NewItem(B, Metric(ba, *edge.EdgeVertex(0), bb, *edge.EdgeVertex(1)));
-        return;
-      } else {
-        k = OppositeVertex[iedge];
-        i = VerticesOfTriangularEdge[iedge][0];
-        j = VerticesOfTriangularEdge[iedge][1];
-        Real8 dij = detj - deti;
-        assert(i + j + k == 0 + 1 + 2);
-        ba[j] = detj / dij;
-        ba[i] = -deti / dij;
-        ba[k] = 0;
-        // 	if(SHOW) cout << i << " " << j << " " << k << " " << ba[i] << " " << ba[j] << endl;
-        ilast = NewItem(t, ba[0], ba[1], ba[2]);
-      }
-    }    //  outside departure
+				Bh.inquire();
+				penthickness(5);
+				Move(A);
+				Line(B);
+				penthickness(1);
+				Bh.inquire();
+		#endif
+				MeshError(997);*/
+			}
+		}    //  end while (t->det <0)
+	  // theoriticaly we have: deti =<0 and detj>0
+
+	  // computation of barycentric coor
+	  // test if the point b is on size on t
+	  // we revert vi,vj because vi,vj is def in Adj triangle
+		if (det(vi, vj, b) >= 0) {
+			if (verbosity > 7) cout << " SplitEdge: all AB outside " << A << B << endl;
+			t = tbegin;
+			Real8 ba, bb;
+			TriangleAdjacent edge = CloseBoundaryEdge(b, t, ba, bb);
+			NewItem(B, Metric(ba, *edge.EdgeVertex(0), bb, *edge.EdgeVertex(1)));
+			return;
+		}
+		else {
+			k = OppositeVertex[iedge];
+			i = VerticesOfTriangularEdge[iedge][0];
+			j = VerticesOfTriangularEdge[iedge][1];
+			Real8 dij = detj - deti;
+			assert(i + j + k == 0 + 1 + 2);
+			ba[j] = detj / dij;
+			ba[i] = -deti / dij;
+			ba[k] = 0;
+			// 	if(SHOW) cout << i << " " << j << " " << k << " " << ba[i] << " " << ba[j] << endl;
+			ilast = NewItem(t, ba[0], ba[1], ba[2]);
+		}
+	}    //  outside departure
 
     // recherche the intersection of [a,b] with Bh Mesh.
     // we know  a triangle ta contening the vertex a
@@ -761,9 +762,9 @@ int ForDebugging = 0;
         }
       }    // we  go outside of omega
     }      // for(;;)
-
   }    // routine SplitEdge
-#ifndef kame
+
+
   int ListofIntersectionTriangles::NewItem(Triangle *tt, Real8 d0, Real8 d1, Real8 d2) {
     int n;
     R2 x(0, 0);
@@ -795,6 +796,7 @@ int ForDebugging = 0;
       n = Size - 1;
     return n;
   }
+
   int ListofIntersectionTriangles::NewItem(R2 A, const Metric &mm) {
     int n;
     if (!Size || Norme2_2(lIntTria[Size - 1].x - A)) {
@@ -810,7 +812,8 @@ int ForDebugging = 0;
       n = Size - 1;
     return n;
   }
-#endif
+
+
   Real8 ListofIntersectionTriangles::Length( ) {
     //  cout << " n= " << Size << ":" ;
     assert(Size > 0);
@@ -926,7 +929,7 @@ int ForDebugging = 0;
     }
     return nbv - nbvold;
   }
-#endif
+
   int SwapForForcingEdge(Vertex *&pva, Vertex *&pvb, TriangleAdjacent &tt1, Icoor2 &dets1,
                          Icoor2 &detsa, Icoor2 &detsb,
                          int &NbSwap) {    // l'arete ta coupe l'arete pva pvb
@@ -1605,7 +1608,7 @@ int ForDebugging = 0;
     tt[2]->Draw( );
 #endif
   }
-#ifndef kame
+
   Int4 Triangles::SplitInternalEdgeWithBorderVertices( ) {
     Int4 NbSplitEdge = 0;
     SetVertexFieldOn( );
@@ -1697,7 +1700,7 @@ int ForDebugging = 0;
            << endl;
     return NbSplitEdge;
   }
-#endif
+
   Int4 Triangles::InsertNewPoints(Int4 nbvold, Int4 &NbTSwap) {
     Real8 seuil = 1.414 / 2;    // for two close point
     Int4 i;
@@ -1926,15 +1929,14 @@ int ForDebugging = 0;
 
           if (first_np_or_next_t[k] == iter)    // this edge is done before
             continue;                           // next edge of the triangle
-#ifndef kame
+
           // const Int4 NbvOld = nbv;
           lIntTria.SplitEdge(Bh, A, B);
           lIntTria.NewPoints(vertices, nbv, nbvx);
-#endif
-        }    // end loop for each edge
 
+        }    // end loop for each edge
       }    // for triangle
-#ifndef kame
+
 #ifdef DRAWING1
       cout << "  -------------------------------------------- " << endl;
       inquire( );
@@ -1960,9 +1962,9 @@ int ForDebugging = 0;
           ta = Next(Adj(ta));
         } while ((tbegin != (Triangle *)ta));
       }
-#endif
+
     } while (nbv != nbvold);
-#ifndef kame
+
     delete[] first_np_or_next_t;
 
     Int4 NbSwapf = 0, NbSwp;
@@ -1987,7 +1989,7 @@ int ForDebugging = 0;
       cout << " Number of vertices =" << nbv << " Number of triangles = " << nbt - NbOutT
            << " NbSwap final = " << NbSwapf << " Total number of swaps = " << NbTSwap << endl;
   }
-
+#ifndef kame
   void Triangles::NewPointsOld(Triangles &Bh) {    // Triangles::NewPointsOld
     Real8 seuil = 0.7;                             // for two neart point
     if (verbosity > 1) cout << " begin: Triangles::NewPointsOld " << endl;
@@ -2387,9 +2389,9 @@ int ForDebugging = 0;
     if (nberr) MeshError(992, this);
 #endif
     cout << " end: Triangles::NewPoints old nbv=" << nbv << endl;
-#endif  
+ 
 }
-
+#endif 
   void Triangles::Insert( ) {
     if (verbosity > 2) cout << " -- Insert initial " << nbv << " vertices " << endl;
 
@@ -2937,6 +2939,7 @@ int ForDebugging = 0;
     }
     for (it = 0; it < nbv; it++) renu[i] = -renu[i] - 1;
   }
+#endif
   void Triangles::ReNumberingTheTriangleBySubDomain(bool justcompress) {
     Int4 *renu = new Int4[nbt];
     Triangle *t0, *t, *te = triangles + nbt;
@@ -2993,7 +2996,7 @@ int ForDebugging = 0;
     for (it = 0; it < nbt; it++) triangles[it].check( );
 #endif
   }
-#endif
+
   Int4 Triangles::ConsRefTriangle(Int4 *reft) const {
     assert(reft);
     Triangle *t0, *t;

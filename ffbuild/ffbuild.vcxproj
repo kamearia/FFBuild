@@ -182,6 +182,11 @@
     <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
+    <ClCompile Include="..\src\femlib\fem.cpp" />
+    <ClCompile Include="..\src\femlib\FESpace.cpp" />
+    <ClCompile Include="..\src\femlib\FQuadTree.cpp" />
+    <ClCompile Include="..\src\femlib\gibbs.cpp" />
+    <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
     <ClCompile Include="..\src\fflib\array_complex.cpp" />

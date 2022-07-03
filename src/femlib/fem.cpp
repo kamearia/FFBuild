@@ -25,7 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
 extern long verbosity ;
 extern long searchMethod; //pichon
 extern bool lockOrientation;
@@ -50,7 +50,7 @@ extern   long npichon2d, npichon3d;
 extern   long npichon2d1, npichon3d1;
 
 namespace Fem2D {
-
+#define M_PI       3.14159265358979323846   // pi
 
 class SubMortar {
 	friend class Mesh;
@@ -97,8 +97,10 @@ public:
 
 	}
     }
-	void Mesh::ConsAdjacence()
-    {
+
+void Mesh::ConsAdjacence()
+{
+
 	    //  warning in the paper a mortar is the whole edge of the coarse triangle
 	    //  here a mortar is a connected componand of he whole edge of the coarse triangle
 	    //   minus  the extremite of mortar
@@ -106,9 +108,11 @@ public:
 	    int NbCollision=0,NbOfEdges=0,NbOfBEdges=0,NbOfMEdges=0;
 	    const char MaskEdge[]={1,2,4};
 	    const char AddMortar[]={8,16,32};
+
 	    //    reffecran();
 	    //    cadreortho(0.22,0.22,.1);
 	    if (neb) BuildBoundaryAdjacences();
+
             area=0;  // FH add nov 2010
             lenbord=0; // FH add nov 2010
 	    if(TheAdjacencesLink) return; //
@@ -116,489 +120,516 @@ public:
 	    const int NbCode = 2*nv;
 	    char * TonBoundary = new char [nt]; // the edge is 1 2 4   AddMortar = 8
 
-	    { int * Head = new int[NbCode];
-
-		//  make the list
-		int i,j,k,n,j0,j1;
-		for ( i=0; i<NbCode; i++ )
-		    Head[i]=-1; // empty list
-		n=0; // make all the link
-		for (i=0;i<nt;i++)
 		{
-		    Triangle & T=triangles[i];
-		    area += T.area; // add FH nov 2010
-		    for( j=0; j<3; j++,n++ )
-		    {
-			VerticesNumberOfEdge(T,j,j0,j1);
-			k = j0+j1;
-			TheAdjacencesLink[n]=Head[k];
-			Head[k]=n;
-		    }
 
-		}
-		if (neb==0) { // build boundary
-		    for(int step=0;step<2;step++)
-		    {
-			neb=0;
-			for (i=0;i<nt;i++)
+			int * Head = new int[NbCode];
+
+			//  make the list
+			int i, j, k, n, j0, j1;
+			for (i = 0; i < NbCode; i++)
+				Head[i] = -1; // empty list
+			n = 0; // make all the link
+			for (i = 0; i < nt; i++)
 			{
-			    Triangle & T=triangles[i];
-			    for( j=0; j<3; j++,n++ )
-			    {
-				VerticesNumberOfEdge(T,j,j0,j1);
-				int kk = 0,im=Min(j0,j1);
-				for (int n=Head[j0+j1]; n>=0; n=TheAdjacencesLink[n])
-				{ int jj=n%3,ii=n/3, jj0,jj1;
-				    VerticesNumberOfEdge(triangles[ii],jj,jj0,jj1);
-				    if(im==Min(jj0,jj1)) // same edge
-					kk++;
-				}
-				if (kk==1) {
-				    if(step) bedges[neb].set(vertices,j0,j1,1);
-				    neb++;
+				Triangle & T = triangles[i];
+				area += T.area; // add FH nov 2010
+				for (j = 0; j < 3; j++, n++)
+				{
+					VerticesNumberOfEdge(T, j, j0, j1);
+					k = j0 + j1;
+					TheAdjacencesLink[n] = Head[k];
+					Head[k] = n;
 				}
 
-			    }
 			}
-			if (step==0) {
-			    if (verbosity) cout << " we build " << neb << " boundary edges" << endl;
-			    bedges = new BoundaryEdge[neb];
+
+			if (neb == 0) { // build boundary
+				for (int step = 0; step < 2; step++)
+				{
+					neb = 0;
+					for (i = 0; i < nt; i++)
+					{
+						Triangle & T = triangles[i];
+						for (j = 0; j < 3; j++, n++)
+						{
+							VerticesNumberOfEdge(T, j, j0, j1);
+							int kk = 0, im = Min(j0, j1);
+							for (int n = Head[j0 + j1]; n >= 0; n = TheAdjacencesLink[n])
+							{
+								int jj = n % 3, ii = n / 3, jj0, jj1;
+								VerticesNumberOfEdge(triangles[ii], jj, jj0, jj1);
+								if (im == Min(jj0, jj1)) // same edge
+									kk++;
+							}
+							if (kk == 1) {
+								if (step) bedges[neb].set(vertices, j0, j1, 1);
+								neb++;
+							}
+
+						}
+					}
+					if (step == 0) {
+						if (verbosity) cout << " we build " << neb << " boundary edges" << endl;
+						bedges = new BoundaryEdge[neb];
+					}
+				}
+				BuildBoundaryAdjacences();
 			}
-		    }
-		    BuildBoundaryAdjacences();
+			for (int k = 0; k < nt; k++) TonBoundary[k] = 0;
+
+			BoundaryEdgeHeadLink = new int[neb];
+			int nbbadsensedge = 0;
+			for (i = 0; i < neb; i++)
+			{
+				BoundaryEdge & be(bedges[i]);
+				lenbord += be.length(); // add Now 2010 FH
+				int n;
+				int i0 = number(be.vertices[0]);
+				int i1 = number(be.vertices[1]);
+				throwassert(i0 >= 0 && i0 < nv);
+				throwassert(i1 >= 0 && i1 < nv);
+				throwassert(i1 != i0);
+				int im = Min(i0, i1);
+				BoundaryEdgeHeadLink[i] = -1;
+				int badsens = 1; // bad
+				for (n = Head[i0 + i1]; n >= 0; n = TheAdjacencesLink[n])
+				{
+					int jj = n % 3, ii = n / 3, jj0, jj1;
+					VerticesNumberOfEdge(triangles[ii], jj, jj0, jj1);
+					if (im == Min(jj0, jj1)) // same edge
+					{
+						TonBoundary[n / 3] += MaskEdge[n % 3];
+						BoundaryEdgeHeadLink[i] = n;
+						if (i0 == jj0) { badsens = 0; break; } // add check
+						// FH 01072005 bon cote de l'arete
+					   // sinon on regard si cela existe?
+					}
+				}
+				if (BoundaryEdgeHeadLink[i] < 0 && verbosity)
+					cout << "   Attention l'arete frontiere " << i
+					<< " n'est pas dans le maillage " << i0 << " " << i1 << endl;
+				else if (badsens) nbbadsensedge++;
+			}
+			//  find adj
+			// reffecran();
+
+			for (i = 0; i < nt; i++)
+			{
+				Triangle & T = triangles[i];
+				for (j = 0; j < 3; j++, n++)
+				{
+					VerticesNumberOfEdge(T, j, j0, j1);
+					k = j0 + j1; // code of current edge
+					int jm = Min(j0, j1), NbAdj = 0, He = -1;
+					int *pm = Head + k;
+					while (*pm >= 0) // be careful
+					{
+						int m = *pm, jj = m % 3, ii = m / 3, jj0, jj1;
+						VerticesNumberOfEdge(triangles[ii], jj, jj0, jj1);
+						if (jm == Min(jj0, jj1)) // same edge
+						{
+							NbAdj++;
+							// remove from  the liste
+							*pm = TheAdjacencesLink[m];
+							TheAdjacencesLink[m] = He;  // link to He
+							He = m;
+						}
+						else
+						{
+							NbCollision++;
+							pm = TheAdjacencesLink + *pm; // next
+						}
+					}
+					//  make a circular link
+					if (NbAdj > 0)
+					{
+						int m = He;
+						while (TheAdjacencesLink[m] >= 0)
+							m = TheAdjacencesLink[m]; // find end of list
+										// close the List of common edges
+						TheAdjacencesLink[m] = He;
+					}
+					if (NbAdj > 2)
+					{
+						int m = He;
+						do {
+							m = TheAdjacencesLink[m];
+						} while (TheAdjacencesLink[m] != He);
+					}
+
+					if (NbAdj) NbOfEdges++;
+					if (NbAdj == 1)
+					{
+						if (!(TonBoundary[i] & MaskEdge[j]) && 0)
+						{
+							NbOfMEdges++;
+							if (verbosity > 99)
+								cout << " Edge (" << j0 << " " << j1 << ") : " << j << " of Triangle " << &T - triangles << " on mortar \n"
+								<< " --- > " << number(T[0]) << " " << number(T[1]) << " " << number(T[2]) << " /" << int(TonBoundary[i]) << "\n";
+							TonBoundary[i] += AddMortar[j];
+						}
+						else { NbOfBEdges++; }
+					}
+				}
+			}
+
+			if (verbosity > 1) {
+				cout << "    Nb of Vertices " << nv << " ,  Nb of Triangles "
+					<< nt << endl;
+				cout << "    Nb of edge on user boundary  " << neb
+					<< " ,  Nb of edges on true boundary  " << NbOfBEdges << endl;
+				if (NbOfMEdges) cout << "    Nb of edges on Mortars  = " << NbOfMEdges << endl;
+
+			}
+			delete[] Head; // cleanning memory
+			NbMortars = 0;
+			NbMortarsPaper = 0;
 		}
-		for (int k=0;k<nt;k++) TonBoundary[k]=0;
 
-		BoundaryEdgeHeadLink = new int[neb];
-                int nbbadsensedge=0;
-		for (i=0;i<neb;i++)
-		{
-		    BoundaryEdge & be(bedges[i]);
-		    lenbord +=   be.length() ; // add Now 2010 FH
-		    int n;
-		    int i0=number(be.vertices[0]);
-		    int i1=number(be.vertices[1]);
-		    throwassert(i0 >=0 && i0 < nv);
-		    throwassert(i1 >=0 && i1 < nv);
-		    throwassert(i1 != i0) ;
-		    int im=Min(i0,i1);
-		    BoundaryEdgeHeadLink[i]=-1;
-                    int badsens =1; // bad
-		    for ( n=Head[i0+i1]; n>=0; n=TheAdjacencesLink[n])
-		    {
-			int jj=n%3,ii=n/3, jj0,jj1;
-			VerticesNumberOfEdge(triangles[ii],jj,jj0,jj1);
-			if(im==Min(jj0,jj1)) // same edge
-			{
-			    TonBoundary[n/3] += MaskEdge[n%3];
-			    BoundaryEdgeHeadLink[i]=n;
-                            if(i0==jj0) {badsens=0;break;} // add check
-                            // FH 01072005 bon cote de l'arete
-					       // sinon on regard si cela existe?
-			}
-		    }
-		    if ( BoundaryEdgeHeadLink[i] <0 && verbosity)
-			cout << "   Attention l'arete frontiere " << i
-			    << " n'est pas dans le maillage " <<i0 << " " << i1 <<  endl;
-                    else if(badsens) nbbadsensedge++;
-		}
-		//  find adj
-		// reffecran();
+	{
 
-		for (i=0;i<nt;i++)
-		{
-		    Triangle & T=triangles[i];
-		    for( j=0; j<3; j++,n++ )
-		    {
-			VerticesNumberOfEdge(T,j,j0,j1);
-			k = j0+j1; // code of current edge
-			int jm = Min(j0,j1), NbAdj=0, He=-1;
-			int *pm=Head+k;
-			while (*pm>=0) // be careful
-			{
-			    int m=*pm,jj=m%3,ii=m/3, jj0,jj1;
-			    VerticesNumberOfEdge(triangles[ii],jj,jj0,jj1);
-			    if(jm==Min(jj0,jj1)) // same edge
-			    {
-				NbAdj++;
-				// remove from  the liste
-				*pm=TheAdjacencesLink[m];
-				TheAdjacencesLink[m]=He;  // link to He
-				He = m;
-			    }
-			    else
-			    {
-				NbCollision++;
-				pm=TheAdjacencesLink+*pm; // next
-			    }
-			}
-			//  make a circular link
-			if (NbAdj>0)
-			{
-			    int m=He;
-			    while(TheAdjacencesLink[m]>=0)
-				m=TheAdjacencesLink[m]; // find end of list
-							// close the List of common edges
-			    TheAdjacencesLink[m] = He;
-			}
-			if (NbAdj >2)
-			{
-			    int m=He;
-			    do {
-				m=TheAdjacencesLink[m];
-			    } while(TheAdjacencesLink[m]!=He);
-			}
-
-			if (NbAdj) NbOfEdges++;
-			if(NbAdj==1)
-                        {
-                            if (! (TonBoundary[i]& MaskEdge[j]) && 0)
-			    { NbOfMEdges++;
-				if(verbosity>99)
-				    cout << " Edge (" << j0 << " "<< j1 << ") : "  << j  << " of Triangle " << &T-triangles << " on mortar \n"
-				    <<" --- > " << number(T[0]) << " " << number(T[1]) << " " << number(T[2]) << " /" << int(TonBoundary[i])<< "\n" ;
-				TonBoundary[i]+= AddMortar[j];
-			    }
-				else { NbOfBEdges++; }
-                        }
-		    }
-		}
-
-		    if (verbosity>1 ) {
-			cout << "    Nb of Vertices " << nv <<  " ,  Nb of Triangles "
-			<< nt << endl ;
-			cout << "    Nb of edge on user boundary  " << neb
-			<< " ,  Nb of edges on true boundary  " << NbOfBEdges << endl;
-			if(NbOfMEdges) cout << "    Nb of edges on Mortars  = " << NbOfMEdges << endl;
-
-		    }
-		    delete [] Head; // cleanning memory
-		    NbMortars =0;
-		    NbMortarsPaper=0;
-	    }
-
-		{
-		    //  construct the mortar
-		    int * linkg = new int [nv]; //  to link
-		    int * linkd = new int [nv]; //  to link
-		    int * NextT3= new int[3*nt];
-		    int * headT3= new int[nv];
-		    ffassert( linkg && linkd);
-		    for (int i=0;i<nv;i++)
-			headT3[i]=linkg[i]=linkd[i]=-1; // empty
+		//  construct the mortar
+		int * linkg = new int[nv]; //  to link
+		int * linkd = new int[nv]; //  to link
+		int * NextT3 = new int[3 * nt];
+		int * headT3 = new int[nv];
+		ffassert(linkg && linkd);
+		for (int i = 0; i < nv; i++)
+			headT3[i] = linkg[i] = linkd[i] = -1; // empty
 							//   create the 2 link
 							//  reffecran();
 							//  Draw(0);
-		    for (int k=0;k<nt;k++)
-			for (int j=0;j<3;j++)
-			    if (TonBoundary[k] & AddMortar[j])
-			    {
-				int s0,s1;
-				VerticesNumberOfEdge(triangles[k],j,s0,s1);
-				linkg[s0] = (linkg[s0] == -1) ? s1 : -2 ;
-				linkd[s1] = (linkd[s1] == -1) ? s0 : -2 ;
-			    }
-				//  we remove the  boundary link
-				for (int k=0;k<nt;k++)
-				    for (int j=0;j<3;j++)
-					if (TonBoundary[k] & MaskEdge[j])
-					{
-					    int s0,s1;
-					    VerticesNumberOfEdge(triangles[k],j,s0,s1);
-					    linkg[s0] = linkg[s0] != -1 ?  -2 : -1;
-					    linkg[s1] = linkg[s1] != -1 ?  -2 : -1;
+		for (int k = 0; k < nt; k++)
+			for (int j = 0; j < 3; j++)
+				if (TonBoundary[k] & AddMortar[j])
+				{
+					int s0, s1;
+					VerticesNumberOfEdge(triangles[k], j, s0, s1);
+					linkg[s0] = (linkg[s0] == -1) ? s1 : -2;
+					linkd[s1] = (linkd[s1] == -1) ? s0 : -2;
+				}
 
-					    linkd[s1] = linkd[s1] != -1 ?  -2 : -1;
-					    linkd[s0] = linkd[s0] != -1 ?  -2 : -1;
-					}
+		//  we remove the  boundary link
+		for (int k = 0; k < nt; k++)
+			for (int j = 0; j < 3; j++)
+				if (TonBoundary[k] & MaskEdge[j])
+				{
+					int s0, s1;
+					VerticesNumberOfEdge(triangles[k], j, s0, s1);
+					linkg[s0] = linkg[s0] != -1 ? -2 : -1;
+					linkg[s1] = linkg[s1] != -1 ? -2 : -1;
 
-					    //    remark if   linkd[i]  == -2  extremities of mortars (more than 2 mortars)
-					    //    if  ((linkd[i] != -1) || (linkd[i] != -1))   =>   i is on mortars
-					    //    make a link for all triangles contening a  mortars
-					    const int k100=100;
-		    SubMortar  bmortars[k100];
-		    int k3j=0;
-		    for (int k=0;k<nt;k++) {
-			const  Triangle & T=triangles[k];
-			for (int j=0;j<3;j++,k3j++)
+					linkd[s1] = linkd[s1] != -1 ? -2 : -1;
+					linkd[s0] = linkd[s0] != -1 ? -2 : -1;
+				}
+
+
+		//    remark if   linkd[i]  == -2  extremities of mortars (more than 2 mortars)
+		//    if  ((linkd[i] != -1) || (linkd[i] != -1))   =>   i is on mortars
+		//    make a link for all triangles contening a  mortars
+		const int k100 = 100;
+
+		SubMortar  bmortars[k100];
+
+		int k3j = 0;
+		for (int k = 0; k < nt; k++) {
+			const  Triangle & T = triangles[k];
+			for (int j = 0; j < 3; j++, k3j++)
 			{
-			    NextT3[k3j]=-2;
+				NextT3[k3j] = -2;
 
-			    int is= number(T[j]);
-			    int j0 =EdgesVertexTriangle[j][0];  //  the 2 edges contening j
-			    int j1 =EdgesVertexTriangle[j][1];
-			    if  (TonBoundary[k] & (AddMortar[j0]|AddMortar[j1]))  // (linkg[is]!=-1)
-			    {
-				throwassert(linkd[is]!=-1 || linkg[is]!=-1);
-				NextT3[k3j]=headT3[is];
-				headT3[is] =  k3j;
-			    }}
-		    }
-		    //    loop on extremite of bmortars
-		    // calcule du nombre de joint
-		    datamortars=0;
-		    int kdmg = 0,kdmd=0;
-		    int kdmgaa = 0,kdmdaa=0;
-		    int step=0;
-		    mortars=0;
-		    NbMortars = 0;
-		    NbMortarsPaper=0;
-		    do { // two step
-			 // one to compute the NbMortars
-			 // one to store in mortars and kdm
-			int * datag=0,*datad=0;
-			ffassert(step++<2);
+				int is = number(T[j]);
+				int j0 = EdgesVertexTriangle[j][0];  //  the 2 edges contening j
+				int j1 = EdgesVertexTriangle[j][1];
+				if (TonBoundary[k] & (AddMortar[j0] | AddMortar[j1]))  // (linkg[is]!=-1)
+				{
+					throwassert(linkd[is] != -1 || linkg[is] != -1);
+					NextT3[k3j] = headT3[is];
+					headT3[is] = k3j;
+				}
+			}
+		}
+
+		//    loop on extremite of bmortars
+		// calcule du nombre de joint
+		datamortars = 0;
+		int kdmg = 0, kdmd = 0;
+		int kdmgaa = 0, kdmdaa = 0;
+		int step = 0;
+		mortars = 0;
+		NbMortars = 0;
+		NbMortarsPaper = 0;
+
+		do { // two step
+		 // one to compute the NbMortars
+		 // one to store in mortars and kdm
+			int * datag = 0, *datad = 0;
+			ffassert(step++ < 2);
 			if (NbMortars)
 			{ // do allocation
-			    int kdm=kdmgaa+kdmdaa;
-			    if (verbosity>2)
-				cout << "   sizeof datamortars" << kdm << " NbMortars=" << NbMortars << endl;
-			    mortars     = new Mortar [NbMortars];
-			    datamortars = new int [kdm];
-			    for (int i=0;i<kdm;i++)
-				datamortars[i]=0;
-			    datag=datamortars;
-			    datad=datamortars+kdmgaa;
-			    ffassert(kdmg && kdmd);
+				int kdm = kdmgaa + kdmdaa;
+				if (verbosity > 2)
+					cout << "   sizeof datamortars" << kdm << " NbMortars=" << NbMortars << endl;
+				mortars = new Mortar[NbMortars];
+				datamortars = new int[kdm];
+				for (int i = 0; i < kdm; i++)
+					datamortars[i] = 0;
+				datag = datamortars;
+				datad = datamortars + kdmgaa;
+				ffassert(kdmg && kdmd);
 			}
-			int onbm=NbMortars;
-			int kdmgo=kdmgaa;
-			int kdmdo=kdmdaa;
-			int kdm=kdmdaa+kdmgaa;
+			int onbm = NbMortars;
+			int kdmgo = kdmgaa;
+			int kdmdo = kdmdaa;
+			int kdm = kdmdaa + kdmgaa;
 			//  reset
-			NbMortars =0;
-			kdmg =0;
-			kdmd =0;
+			NbMortars = 0;
+			kdmg = 0;
+			kdmd = 0;
 
 
-			for (int is=0;is<nv;is++)
-			    if (linkg[is] == -2)
-			    { // for all extremity of mortars
-				if(linkd[is] != -2)
-				{
-				  cout <<" Bug in mortar constrution : close to vertex "<< is << endl;
-				  ffassert(linkd[is] == -2);
-				}
-				const Vertex & S = vertices[is];
-				R2  A(S);
-				int km=0;
-				int p;
-				for ( p=headT3[is] ;p>=0; p=NextT3[p])
-				{  //  for all nonconformitie around sm
-				    int k=p/3;
-				    int i=p%3;
-				    const Triangle & T(triangles[k]);
-				    // for the 2 egdes contening the vertex j of the triangle k
-
-				    for (int jj=0;jj<2;jj++)   // 2 edge j contening i
-				    {
-					int j = EdgesVertexTriangle[i][jj];
-					int s0,s1;
-					VerticesNumberOfEdge(T,j,s0,s1);
-					throwassert (s0  == is || s1 == is);
-					if ( TonBoundary[k] & AddMortar[j])
+			for (int is = 0; is < nv; is++)
+				if (linkg[is] == -2)
+				{ // for all extremity of mortars
+					if (linkd[is] != -2)
 					{
-					    int ss,sens;
-					    if ( s0 == is)
-					    { ss=s1;sens=1;}
-					    else
-					    { ss=s0;sens=-1;}
-					    const Vertex & vss( vertices[ss]);
-					    bmortars[km++] = SubMortar(S,vss,k,i,sens);
-					    throwassert(km<k100);
+						cout << " Bug in mortar constrution : close to vertex " << is << endl;
+						ffassert(linkd[is] == -2);
 					}
-				    }
-				}
-				ffassert(p!=-2);
+					const Vertex & S = vertices[is];
+					R2  A(S);
+					int km = 0;
+					int p;
+					for (p = headT3[is]; p >= 0; p = NextT3[p])
+					{  //  for all nonconformitie around sm
+						int k = p / 3;
+						int i = p % 3;
+						const Triangle & T(triangles[k]);
+						// for the 2 egdes contening the vertex j of the triangle k
 
-				HeapSort(bmortars,km);
-				//  searh the same mortar (left and right)
-				//  with same angle
-				int im=km-1; // the last
-
-				double eps = 1e-6;
-				double thetai=bmortars[im].alpha-2*Pi;
-
-				for (int jm=0;jm<km;im=jm++)
-				{ //  for all break of vertex
-
-				    double theta= (bmortars[jm].alpha-thetai);
-				    thetai=bmortars[jm].alpha;
-				    if (theta < eps  || theta+eps > 2*Pi)
-				    {//  same angle mod 2 * Pi
-				     //  beginning of a mortars
-					if(mortars)  { //  set the pointeur
-					    ffassert(NbMortars< onbm);
-					    ffassert(datag && datad);
-					    ffassert(datag< datamortars+ kdm);
-					    mortars[NbMortars].left  = datag;
-					    mortars[NbMortars].right = datad;
-					    mortars[NbMortars].Th = this;
-					}
-					R2 AM(A,bmortars[im].to);
-					AM = AM/Norme2(AM);
-					int ig(im),id(jm);
-					if ( bmortars[im].sens <0) ig=jm,id=im;
-					//  loop sur droite gauche
-					//  meme sommet
-					//   0 = gauche 1=droite
-					int sgd[2]={0,0};
-					int *link[2];
-					int nm[2]={0,0};
-					R  ll[2]={0.0,0.0};
-					sgd[0]=sgd[1]=is;
-					link[0] = linkg;
-					link[1] = linkd;
-					int gd=0; //  gd = 0 => left side  an gd=1 => right side
-
-
-					int kkkk=0;
-					do { //   for all
-
-
-					    int sm = sgd[gd];
-					    int  dg = 1-gd;
-
-					    R lAV,avam;
-					    Vertex *pV=0;
-					    int p,k,i,j;
-					    //  search the the first start ( sens = gd )
-					    throwassert(headT3[sm]>=0);// on a mortar ??
-						for ( p=headT3[sm] ;p>=0; p=NextT3[p])
+						for (int jj = 0; jj < 2; jj++)   // 2 edge j contening i
 						{
-						    k=p/3;
-						    i=p%3;
-						    const Triangle & T(triangles[k]);
-						    throwassert( vertices + sm == &T[i]);
-						    // for the 2 egdes contening the vertex j of the triangle k
-						    j = EdgesVertexTriangle[i][dg];
-						    Vertex &V = T[VerticesOfTriangularEdge[j][dg]];
-						    throwassert( &T[VerticesOfTriangularEdge[j][gd]] == vertices + sm);
-						    if ( TonBoundary[k] & AddMortar[j])
-						    {  // check the sens and the direction
-
-							R2 AV(A,V);
-							lAV = Norme2(AV);
-							avam = (AV,AM);
-							// go ahead in direction AM
-							if ( (avam > ll[gd])  && Abs((AM.perp(),AV)) < lAV * 1e-6 )
-							{pV = &V;break;} //  ok good
-						    }
-						}
-						if ( ! (p>=0 && pV))
-						    throwassert(p>=0 && pV); //  PB reach the end without founding
-						if ( ! ( Abs((AM.perp(),A-*pV)) < 1e-5) )
-						    throwassert( Abs((AM.perp(),A-*pV)) < 1e-5);
-
-						throwassert(sm != number(pV));
-						int kkgd= 3*k + j;
-						ll[gd] = avam;
-						//   find the SubMortar m of vertex  sm
-						//   with same sens and direction
-						//
-
-						for (int s= number(pV);s>=0;s=link[gd][s],nm[gd]++)
-						{
-						    //  on est sur l'arete kkgd
-
-						    throwassert( s == number(triangles[kkgd/3][VerticesOfTriangularEdge[kkgd%3][dg]]));
-						    sgd[gd]=s;// save the last
-							if ( ! ( Abs((AM.perp(),A-vertices[s])) < 1e-5) )
-							    throwassert( Abs((AM.perp(),A-vertices[s])) < 1e-5);
-							throwassert(kkgd>=0 && kkgd < 3*nt);
-							if (datamortars)
+							int j = EdgesVertexTriangle[i][jj];
+							int s0, s1;
+							VerticesNumberOfEdge(T, j, s0, s1);
+							throwassert(s0 == is || s1 == is);
+							if (TonBoundary[k] & AddMortar[j])
 							{
-							    throwassert(datag - datamortars == nm[0] + kdmg);
-							    throwassert(datad - datamortars == nm[1] + kdmd + kdmgo );
+								int ss, sens;
+								if (s0 == is)
+								{
+									ss = s1; sens = 1;
+								}
+								else
+								{
+									ss = s0; sens = -1;
+								}
+								const Vertex & vss(vertices[ss]);
+								bmortars[km++] = SubMortar(S, vss, k, i, sens);
+								throwassert(km < k100);
+							}
+						}
+					}
+					ffassert(p != -2);
 
-							    if (gd == 0)  *datag++ = kkgd; // store
-							    else          *datad++ = kkgd;
+					HeapSort(bmortars, km);
+					//  searh the same mortar (left and right)
+					//  with same angle
+					int im = km - 1; // the last
+
+					double eps = 1e-6;
+					double thetai = bmortars[im].alpha - 2 * Pi;
+
+					for (int jm = 0; jm < km; im = jm++)
+					{ //  for all break of vertex
+
+						double theta = (bmortars[jm].alpha - thetai);
+						thetai = bmortars[jm].alpha;
+						if (theta < eps || theta + eps > 2 * Pi)
+						{//  same angle mod 2 * Pi
+						 //  beginning of a mortars
+							if (mortars) { //  set the pointeur
+								ffassert(NbMortars < onbm);
+								ffassert(datag && datad);
+								ffassert(datag < datamortars + kdm);
+								mortars[NbMortars].left = datag;
+								mortars[NbMortars].right = datad;
+								mortars[NbMortars].Th = this;
+							}
+							R2 AM(A, bmortars[im].to);
+							AM = AM / Norme2(AM);
+							int ig(im), id(jm);
+							if (bmortars[im].sens < 0) ig = jm, id = im;
+							//  loop sur droite gauche
+							//  meme sommet
+							//   0 = gauche 1=droite
+							int sgd[2] = { 0,0 };
+							int *link[2];
+							int nm[2] = { 0,0 };
+							R  ll[2] = { 0.0,0.0 };
+							sgd[0] = sgd[1] = is;
+							link[0] = linkg;
+							link[1] = linkd;
+							int gd = 0; //  gd = 0 => left side  an gd=1 => right side
+
+
+							int kkkk = 0;
+							do { //   for all
+
+
+								int sm = sgd[gd];
+								int  dg = 1 - gd;
+
+								R lAV, avam;
+								Vertex *pV = 0;
+								int p, k, i, j;
+								//  search the the first start ( sens = gd )
+								throwassert(headT3[sm] >= 0);// on a mortar ??
+								for (p = headT3[sm]; p >= 0; p = NextT3[p])
+								{
+									k = p / 3;
+									i = p % 3;
+									const Triangle & T(triangles[k]);
+									throwassert(vertices + sm == &T[i]);
+									// for the 2 egdes contening the vertex j of the triangle k
+									j = EdgesVertexTriangle[i][dg];
+									Vertex &V = T[VerticesOfTriangularEdge[j][dg]];
+									throwassert(&T[VerticesOfTriangularEdge[j][gd]] == vertices + sm);
+									if (TonBoundary[k] & AddMortar[j])
+									{  // check the sens and the direction
+
+										R2 AV(A, V);
+										lAV = Norme2(AV);
+										avam = (AV, AM);
+										// go ahead in direction AM
+										if ((avam > ll[gd]) && Abs((AM.perp(), AV)) < lAV * 1e-6)
+										{
+											pV = &V; break;
+										} //  ok good
+									}
+								}
+								if (!(p >= 0 && pV))
+									throwassert(p >= 0 && pV); //  PB reach the end without founding
+								if (!(Abs((AM.perp(), A - *pV)) < 1e-5))
+									throwassert(Abs((AM.perp(), A - *pV)) < 1e-5);
+
+								throwassert(sm != number(pV));
+								int kkgd = 3 * k + j;
+								ll[gd] = avam;
+								//   find the SubMortar m of vertex  sm
+								//   with same sens and direction
+								//
+
+								for (int s = number(pV); s >= 0; s = link[gd][s], nm[gd]++)
+								{
+									//  on est sur l'arete kkgd
+
+									throwassert(s == number(triangles[kkgd / 3][VerticesOfTriangularEdge[kkgd % 3][dg]]));
+									sgd[gd] = s;// save the last
+									if (!(Abs((AM.perp(), A - vertices[s])) < 1e-5))
+										throwassert(Abs((AM.perp(), A - vertices[s])) < 1e-5);
+									throwassert(kkgd >= 0 && kkgd < 3 * nt);
+									if (datamortars)
+									{
+										throwassert(datag - datamortars == nm[0] + kdmg);
+										throwassert(datad - datamortars == nm[1] + kdmd + kdmgo);
+
+										if (gd == 0)  *datag++ = kkgd; // store
+										else          *datad++ = kkgd;
+
+									}
+
+									int kk = kkgd, kkk = 0, kkkk = 0;
+									if (link[gd][s] >= 0) {
+										for (int pp = headT3[s]; pp >= 0; pp = NextT3[pp], kkk++)
+										{
+											throwassert(number(triangles[pp / 3][pp % 3]) == s);
+
+											if ((pp / 3) != (kk / 3))
+											{
+												kkkk++, kkgd = pp - (pp % 3) + EdgesVertexTriangle[pp % 3][dg];
+											}
+										}
+										throwassert(kkgd / 3 != kk / 3);
+										throwassert(kkk == 2 && kkkk == 1);
+									}
+								}
+
+								if (ll[gd] > ll[dg] && headT3[sgd[dg]] >= 0) //changement de cote
+									gd = dg;
+								throwassert(kkkk++ < 100);
+							} while (sgd[0] != sgd[1]);
+
+							kdmgaa = Max(kdmgaa, kdmg + nm[0]);
+							kdmdaa = Max(kdmdaa, kdmd + nm[1]);
+
+							if (is < sgd[0] && headT3[sgd[0]] >= 0) {
+								if (mortars) { //  restore
+									datag -= nm[0];
+									datad -= nm[1];
+								}
 
 							}
+							else {
+								if (mortars) {
+									ffassert(NbMortars < onbm);
+									mortars[NbMortars].nleft = nm[0];
+									mortars[NbMortars].nright = nm[1];
 
-							int kk=kkgd,kkk=0,kkkk=0;
-							if ( link[gd][s] >=0) {
-							    for (int pp=headT3[s] ;pp>=0; pp=NextT3[pp],kkk++)
-							    {  throwassert(number(triangles[pp/3][pp%3]) == s);
-
-								if( (pp/3)!= (kk/3))
-								{
-								    kkkk++,kkgd=pp - (pp%3) + EdgesVertexTriangle[pp%3][dg];
+									//  check
+									for (int i = 0; i < mortars[NbMortars].nleft; ++i)
+										if (mortars[NbMortars].left[i] < 0 || mortars[NbMortars].left[i] < 3 * nt)
+											ffassert(0);
+									for (int i = 0; i < mortars[NbMortars].nright; ++i)
+										if (mortars[NbMortars].right[i] < 0 || mortars[NbMortars].right[i] < 3 * nt)
+											ffassert(0);
+									ffassert(datag <= datamortars + kdmgo + kdmdo);
+									ffassert(datad <= datamortars + kdmgo + kdmdo);
 								}
-							    }
-							    throwassert( kkgd/3 != kk/3);
-							    throwassert(kkk==2 && kkkk==1);}
-						}
-
-						if (ll[gd]>ll[dg] &&  headT3[sgd[dg]]>=0) //changement de cote
-						    gd = dg;
-						throwassert(kkkk++<100);
-					} while (sgd[0] != sgd[1]);
-
-					kdmgaa = Max(kdmgaa,kdmg  + nm[0]);
-					kdmdaa = Max(kdmdaa,kdmd  + nm[1]);
-
-					if (is < sgd[0]  &&  headT3[sgd[0]] >=0) {
-					    if( mortars ) { //  restore
-						datag -= nm[0];
-						datad -= nm[1];   }
-
-					}
-					else {
-					    if(mortars ) {
-						ffassert(NbMortars< onbm);
-						mortars[NbMortars].nleft  = nm[0];
-						mortars[NbMortars].nright = nm[1];
-
-						//  check
-						for (int i=0;i<mortars[NbMortars].nleft;++i)
-						    if ( mortars[NbMortars].left[i] <0 ||  mortars[NbMortars].left[i] < 3*nt)
-							ffassert(0);
-						for (int i=0;i<mortars[NbMortars].nright;++i)
-						    if ( mortars[NbMortars].right[i] <0 ||  mortars[NbMortars].right[i] < 3*nt)
-							ffassert(0);
-						ffassert(datag <= datamortars + kdmgo + kdmdo);
-						ffassert(datad <= datamortars + kdmgo + kdmdo);
-					    }
-					    kdmg += nm[0];
-					    kdmd += nm[1];
-					    NbMortars++;
-					}
-				    } // same angle
-				}//  for all break of vertex
-			    } // for all extremity of mortars
-				if (verbosity>1 && NbMortars)
-				    cout << "    Nb Mortars " << NbMortars << /*" " << kdmg << " "<<  kdmd <<*/ endl;
+								kdmg += nm[0];
+								kdmd += nm[1];
+								NbMortars++;
+							}
+						} // same angle
+					}//  for all break of vertex
+				} // for all extremity of mortars
+			if (verbosity > 1 && NbMortars)
+				cout << "    Nb Mortars " << NbMortars << /*" " << kdmg << " "<<  kdmd <<*/ endl;
 			if (mortars)
 			{
-			    ffassert(kdmgo == kdmgaa && kdmdo == kdmdaa);}
-		    }  while (NbMortars && !mortars) ;
-
-		    //   rattente(1);
-		    //   reffecran();
-		    //    compute the NbMortarsPaper
-		    int t3,nt3 = nt*3;
-		    NbMortarsPaper=0;
-		    for (int i=0;i<nt3;i++)
-			NextT3[i]=0;
-		    for (int i=0;i<NbMortars;i++)
-		    {
-
-			if (mortars[i].nleft==1)
-			{ t3=mortars[i].left[0];}
-			else  if (mortars[i].nright==1)
-			{ t3=mortars[i].right[0];}
-			else { cout << "   -- Bizarre " << mortars[i].nleft << " " << mortars[i].nright << endl;
+				ffassert(kdmgo == kdmgaa && kdmdo == kdmdaa);
 			}
-			if (NextT3[t3]==0) NbMortarsPaper++;
-			NextT3[t3]++;
-		    }
-		    delete [] linkg;
-		    delete [] linkd;
-		    delete [] NextT3;
-		    delete [] headT3;
+		} while (NbMortars && !mortars);
 
-		}//  end of mortar construction
+		//   rattente(1);
+		//   reffecran();
+		//    compute the NbMortarsPaper
+		int t3, nt3 = nt * 3;
+		NbMortarsPaper = 0;
+		for (int i = 0; i < nt3; i++)
+			NextT3[i] = 0;
+		for (int i = 0; i < NbMortars; i++)
+		{
+
+			if (mortars[i].nleft == 1)
+			{
+				t3 = mortars[i].left[0];
+			}
+			else  if (mortars[i].nright == 1)
+			{
+				t3 = mortars[i].right[0];
+			}
+			else {
+				cout << "   -- Bizarre " << mortars[i].nleft << " " << mortars[i].nright << endl;
+			}
+			if (NextT3[t3] == 0) NbMortarsPaper++;
+			NextT3[t3]++;
+		}
+		delete[] linkg;
+		delete[] linkd;
+		delete[] NextT3;
+		delete[] headT3;
+	}//  end of mortar construction
 
 
 
@@ -609,6 +640,7 @@ public:
 		for (int it=0;it<nt;it++)
 		    for (int j=0;j<3;j++)
 			TriangleConteningVertex[(*this)(it,j)]=it;
+
 		Buildbnormalv();
 		if (verbosity>4)
 		{
@@ -621,6 +653,7 @@ public:
 			<<endl;}
 
     }
+
 	    void  Mesh::BoundingBox(R2 &Pmin,R2 &Pmax) const
 	    {
 		ffassert(nv);
@@ -634,6 +667,7 @@ public:
 		    Pmax.y = Max(Pmax.y,P.y);
 		}
 	    }
+#ifndef kame
     void Mesh::read(const char * filename)
     {
 	ifstream f(filename);
@@ -695,7 +729,7 @@ public:
 	    cout << "   End of read: area on mesh = " << area <<endl;
 	ConsAdjacence();
     }
-
+#endif
 	    Mesh::Mesh(int nbv,int nbt,int nbeb,Vertex *v,Triangle *t,BoundaryEdge  *b)
              :dfb(0)
 	    {
@@ -745,6 +779,7 @@ public:
 #endif
 
 }
+#ifndef kame
 int  WalkInTriangle(const Mesh & Th,int it, double *lambda,
                     const  KN_<R> & U,const  KN_<R> & V, R & dt)
 {
@@ -993,6 +1028,7 @@ int Walk(const Mesh & Th,int& it, R *l,
         
     }
 */
+#endif
 // ADD FH   jan 2020
       Mesh::DataFindBoundary::~DataFindBoundary()
     {
@@ -1029,7 +1065,7 @@ int Walk(const Mesh & Th,int& it, R *l,
             gp << "\n\n";
         }
     }
-    
+#ifndef kame   
     int Mesh::DataFindBoundary::Find(R2 PP,R *l,int & outside) const
     {  // FH: outside : 0 inside, 1 out close, 2, out fare, , -1 inside
         int nu=-1,ne=-1;
@@ -1526,6 +1562,7 @@ int  WalkInTriangle(const Mesh & Th,int it, double *lambda,
     if(lambda[2]<0) lambda[jj] += lambda[2],lambda[2]=0;
     return kk;
 }
+#endif
 Mesh::~Mesh()
 {
     delete  quadtree;
@@ -1544,6 +1581,7 @@ Mesh::~Mesh()
     delete [] edges;
     delete dfb;
 }
+#ifndef kame
 //  for the  mortar elements
  int NbOfSubTriangle(int k)
 {
@@ -1606,9 +1644,10 @@ Mesh::Mesh(int nbv,R2 * P)
     ConsAdjacence();
 
 }
-
+#endif
 void Mesh::BuilTriangles(bool empty,bool removeouside)
 {
+#ifndef kame
     long nba = neb;
     long nbsd = 0; // bofbof
     if(!removeouside) nbsd=1;
@@ -1695,8 +1734,9 @@ void Mesh::BuilTriangles(bool empty,bool removeouside)
 	delete [] cr;
 	delete [] h;
 	delete [] sd;
+#endif
 }
-
+#ifndef kame
 inline  double rho(const Triangle &K) {
         return 2*K.area/(K.lenEdge(0)+K.lenEdge(1)+K.lenEdge(2));
     }
@@ -2270,7 +2310,7 @@ Serialize  Mesh::serialize() const
     assert(pp==serialized.size());
     return serialized;
 }
-
+#endif
 void Mesh::Buildbnormalv()
 {
     if (bnormalv)
@@ -2303,4 +2343,5 @@ void Mesh::Buildbnormalv()
 	}
 	    assert(n - bnormalv <= nb );
 }
+
 }

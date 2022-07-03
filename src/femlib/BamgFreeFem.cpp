@@ -55,12 +55,15 @@ using namespace std;
 #include "BamgFreeFem.hpp"
 #include <set>
 extern double  genrand_res53(void);
-#ifndef kame
+
 const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
 {
+
   using namespace bamg;
   bamg::Triangles & th (*tTh);
+
   tTh->ReNumberingTheTriangleBySubDomain(!renumbering);//  just compress
+
   Int4  i,j,k=0;
   int nv  =  tTh->nbv;
   int nt  =   tTh->nbt - tTh->NbOutT;
@@ -78,50 +81,54 @@ const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
   for ( i=0;i<nt;i++) // unset all triangles
     for (j=0;j<3;j++)
       t[i](j)=0;
-  for (int iv=0;iv<th.nbv;iv++) // vertex
-    {
-      const Vertex & v(th[iv]);
-      int kk=0; // nb cracked
-      int kc=0;
-      int kkk =0; // nb triangle  with same number
-      Triangle * tbegin = v.t;
-      Fem2D::Vertex * vv = vb+iv;
-      int i  = v.vint;
-      throwassert(tbegin && (i >= 0 ) && (i <3));
-      // turn around the vertex v
-      TriangleAdjacent ta(tbegin,EdgesVertexTriangle[i][0]);// previous edge
-      int k=0;
-      do {
-        int kv = VerticesOfTriangularEdge[ta][1];
-        k++;
-        Triangle * tt (ta);
-        throwassert( &v == & (*  tt)[kv] );
-        if ( ta.Cracked() )
-          {
-            if ( kk == 0) tbegin=ta,kkk=0;  //  begin by a cracked edge  => restart
-            if (  kkk ) { kc =1;vv = vb +  nv++;  kkk = 0; } // new vertex if use
-            kk++;
-            // number of cracked edge view
-          }
-        if ( tt->link ) { // if good triangles store the value
-          int it = th.Number(tt);
-          throwassert(it < nt);
-          t[it](kv) = vv;
-          kkk++;
-        } else if (kk) { // crack + boundary
-          if (  kkk ) { kc =1;vv = vb +  nv++;  kkk = 0; } // new vertex if use
-        }
 
-        ta = Next(ta).Adj();
-      } while ( (tbegin != ta));
-      throwassert(k);
-      if (kc)  nbcrakev++;
-    }
+  for (int iv = 0; iv < th.nbv; iv++) // vertex
+  {
+	  const Vertex & v(th[iv]);
+	  int kk = 0; // nb cracked
+	  int kc = 0;
+	  int kkk = 0; // nb triangle  with same number
+	  Triangle * tbegin = v.t;
+	  Fem2D::Vertex * vv = vb + iv;
+	  int i = v.vint;
+	  throwassert(tbegin && (i >= 0) && (i < 3));
+	  // turn around the vertex v
+	  TriangleAdjacent ta(tbegin, EdgesVertexTriangle[i][0]);// previous edge
+	  int k = 0;
+	  do {
+		  int kv = VerticesOfTriangularEdge[ta][1];
+		  k++;
+		  Triangle * tt(ta);
+		  throwassert(&v == &(*tt)[kv]);
+		  if (ta.Cracked())
+		  {
+			  if (kk == 0) tbegin = ta, kkk = 0;  //  begin by a cracked edge  => restart
+			  if (kkk) { kc = 1; vv = vb + nv++;  kkk = 0; } // new vertex if use
+			  kk++;
+			  // number of cracked edge view
+		  }
+		  if (tt->link) { // if good triangles store the value
+			  int it = th.Number(tt);
+			  throwassert(it < nt);
+			  t[it](kv) = vv;
+			  kkk++;
+		  }
+		  else if (kk) { // crack + boundary
+			  if (kkk) { kc = 1; vv = vb + nv++;  kkk = 0; } // new vertex if use
+		  }
+
+		  ta = Next(ta).Adj();
+	  } while ((tbegin != ta));
+	  throwassert(k);
+	  if (kc)  nbcrakev++;
+  }
+
   double badvalue=12345e100;
   Fem2D::Vertex * v = new Fem2D::Vertex[nv];
     for(int i=0; i<nv; ++i)
         v[i].x    =  badvalue;
   //  set the vertices --
+
   for (i=0;i<nt;i++)
     {
       for (j=0;j<3;j++)
@@ -136,6 +143,7 @@ const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
           v[k].lab  =  thv.ref();
         }
     }
+
     int kerr=0;
 
     for(int i=0; i<nv; ++i)
@@ -164,6 +172,7 @@ const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
   //Int4 nbref =
   long nerr=0;
   tTh->ConsRefTriangle(reft);
+
   for( i=0,k=0;i<tTh->nbt;i++)
     if(tTh->triangles[i].link)
       {
@@ -193,10 +202,11 @@ const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
     Fem2D::Mesh *m = new Fem2D::Mesh(nv,nt,neb,v,t,b_e);
     if (renumbering) m->renum();
     m->MakeQuadTree();
+
     return m;
   }
 }
-
+#ifndef kame
 Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
 {
   // ------------------
@@ -1153,7 +1163,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
       try {
 
 	  Th =new Triangles( nbtx ,*Gh);
-#ifndef kame
+
           if(SplitEdgeWith2Boundary)
           {
               long nbs=1,nbc=0;
@@ -1204,7 +1214,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
 		  }
 
           m=bamg2msh(Th,true);
-#endif
+
       }
       catch(...)
       {

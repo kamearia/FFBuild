@@ -37,6 +37,7 @@
 // pour que cela tienne dans un  long long  
 //  x*x + y*y  < 2^63-1 =>  x et y  < 2^31-1 
 // --- 
+#include "stdafx.h"
 #include <iostream> 
 using namespace std;
 

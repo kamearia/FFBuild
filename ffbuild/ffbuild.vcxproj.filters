@@ -212,6 +212,21 @@
     <ClCompile Include="..\src\bamglib\Metric.cpp">
       <Filter>ソース ファイル\src\bamglib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\femlib\fem.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\FQuadTree.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\gibbs.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\FESpace.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\mshptg.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">
