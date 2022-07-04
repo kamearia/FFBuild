@@ -6335,9 +6335,11 @@ void init_lgfem( ) {
   // ----------------------------------------------------
 
   // TheOperators->Add("=",new OneOperatorCode<BC_set1<double> >);
-
+#endif
   TheOperators->Add(
-    "=", new OneOperator2< pmesh *, pmesh *, pmesh >(&set_eqdestroy_incr),
+	  "=", new OneOperator2< pmesh *, pmesh *, pmesh >(&set_eqdestroy_incr));
+#ifndef kame
+	  ,
 
     new OneBinaryOperator< set_eq_array< KN_< double >, RNM_VirtualMatrix< R >::plusAx > >,
     new OneBinaryOperator<

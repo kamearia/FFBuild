@@ -1977,16 +1977,18 @@ class  OneOperator1s_np : public OneOperator {
 extern long verbosity;
 extern long  mpirank;
 void init_lgmesh() {
+#ifndef kame
   if(verbosity&&(mpirank==0) )  std::cout <<"lg_mesh ";
   bamg::MeshIstreamErrorHandler = MeshErrorIO;
-
+#endif
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<E_BorderN>>);
 #ifndef kame
  Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<MeshL>>);
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMeshArray>);
   Global.Add("buildmesh","(",new OneOperatorCode<BuildMeshFile>);
-
+#endif
   Global.Add("buildmeshborder","(",new OneOperator1s_<pmesh,const E_BorderN *>(BuildMeshBorder));
+#ifndef kame
   Global.Add("adaptmesh","(",new OneOperatorCode<Adaptation>);
   Global.Add("movemesh","(",new OneOperatorCode<MoveMesh>);
   Global.Add("splitmesh","(",new OneOperatorCode<SplitMesh>);
@@ -2003,8 +2005,10 @@ void init_lgmesh() {
   Global.Add("emptymesh","(",new OneOperator2_<pmesh,pmesh,KN<long> *, E_F_F0F0_Add2RC<pmesh,pmesh,KN<long>*> >(EmptyTheMesh));
   Global.Add("triangulate","(",new OneOperator1_<pmesh,string*, E_F_F0_Add2RC<pmesh,string*> >(ReadTriangulate));
   Global.Add("triangulate","(",new OneOperator2_<pmesh,KN_<double>,KN_<double>,E_F_F0F0_Add2RC<pmesh,KN_<double>,KN_<double>,E_F0> >(Triangulate));
+
   TheOperators->Add("<-",
 		    new OneOperator2_<pmesh*,pmesh*,string* >(&initMesh));
+
     // Thg,suppi[],nnn,unssd[]
   Global.Add("AddLayers","(",new OneOperator4_<bool,const Mesh * , KN<double> * , long ,KN<double> * >(AddLayers));
   Global.Add("SameMesh","(",new OneOperator2_<bool,const Mesh * ,const  Mesh * >(SameMesh));
@@ -2037,9 +2041,10 @@ void init_lgmesh() {
     Global.Add("dist", "(", new OneOperator1s_<double,pmesh,E_F_F0s_<double,pmesh,E_F0mps> >(dist)); // oct 2017 FH  FH function distance to mesh
     Global.Add("chi", "(", new OneOperator1s_<double,pmesh3,E_F_F0s_<double,pmesh3,E_F0mps> >(Chi));// oct 2017 FH function characteristic
     Global.Add("savegnuplot","(",new OneOperator2<long,pmesh,string*>(savegnuplot));
-
+#endif
   TheOperators->Add("<-",
 		    new OneOperator2_<pmesh*,pmesh*,pmesh >(&set_copy_incr));
+#ifndef kame
   init_glumesh2D();
 #endif
 }

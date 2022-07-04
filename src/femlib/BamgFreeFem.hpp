@@ -49,7 +49,9 @@ const Fem2D::Mesh *BuildMesh(Stack stack, const  Fem2D::MeshL *pmshL , bool just
                              KNM<double> *pintern=0, double alea=0,bool SplitEdgeWith2Boundary=false);
 const Fem2D::Mesh *BuildMesh(Stack stack, E_BorderN const *const &b, bool Requiredboundary);
 const Fem2D::Mesh *BuildMesh(Stack stack, E_BorderN const *const &b, bool Requiredboundary);
+#endif
 const Fem2D::Mesh *BuildMeshBorder(Stack stack, E_BorderN const *const &b);
+#ifndef kame
 const Fem2D::Mesh *MoveTheMesh(const Fem2D::Mesh &Th, const KN_<double> &u, const KN_<double> &v);
 const Fem2D::Mesh *buildmeshbamg(string *const &s, int =0);
 

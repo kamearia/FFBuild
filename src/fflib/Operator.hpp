@@ -614,13 +614,13 @@ template<class R,class A>  R * set_eqdestroy(R* a,A b){
    if (*a != b)  (**a).destroy() ;//  le cas debile Th=Th doit marcher
    // cout << " set_eqdestroy " << a << " " << b << endl;
   ( *a =b); return a;}
-  
+#endif  
 template<class R,class A>  R * set_eqdestroy_incr(R* a,A b){
   if(b) (*b).increment() ;
   if(*a) (**a).destroy() ;//  le cas debile Th=Th doit marcher
    // cout << " set_eqdestroy " << a << " " << b << endl;
   ( *a =b); return a;}
-#endif  
+ 
 template<class R>  R * set_copy( R* const & a,const R & b){ 
  SHOWVERB( cout << " set_copy " << typeid(R).name() << " " << &b << endl);
   memcpy(a,&b,sizeof(R)); return a;}
@@ -645,13 +645,13 @@ template<class R>  R ** set_copyp_new( R**  a,R*  b){
   //  cerr << "  -> " << *a << endl; 
   return a;
   }
-#ifndef kame
+
 template<class R>  R ** set_copy_incr( R** const & a, R * const & b){ 
    *a=b;
     SHOWVERB( cout << "set_copy_incr  " << b << " dans  "<< a << endl);
    if(b) b->increment();
    return a;}
-
+#ifndef kame
 template<class R,class A>  R * set_init2( R* const & a,const A & b,const A & c){ 
  SHOWVERB( cout << " set_init2 " << typeid(R).name() << " " << &b << " " << &c << endl);
   a->init(b,c); return a;}

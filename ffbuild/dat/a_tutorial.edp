@@ -4,9 +4,14 @@
 // u = (1-x^2-y^2)/4
 // Mesh
 //real pi = 4*atan(1);
+verbosity=10;
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
-buildmesh(a(50));
+mesh disk = buildmesh(a(50));
 end;
+plot(disk);
+
+
+
 mesh disk = buildmesh(a(50));
 plot(disk);
 

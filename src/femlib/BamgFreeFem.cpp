@@ -1382,11 +1382,12 @@ void E_BorderN::SavePlot(Stack stack,PlotStream & plot ) const
     if(verbosity>9) cout << "  -- Plot size : " << nbd << " Border \n";
     mp=mps;
 }
-
+#endif
 const Fem2D::Mesh *  BuildMeshBorder(Stack stack, E_BorderN const * const & b)
 {
   return BuildMesh(stack,b,true,0,true);
 }
+#ifndef kame
 const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool Requiredboundary)
 {
   return BuildMesh(stack,b,false,0,Requiredboundary);

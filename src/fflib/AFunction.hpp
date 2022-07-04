@@ -1101,6 +1101,7 @@ class E_F_F0_Add2RC :public  E_F0 { public:
     {return a->MeshIndependent();} // 
     
 };
+#endif
 // end add. 
 template<class R,class A0,class E=E_F0>
  class E_F_F0s_ :public  E { public:
@@ -1115,7 +1116,7 @@ template<class R,class A0,class E=E_F0>
     operator aType () const { return atype<R>();}         
     
 };
-#endif
+
 template<class R,class A0,class A1,class E=E_F0>
  class E_F_F0F0_ :public  E { public:
   typedef  R (*func)(const  A0 &,const  A1 & ) ; 
