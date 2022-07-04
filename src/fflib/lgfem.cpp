@@ -2319,422 +2319,425 @@ Expression Convect::ow = 0;
 Expression Convect::odt = 0;
 long Convect::count = 0;
 /// <<Plot>> used for the [[plot_keyword]]
-
+#endif
 class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
  public:
-  typedef KN_< R > tab;
-  typedef KN< KN< R > > *pttab;
-  typedef pferbase sol;
-  typedef pferbasearray asol;
-  typedef pf3rbase sol3;
-  typedef pf3rbasearray asol3;
-  typedef pfSrbase solS;
-  typedef pfSrbasearray asolS;
-  typedef pfLrbase solL;
-  typedef pfLrbasearray asolL;
+#ifndef kame
+	typedef KN_< R > tab;
+	typedef KN< KN< R > > *pttab;
+	typedef pferbase sol;
+	typedef pferbasearray asol;
+	typedef pf3rbase sol3;
+	typedef pf3rbasearray asol3;
+	typedef pfSrbase solS;
+	typedef pfSrbasearray asolS;
+	typedef pfLrbase solL;
+	typedef pfLrbasearray asolL;
 
-  typedef pfecbase solc;
-  typedef pfecbasearray asolc;
-  typedef pf3cbase solc3;
-  typedef pf3cbasearray asolc3;
-  typedef pfScbase solcS;
-  typedef pfScbasearray asolcS;
-  typedef pfLcbase solcL;
-  typedef pfLcbasearray asolcL;
-
-  typedef long Result;
-  struct ListWhat {
-    int what, i;
-    int cmp[4];
-    int n;
-    union {
-      long l[4];
-      void *v[4];           //  for
-      const void *cv[4];    //  for
-    };
-    pmesh th( ) {
+	typedef pfecbase solc;
+	typedef pfecbasearray asolc;
+	typedef pf3cbase solc3;
+	typedef pf3cbasearray asolc3;
+	typedef pfScbase solcS;
+	typedef pfScbasearray asolcS;
+	typedef pfLcbase solcL;
+	typedef pfLcbasearray asolcL;
+#endif
+	typedef long Result;
+#ifndef kame
+	struct ListWhat {
+		int what, i;
+		int cmp[4];
+		int n;
+		union {
+			long l[4];
+			void *v[4];           //  for
+			const void *cv[4];    //  for
+		};
+		pmesh th( ) {
      // assert(v[0] && what == 0);
-      return static_cast< pmesh >(cv[0]);
-    }
-    pmesh3 th3( ) {
-      assert(v[0] && what == 5);
-      return static_cast< pmesh3 >(cv[0]);
-    }
-    pmeshS thS( ) {
-      assert(v[0] && what == 50);
-      return static_cast< pmeshS >(cv[0]);
-    }
-    pmeshL thL( ) {
-      assert(v[0] && what == 55);
-      return static_cast< pmeshL >(cv[0]);
-    }
+			return static_cast< pmesh >(cv[0]);
+		}
+		pmesh3 th3( ) {
+			assert(v[0] && what == 5);
+			return static_cast< pmesh3 >(cv[0]);
+		}
+		pmeshS thS( ) {
+			assert(v[0] && what == 50);
+			return static_cast< pmeshS >(cv[0]);
+		}
+		pmeshL thL( ) {
+			assert(v[0] && what == 55);
+			return static_cast< pmeshL >(cv[0]);
+		}
 
-    void Set(int nn = 0, void **vv = 0, int *c = 0) {
-      cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
-      v[0] = v[1] = v[2] = v[3] = 0;
-      n = nn;
-      for (int i = 0; i < nn; ++i) {
-        if (c) cmp[i] = c[i];
-        if (vv) v[i] = vv[i];
-      }
-    }
-    void Set(int nn, const void **vv, int *c = 0) {
-      cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
-      v[0] = v[1] = v[2] = v[3] = 0;
-      cv[0] = cv[1] = cv[2] = cv[3] = 0;
-      n = nn;
-      for (int i = 0; i < nn; ++i) {
-        if (c) cmp[i] = c[i];
-        if (vv) cv[i] = vv[i];
-      }
-    }
+		void Set(int nn = 0, void **vv = 0, int *c = 0) {
+			cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
+			v[0] = v[1] = v[2] = v[3] = 0;
+			n = nn;
+			for (int i = 0; i < nn; ++i) {
+				if (c) cmp[i] = c[i];
+				if (vv) v[i] = vv[i];
+			}
+		}
+		void Set(int nn, const void **vv, int *c = 0) {
+			cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
+			v[0] = v[1] = v[2] = v[3] = 0;
+			cv[0] = cv[1] = cv[2] = cv[3] = 0;
+			n = nn;
+			for (int i = 0; i < nn; ++i) {
+				if (c) cmp[i] = c[i];
+				if (vv) cv[i] = vv[i];
+			}
+		}
 
-    ListWhat(int w = -1, int ii = -1) : what(w), i(ii) { Set( ); }
-    ListWhat(int what, int ii, int n, void **f0, int *c) : what(what), i(ii) { Set(n, f0, c); }
-    ListWhat(int what, int ii, int n, const void **f0, int *c) : what(what), i(ii) {
-      Set(n, f0, c);
-    }
+		ListWhat(int w = -1, int ii = -1) : what(w), i(ii) { Set( ); }
+		ListWhat(int what, int ii, int n, void **f0, int *c) : what(what), i(ii) { Set(n, f0, c); }
+		ListWhat(int what, int ii, int n, const void **f0, int *c) : what(what), i(ii) {
+			Set(n, f0, c);
+		}
 
-    ListWhat(int what, int ii, void *f0) : what(what), i(ii) { Set(1, &f0, 0); }
-    ListWhat(int what, int ii, const void *f0) : what(what), i(ii) { Set(1, &f0, 0); }
+		ListWhat(int what, int ii, void *f0) : what(what), i(ii) { Set(1, &f0, 0); }
+		ListWhat(int what, int ii, const void *f0) : what(what), i(ii) { Set(1, &f0, 0); }
 
-    ListWhat(int what, int ii, int nn, long *f0) : what(what), i(ii), n(nn) {
-      cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
-      v[0] = v[1] = v[2] = v[3] = 0;
-      for (int i = 0; i < n; ++i) l[i] = f0[i];
-    }
+		ListWhat(int what, int ii, int nn, long *f0) : what(what), i(ii), n(nn) {
+			cmp[0] = cmp[1] = cmp[2] = cmp[3] = -1;
+			v[0] = v[1] = v[2] = v[3] = 0;
+			for (int i = 0; i < n; ++i) l[i] = f0[i];
+		}
 
-    template< typename S >
-    void eval(S *f, int *c) {
-      for (int i = 0; i < 3; ++i) {
-        f[i] = static_cast< S >(v[i]);
-        c[i] = cmp[i];
-      }
-    }
+		template< typename S >
+		void eval(S *f, int *c) {
+			for (int i = 0; i < 3; ++i) {
+				f[i] = static_cast< S >(v[i]);
+				c[i] = cmp[i];
+			}
+		}
 
-    template< typename M >
-    M eval( ) {
-      assert(v[0]);
-      return static_cast< M >(v[0]);
-    }
-    void eval(sol &f0, int &cmp0, sol &f1, int &cmp1) {
-      f0 = static_cast< sol >(v[0]);
-      f1 = static_cast< sol >(v[1]);
-      cmp0 = cmp[0];
-      cmp1 = cmp[1];
-    }
-    void eval(solS &f0, int &cmp0, solS &f1, int &cmp1)    // TODO a template func
-    {
-      f0 = static_cast< solS >(v[0]);
-      f1 = static_cast< solS >(v[1]);
-      cmp0 = cmp[0];
-      cmp1 = cmp[1];
-    }
-  };
-
+		template< typename M >
+		M eval( ) {
+			assert(v[0]);
+			return static_cast< M >(v[0]);
+		}
+		void eval(sol &f0, int &cmp0, sol &f1, int &cmp1) {
+			f0 = static_cast< sol >(v[0]);
+			f1 = static_cast< sol >(v[1]);
+			cmp0 = cmp[0];
+			cmp1 = cmp[1];
+		}
+		void eval(solS &f0, int &cmp0, solS &f1, int &cmp1)    // TODO a template func
+		{
+			f0 = static_cast< solS >(v[0]);
+			f1 = static_cast< solS >(v[1]);
+			cmp0 = cmp[0];
+			cmp1 = cmp[1];
+		}
+	};
+#endif
   /// <<Expression2>>
-  struct Expression2 {    //  FH. change nov 2016  add one  expression  for  colored curve ...
-    long what;            // 0 mesh, 1 iso, 2 vector, 3 curve , 4 border , 5  mesh3, 6 iso 3d,
+	struct Expression2 {    //  FH. change nov 2016  add one  expression  for  colored curve ...
+		long what;            // 0 mesh, 1 iso, 2 vector, 3 curve , 4 border , 5  mesh3, 6 iso 3d,
     // 7: vector 3d  ( +10 -> complex visu ???? )
     // 101 array of iso 2d  , 106 array of iso 3d  , 100  array of meshes
     // 103  array of curves ...
-    bool composant;
-    Expression e[4];
-    Expression2( ) {
-      e[0] = 0;
-      e[1] = 0;
-      e[2] = 0;
-      e[3] = 0;
-      composant = false;
-      what = 0;
-    }
-    Expression &operator[](int i) { return e[i]; }
+#ifndef kame
+		bool composant;
+		Expression e[4];
+		Expression2( ) {
+			e[0] = 0;
+			e[1] = 0;
+			e[2] = 0;
+			e[3] = 0;
+			composant = false;
+			what = 0;
+		}
+		Expression &operator[](int i) { return e[i]; }
 
-    int EvalandPush(Stack s, int ii, vector< ListWhat > &ll,
+		int EvalandPush(Stack s, int ii, vector< ListWhat > &ll,
                     vector< AnyType > &lat) const {    // add for curve ... and multi curve ...
       //  store date in lat..
-      long f[4];
-      for (int i = 0; i < 4; ++i) {
-        f[i] = -1;
-        if (e[i]) {    // eval ..
-          f[i] = lat.size( );
-          lat.push_back((*e[i])(s));
-        }
-      }
-      ll.push_back(ListWhat(what, ii, 4, f));
-      return 4;
-    }
+			long f[4];
+			for (int i = 0; i < 4; ++i) {
+				f[i] = -1;
+				if (e[i]) {    // eval ..
+					f[i] = lat.size( );
+					lat.push_back((*e[i])(s));
+				}
+			}
+			ll.push_back(ListWhat(what, ii, 4, f));
+			return 4;
+		}
 
-    template< class S >
-    int EvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
-      int n = -1;
-      S f[3] = {0, 0, 0};
-      int cmp[3] = {-1, -1, -1};
+		template< class S >
+		int EvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
+			int n = -1;
+			S f[3] = {0, 0, 0};
+			int cmp[3] = {-1, -1, -1};
 
-      for (int i = 0; i < 3; ++i)
-        if (e[i]) {
-          if (!composant) {
-            pair< S, int > p = GetAny< pair< S, int > >((*e[i])(s));
-            n = i;
-            cmp[i] = p.second;
-            f[i] = p.first;
-          } else {
-            cmp[i] = 0;
-            f[i] = GetAny< S >((*e[i])(s));
-            n = i;
-          }
-        }
-      ll.push_back(ListWhat(what, ii, n + 1, f, cmp));
-      return n;
-    }
+			for (int i = 0; i < 3; ++i)
+			if (e[i]) {
+				if (!composant) {
+					pair< S, int > p = GetAny< pair< S, int > >((*e[i])(s));
+					n = i;
+					cmp[i] = p.second;
+					f[i] = p.first;
+				} else {
+					cmp[i] = 0;
+					f[i] = GetAny< S >((*e[i])(s));
+					n = i;
+				}
+			}
+			ll.push_back(ListWhat(what, ii, n + 1, f, cmp));
+			return n;
+		}
 
-    int AEvalandPush(Stack s, int ii, vector< ListWhat > &ll, vector< AnyType > &lat) const {
-      pttab pt[4] = {0, 0, 0, 0};
-      pt[0] = evalptt(0, s);
-      pt[1] = evalptt(1, s);
-      if (e[2]) pt[2] = evalptt(2, s);
-      if (e[3]) pt[3] = evalptt(3, s);
-      int kt = min(pt[0]->N( ), pt[1]->N( ));
+		int AEvalandPush(Stack s, int ii, vector< ListWhat > &ll, vector< AnyType > &lat) const {
+			pttab pt[4] = {0, 0, 0, 0};
+			pt[0] = evalptt(0, s);
+			pt[1] = evalptt(1, s);
+			if (e[2]) pt[2] = evalptt(2, s);
+			if (e[3]) pt[3] = evalptt(3, s);
+			int kt = min(pt[0]->N( ), pt[1]->N( ));
 
-      for (int j = 0; j < kt; ++j) {
-        int what = 13;
-        long f[4];
-        if (verbosity > 99) cout << " plot : A curve " << j << " ";
-        for (int k = 0; k < 4; ++k) {
-          pttab ptk = pt[k];
-          f[k] = -1;
-          if (ptk) {
-            KN_< double > t = (*ptk)[j];
-            f[k] = lat.size( );
-            if (verbosity > 99) cout << " (" << k << ") " << t.N( ) << " " << f[k];
+			for (int j = 0; j < kt; ++j) {
+				int what = 13;
+				long f[4];
+				if (verbosity > 99) cout << " plot : A curve " << j << " ";
+				for (int k = 0; k < 4; ++k) {
+					pttab ptk = pt[k];
+					f[k] = -1;
+					if (ptk) {
+						KN_< double > t = (*ptk)[j];
+						f[k] = lat.size( );
+						if (verbosity > 99) cout << " (" << k << ") " << t.N( ) << " " << f[k];
 
-            lat.push_back(SetAny< KN_< double > >(t));
-          }
-        }
-        if (verbosity > 99) cout << endl;
+						lat.push_back(SetAny< KN_< double > >(t));
+					}
+				}
+				if (verbosity > 99) cout << endl;
 
-        ll.push_back(ListWhat(what, ii, 4, f));
-      }
-      return 4;
-    }
+				ll.push_back(ListWhat(what, ii, 4, f));
+			}
+			return 4;
+		}
 
-    template< class A, class S >    // ok of mesh too because composant=true;
-    int AEvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
-      typedef pair< A, int > PA;
-      int nn = -1;
-      A f[3];
-      union {
-        S fj[3];
-        void *fv[3];
-      };
-      f[0] = f[1] = f[2] = 0;
-      int cmp[3] = {-1, -1, -1};
+		template< class A, class S >    // ok of mesh too because composant=true;
+		int AEvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
+			typedef pair< A, int > PA;
+			int nn = -1;
+			A f[3];
+			union {
+				S fj[3];
+				void *fv[3];
+			};
+			f[0] = f[1] = f[2] = 0;
+			int cmp[3] = {-1, -1, -1};
 
-      for (int i = 0; i < 3; ++i)
-        if (e[i]) {
-          if (!composant) {
-            PA p = GetAny< PA >((*e[i])(s));
-            cmp[i] = p.second;
-            f[i] = p.first;
-            nn = i;
-          } else {
-            f[i] = GetAny< A >((*e[i])(s));
-            cmp[i] = 0;
-            nn = i;
-          }
-        } else
-          break;
-      nn++;
-      int n = f[0]->N;
-      if (verbosity > 50)    // add 01/2011 FH ????
-        cout << "add  N = " << n << " " << nn << " " << what << endl;
-      for (int j = 0; j < n; ++j) {
-        int m = -1;
-        fj[0] = fj[1] = fj[2] = 0;    // clean
-        for (int i = 0; i < nn; ++i) {
-          fj[i] = *f[i]->operator[](j);
-          if (fj[i] && fj[i]->x( ))
-            m = i;
-          else
-            break;
-        }
-        if (m >= 0) {
-          ll.push_back(ListWhat(what % 100, ii, m + 1, fv, cmp));
-          if (verbosity > 100) cout << ".";
-        }
-      }
-      if (verbosity > 100) cout << endl;
-      return nn;
-    }
-    template< class S >
-    int MEvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
-      typedef KN< S > *A;
+			for (int i = 0; i < 3; ++i)
+			if (e[i]) {
+				if (!composant) {
+					PA p = GetAny< PA >((*e[i])(s));
+					cmp[i] = p.second;
+					f[i] = p.first;
+					nn = i;
+				} else {
+					f[i] = GetAny< A >((*e[i])(s));
+					cmp[i] = 0;
+					nn = i;
+				}
+			} else
+				break;
+			nn++;
+			int n = f[0]->N;
+			if (verbosity > 50)    // add 01/2011 FH ????
+				cout << "add  N = " << n << " " << nn << " " << what << endl;
+			for (int j = 0; j < n; ++j) {
+				int m = -1;
+				fj[0] = fj[1] = fj[2] = 0;    // clean
+				for (int i = 0; i < nn; ++i) {
+					fj[i] = *f[i]->operator[](j);
+					if (fj[i] && fj[i]->x( ))
+						m = i;
+					else
+						break;
+				}
+				if (m >= 0) {
+					ll.push_back(ListWhat(what % 100, ii, m + 1, fv, cmp));
+					if (verbosity > 100) cout << ".";
+				}
+			}
+			if (verbosity > 100) cout << endl;
+			return nn;
+		}
+		template< class S >
+		int MEvalandPush(Stack s, int ii, vector< ListWhat > &ll) const {
+			typedef KN< S > *A;
 
-      A ath;
+			A ath;
 
-      ath = GetAny< A >((*e[0])(s));
-      int n = 0;
-      if (ath) n = ath->N( );
-      S th;
+			ath = GetAny< A >((*e[0])(s));
+			int n = 0;
+			if (ath) n = ath->N( );
+			S th;
 
-      for (int j = 0; j < n; ++j) {
-        th = ath->operator[](j);
-        if (th) ll.push_back(ListWhat(what % 100, ii, static_cast< const void * >(th)));
-      }
-      return n;
-    }
+			for (int j = 0; j < n; ++j) {
+				th = ath->operator[](j);
+				if (th) ll.push_back(ListWhat(what % 100, ii, static_cast< const void * >(th)));
+			}
+			return n;
+		}
 
-    sol eval(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pfer p = GetAny< pfer >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pferbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    sol3 eval3(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pf3r p = GetAny< pf3r >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pf3rbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    solS evalS(int i, Stack s, int &cmp) const {
-        cmp = -1;
-        if (e[i]) {
-          if (!composant) {
-            pfSr p = GetAny< pfSr >((*e[i])(s));
-            cmp = p.second;
-            return p.first;
-          } else {
-            return GetAny< pfSrbase >((*e[i])(s));
-          }
-        } else
-          return 0;
-    }
-    solL evalL(int i, Stack s, int &cmp) const {
-        cmp = -1;
-        if (e[i]) {
-          if (!composant) {
-            pfLr p = GetAny< pfLr >((*e[i])(s));
-            cmp = p.second;
-            return p.first;
-          } else {
-            return GetAny< pfLrbase >((*e[i])(s));
-          }
-        } else
-          return 0;
-    }
+		sol eval(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfer p = GetAny< pfer >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+				return GetAny< pferbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
+		sol3 eval3(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pf3r p = GetAny< pf3r >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pf3rbase >((*e[i])(s));
+				}
+			} else
+				return 0;
+		}
+		solS evalS(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfSr p = GetAny< pfSr >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pfSrbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
+		solL evalL(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfLr p = GetAny< pfLr >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pfLrbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
     
     // add FH Japon 2010 ..	for complex visu ...  to complex ....  try to uniformize ...
-    solc evalc(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pfec p = GetAny< pfec >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pfecbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    solc3 evalc3(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pf3c p = GetAny< pf3c >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pf3cbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    solcS evalcS(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pfSc p = GetAny< pfSc >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pfScbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    solcL evalcL(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        if (!composant) {
-          pfLc p = GetAny< pfLc >((*e[i])(s));
-          cmp = p.second;
-          return p.first;
-        } else {
-          return GetAny< pfLcbase >((*e[i])(s));
-        }
-      } else
-        return 0;
-    }
-    asol evala(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        pferarray p = GetAny< pferarray >((*e[i])(s));
-        cmp = p.second;
-        return p.first;
-      } else
-        return 0;
-    }
-    asol3 evala3(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        pf3rarray p = GetAny< pf3rarray >((*e[i])(s));
-        cmp = p.second;
-        return p.first;
-      } else
-        return 0;
-    }
-    asolS evalaS(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        pfSrarray p = GetAny< pfSrarray >((*e[i])(s));
-        cmp = p.second;
-        return p.first;
-      } else
-        return 0;
-    }
-    asolL evalaL(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-         pfLrarray p = GetAny< pfLrarray >((*e[i])(s));
-         cmp = p.second;
-         return p.first;
-       } else
-         return 0;
-    }
-    asolc evalca(int i, Stack s, int &cmp) const {
-      cmp = -1;
-      if (e[i]) {
-        pfecarray p = GetAny< pfecarray >((*e[i])(s));
-        cmp = p.second;
-        return p.first;
-      } else
-        return 0;
-    }
+		solc evalc(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfec p = GetAny< pfec >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pfecbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
+		solc3 evalc3(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pf3c p = GetAny< pf3c >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pf3cbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
+		solcS evalcS(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfSc p = GetAny< pfSc >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pfScbase >((*e[i])(s));
+				}
+			} else
+			return 0;
+		}
+		solcL evalcL(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				if (!composant) {
+					pfLc p = GetAny< pfLc >((*e[i])(s));
+					cmp = p.second;
+					return p.first;
+				} else {
+					return GetAny< pfLcbase >((*e[i])(s));
+				}
+			} else
+				return 0;
+		}
+		asol evala(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				pferarray p = GetAny< pferarray >((*e[i])(s));
+				cmp = p.second;
+				return p.first;
+			} else
+			return 0;
+		}
+		asol3 evala3(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				pf3rarray p = GetAny< pf3rarray >((*e[i])(s));
+				cmp = p.second;
+				return p.first;
+			} else
+			return 0;
+		}
+		asolS evalaS(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				pfSrarray p = GetAny< pfSrarray >((*e[i])(s));
+				cmp = p.second;
+				return p.first;
+			} else
+			return 0;
+		}
+		asolL evalaL(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				pfLrarray p = GetAny< pfLrarray >((*e[i])(s));
+				cmp = p.second;
+				return p.first;
+			} else
+			return 0;
+		}
+		asolc evalca(int i, Stack s, int &cmp) const {
+			cmp = -1;
+			if (e[i]) {
+				pfecarray p = GetAny< pfecarray >((*e[i])(s));
+				cmp = p.second;
+				return p.first;
+			} else
+			return 0;
+		}
     asolc3 evalca3(int i, Stack s, int &cmp) const {
       cmp = -1;
       if (e[i]) {
@@ -2794,8 +2797,9 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
       throwassert(e[i]);
       return GetAny< pttab >((*e[i])(s));
     }
+#endif
   };
-
+#ifndef kame
   // see [[Plot_name_param]]
   static basicAC_F0::name_and_type name_param[];
 
@@ -2805,18 +2809,20 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
   static const int n_name_param = 44;
 
   Expression bb[4];
-
+#endif
   /// [[Expression2]] is a description of an object to plot
   vector< Expression2 > l;
+#ifndef kame
   typedef KN< KN< double > > *ptaboftab;
   Expression nargs[n_name_param];
-
-  Plot(const basicAC_F0 &args) : l(args.size( )) {
-    args.SetNameParam(n_name_param, name_param, nargs);
-    if (nargs[8]) Box2x2(nargs[8], bb);
+#endif
+	Plot(const basicAC_F0 &args) : l(args.size( )) {
+#ifndef kame
+		args.SetNameParam(n_name_param, name_param, nargs);
+		if (nargs[8]) Box2x2(nargs[8], bb);
 
     // scan all the parameters of the plot() call
-    for (size_t i = 0; i < l.size( ); i++)
+		for (size_t i = 0; i < l.size( ); i++)
 
       // argument is an [[file:AFunction.hpp::E_Array]] (= array of E_F0)
       if (args[i].left( ) == atype< E_Array >( )) {
@@ -3014,25 +3020,27 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
       else {
         CompileError("Sorry no way to plot this kind of data");
       }
-        
+#endif        
   }
 
-  static ArrayOfaType typeargs( ) { return ArrayOfaType(true); }    // all type
+	static ArrayOfaType typeargs( ) { return ArrayOfaType(true); }    // all type
 
   /// <<Plot_f>> Creates a Plot object with the list of arguments obtained from the script during
   /// the grammatical analysis of the script (in lg.ypp)
 
-  static E_F0 *f(const basicAC_F0 &args) {
-    ;
-    return new Plot(args);
-  }
+	static E_F0 *f(const basicAC_F0 &args) {
+		;
+		return new Plot(args);
+	}
 
   /// Evaluates the contents of the Plot object during script evaluation. Implemented at
   /// [[Plot_operator_brackets]]
 
-  AnyType operator( )(Stack s) const;
-};
+	AnyType operator( )(Stack s) const;
 
+
+};  // end of class Plot
+#ifndef kame
 /// <<Plot_name_param>>
 
 basicAC_F0::name_and_type Plot::name_param[Plot::n_name_param] = {
@@ -3096,7 +3104,6 @@ class pb2mat : public E_F0 {
   static ArrayOfaType typeargs( ) { return ArrayOfaType(atype< const Problem * >( )); }
 
   static E_F0 *f(const basicAC_F0 &args) { return new Plot(args); }
-
   AnyType operator( )(Stack s) const {
     Problem::Data< FESpace > *data = pb->dataptr(this->stack);
     if (SameType< K, double >::OK) {
@@ -4125,9 +4132,10 @@ inline void NewSetColorTable(int nb, float *colors = 0, int nbcolors = 0, bool h
   else
     SetColorTable(nb);
 }
-
+#endif
 /// <<Plot_operator_brackets>> from class [[Plot]]
 AnyType Plot::operator( )(Stack s) const {
+#ifndef kame
   // remap  case 107 and 108 , 109  for array of FE.
   vector< ListWhat > ll;
   vector< AnyType > lat;
@@ -5047,10 +5055,10 @@ AnyType Plot::operator( )(Stack s) const {
   setgrey(greyo);
   if (colors) delete[] colors;
   viderbuff( );
-
+#endif
   return 0L;
 }
-
+#ifndef kame
 AnyType Convect::operator( )(Stack s) const {
   if (d == 2)
     return eval2(s);
@@ -6253,10 +6261,11 @@ void init_lgfem( ) {
   Global.Add("dyx", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dyx > >);
 
   Global.Add("on", "(", new OneOperatorCode< BC_set >);
-
+#endif
   /// <<plot_keyword>> uses [[Plot]] and [[file:AFunction.hpp::OneOperatorCode]] and
   /// [[file:AFunction.hpp::Global]]
   Global.Add("plot", "(", new OneOperatorCode< Plot >);
+#ifndef kame
   Global.Add("convect", "(", new OneOperatorCode< Convect >);
   
   TheOperators->Add("+", new OneOperatorCode< CODE_L_Add< Foperator > >,
