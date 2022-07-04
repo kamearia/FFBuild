@@ -1647,8 +1647,8 @@ Mesh::Mesh(int nbv,R2 * P)
 #endif
 void Mesh::BuilTriangles(bool empty,bool removeouside)
 {
-#ifndef kame
     long nba = neb;
+#ifndef kame
     long nbsd = 0; // bofbof
     if(!removeouside) nbsd=1;
     // faux just pour un test

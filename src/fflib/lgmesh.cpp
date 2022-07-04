@@ -469,9 +469,7 @@ template<class TP>
 AnyType classBuildMesh<TP>::operator()(Stack stack)  const {
     const TP * borders = GetAny<const TP *>((*getborders)(stack));
    long  nbvx         = arg(0,stack,0L);
-#ifndef kame
    int defrb = is_same<MeshL, TP>::value ;
-#endif
    bool  requireborder= arg(3,stack,arg(1,stack,false));// correct 23 nov. 2021 FH
     KNM<double> * p=0;  p=arg(2,stack,p);
     double alea = arg(4,stack,0.);
@@ -1979,10 +1977,9 @@ class  OneOperator1s_np : public OneOperator {
 extern long verbosity;
 extern long  mpirank;
 void init_lgmesh() {
-#ifndef kame
   if(verbosity&&(mpirank==0) )  std::cout <<"lg_mesh ";
   bamg::MeshIstreamErrorHandler = MeshErrorIO;
-#endif
+
   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<E_BorderN>>);
 #ifndef kame
  Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh<MeshL>>);

@@ -811,7 +811,7 @@ AnyType ListOfInst::operator()(Stack s) const {
 	{
 	    TheCurrentLine=linenumber[i]  ;
             r=(*list[i])(s);
-//KAME	    sptr->clean(); // modif FH mars 2006  clean Ptr
+	    sptr->clean(); // modif FH mars 2006  clean Ptr
 	    s1=CPUtime();
 	    if (showCPU)
              cout << " CPU: "<< i <<" " << linenumber[i] <<  ": " << s1-s0 << "s" << " " << s1-ss0 << "s" << " / " << " " <<lsldel[i] << " " << mpirank << endl;

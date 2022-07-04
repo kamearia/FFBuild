@@ -1001,7 +1001,6 @@ int Mesh::renum()
  	err = -1 : memory alloc pb; err = -3: fatal erreur  gibbs 2 : pb racine
 */
 {
-#ifndef kame
     long   pfold=0, pfnew=0;
     long* ptvois=NULL;
     long* vois=NULL;
@@ -1023,6 +1022,7 @@ int Mesh::renum()
 	if((!ptvois)||(!nn)||(!vois)||(!r)) return -1;
 	err = gibbsv(ptvois,vois,&nbvoisin,r,nn) ;
 	delete [] nn;					// free(nn);
+
 	if(err==0)
 	{
        m = new long[nv+1];
@@ -1092,8 +1092,6 @@ int Mesh::renum()
      }
   delete [] r;
   return err;
-#endif
-  return 0;
 }
 int FESpace::renum()
 /* --------

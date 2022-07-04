@@ -2485,7 +2485,7 @@ int ForDebugging = 0;
       cout << " NbSwap of insertion " << NbSwap << " NbSwap/Nbv " << (float)NbSwap / (float)nbv
            << " NbUnSwap " << NbUnSwap << " Nb UnSwap/Nbv " << (float)NbUnSwap / (float)nbv << endl;
     NbUnSwap = 0;
-#ifndef kame
+
     // construction d'un ordre aleatoire
     //  const int PrimeNumber= (nbv % 999983) ? 1000003: 999983 ;
 #ifdef NBLOOPOPTIM
@@ -2527,7 +2527,6 @@ int ForDebugging = 0;
 #endif
 
     CurrentTh = OldCurrentTh;
-#endif
   }
 
   void Triangles::ForceBoundary( ) {

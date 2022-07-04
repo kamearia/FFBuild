@@ -206,7 +206,7 @@ const Fem2D::Mesh *bamg2msh( bamg::Triangles* tTh,bool renumbering)
     return m;
   }
 }
-#ifndef kame
+
 Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
 {
   // ------------------
@@ -237,7 +237,7 @@ Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
   }
   // ------------------
 }
-
+#ifndef kame
 
  bamg::Triangles * msh2bamg(const Fem2D::Mesh & Th,double cutoffradian,long * reqedgeslab,int nreqedgeslab)
 
@@ -1148,9 +1148,7 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
 
   const Fem2D::Mesh * m=0;
   if (justboundary) {
-#ifndef kame
 	  m = bamg2msh(*Gh);
-#endif
   }
   else
   {
@@ -1218,20 +1216,16 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
       }
       catch(...)
       {
-#ifndef kame
 	  Gh->NbRef=0;
 	  delete Gh;
           if(m) delete m;
           if(Th) delete Th;// clean memory ???
 	  cout << " catch Err bamg "  << endl;
 	  throw ;
-#endif
+
      }
-#ifndef kame
       delete Th;
-#endif
   }
-#ifndef kame
   delete Gh;
   /* deja fait  dans bamg2msh
      Fem2D::R2 Pn,Px;
@@ -1240,8 +1234,6 @@ const Fem2D::Mesh *  BuildMesh(Stack stack, E_BorderN const * const & b,bool jus
   ---------- */
   mp=mps;
   return m;
-#endif
-  return 0;
 }
 #ifndef kame
 void E_BorderN::BoundingBox(Stack stack,double  &xmin,double & xmax, double & ymin,double & ymax, double & zmin,double & zmax) const
