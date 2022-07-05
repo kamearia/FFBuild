@@ -25,7 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
-
+#include "stdafx.h"
 #include "ff++.hpp"
 #include "array_resize.hpp"
 #include "AFunction_ext.hpp"
@@ -53,7 +53,7 @@ map<pair<int,int>,int>::iterator closeto(map<pair<int,int>,int> & m, pair<int,in
 	  }
     return it;
 }
-
+#ifndef kame
  inline void Perm3_I2J(const int *I,const int*J,int *S)
 {
     if(I[0]==J[0]) S[0]=0;
@@ -65,7 +65,7 @@ map<pair<int,int>,int>::iterator closeto(map<pair<int,int>,int> & m, pair<int,in
     S[2]=3-S[0]-S[1];
     assert(I[2]==J[3-S[0]-S[1]]);
 }
-
+#endif
 template<class Mesh>
 bool BuildPeriodic3(
 		   int nbcperiodic ,
@@ -345,6 +345,7 @@ bool BuildPeriodic3(
     }
     return false;   
 }
+
 //template<class Mesh>
 bool BuildPeriodic2(
            int nbcperiodic ,
@@ -356,6 +357,7 @@ bool BuildPeriodic2(
     cerr << " To Do FH.. " << endl;
     ffassert(0);
 }
+
 bool BuildPeriodic1(
            int nbcperiodic ,
            Expression *periodic,
@@ -383,7 +385,7 @@ bool  v_fesL::buildperiodic(Stack stack, KN<int> & ndfe) {
     return BuildPeriodic1(nbcperiodic,periodic,**ppTh,stack,ndfe);
     
 }
-
+#ifndef kame
 template<class Mesh> 
 class GlgVertex {
 public:
@@ -3272,3 +3274,5 @@ template E_set_fev3<double,v_fesS>::E_set_fev3(const E_Array * a,Expression pp) 
 template E_set_fev3<Complex,v_fesS>::E_set_fev3(const E_Array * a,Expression pp) ;
 template E_set_fev3<double,v_fesL>::E_set_fev3(const E_Array * a,Expression pp) ;
 template E_set_fev3<Complex,v_fesL>::E_set_fev3(const E_Array * a,Expression pp) ;
+
+#endif

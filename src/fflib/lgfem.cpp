@@ -2916,12 +2916,12 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			  l[i].composant = true;
 			  l[i][0] = CastTo< pferbase >(args[i]);
 		  }
-#ifndef kame
 		  else if (BCastTo< pfer >(args[i])) {    // [[file:problem.hpp::pfer]]
 			  l[i].composant = false;
 			  l[i].what = 1;    //  iso value 2d
 			  l[i][0] = CastTo< pfer >(args[i]);
 		  }
+
 		  else if (BCastTo< pfecbase >(args[i])) {    // [[file:problem.hpp::pfecbase]]
 			  l[i].what = 11;                             //  iso value 2d
 			  l[i].composant = true;
@@ -3057,7 +3057,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 		  else {
 			  CompileError("Sorry no way to plot this kind of data");
 		  }
-#endif 
+
 	  }
   
   }
@@ -5652,12 +5652,12 @@ void DclTypeMatrix( ) {
   // to declare matrix[int]
   map_type_of_map[make_pair(atype< long >( ), atype< PMat >( ))] = atype< AMat * >( );
 }
-#ifndef kame
+
 template< class A, class B >
 AnyType First(Stack, const AnyType &b) {
   return SetAny< A >(GetAny< B >(b).first);
 }
-#endif
+
 template< class K >
 AnyType AddIncrement(Stack stack, const AnyType &a) {
   K m = GetAny< K >(a);
@@ -5858,7 +5858,7 @@ void init_lgfem( ) {
   Dcl_TypeandPtr< pferbasearray >( );    // il faut le 2 pour pourvoir initialiser
   Dcl_Type< pfer >( );
   Dcl_Type< pferarray >( );
-#ifndef kame
+
  // Dcl_Type< pferarray >( );
 
   //  pour des Func FE complex   // FH  v 1.43
@@ -5866,6 +5866,7 @@ void init_lgfem( ) {
   Dcl_TypeandPtr< pfecbasearray >( );    // il faut le 2 pour pourvoir initialiser
   Dcl_Type< pfec >( );
   Dcl_Type< pfecarray >( );
+
   //  FH v 1.43
   // add  mai 2009 FH for 3d eigen value.
   Dcl_Type< FEbaseArrayKn< double > * >( );
@@ -5919,7 +5920,7 @@ void init_lgfem( ) {
      ( Cast< FEbaseArrayKn< double > *, pferbasearray >),
     new E_F1_funcT< FEbaseArrayKn< double > *, pferarray >
      ( First< FEbaseArrayKn< double > *, pferarray >),
-   
+  
    new E_F1_funcT< FEbaseArrayKn< double > *, pfSrbasearray >
    ( Cast< FEbaseArrayKn< double > *, pfSrbasearray >),
    new E_F1_funcT< FEbaseArrayKn< double > *, pfSrarray >
@@ -5936,6 +5937,7 @@ void init_lgfem( ) {
      ( First< FEbaseArrayKn< double > *, pf3rarray >)
 
   );
+
   map_type[typeid(FEbaseArrayKn< Complex > *).name( )]->AddCast
     (
     new E_F1_funcT< FEbaseArrayKn< Complex > *, pfecbasearray >
@@ -5966,7 +5968,7 @@ void init_lgfem( ) {
 
   map_type[typeid(pfesL).name( )] = new ForEachType< pfesL >( );                  // 3D curve
   map_type[typeid(pfesL *).name( )] = new ForEachTypePtrfspace< pfesL, 5 >( );    // 3D curve
-
+#ifndef kame 
   //
   Dcl_Type< const QuadratureFormular * >( );
   Dcl_Type< const QuadratureFormular1d * >( );
