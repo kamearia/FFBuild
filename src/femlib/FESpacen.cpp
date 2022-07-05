@@ -30,7 +30,7 @@
  Thank to the ARN ()  FF2A3 grant
  ref:ANR-07-CIS7-002-01 
  */
-
+#include "stdafx.h"
 
 #include <map>
 
@@ -46,6 +46,7 @@
 
 #include "splitsimplex.hpp"
  int UniqueffId::count=0;
+#ifndef kame
  namespace Fem2D {
 
 //template<class Element>
@@ -702,3 +703,4 @@ template<class MMesh>
      
      
  }
+#endif

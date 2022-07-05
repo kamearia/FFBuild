@@ -352,7 +352,7 @@ void Polymorphic::Addp (const char *op, Value pp, ...) const {
     *f += *pp;
   va_end(ap);
 }
-#ifndef kame
+
 void Polymorphic::Add(const char * op,Value *pp) const
 {
   if (*pp)
@@ -368,7 +368,7 @@ void Polymorphic::Add(const char * op,Value *pp) const
 
 }
 
-#endif
+
 // <<FindType>>
  int  FindType(const char * name)
    {

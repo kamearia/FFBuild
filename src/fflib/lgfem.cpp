@@ -1001,9 +1001,10 @@ bool InCircularList(const int *p, int i, int k) {
   } while (j != i);
   return false;
 }
-
+#endif
 bool BuildPeriodic2(int nbcperiodic, Expression *periodic, const Mesh &Th, Stack stack, int &nbdfv,
                    KN< int > &ndfv, int &nbdfe, KN< int > &ndfe) {
+#ifndef kame
   /*
     build numbering of vertex form 0 to nbdfv-1
     and build numbering  of  edge form 0 to nbdfe-1
@@ -1229,6 +1230,7 @@ bool BuildPeriodic2(int nbcperiodic, Expression *periodic, const Mesh &Th, Stack
       delete[] link2;
     }
   }
+#endif
   return false;
 }
 
@@ -1248,7 +1250,7 @@ FESpace *pfes_tef::update( ) {
   } else
     return new FESpace(**ppTh, *tef);
 }
-#endif
+
 
 struct OpMake_pfes_np {
   static const int n_name_param = 1;
@@ -1256,7 +1258,7 @@ struct OpMake_pfes_np {
 };
 
 basicAC_F0::name_and_type OpMake_pfes_np::name_param[] = {"periodic", &typeid(E_Array)};
-
+#endif
 // by default, in DSL a FE is 2D, in the building of fespace, if mesh3-S used them associate the
 // corresponding FE mapping between TypeOfFE2 and TypeOfFES
 map< TypeOfFE *, TypeOfFE3 * > TEF2dto3d;
@@ -1304,7 +1306,7 @@ AnyType TypeOfFELto2(Stack, const AnyType &b) {
   }
   return tL;
 }
-
+#ifndef kame
 TypeOfFE *FindFE2(const char *s) {
   for (ListOfTFE *i = ListOfTFE::all; i; i = i->next)
     if (strcmp(i->name, s) == 0) return i->tfe;
@@ -5511,6 +5513,7 @@ inline AnyType DestroyKN(Stack, const AnyType &x) {
   a->destroy( );
   return Nothing;
 }
+#endif
 template< class RR, class A, class B >
 RR *get_elementp_(const A &a, const B &b) {
   if (b < 0 || a->N( ) <= b) {
@@ -5520,7 +5523,7 @@ RR *get_elementp_(const A &a, const B &b) {
   }
   return &((*a)[b]);
 }
-
+#ifndef kame
 template< class R >
 R *set_initinit(R *const &a, const long &n) {
   SHOWVERB(cout << " set_init " << typeid(R).name( ) << " " << n << endl);
@@ -5528,7 +5531,7 @@ R *set_initinit(R *const &a, const long &n) {
   for (int i = 0; i < n; i++) (*a)[i] = 0;
   return a;
 }
-
+#endif
 template< class A >
 inline AnyType DestroyKNmat(Stack, const AnyType &x) {
   KN< A > *a = GetAny< KN< A > * >(x);
@@ -5544,7 +5547,7 @@ R *set_initmat(R *const &a, const long &n) {
   for (int i = 0; i < n; i++) (*a)[i].init( );
   return a;
 }
-
+#ifndef kame
 void init_mesh_array( ) {
   Dcl_Type< KN< pmesh > * >(0, ::DestroyKN< pmesh >);
   atype< KN< pmesh > * >( )->Add(
@@ -5570,7 +5573,7 @@ RR get_elementp(const A &a, const B &b) {
   }
   return ((*a)[b]);
 }
-
+#endif
 template< class T >
 T *resizeandclean2(const Resize< T > &t, const long &n) {    // resizeandclean1
   int nn = t.v->N( );                                        // old size
@@ -5590,6 +5593,7 @@ T *resizeandclean2(const Resize< T > &t, const long &n) {    // resizeandclean1
     
     return (R3 *) &any;
 }*/
+
 template< class PMat >
 AnyType ClearReturn(Stack stack, const AnyType &a) {
   // a ne faire que pour les variables local au return...
@@ -5648,7 +5652,7 @@ void DclTypeMatrix( ) {
   // to declare matrix[int]
   map_type_of_map[make_pair(atype< long >( ), atype< PMat >( ))] = atype< AMat * >( );
 }
-
+#ifndef kame
 template< class A, class B >
 AnyType First(Stack, const AnyType &b) {
   return SetAny< A >(GetAny< B >(b).first);
@@ -5816,15 +5820,14 @@ void init_lgfem( ) {
 
 	Dcl_TypeandPtr< pmesh >(0, 0, ::InitializePtr< pmesh >, ::DestroyPtr< pmesh >,
                           AddIncrement< pmesh >, NotReturnOfthisType);
-#ifndef kame
+
 	Dcl_TypeandPtr< pmesh3 >(0, 0, ::InitializePtr< pmesh3 >, ::DestroyPtr< pmesh3 >,
                            AddIncrement< pmesh3 >, NotReturnOfthisType);
 	Dcl_TypeandPtr< pmeshS >(0, 0, ::InitializePtr< pmeshS >, ::DestroyPtr< pmeshS >,
                            AddIncrement< pmeshS >, NotReturnOfthisType);
   Dcl_TypeandPtr< pmeshL >(0, 0, ::InitializePtr< pmeshL >, ::DestroyPtr< pmeshL >,
                            AddIncrement< pmeshL >, NotReturnOfthisType);
-#endif
-#ifndef kame
+
   Dcl_Type< lgVertex >( );
 
   Dcl_Type< lgElement >( );
@@ -5855,6 +5858,7 @@ void init_lgfem( ) {
   Dcl_TypeandPtr< pferbasearray >( );    // il faut le 2 pour pourvoir initialiser
   Dcl_Type< pfer >( );
   Dcl_Type< pferarray >( );
+#ifndef kame
  // Dcl_Type< pferarray >( );
 
   //  pour des Func FE complex   // FH  v 1.43

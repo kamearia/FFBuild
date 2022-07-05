@@ -3011,7 +3011,7 @@ void CheckDclTypeEmpty() {
     if(map_type.find(typeid(T).name())!=map_type.end())
         cout << " Erreur  fftype dcl twist "<< typeid(T).name() << endl; 
         }
-                          
+                         
 template<typename T,typename PT>
 void Dcl_TypeandPtr_ (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1 OnReturn=0,Function1 pOnReturn=0)
    {
@@ -3030,7 +3030,7 @@ void Dcl_TypeandPtr (Function1 i,Function1 d,Function1 pi,Function1 pd,Function1
 map_type[typeid(T).name()] = new ForEachType<T>(i,d,OnReturn); 
 map_type[typeid(T*).name()] = new ForEachTypePtr<T>(pi,pd,pOnReturn); 
 }
-#ifndef kame
+
 
 template<class T>
   void Dcl_TypeandPtr (Function1 pi,Function1 pd)
@@ -3058,7 +3058,7 @@ template<class T>
       map_type[typeid(T).name()] = new ForEachType<T>();
       map_type[typeid(T*).name()] = new ForEachTypePtr<T>(); 
    }
-#endif   
+   
 template<class T>
   aType Dcl_Type (Function1 iv=0,Function1 id=0,Function1 Onreturn=0)
    {

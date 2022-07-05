@@ -184,6 +184,7 @@
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\femlib\fem.cpp" />
     <ClCompile Include="..\src\femlib\FESpace.cpp" />
+    <ClCompile Include="..\src\femlib\FESpacen.cpp" />
     <ClCompile Include="..\src\femlib\FQuadTree.cpp" />
     <ClCompile Include="..\src\femlib\gibbs.cpp" />
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
