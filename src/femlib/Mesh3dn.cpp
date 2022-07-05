@@ -28,7 +28,7 @@
  Thank to the ARN ()  FF2A3 grant
  ref:ANR-07-CIS7-002-01
  */
-
+#include "stdafx.h"
 
 #include <fstream>
 #include <iostream>
@@ -50,7 +50,7 @@ namespace Fem2D
 
 namespace Fem2D
 {
-    
+#ifndef kame    
     
     
     
@@ -67,7 +67,7 @@ namespace Fem2D
     // tel que  le tet forme des trois sommet  + l'autre sommet soit positif.
     //  donc  le  produit vectoriel des 2 aretes  (0,1) (0,2)  donne une  normale interieur.
     //  Ok pour les gradients des $\lambda_i$
-    
+#endif    
     // definition of the reference tetrahedron 0 1 2 3
     static const int  nvfaceTet[4][3]  ={{3,2,1}, {0,2,3},{ 3,1,0},{ 0,1,2}}  ;
     static const int  nvedgeTet[6][2] = { {0,1},{0,2},{0,3},{1,2},{1,3},{2,3} };
@@ -82,6 +82,7 @@ namespace Fem2D
     const int (* const GenericElement<DataTriangle3>::nvedge)[2] = nvedgeTria ;
     template<>
     const int (* const GenericElement<DataTriangle3>::nvadj)[2] = nvedgeTria ;
+
     template<> const int  GenericElement<DataTriangle3>::nitemdim[4] = {3,3,1,0 }  ;
     static const int onWhatIsEdge3[3][7] = {
         {0,1,3, 2,0,0, 0}, // edge 0
@@ -95,10 +96,11 @@ namespace Fem2D
     const int (* const GenericElement<DataTet>::nvface)[3] = nvfaceTet ;
     template<>
     const int (* const GenericElement<DataTet>::nvedge)[2] = nvedgeTet ;
+
     template<>
     const int (* const GenericElement<DataTet>::nvadj)[3] = nvfaceTet ;
     template<> const int  GenericElement<DataTet>::nitemdim[4] = {4,6,4,1 }  ;
-    
+#ifndef kame    
     int onWhatIsFace[4][15] ;
     typedef const int   (*const PtrConst15int) [15]; //  a pointeur on  const arry of 15 int. (to help xcode)
     // static const int (* const SetonWhatIsFace(int  onWhatIsFace[4][15] ,const int  nvfaceTet[4][3],const int nvedgeTet[6][2]))[15];
@@ -2273,7 +2275,7 @@ namespace Fem2D
     
     
     
-    
+#endif    
     
 } //   End  namespace Fem2D
 

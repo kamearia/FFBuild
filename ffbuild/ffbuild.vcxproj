@@ -187,6 +187,10 @@
     <ClCompile Include="..\src\femlib\FESpacen.cpp" />
     <ClCompile Include="..\src\femlib\FQuadTree.cpp" />
     <ClCompile Include="..\src\femlib\gibbs.cpp" />
+    <ClCompile Include="..\src\femlib\Mesh1dn.cpp" />
+    <ClCompile Include="..\src\femlib\Mesh2dn.cpp" />
+    <ClCompile Include="..\src\femlib\Mesh3dn.cpp" />
+    <ClCompile Include="..\src\femlib\MeshLn.cpp" />
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />

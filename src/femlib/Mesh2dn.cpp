@@ -29,7 +29,7 @@
  Thank to the ARN ()  FF2A3 grant
  ref:ANR-07-CIS7-002-01
  */
-
+#include "stdafx.h"
 #include <fstream>
 #include <iostream>
 #include "ufunction.hpp"
@@ -71,7 +71,7 @@ namespace Fem2D {
   template<>  const int (* const GenericElement<DataTriangle2>::nvadj)[2] = nvedgeTria ;
   template<> const int  GenericElement<DataTriangle2>::nitemdim[4] = {3,3,1,0 }  ;
 
-
+#ifndef kame
   static const int onWhatIsEdge2d[3][7] = {  {0,1,3, 2,0,0, 0}, // edge 0
 					   {3,0,1, 0,2,0, 0},
 					   {1,3,0, 0,0,2, 0}};
@@ -387,5 +387,5 @@ Mesh2::Mesh2(int nnv, int nnt, int nnbe, Vertex2 *vv, Triangle2 *tt, BoundaryEdg
   cout << "  -- End of read: mesure = " << mes << " border mesure " << mesb << endl;
 
 }
-
+#endif
 }

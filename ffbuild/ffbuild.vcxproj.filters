@@ -233,6 +233,18 @@
     <ClCompile Include="..\src\fflib\lgmesh3.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\femlib\Mesh3dn.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\Mesh1dn.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\Mesh2dn.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\MeshLn.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

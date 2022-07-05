@@ -29,7 +29,7 @@
   Thank to the ARN ()  FF2A3 grant
   ref:ANR-07-CIS7-002-01
 */
-
+#include "stdafx.h"
 #include <fstream>
 #include <iostream>
 #include <cstring>
@@ -66,7 +66,7 @@ namespace Fem2D
   template<> const int (* const GenericElement<DataPoint3>::nvface)[3] = 0 ;
   template<> const int (* const GenericElement<DataPoint3>::nvedge)[2] = 0 ;
   template<> const int (* const GenericElement<DataPoint3>::nvadj)[1] = 0 ;
-    
+#ifndef kame   
   template<> int  GenericMesh<EdgeL,BoundaryPointL,Vertex3>::kfind=0;
   template<> int  GenericMesh<EdgeL,BoundaryPointL,Vertex3>::kthrough=0;
     
@@ -855,5 +855,5 @@ void MeshL::BuildCurvBasis(){
        cout << "NORMALIZE test covariant basis i: "<<i << " gx= " << gx[i] << " gy= " << gy[i] << " gz= " << gz[i] << endl;}
 }
     
-    
+#endif   
 }

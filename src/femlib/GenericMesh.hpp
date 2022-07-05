@@ -422,7 +422,7 @@ public:
     {
         R lx2 = 0;
         for (int i=0; i< ne; ++i)
-            lx2 = max(lx2,lenEdge2(i));
+            lx2 = ::max(lx2,lenEdge2(i));
         return sqrt(lx2);
 
     }

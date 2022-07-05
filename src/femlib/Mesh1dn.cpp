@@ -29,6 +29,7 @@
  Thank to the ARN ()  FF2A3 grant
  ref:ANR-07-CIS7-002-01 
  */
+#include "stdafx.h"
 #include <fstream>
 #include <iostream>
 #include "ufunction.hpp"
@@ -41,7 +42,7 @@
    //long verbosity=1;
 
 namespace Fem2D {
-
+#ifndef kame
 //  const R1 R1::KHat[2]={R1(0),R1(1)};
 //  const R2 R2::KHat[3]={R2(0,0),R2(1,0),R2(0,1)};
 //  const  R3 R3::KHat[4]={R3(0,0,0),R3(1,0,0),R3(0,1,0),R3(0,0,1)};
@@ -53,9 +54,10 @@ namespace Fem2D {
 //  static const int  nvedgeTria[3][2] = { {1,2},{2,0},{0,1}};
   
 //  static const int   nvfaceSeg[1][3]  = {{-1,-1,-1}};
+#endif 
   static const int  nvedgeSeg[1][2] = { {0,1} };
   static const int  nvadjSeg[2][1] = { {0},{1} };
-  
+ 
   template<> const int (* const GenericElement<DataPoint1>::nvface)[3] = 0 ;
   template<> const int (* const GenericElement<DataPoint1>::nvedge)[2] = 0 ;
   template<> const int (* const GenericElement<DataPoint1>::nvadj)[1] = 0 ;
@@ -63,7 +65,7 @@ namespace Fem2D {
   template<> const int (* const GenericElement<DataSeg1>::nvface)[3] = 0 ;
   template<> const int (* const GenericElement<DataSeg1>::nvedge)[2] = nvedgeSeg; //nvedgeTria ;
   template<> const int (* const GenericElement<DataSeg1>::nvadj)[1] = nvadjSeg ;
-    
+#ifndef kame    
   template<> const int  GenericElement<DataSeg1>::nitemdim[4] = {2,1,0,0 }  ;
   
   template<> int   GenericMesh<Seg1,BoundaryPoint1,Vertex1>::kfind=0;
@@ -120,6 +122,7 @@ namespace Fem2D {
     if(verbosity)  
       cout << "   - mesh mesure = " << mes << " border mesure: " << mesb << endl;  
   }
+#endif
 }
 
  

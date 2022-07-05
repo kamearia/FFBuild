@@ -291,7 +291,7 @@ class E_P_Stack_Pz : public E_F0mps {
 
   operator aType( ) const { return atype< R * >( ); }
 };
-#ifndef kame
+
 class E_P_Stack_N : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -301,7 +301,6 @@ class E_P_Stack_N : public E_F0mps {
 
   operator aType( ) const { return atype< R3 * >( ); }
 };
-
 
 class E_P_Stack_Nt : public E_F0mps {
  public:
@@ -343,7 +342,7 @@ class E_P_Stack_Region : public E_F0mps {
 
   operator aType( ) const { return atype< long * >( ); }
 };
-#endif
+
 class E_P_Stack_Label : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -363,6 +362,7 @@ class E_P_Stack_Mesh : public E_F0mps {
 
   operator aType( ) const { return atype< pmesh >( ); }
 };
+#endif
 class E_P_Stack_Nu_Triangle : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -372,6 +372,7 @@ class E_P_Stack_Nu_Triangle : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
+
 class E_P_Stack_Nu_Vertex : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -381,6 +382,7 @@ class E_P_Stack_Nu_Vertex : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
+
 class E_P_Stack_Nu_Face : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -390,6 +392,7 @@ class E_P_Stack_Nu_Face : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
+
 class E_P_Stack_Nu_Edge : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -399,6 +402,7 @@ class E_P_Stack_Nu_Edge : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
+
 class E_P_Stack_inside : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -456,7 +460,7 @@ class E_P_Stack_hTriangle : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-
+#ifndef kame
 class E_P_Stack_nTonEdge : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -538,7 +542,7 @@ class E_P_Stack_TypeBE : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
-
+#endif
 class E_P_Stack_areaTriangle : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -562,7 +566,7 @@ class E_P_Stack_areaTriangle : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-
+#ifndef kame
 class E_P_Stack_EdgeOrient : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -582,7 +586,7 @@ class E_P_Stack_EdgeOrient : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-
+#endif
 class E_P_Stack_VolumeTet : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -601,7 +605,7 @@ class E_P_Stack_VolumeTet : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-
+#ifndef kame
 template< class R >
 class E_StopGC : public StopGC< R > {
  public:
@@ -3163,25 +3167,30 @@ LinkToInterpreter::LinkToInterpreter( ) {
   x = make_Type_Expr(atype< R * >( ), new E_P_Stack_Px);
   y = make_Type_Expr(atype< R * >( ), new E_P_Stack_Py);
   z = make_Type_Expr(atype< R * >(), new E_P_Stack_Pz);
-#ifndef kame
+
   N = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_N);
   Nt = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Nt);
   Ns = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Ns);
   Tl = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_Tl);
   region = make_Type_Expr(new E_P_Stack_Region, atype< long * >( ));
-#endif
+
   label = make_Type_Expr(new E_P_Stack_Label, atype< long * >( ));
-#ifndef kame
+
   nu_triangle = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Triangle);
   nu_vertex = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Vertex);
   nu_edge = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Edge);
   nu_face = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Face);
+
   lenEdge = make_Type_Expr(atype< R >( ), new E_P_Stack_lenEdge);
+
   hTriangle = make_Type_Expr(atype< R >( ), new E_P_Stack_hTriangle);
+
   area = make_Type_Expr(atype< R >( ), new E_P_Stack_areaTriangle);
+
   volume = make_Type_Expr(atype< R >( ), new E_P_Stack_VolumeTet);
   inside = make_Type_Expr(atype< R >( ), new E_P_Stack_inside);
-#endif
+
+
   Global.New("x", x);
   Global.New("y", y);
   Global.New("z", z);
