@@ -138,7 +138,7 @@ basicAC_F0::name_and_type OpCall_FormBilinear_np::name_param[] = {
 };
 
 basicAC_F0::name_and_type OpCall_FormLinear_np::name_param[] = {"tgv", &typeid(double)};
-
+#endif
 const E_Array *Array(const C_F0 &a) {
   if (a.left( ) == atype< E_Array >( ))
     return dynamic_cast< const E_Array * >(a.LeftValue( ));
@@ -155,6 +155,7 @@ bool Box2(const C_F0 &bb, Expression *box) {
   } else
     return false;
 }
+
 bool Box2x2(Expression bb, Expression *box) {
   const E_Array *a = dynamic_cast< const E_Array * >(bb);
   if (a && a->size( ) == 2)
@@ -162,7 +163,7 @@ bool Box2x2(Expression bb, Expression *box) {
   else
     return false;
 }
-
+#ifndef kame
 void dump_table( ) {
   cout << " dump the language's table " << endl;
   cout << " ------------------------------ \n" << endl;
@@ -2799,28 +2800,24 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
     }
 #endif
   };
-#ifndef kame
+
   // see [[Plot_name_param]]
   static basicAC_F0::name_and_type name_param[];
-
   /// <<number_of_distinct_named_parameters_for_plot>> FFCS: added new parameters for VTK graphics.
   /// See
   /// [[Plot_name_param]] for new parameter names
   static const int n_name_param = 44;
-
   Expression bb[4];
-#endif
+
   /// [[Expression2]] is a description of an object to plot
   vector< Expression2 > l;
-#ifndef kame
   typedef KN< KN< double > > *ptaboftab;
   Expression nargs[n_name_param];
-#endif
+
 	Plot(const basicAC_F0 &args) : l(args.size( )) {
-#ifndef kame
 		args.SetNameParam(n_name_param, name_param, nargs);
 		if (nargs[8]) Box2x2(nargs[8], bb);
-
+#ifndef kame
     // scan all the parameters of the plot() call
 		for (size_t i = 0; i < l.size( ); i++)
 
@@ -3040,7 +3037,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 
 
 };  // end of class Plot
-#ifndef kame
+
 /// <<Plot_name_param>>
 
 basicAC_F0::name_and_type Plot::name_param[Plot::n_name_param] = {
@@ -3092,7 +3089,7 @@ basicAC_F0::name_and_type Plot::name_param[Plot::n_name_param] = {
   {"NbColors", &typeid(long)},                        // #22
   {"pNormalT", &typeid(bool)}                         //43
 };
-
+#ifndef kame
 template< class K >
 class pb2mat : public E_F0 {
  public:
