@@ -57,7 +57,6 @@
 #include <vector>
 #include "lex.hpp"
 #include "lgfem.hpp"
-#ifndef kame
 #include "lgmesh3.hpp"
 #include "lgsolver.hpp"
 #include "problem.hpp"
@@ -65,7 +64,7 @@
 #include "AddNewFE.h"
 #include "array_resize.hpp"
 #include "PlotStream.hpp"
-
+#ifndef kame
 using namespace std;
 extern Polymorphic * TheOperators;  //KAME
 // add for the gestion of the endianness of the file.
@@ -2323,7 +2322,6 @@ long Convect::count = 0;
 #endif
 class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
  public:
-#ifndef kame
 	typedef KN_< R > tab;
 	typedef KN< KN< R > > *pttab;
 	typedef pferbase sol;
@@ -2334,7 +2332,6 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 	typedef pfSrbasearray asolS;
 	typedef pfLrbase solL;
 	typedef pfLrbasearray asolL;
-
 	typedef pfecbase solc;
 	typedef pfecbasearray asolc;
 	typedef pf3cbase solc3;
@@ -2343,7 +2340,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 	typedef pfScbasearray asolcS;
 	typedef pfLcbase solcL;
 	typedef pfLcbasearray asolcL;
-#endif
+
 	typedef long Result;
 #ifndef kame
 	struct ListWhat {
@@ -2441,7 +2438,6 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
     // 7: vector 3d  ( +10 -> complex visu ???? )
     // 101 array of iso 2d  , 106 array of iso 3d  , 100  array of meshes
     // 103  array of curves ...
-#ifndef kame
 		bool composant;
 		Expression e[4];
 		Expression2( ) {
@@ -2453,7 +2449,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			what = 0;
 		}
 		Expression &operator[](int i) { return e[i]; }
-
+#ifndef kame
 		int EvalandPush(Stack s, int ii, vector< ListWhat > &ll,
                     vector< AnyType > &lat) const {    // add for curve ... and multi curve ...
       //  store date in lat..
@@ -2814,210 +2810,254 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
   typedef KN< KN< double > > *ptaboftab;
   Expression nargs[n_name_param];
 
-	Plot(const basicAC_F0 &args) : l(args.size( )) {
-		args.SetNameParam(n_name_param, name_param, nargs);
-		if (nargs[8]) Box2x2(nargs[8], bb);
+  Plot(const basicAC_F0 &args) : l(args.size()) {
+	  args.SetNameParam(n_name_param, name_param, nargs);
+	  if (nargs[8]) Box2x2(nargs[8], bb);
+
+	  // scan all the parameters of the plot() call
+	  for (size_t i = 0; i < l.size(); i++) {
+		  // argument is an [[file:AFunction.hpp::E_Array]] (= array of E_F0)
+		  if (args[i].left() == atype< E_Array >()) {
+			  l[i].composant = false;
+
+			  const E_Array *a = dynamic_cast<const E_Array *>(args[i].LeftValue());
+			  ffassert(a);
+			  int asizea = a->size();
+			  if (asizea == 0) CompileError("plot of vector with 0 of components(!= 2 or 3) ");
+			  bool bpfer = BCastTo< pfer >((*a)[0]);
+
+			  bool bpf3r = BCastTo< pf3r >((*a)[0]);
+			  bool bpfSr = BCastTo< pfSr >((*a)[0]);    // for 3D surface with reals
+			  bool bpfLr = BCastTo< pfLr >((*a)[0]);    // for 3D curve with reals
+			  bool bpfec = BCastTo< pfec >((*a)[0]);
+			  bool bpf3c = BCastTo< pf3c >((*a)[0]);
+			  bool bpfSc = BCastTo< pfSc >((*a)[0]);    // for 3D surface with complex
+			  bool bpfLc = BCastTo< pfLc >((*a)[0]);    // for 3D curve with complex
+			  bool bptab = BCastTo< tab >((*a)[0]);
+			  bool bpttab = BCastTo< pttab >((*a)[0]);
+			  bool bpferarray = BCastTo< pferarray >((*a)[0]);
+			  bool bpfecarray = BCastTo< pfecarray >((*a)[0]);
+
+			  if (bpfer && asizea < 3) {
+				  l[i].what = asizea;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfer >((*a)[j]);
+			  }
 #ifndef kame
-    // scan all the parameters of the plot() call
-		for (size_t i = 0; i < l.size( ); i++)
+			  else if (bpfec && asizea < 3) {
+				  l[i].what = 10 + asizea;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfec >((*a)[j]);
+			  }
+			  else if (bptab && asizea >= 2 && asizea <= 4)    // change nov 2016 FH  for color corve
+			  {
+				  l[i].what = 3;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< tab >((*a)[j]);
+			  }
 
-      // argument is an [[file:AFunction.hpp::E_Array]] (= array of E_F0)
-      if (args[i].left( ) == atype< E_Array >( )) {
-        l[i].composant = false;
-        const E_Array *a = dynamic_cast< const E_Array * >(args[i].LeftValue( ));
-        ffassert(a);
-        int asizea = a->size( );
-        if (asizea == 0) CompileError("plot of vector with 0 of components(!= 2 or 3) ");
-        bool bpfer = BCastTo< pfer >((*a)[0]);
-        bool bpf3r = BCastTo< pf3r >((*a)[0]);
-        bool bpfSr = BCastTo< pfSr >((*a)[0]);    // for 3D surface with reals
-        bool bpfLr = BCastTo< pfLr >((*a)[0]);    // for 3D curve with reals
-        bool bpfec = BCastTo< pfec >((*a)[0]);
-        bool bpf3c = BCastTo< pf3c >((*a)[0]);
-        bool bpfSc = BCastTo< pfSc >((*a)[0]);    // for 3D surface with complex
-        bool bpfLc = BCastTo< pfLc >((*a)[0]);    // for 3D curve with complex
-        bool bptab = BCastTo< tab >((*a)[0]);
-        bool bpttab = BCastTo< pttab >((*a)[0]);
-        bool bpferarray = BCastTo< pferarray >((*a)[0]);
-        bool bpfecarray = BCastTo< pfecarray >((*a)[0]);
-        if (bpfer && asizea < 3) {
-          l[i].what = asizea;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfer >((*a)[j]);
-        } else if (bpfec && asizea < 3) {
-          l[i].what = 10 + asizea;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfec >((*a)[j]);
-        } else if (bptab && asizea >= 2 && asizea <= 4)    // change nov 2016 FH  for color corve
-        {
-          l[i].what = 3;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< tab >((*a)[j]);
-        } else if (bpttab && asizea >= 2 &&
-                   asizea <= 4)    // change nov 2016 FH  for  arry of curve
-        {
-          l[i].what = 103;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pttab >((*a)[j]);
-        } else if (asizea == 3 && bpf3r)    // 3d vector ...
-        {
-          l[i].what = 7;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pf3r >((*a)[j]);
+			  else if (bpttab && asizea >= 2 &&
+				  asizea <= 4)    // change nov 2016 FH  for  arry of curve
+			  {
+				  l[i].what = 103;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pttab >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpf3r)    // 3d vector ...
+			  {
+				  l[i].what = 7;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pf3r >((*a)[j]);
 
-        } else if (asizea == 3 && bpf3c)    // 3d vector ...
-        {
-          l[i].what = 17;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pf3c >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpf3c)    // 3d vector ...
+			  {
+				  l[i].what = 17;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pf3c >((*a)[j]);
 
-        } else if (asizea == 3 && bpfSr)    // 3D vector for surface...
-        {
-          l[i].what = 9;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfSr >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpfSr)    // 3D vector for surface...
+			  {
+				  l[i].what = 9;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfSr >((*a)[j]);
 
-        } else if (asizea == 3 && bpfSc)    // 3D vector for surface...
-        {
-          l[i].what = 19;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfSc >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpfSc)    // 3D vector for surface...
+			  {
+				  l[i].what = 19;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfSc >((*a)[j]);
 
-        } else if (asizea == 3 && bpfLr)    // 3D vector for curve...
-        {
-          l[i].what = 15;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfLr >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpfLr)    // 3D vector for curve...
+			  {
+				  l[i].what = 15;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfLr >((*a)[j]);
 
-        } else if (asizea == 3 && bpfLc)    // 3D vector for curve...
-        {
-          l[i].what = 21;    // new 3d vector
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfLc >((*a)[j]);
+			  }
+			  else if (asizea == 3 && bpfLc)    // 3D vector for curve...
+			  {
+				  l[i].what = 21;    // new 3d vector
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfLc >((*a)[j]);
 
-        } else if (bpferarray && asizea == 2) {
-          l[i].what = 102;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pferarray >((*a)[j]);
-        } else if (bpfecarray && asizea == 2) {
-          l[i].what = 112;
-          for (int j = 0; j < a->size( ); j++) l[i][j] = CastTo< pfecarray >((*a)[j]);
-        } else {
-          CompileError("plot of array with wrong  number of components (!= 2 or 3) ");
-        }
-      } else if (BCastTo< pferbase >(
-                   args[i])) {    // [[file:problem.hpp::pferbase]] [[file:lgmesh3.hpp::BCastTo]]
-        l[i].what = 1;            //  iso value 2d
-        l[i].composant = true;
-        l[i][0] = CastTo< pferbase >(args[i]);
-      } else if (BCastTo< pfer >(args[i])) {    // [[file:problem.hpp::pfer]]
-        l[i].composant = false;
-        l[i].what = 1;    //  iso value 2d
-        l[i][0] = CastTo< pfer >(args[i]);
-      } else if (BCastTo< pfecbase >(args[i])) {    // [[file:problem.hpp::pfecbase]]
-        l[i].what = 11;                             //  iso value 2d
-        l[i].composant = true;
-        l[i][0] = CastTo< pfecbase >(args[i]);
-      } else if (BCastTo< pfec >(args[i])) {    // [[file:problem.hpp::pfec]]
-        l[i].composant = false;
-        l[i].what = 11;    //  iso value 2d
-        l[i][0] = CastTo< pfec >(args[i]);
-      }
+			  }
+			  else if (bpferarray && asizea == 2) {
+				  l[i].what = 102;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pferarray >((*a)[j]);
+			  }
+			  else if (bpfecarray && asizea == 2) {
+				  l[i].what = 112;
+				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfecarray >((*a)[j]);
+			  }
+			  else {
+				  CompileError("plot of array with wrong  number of components (!= 2 or 3) ");
+			  }
+#endif
+		  }
+		  else if (BCastTo< pferbase >(
+			  args[i])) {    // [[file:problem.hpp::pferbase]] [[file:lgmesh3.hpp::BCastTo]]
+			  l[i].what = 1;            //  iso value 2d
+			  l[i].composant = true;
+			  l[i][0] = CastTo< pferbase >(args[i]);
+		  }
+#ifndef kame
+		  else if (BCastTo< pfer >(args[i])) {    // [[file:problem.hpp::pfer]]
+			  l[i].composant = false;
+			  l[i].what = 1;    //  iso value 2d
+			  l[i][0] = CastTo< pfer >(args[i]);
+		  }
+		  else if (BCastTo< pfecbase >(args[i])) {    // [[file:problem.hpp::pfecbase]]
+			  l[i].what = 11;                             //  iso value 2d
+			  l[i].composant = true;
+			  l[i][0] = CastTo< pfecbase >(args[i]);
+		  }
+		  else if (BCastTo< pfec >(args[i])) {    // [[file:problem.hpp::pfec]]
+			  l[i].composant = false;
+			  l[i].what = 11;    //  iso value 2d
+			  l[i][0] = CastTo< pfec >(args[i]);
+		  }
 
-      else if (BCastTo< pf3r >(args[i])) {    // [[file:lgmesh3.hpp::pf3r]]
-        l[i].composant = false;
-        l[i].what = 6;    //  real iso value 3D volume
-        l[i][0] = CastTo< pf3r >(args[i]);
-      } else if (BCastTo< pf3c >(args[i])) {    // [[file:lgmesh3.hpp::pf3c]]
-        l[i].composant = false;
-        l[i].what = 16;    //  complex iso value 3D volume
-        l[i][0] = CastTo< pf3c >(args[i]);
-      }
+		  else if (BCastTo< pf3r >(args[i])) {    // [[file:lgmesh3.hpp::pf3r]]
+			  l[i].composant = false;
+			  l[i].what = 6;    //  real iso value 3D volume
+			  l[i][0] = CastTo< pf3r >(args[i]);
+		  }
+		  else if (BCastTo< pf3c >(args[i])) {    // [[file:lgmesh3.hpp::pf3c]]
+			  l[i].composant = false;
+			  l[i].what = 16;    //  complex iso value 3D volume
+			  l[i][0] = CastTo< pf3c >(args[i]);
+		  }
 
-      else if (BCastTo< pfSr >(args[i])) {    // [[file:lgmesh3.hpp::pfSr]]
-        l[i].composant = false;
-        l[i].what = 8;    //  real iso value 3D surface
-        l[i][0] = CastTo< pfSr >(args[i]);
-      } else if (BCastTo< pfSc >(args[i])) {    // [[file:lgmesh3.hpp::pfSc]]
-        l[i].composant = false;
-        l[i].what = 18;    // complex iso value 3D surface
-        l[i][0] = CastTo< pfSc >(args[i]);
-      } else if (BCastTo< pfLr >(args[i])) {    // [[file:lgmesh3.hpp::pfSr]]
-        l[i].composant = false;
-        l[i].what = 14;    //  real iso value 3D curve
-        l[i][0] = CastTo< pfLr >(args[i]);
-      } else if (BCastTo< pfLc >(args[i])) {    // [[file:lgmesh3.hpp::pfSc]]
-        l[i].composant = false;
-        l[i].what = 20;    // complex iso value 3D curve
-        l[i][0] = CastTo< pfLc >(args[i]);
-      }
+		  else if (BCastTo< pfSr >(args[i])) {    // [[file:lgmesh3.hpp::pfSr]]
+			  l[i].composant = false;
+			  l[i].what = 8;    //  real iso value 3D surface
+			  l[i][0] = CastTo< pfSr >(args[i]);
+		  }
+		  else if (BCastTo< pfSc >(args[i])) {    // [[file:lgmesh3.hpp::pfSc]]
+			  l[i].composant = false;
+			  l[i].what = 18;    // complex iso value 3D surface
+			  l[i][0] = CastTo< pfSc >(args[i]);
+		  }
+		  else if (BCastTo< pfLr >(args[i])) {    // [[file:lgmesh3.hpp::pfSr]]
+			  l[i].composant = false;
+			  l[i].what = 14;    //  real iso value 3D curve
+			  l[i][0] = CastTo< pfLr >(args[i]);
+		  }
+		  else if (BCastTo< pfLc >(args[i])) {    // [[file:lgmesh3.hpp::pfSc]]
+			  l[i].composant = false;
+			  l[i].what = 20;    // complex iso value 3D curve
+			  l[i][0] = CastTo< pfLc >(args[i]);
+		  }
 
-      else if (BCastTo< pferarray >(args[i])) {
-        l[i].composant = false;
-        l[i].what = 101;    //  iso value array iso value 2d
-        l[i][0] = CastTo< pferarray >(args[i]);
-      } else if (BCastTo< pfecarray >(args[i])) {
-        l[i].composant = false;
-        l[i].what = 111;    //  iso value array iso value 2d
-        l[i][0] = CastTo< pfecarray >(args[i]);
-      }
+		  else if (BCastTo< pferarray >(args[i])) {
+			  l[i].composant = false;
+			  l[i].what = 101;    //  iso value array iso value 2d
+			  l[i][0] = CastTo< pferarray >(args[i]);
+		  }
+		  else if (BCastTo< pfecarray >(args[i])) {
+			  l[i].composant = false;
+			  l[i].what = 111;    //  iso value array iso value 2d
+			  l[i][0] = CastTo< pfecarray >(args[i]);
+		  }
 
-      else if (BCastTo< pf3rarray >(args[i])) {    // [[file:lgmesh3.hpp::pf3rarray]]
-        l[i].composant = false;
-        l[i].what = 106;    // iso value array iso value 3d
-        l[i][0] = CastTo< pf3rarray >(args[i]);
-      } else if (BCastTo< pf3carray >(args[i])) {    // [[file:lgmesh3.hpp::pf3carray]]
-        l[i].composant = false;
-        l[i].what = 116;    // iso value array iso value 3d
-        l[i][0] = CastTo< pf3carray >(args[i]);
-      }
+		  else if (BCastTo< pf3rarray >(args[i])) {    // [[file:lgmesh3.hpp::pf3rarray]]
+			  l[i].composant = false;
+			  l[i].what = 106;    // iso value array iso value 3d
+			  l[i][0] = CastTo< pf3rarray >(args[i]);
+		  }
+		  else if (BCastTo< pf3carray >(args[i])) {    // [[file:lgmesh3.hpp::pf3carray]]
+			  l[i].composant = false;
+			  l[i].what = 116;    // iso value array iso value 3d
+			  l[i][0] = CastTo< pf3carray >(args[i]);
+		  }
 
-      else if (BCastTo< pfSrarray >(args[i])) {    // [[file:lgmesh3.hpp::pfSrarray]]
-        l[i].composant = false;
-        l[i].what = 108;    // arry iso value array iso value 3d
-        l[i][0] = CastTo< pfSrarray >(args[i]);
-      } else if (BCastTo< pfScarray >(args[i])) {    // [[file:lgmesh3.hpp::pfScarray]]
-        l[i].composant = false;
-        l[i].what = 118;    // arry iso value array iso value 3d
-        l[i][0] = CastTo< pfScarray >(args[i]);
-      } else if (BCastTo< pfLrarray >(args[i])) {    // [[file:lgmesh3.hpp::pfSrarray]]
-        l[i].composant = false;
-        l[i].what = 114;    // arry iso value array iso value 3d
-        l[i][0] = CastTo< pfLrarray >(args[i]);
-      } else if (BCastTo< pfLcarray >(args[i])) {    // [[file:lgmesh3.hpp::pfScarray]]
-        l[i].composant = false;
-        l[i].what = 120;    // arry iso value array iso value 3d
-        l[i][0] = CastTo< pfLcarray >(args[i]);
-      } else if (BCastTo< pmesh >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 0;    // mesh ...
-        l[i][0] = CastTo< pmesh >(args[i]);
-      } else if (BCastTo< pmesh3 >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 5;    // 3d mesh (real volume or if contains a meshS pointer...
-        l[i][0] = CastTo< pmesh3 >(args[i]);
-      } else if (BCastTo< pmeshS >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 50;    // 3d surface mesh
-        l[i][0] = CastTo< pmeshS >(args[i]);
-      } else if (BCastTo< pmeshL >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 55;    // 3d line mesh
-        l[i][0] = CastTo< pmeshL >(args[i]);
-      } else if (BCastTo< const E_BorderN * >(args[i])) {
-        l[i].what = 4;    // border 2d / 3d
-        l[i].composant = true;
-        l[i][0] = CastTo< const E_BorderN * >(args[i]);
-      } else if (BCastTo< KN< pmesh > * >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 100;    //  mesh 2d array
-        l[i][0] = CastTo< KN< pmesh > * >(args[i]);
-      } else if (BCastTo< KN< pmesh3 > * >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 105;    //  mesh 3d array
-        l[i][0] = CastTo< KN< pmesh3 > * >(args[i]);
-      } else if (BCastTo< KN< pmeshS > * >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 150;    //  mesh 3d surface array
-        l[i][0] = CastTo< KN< pmeshS > * >(args[i]);
-      } else if (BCastTo< KN< pmeshL > * >(args[i])) {
-        l[i].composant = true;
-        l[i].what = 155;    //  mesh 3d curve array
-        l[i][0] = CastTo< KN< pmeshL > * >(args[i]);
-      }
-      else {
-        CompileError("Sorry no way to plot this kind of data");
-      }
-#endif        
+		  else if (BCastTo< pfSrarray >(args[i])) {    // [[file:lgmesh3.hpp::pfSrarray]]
+			  l[i].composant = false;
+			  l[i].what = 108;    // arry iso value array iso value 3d
+			  l[i][0] = CastTo< pfSrarray >(args[i]);
+		  }
+		  else if (BCastTo< pfScarray >(args[i])) {    // [[file:lgmesh3.hpp::pfScarray]]
+			  l[i].composant = false;
+			  l[i].what = 118;    // arry iso value array iso value 3d
+			  l[i][0] = CastTo< pfScarray >(args[i]);
+		  }
+		  else if (BCastTo< pfLrarray >(args[i])) {    // [[file:lgmesh3.hpp::pfSrarray]]
+			  l[i].composant = false;
+			  l[i].what = 114;    // arry iso value array iso value 3d
+			  l[i][0] = CastTo< pfLrarray >(args[i]);
+		  }
+		  else if (BCastTo< pfLcarray >(args[i])) {    // [[file:lgmesh3.hpp::pfScarray]]
+			  l[i].composant = false;
+			  l[i].what = 120;    // arry iso value array iso value 3d
+			  l[i][0] = CastTo< pfLcarray >(args[i]);
+		  }
+		  else if (BCastTo< pmesh >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 0;    // mesh ...
+			  l[i][0] = CastTo< pmesh >(args[i]);
+		  }
+		  else if (BCastTo< pmesh3 >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 5;    // 3d mesh (real volume or if contains a meshS pointer...
+			  l[i][0] = CastTo< pmesh3 >(args[i]);
+		  }
+		  else if (BCastTo< pmeshS >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 50;    // 3d surface mesh
+			  l[i][0] = CastTo< pmeshS >(args[i]);
+		  }
+		  else if (BCastTo< pmeshL >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 55;    // 3d line mesh
+			  l[i][0] = CastTo< pmeshL >(args[i]);
+		  }
+		  else if (BCastTo< const E_BorderN * >(args[i])) {
+			  l[i].what = 4;    // border 2d / 3d
+			  l[i].composant = true;
+			  l[i][0] = CastTo< const E_BorderN * >(args[i]);
+		  }
+		  else if (BCastTo< KN< pmesh > * >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 100;    //  mesh 2d array
+			  l[i][0] = CastTo< KN< pmesh > * >(args[i]);
+		  }
+		  else if (BCastTo< KN< pmesh3 > * >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 105;    //  mesh 3d array
+			  l[i][0] = CastTo< KN< pmesh3 > * >(args[i]);
+		  }
+		  else if (BCastTo< KN< pmeshS > * >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 150;    //  mesh 3d surface array
+			  l[i][0] = CastTo< KN< pmeshS > * >(args[i]);
+		  }
+
+		  else if (BCastTo< KN< pmeshL > * >(args[i])) {
+			  l[i].composant = true;
+			  l[i].what = 155;    //  mesh 3d curve array
+			  l[i][0] = CastTo< KN< pmeshL > * >(args[i]);
+		  }
+
+		  else {
+			  CompileError("Sorry no way to plot this kind of data");
+		  }
+#endif 
+	  }
+  
   }
 
 	static ArrayOfaType typeargs( ) { return ArrayOfaType(true); }    // all type
