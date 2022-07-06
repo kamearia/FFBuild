@@ -38,10 +38,11 @@ const Fem2D::Mesh *ReadMeshbamg(string *const & s);
 const Fem2D::Mesh *ReadTriangulate( string *const &s);
 const Fem2D::Mesh *Triangulate(const KN_<double> &xx, const KN_<double> &yy);
 const Fem2D::Mesh *bamg2msh(bamg::Triangles* tTh, bool renumbering=false);
+#endif
 bamg::Triangles *msh2bamg(const Fem2D::Mesh &Th, double cutoffradian=-1.0,long *reqedgeslab=0, int nreqedgeslab=0);
 bamg::Triangles *msh2bamg(const Fem2D::Mesh &Th, double cutoffradian, int nbdfv, int *ndfv,int nbdfe, int *ndfe,
                           long *reqedgeslab=0, int nreqedgeslab=0);
-#endif
+
 const Fem2D::Mesh *BuildMesh(Stack stack, E_BorderN const *const &b, bool justboundary, int nbvmax=0, bool Requiredboundary=true,
                              KNM<double> *pintern=0, double alea=0,bool SplitEdgeWith2Boundary=false);
 #ifndef kame

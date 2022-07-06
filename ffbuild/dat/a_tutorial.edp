@@ -7,7 +7,9 @@
 verbosity=10;
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
 mesh disk = buildmesh(a(50));
-plot(disk);
+savemesh(disk,"mesh");
+//file<< disk << endl;
+//plot(disk);
 end;
 
 

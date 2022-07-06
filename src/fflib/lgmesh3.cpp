@@ -2608,7 +2608,7 @@ class pVhL_ndf : public ternary_function<pfesL *,long,long,long> { public:
 
 
 // FH
-
+#endif
 // add Feb. 2010 FH 
 template<class A> inline AnyType DestroyKN(Stack,const AnyType &x){
     KN<A> * a=GetAny<KN<A>*>(x);
@@ -2617,6 +2617,7 @@ template<class A> inline AnyType DestroyKN(Stack,const AnyType &x){
     a->destroy(); 
     return  Nothing;
 }
+
 template<class RR,class A,class B>  
 RR * get_elementp_(const A & a,const B & b){ 
     if( b<0 || a->N() <= b) 
@@ -2646,7 +2647,7 @@ void init_mesh3_array()
     
     
 }
-
+#ifndef kame
 //3D surface
 void init_meshS_array()
 {
@@ -2850,10 +2851,10 @@ AnyType pArray2R3(Stack,const AnyType &b) {
     ffassert(a.N()>=3);
     R3 P((double*)a);
     return   SetAny<R3>(P);}
-
+#endif
 void init_lgmesh3() {
   if(verbosity&&(mpirank==0))  cout <<"lg_mesh3 ";
-
+#ifndef kame
     //   Global.Add("buildmesh","(",new OneOperatorCode<classBuildMesh3>);
     // Global.Add("buildmesh","(",new OneOperatorCode<BuildMeshFile3>);
 
@@ -3244,8 +3245,9 @@ Add<pfesL*>("Th",".",new OneOperator1<pmeshL,pfesL*>(pVhL_Th));//ADD JUIN 2021 F
  Add<pfLcarray>("[","",new OneOperator2_FE_get_elmnt<Complex,v_fesL>());
  Add<pfesL*>("(","", new OneTernaryOperator<pVhL_ndf,pVhL_ndf::Op>  );
     
- 
+#endif
  init_mesh3_array(); //3D vomlume
+#ifndef kame
  init_meshS_array();  //3D surface
  init_meshL_array();  //3D line
 
@@ -3264,6 +3266,7 @@ Add<pfesL*>("Th",".",new OneOperator1<pmeshL,pfesL*>(pVhL_Th));//ADD JUIN 2021 F
          //   new E_F1_funcT<R3,KN<double>* >(pArray2R3)
      //       new E_F1_funcT<long,GlgBoundaryElement<Mesh3> >(Cast<long,GlgBoundaryElement<Mesh3> >
                        );
+#endif
 }
 
 //#include "InitFunct.hpp"
@@ -3275,4 +3278,3 @@ template E_set_fev3<Complex,v_fesS>::E_set_fev3(const E_Array * a,Expression pp)
 template E_set_fev3<double,v_fesL>::E_set_fev3(const E_Array * a,Expression pp) ;
 template E_set_fev3<Complex,v_fesL>::E_set_fev3(const E_Array * a,Expression pp) ;
 
-#endif

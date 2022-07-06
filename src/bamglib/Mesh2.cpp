@@ -4021,7 +4021,7 @@ int ForDebugging = 0;
     }
     if (Nberr) MeshError(899, this);
   }
-#ifndef kame
+
   void Triangles::FillHoleInMesh( ) {
     Triangles *OldCurrentTh = CurrentTh;
     CurrentTh = this;
@@ -4348,7 +4348,7 @@ int ForDebugging = 0;
     }
     CurrentTh = OldCurrentTh;
   }
-
+#ifndef kame
   Triangles::Triangles(Triangles &Th, Geometry *pGh, Triangles *pBth,
                        Int4 nbvxx)    // COPY OPERATOR
     : Gh(*(pGh ? pGh : &Th.Gh)), BTh(*(pBth ? pBth : this)) {

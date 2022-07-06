@@ -41,7 +41,7 @@ using namespace std;
 #include "SetOfE4.h"
 
 namespace bamg {
-#ifndef kame
+
   void Triangles::ConsGeometry(Real8 cutoffradian,
                                int *equiedges)    // construct a geometry if no geo
   {
@@ -472,7 +472,7 @@ namespace bamg {
       cout << " -- nb  required  v in Gh " << nbr << " on " << Gh.nbv << endl;
     }
   }
-#endif
+
   void Geometry::EmptyGeometry( )    // empty geometry
   {
     OnDisk = 0;

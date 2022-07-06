@@ -3817,8 +3817,8 @@ int mainff (int  argc, char **argv)
 
    init_lgfem() ;
    init_lgmesh() ;
-#ifndef kame
    init_lgmesh3() ;
+#ifndef kame
    init_algo();
 
 #ifdef HAVE_LIBARPACK

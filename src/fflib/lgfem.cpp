@@ -250,7 +250,7 @@ class E_F_A_Ptr_o_R : public E_F0 {
   AnyType operator( )(Stack s) const { return SetAny< Result * >(&(GetAny< A * >((*a0)(s))->*p)); }
   bool MeshIndependent( ) const { return a0->MeshIndependent( ); }
 };
-
+#endif
 //  ----
 //  remarque pas de template, cela ne marche pas encore ......
 class E_P_Stack_P : public E_F0mps {
@@ -261,7 +261,7 @@ class E_P_Stack_P : public E_F0mps {
   }
   operator aType( ) const { return atype< R3 * >( ); }
 };
-#endif
+
 using namespace Fem2D;
 class E_P_Stack_Px : public E_F0mps {
  public:
@@ -473,7 +473,7 @@ class E_P_Stack_nTonEdge : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
-
+#endif
 class E_P_Stack_nElementonB : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -518,7 +518,6 @@ class E_P_Stack_uniqueBE : public E_F0mps {
   operator aType( ) const { return atype< long >( ); }
 };
 
-
 template< int NBT > // modif FH juin 2021 to be generic ...
 class E_P_Stack_TypeBE : public E_F0mps {
  public:
@@ -542,7 +541,7 @@ class E_P_Stack_TypeBE : public E_F0mps {
 
   operator aType( ) const { return atype< long >( ); }
 };
-#endif
+
 class E_P_Stack_areaTriangle : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -566,7 +565,7 @@ class E_P_Stack_areaTriangle : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-#ifndef kame
+
 class E_P_Stack_EdgeOrient : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -586,7 +585,7 @@ class E_P_Stack_EdgeOrient : public E_F0mps {
 
   operator aType( ) const { return atype< double >( ); }
 };
-#endif
+
 class E_P_Stack_VolumeTet : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -3161,9 +3160,8 @@ class pb2mat : public E_F0 {
 #endif
 LinkToInterpreter::LinkToInterpreter( ) {
   // P,N,x,y,z,label,region,nu_triangle;
-#ifndef kame
+
   P = make_Type_Expr(atype< R3 * >( ), new E_P_Stack_P);
-#endif
   x = make_Type_Expr(atype< R * >( ), new E_P_Stack_Px);
   y = make_Type_Expr(atype< R * >( ), new E_P_Stack_Py);
   z = make_Type_Expr(atype< R * >(), new E_P_Stack_Pz);
@@ -3180,13 +3178,9 @@ LinkToInterpreter::LinkToInterpreter( ) {
   nu_vertex = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Vertex);
   nu_edge = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Edge);
   nu_face = make_Type_Expr(atype< long >( ), new E_P_Stack_Nu_Face);
-
   lenEdge = make_Type_Expr(atype< R >( ), new E_P_Stack_lenEdge);
-
   hTriangle = make_Type_Expr(atype< R >( ), new E_P_Stack_hTriangle);
-
   area = make_Type_Expr(atype< R >( ), new E_P_Stack_areaTriangle);
-
   volume = make_Type_Expr(atype< R >( ), new E_P_Stack_VolumeTet);
   inside = make_Type_Expr(atype< R >( ), new E_P_Stack_inside);
 
@@ -3195,7 +3189,7 @@ LinkToInterpreter::LinkToInterpreter( ) {
   Global.New("y", y);
   Global.New("z", z);
   Global.New("label", label);
-#ifndef kame
+
   Global.New("region", region);
   Global.New("notaregion", CConstant< long >(lnotaregion));
   Global.New("nuTriangle", nu_triangle);
@@ -3215,7 +3209,9 @@ LinkToInterpreter::LinkToInterpreter( ) {
   Global.New("hTriangle", hTriangle);
   Global.New("inside", inside);
   Global.New("nTonEdge", make_Type_Expr(atype< long >( ), new E_P_Stack_nElementonB));
+
   Global.New("nElementonB", make_Type_Expr(atype< long >( ), new E_P_Stack_nElementonB));
+
   Global.New("edgeOrientation",
              make_Type_Expr(atype< R >( ), new E_P_Stack_EdgeOrient));    // Add FH jan 2018
   Global.New("BoundaryEdge",
@@ -3228,7 +3224,7 @@ LinkToInterpreter::LinkToInterpreter( ) {
                make_Type_Expr(atype< long >( ), new E_P_Stack_TypeBE< 2 >));    // Add FH jan 2018
     Global.New("uniqueBE",
                make_Type_Expr(atype< double >( ), new E_P_Stack_uniqueBE));    // Add FH juin 2012 
-#endif
+
 }
 #ifndef kame
 template< class K >
@@ -5514,7 +5510,7 @@ double getarea(lgElement const &a) { return a.area( ); }
 double getlength(lgBoundaryEdge const &a) { return a.length( ); }
 lgElement getElement(lgBoundaryEdge const &a) { return a.Element( ); }
 long EdgeElement(lgBoundaryEdge const &a) { return a.EdgeElement( ); }
-
+#endif
 template< class A >
 inline AnyType DestroyKN(Stack, const AnyType &x) {
   KN< A > *a = GetAny< KN< A > * >(x);
@@ -5522,7 +5518,7 @@ inline AnyType DestroyKN(Stack, const AnyType &x) {
   a->destroy( );
   return Nothing;
 }
-#endif
+
 template< class RR, class A, class B >
 RR *get_elementp_(const A &a, const B &b) {
   if (b < 0 || a->N( ) <= b) {
@@ -5532,7 +5528,7 @@ RR *get_elementp_(const A &a, const B &b) {
   }
   return &((*a)[b]);
 }
-#ifndef kame
+
 template< class R >
 R *set_initinit(R *const &a, const long &n) {
   SHOWVERB(cout << " set_init " << typeid(R).name( ) << " " << n << endl);
@@ -5540,7 +5536,7 @@ R *set_initinit(R *const &a, const long &n) {
   for (int i = 0; i < n; i++) (*a)[i] = 0;
   return a;
 }
-#endif
+
 template< class A >
 inline AnyType DestroyKNmat(Stack, const AnyType &x) {
   KN< A > *a = GetAny< KN< A > * >(x);
@@ -5556,7 +5552,7 @@ R *set_initmat(R *const &a, const long &n) {
   for (int i = 0; i < n; i++) (*a)[i].init( );
   return a;
 }
-#ifndef kame
+
 void init_mesh_array( ) {
   Dcl_Type< KN< pmesh > * >(0, ::DestroyKN< pmesh >);
   atype< KN< pmesh > * >( )->Add(
@@ -5573,6 +5569,7 @@ void init_mesh_array( ) {
   Add< Resize< KN< pmesh > > >(
     "(", "", new OneOperator2_< KN< pmesh > *, Resize< KN< pmesh > >, long >(resizeandclean1));
 }
+#ifndef kame
 template< class RR, class A, class B >
 RR get_elementp(const A &a, const B &b) {
   if (b < 0 || a->N( ) <= b) {
@@ -6256,9 +6253,10 @@ void init_lgfem( ) {
   // pmesh is a pointer to Mesh
 #endif
   zzzfff->Add("mesh", atype< pmesh * >( ));
-#ifndef kame
+
   // pmesh3 is a pointer to Mesh3 defined at [[file:lgfem.hpp::typedef Mesh3 pmesh3]]
   zzzfff->Add("mesh3", atype< pmesh3 * >( ));
+#ifndef kame
   // pmeshS is a pointer to MeshS defined at [[file:lgfem.hpp::typedef MeshS pmeshS]]
   zzzfff->Add("meshS", atype< pmeshS * >( ));
   // pmeshL is a pointer to MeshL defined at [[file:lgfem.hpp::typedef MeshL pmeshL]]
@@ -6857,8 +6855,8 @@ void init_lgfem( ) {
     "=",
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
   init_lgmat( );
-  init_mesh_array( );
 #endif
+  init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
 #ifndef kame
   using namespace FreeFempp;

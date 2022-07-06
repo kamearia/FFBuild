@@ -57,7 +57,9 @@ inline Expression CastTo(const C_F0 & f) { return atype<Result>()->CastTo(f);}
 
 // <<BCastTo>>
 template<class Result>
-inline bool BCastTo(const C_F0 & f) { return atype<Result>()->CastingFrom(f.left());}
+inline bool BCastTo(const C_F0 & f) { 
+	return atype<Result>()->CastingFrom(f.left());
+}
 
 inline void Check(bool  v,const char * mess)
 {

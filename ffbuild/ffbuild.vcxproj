@@ -179,6 +179,7 @@
     <ClCompile Include="..\src\bamglib\MeshWrite.cpp" />
     <ClCompile Include="..\src\bamglib\Metric.cpp" />
     <ClCompile Include="..\src\bamglib\QuadTree.cpp" />
+    <ClCompile Include="..\src\bamglib\SetOfE4.cpp" />
     <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />

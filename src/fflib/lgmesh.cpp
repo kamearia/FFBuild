@@ -266,7 +266,7 @@ class SplitMesh :  public E_F0mps { public:
     operator aType () const { return atype<Result>();}
 
 };
-
+#endif
 class SaveMesh :  public E_F0 { public:
 
    typedef pmesh  Result;
@@ -300,7 +300,7 @@ class SaveMesh :  public E_F0 { public:
     AnyType operator()(Stack s) const ;
 
 };
-
+#ifndef kame
 
 class Adaptation :   public E_F0mps { public:
   typedef pmesh  Result;
@@ -646,6 +646,7 @@ AnyType SplitMesh::operator()(Stack stack) const
 
     return SetAny<pmesh>(pth);
 }
+#endif
 AnyType SaveMesh::operator()(Stack stack) const
 {
   using  Fem2D::MeshPointStack;
@@ -707,6 +708,7 @@ AnyType SaveMesh::operator()(Stack stack) const
   //  delete fn;   modif mars 2006 auto del ptr
    return SetAny<pmesh>(Thh);
 }
+#ifndef kame
 AnyType MoveMesh::operator()(Stack stack) const
 {
 
@@ -1997,8 +1999,9 @@ void init_lgmesh() {
   /// <<square_keyword>> see [[file:AFunction.hpp::OneOperatorCode]]
   Global.Add("square","(",new OneOperatorCode<MeshCarre2>);
   Global.Add("square","(",new OneOperatorCode<MeshCarre2f>);
-
+#endif
   Global.Add("savemesh","(",new OneOperatorCode<SaveMesh>);
+#ifndef kame
   Global.Add("trunc","(", new Op_trunc_mesh);
   Global.Add("readmesh","(",new OneOperator1_<pmesh,string*, E_F_F0_Add2RC<pmesh,string*> >(ReadMeshbamg));
   Global.Add("emptymesh","(",new OneOperator1_<pmesh,pmesh, E_F_F0_Add2RC<pmesh,pmesh> >(EmptyTheMesh));

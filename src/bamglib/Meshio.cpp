@@ -203,6 +203,7 @@ namespace bamg {
     strcpy(r, buf);
     return r;
   }
+#endif
   ///////////////////////////////////////////////////////////
   OFortranUnFormattedFile::~OFortranUnFormattedFile( ) {
     // save the last record
@@ -333,6 +334,6 @@ namespace bamg {
     MeshError(900);
     //  throw(ErrorMesh("exit",1));
   }
-#endif
+
 
 }    // end of namespace bamg

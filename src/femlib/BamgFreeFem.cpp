@@ -237,7 +237,7 @@ Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
   }
   // ------------------
 }
-#ifndef kame
+
 
  bamg::Triangles * msh2bamg(const Fem2D::Mesh & Th,double cutoffradian,long * reqedgeslab,int nreqedgeslab)
 
@@ -402,7 +402,7 @@ Fem2D::Mesh *bamg2msh(const bamg::Geometry &Gh)
   Tn->FillHoleInMesh();
   return Tn;
 }
-#endif
+
 
 double NormalDistrib(double sigma)
 {

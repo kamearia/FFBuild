@@ -339,11 +339,13 @@ public:
 void ShowType(ostream &);
 template<typename T> 
 inline basicForEachType * atype() { 
+	string s = typeid(T).name();
   map<const string,basicForEachType *>::iterator ir=map_type.find(typeid(T).name());
  // basicForEachType * r=map_type[];
-  if (ir == map_type.end()) { cerr << "Error: aType  '" << typeid(T).name() << "', doesn't exist\n";
-             ShowType(cerr);
-            throw(ErrorExec("exit",1));}
+  if (ir == map_type.end()) { 
+		cerr << "Error: aType  '" << typeid(T).name() << "', doesn't exist\n";
+        ShowType(cerr);
+        throw(ErrorExec("exit",1));}
   return ir->second;}
 
 #ifndef kame

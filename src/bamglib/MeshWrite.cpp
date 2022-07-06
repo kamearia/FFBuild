@@ -59,7 +59,7 @@ using namespace H5;
 //-----------------------------ajout format hdf5-----------------------------//
 
 namespace bamg {
-#ifndef kame
+
   void Triangles::Write(const char *filename, const TypeFileMesh typein) const {
     TypeFileMesh type = typein;
     const char *gsuffix = ".gmsh";
@@ -192,6 +192,7 @@ namespace bamg {
     }
     if (verbosity > 5) cout << "end write" << endl;
   }
+
   void Triangles::Write_nop5(OFortranUnFormattedFile *f, Int4 &lnop5, Int4 &nef, Int4 &lgpdn,
                              Int4 ndsr) const {
     ndsr = 0;
@@ -504,6 +505,7 @@ namespace bamg {
       f << vertices[i].r.x << " " << vertices[i].r.y << " " << vertices[i].ref( ) << endl;
     delete[] reft;
   }
+
   void Triangles::Write_msh(ostream &f) const {
     Int4 i;
     assert(this && nbt);
@@ -597,7 +599,7 @@ namespace bamg {
       f << *this;
     }
   }
-#endif
+
   void Triangles::WriteElements(ostream &f, Int4 *reft, Int4 nbInT) const {
     const Triangles &Th = *this;
     // do triangle and quad
