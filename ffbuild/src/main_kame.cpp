@@ -18,7 +18,7 @@ int main() {
 */
 int getprog(char *fn, int argc, char **argv);
 int mainff(int  argc, char **argv);
-int main(int  argc, char **argv)
+int main_kame(int  argc, char **argv)
 {
 #ifndef kame
 	ffapi::init(); // [[file:~/ff/src/fflib/ffapi.cpp::init]]

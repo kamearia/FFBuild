@@ -339,7 +339,7 @@ public:
 void ShowType(ostream &);
 template<typename T> 
 inline basicForEachType * atype() { 
-	string s = typeid(T).name();
+//	string s = typeid(T).name();
   map<const string,basicForEachType *>::iterator ir=map_type.find(typeid(T).name());
  // basicForEachType * r=map_type[];
   if (ir == map_type.end()) { 
@@ -1330,14 +1330,14 @@ template<class R> class EConstant:public E_F0
     }
 };
 
-#ifndef kame
+
 class LocalVariableFES : public LocalVariable { public:
   size_t data;
   LocalVariableFES(size_t o,aType tt,const  size_t & d) 
    : LocalVariable(o,tt),data(d) {}
   size_t nbitem() const { return data;}
 };
-
+#ifndef kame
 template <class U>
 class LocalVariablePlus : public LocalVariable { public:
   U data;
@@ -2119,11 +2119,10 @@ inline  E_F0 * C_F0::LeftValue() const {
 /// Declaration of TypeArray
 aType TypeArray(aType,aType);
 aType TypeArray(aType c,aType b,aType a);
-#ifndef kame
 
 /// Declaration of TypeTemplate
 aType TypeTemplate(aType,aType);
-#endif
+
 void Init_map_type();
 
 
@@ -2216,6 +2215,9 @@ template<class T>
    ~Block(); //{}
     int nIdWithDelete() const { return table.nIdWithDelete;}
 
+	static Block * &getCurrentBlock() { return currentBlock; }
+private:
+	static Block *currentBlock;
 }; 
 
 
@@ -3184,10 +3186,10 @@ inline Expression basicForEachType::OnReturn(Expression f) const {
 
 
 inline  void CC_F0::operator=(const AC_F0& a) {  f=new E_Array(a); r= atype<E_Array>();};
-#ifndef kame
+
 inline  UnId::UnId(const char * idd,const C_F0 & ee,aType rr=0,bool reff=false) 
   :id(idd),r(rr),e(ee),array(0),re(ee.left()) ,ref(reff){}
-#endif
+
 
 class E_exception : public exception { public:
   enum CODE_exception { UNKNOWN,e_break,e_continue,e_return} ;
@@ -3250,7 +3252,7 @@ class E_Routine :  public E_F0mps { public:
 #ifndef kame
 
 /// <<Routine>> used in [[file:../lglib/lg.ypp::YYSTYPE]]
-
+#endif
 class Routine: public OneOperator{  public:
    size_t offset;
    aType tfunc,tret;
@@ -3265,7 +3267,7 @@ class Routine: public OneOperator{  public:
    Block * Set(CListOfInst   instr) ;
 };
 
-#endif
+
 class TypeLineFunction: public ForEachType<C_F0> {
   public:
   TypeLineFunction() : ForEachType<C_F0>(0,0) {}
@@ -3379,9 +3381,9 @@ extern vector<pair<const E_Routine*,int> > * debugstack;
 struct NothingType {  // a type to do nothing 
  NothingType() {};
 };
-#ifndef kame
+
 extern basicForEachType *  typevarreal,  * typevarcomplex;  //  type of real and complex variable
-  
+#ifndef kame  
 void initArrayOperators();   
 void  initArrayDCL();
 

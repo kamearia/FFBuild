@@ -701,8 +701,6 @@ Expression NewExpression(Function2 f,Expression a,Expression b)
         }
    }
 
-#ifndef kame
-
 
 
 E_Routine::E_Routine(const Routine * routine,const basicAC_F0 & args)
@@ -770,8 +768,8 @@ AnyType E_Routine::operator()(Stack s)  const  {
    // ... ou alors changer le return ???? qui doit copie le resultat.. (voir)
    return ret;
 }
-#endif
-extern Block *currentblock;// def in lg.ypp
+
+//KAME extern Block *currentblock;// def in lg.ypp
 void ListOfInst::Add(const C_F0 & ins) {
     if( (!ins.Empty()) ) {
         if( verbosity > 9999 )
@@ -794,9 +792,9 @@ void ListOfInst::Add(const C_F0 & ins) {
         }
         throwassert(list);
         linenumber[n]= TheCurrentLine;
-        lsldel[n]=currentblock->nIdWithDelete();
+        lsldel[n]=Block::getCurrentBlock()->nIdWithDelete();
         list[n++] = ins;
-    }
+    } 
 }
 
 /// <<ListOfInst::operator()>> Iteratively calls each item in the local array #list of type #Expression
@@ -810,6 +808,7 @@ AnyType ListOfInst::operator()(Stack s) const {
 	for (i=0;i<n;i++)
 	{
 	    TheCurrentLine=linenumber[i]  ;
+		cout << "line:" << TheCurrentLine << "*list[" << i << "],type:" << typeid(*list[i]).name() << endl;
             r=(*list[i])(s);
 	    sptr->clean(); // modif FH mars 2006  clean Ptr
 	    s1=CPUtime();
@@ -871,7 +870,7 @@ void ShowDebugStack()
       	      << " :" << *this << endl;
        return insert(this,l,m,n);
      }
-#ifndef kame
+
 
 class E_F0para :public E_F0 { public:
   const int i;
@@ -907,7 +906,7 @@ E_F0 * Routine::code(const basicAC_F0 & args) const
 
    return new E_Routine(this,args);
 }
-#endif
+
 void basicAC_F0::SetNameParam(int n,name_and_type *l , Expression * e) const
 {
  int k=0;

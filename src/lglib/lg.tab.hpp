@@ -166,9 +166,9 @@ typedef union YYSTYPE
 
  /* <<YYSTYPE_cexp>> [[file:../fflib/AFunction.hpp::CC_F0]] */
  CC_F0 cexp;
-#ifndef kame
+
  Routine   *routine;
-#endif
+
  /* <<YYSTYPE_args>> [[file:~/ff/src/fflib/AFunction.hpp::AC_F0]] */
  AC_F0 args;
 

@@ -1309,7 +1309,7 @@ AnyType TypeOfFELto2(Stack, const AnyType &b) {
   }
   return tL;
 }
-#ifndef kame
+
 TypeOfFE *FindFE2(const char *s) {
   for (ListOfTFE *i = ListOfTFE::all; i; i = i->next)
     if (strcmp(i->name, s) == 0) return i->tfe;
@@ -1317,7 +1317,7 @@ TypeOfFE *FindFE2(const char *s) {
   lgerror("FindFE2 ");
   return 0;
 }
-
+#ifndef kame
 typedef TypeOfFE TypeOfFE2;
 template< class pfes, class Mesh, class TypeOfFE, class pfes_tefk >
 struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
@@ -5831,27 +5831,27 @@ void init_lgfem( ) {
                            AddIncrement< pmesh3 >, NotReturnOfthisType);
 	Dcl_TypeandPtr< pmeshS >(0, 0, ::InitializePtr< pmeshS >, ::DestroyPtr< pmeshS >,
                            AddIncrement< pmeshS >, NotReturnOfthisType);
-  Dcl_TypeandPtr< pmeshL >(0, 0, ::InitializePtr< pmeshL >, ::DestroyPtr< pmeshL >,
+	Dcl_TypeandPtr< pmeshL >(0, 0, ::InitializePtr< pmeshL >, ::DestroyPtr< pmeshL >,
                            AddIncrement< pmeshL >, NotReturnOfthisType);
 
-  Dcl_Type< lgVertex >( );
+	Dcl_Type< lgVertex >( );
 
-  Dcl_Type< lgElement >( );
-  Dcl_Type< lgElement::Adj >( );
+	Dcl_Type< lgElement >( );
+	Dcl_Type< lgElement::Adj >( );
 
-  Dcl_Type< lgBoundaryEdge::BE >( );
-  Dcl_Type< lgBoundaryEdge >( );
+	Dcl_Type< lgBoundaryEdge::BE >( );
+	Dcl_Type< lgBoundaryEdge >( );
 
-  atype< long >( )->AddCast(new E_F1_funcT< long, lgVertex >(Cast< long, lgVertex >),
+	atype< long >( )->AddCast(new E_F1_funcT< long, lgVertex >(Cast< long, lgVertex >),
                             new E_F1_funcT< long, lgElement >(Cast< long, lgElement >),
                             new E_F1_funcT< long, lgBoundaryEdge >(Cast< long, lgBoundaryEdge >));
 
-  Dcl_Type< TypeOfFE * >( );
-  Dcl_Type< TypeOfFE3 * >( );    // 3D volume
-  Dcl_Type< TypeOfFES * >( );    // 3D surface
-  Dcl_Type< TypeOfFEL * >( );    // 3D curve
-  map_type[typeid(TypeOfFE3 *).name( )]->AddCast(
-    new E_F1_funcT< TypeOfFE3 *, TypeOfFE * >(TypeOfFE3to2));
+   Dcl_Type< TypeOfFE * >( );
+   Dcl_Type< TypeOfFE3 * >( );    // 3D volume
+   Dcl_Type< TypeOfFES * >( );    // 3D surface
+   Dcl_Type< TypeOfFEL * >( );    // 3D curve
+   map_type[typeid(TypeOfFE3 *).name( )]->AddCast(
+     new E_F1_funcT< TypeOfFE3 *, TypeOfFE * >(TypeOfFE3to2));
   map_type[typeid(TypeOfFES *).name( )]->AddCast(
     new E_F1_funcT< TypeOfFES *, TypeOfFE * >(TypeOfFESto2));
   map_type[typeid(TypeOfFEL *).name( )]->AddCast(
@@ -6115,12 +6115,13 @@ void init_lgfem( ) {
 
   atype< Matrice_Creuse< R > * >( )->AddCast(new OneOperatorCode< pb2mat< R > >);
   atype< Matrice_Creuse< Complex > * >( )->AddCast(new OneOperatorCode< pb2mat< Complex > >);
-
+#endif
   //   Add all Finite Element "P0","P1","P2","RT0", ...
   for (ListOfTFE *i = ListOfTFE::all; i; i = i->next) {
     ffassert(i->tfe);    // check
     AddNewFE(i->name, i->tfe);
   }
+#ifndef kame
   static string LU = "LU";
   static string CG = "CG";
   static string GMRES = "GMRES";
@@ -6252,7 +6253,7 @@ void init_lgfem( ) {
   // [[file:lgfem.hpp::typedef Mesh pmesh]]
   // pmesh is a pointer to Mesh
 #endif
-  zzzfff->Add("mesh", atype< pmesh * >( ));
+  zzzfff->Add("mesh", atype< pmesh >( ));
 
   // pmesh3 is a pointer to Mesh3 defined at [[file:lgfem.hpp::typedef Mesh3 pmesh3]]
   zzzfff->Add("mesh3", atype< pmesh3 * >( ));
@@ -6858,8 +6859,8 @@ void init_lgfem( ) {
 #endif
   init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
-#ifndef kame
   using namespace FreeFempp;
+#ifndef kame
   FreeFempp::TypeVarForm< double >::Global = new TypeVarForm< double >( );
   FreeFempp::TypeVarForm< Complex >::Global = new TypeVarForm< Complex >( );
 
@@ -6920,6 +6921,7 @@ void init_lgfem( ) {
   TEF2dtoS[FindFE2("P0")] = &DataFE< MeshS >::P0;
   TEF2dtoS[FindFE2("P1")] = &DataFE< MeshS >::P1;
   TEF2dtoS[FindFE2("P2")] = &DataFE< MeshS >::P2;
+
   TEF2dtoS[FindFE2("P1b")] = &P1bLagrange_surf;
   TEF2dtoS[FindFE2("P2b")] = &P2bLagrange_surf;
   TEF2dtoS[FindFE2("RT0")] = &RT0surf;
@@ -7116,7 +7118,7 @@ E_F0 *Op_CopyArray::code(const basicAC_F0 &args) const {
   CompileError("Internal Error: General Copy of Array : to do ");
   return ret;
 }
-
+#endif
 template< class v_fes, int DIM >
 C_F0 NewFEvariableT(ListOfId *pids, Block *currentblock, C_F0 &fespacetype, CC_F0 init, bool cplx,
                     int dim) {
@@ -7195,7 +7197,7 @@ C_F0 NewFEvariable(const char *id, Block *currentblock, C_F0 &fespacetype, CC_F0
   lid->push_back(UnId(id));
   return NewFEvariable(lid, currentblock, fespacetype, init, cplx, dim);
 }
-      
+#ifndef kame      
 size_t dimFESpaceImage(const basicAC_F0 &args) {
   aType t_tfe = atype< TypeOfFE * >( );
   aType t_tfe3 = atype< TypeOfFE3 * >( );
@@ -7221,7 +7223,7 @@ size_t dimFESpaceImage(const basicAC_F0 &args) {
   dim23 = dim23 ? dim23 : 1;
   return dim23;
 }
-
+#endif
 aType typeFESpace(const basicAC_F0 &args) {
   aType t_m2 = atype< pmesh * >( );
   aType t_m3 = atype< pmesh3 * >( );
@@ -7352,13 +7354,14 @@ C_F0 NewFEarray(ListOfId *pids, Block *currentblock, C_F0 &fespacetype, CC_F0 si
     CompileError("Invalid vectorial fespace on Rd  ( d != 2 or 3) ");
   return C_F0( );
 }
+
 C_F0 NewFEarray(const char *id, Block *currentblock, C_F0 &fespacetype, CC_F0 sizeofarray,
                 bool cplx, int dim) {
   ListOfId *lid = new ListOfId;
   lid->push_back(UnId(id));
   return NewFEarray(lid, currentblock, fespacetype, sizeofarray, cplx, dim);
 }
-
+#ifndef kame
 namespace Fem2D {
   void Expandsetoflab(Stack stack, const BC_set &bc, set< long > &setoflab) {
     for (size_t i = 0; i < bc.on.size( ); i++)

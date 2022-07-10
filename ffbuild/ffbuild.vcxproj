@@ -183,6 +183,7 @@
     <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
+    <ClCompile Include="..\src\femlib\Element_P2h.cpp" />
     <ClCompile Include="..\src\femlib\fem.cpp" />
     <ClCompile Include="..\src\femlib\FESpace.cpp" />
     <ClCompile Include="..\src\femlib\FESpacen.cpp" />
@@ -212,7 +213,9 @@
     <ClCompile Include="..\src\Graphics\Pcrgraph.cpp" />
     <ClCompile Include="..\src\lglib\lg.tab.cpp" />
     <ClCompile Include="..\src\lglib\mymain.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="src\a_tutorial.cpp" />
+    <ClCompile Include="src\main_kame.cpp" />
+    <ClCompile Include="src\test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp" />

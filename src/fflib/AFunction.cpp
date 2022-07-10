@@ -134,6 +134,9 @@ long storagetotal()
     return 0;
 #endif
 }
+
+Block *Block::currentBlock = 0;
+
 // end add mach 2014 ...
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
@@ -368,7 +371,7 @@ aType TypeArray(aType b,aType a)
    }
    return r;
 }
-#ifndef kame
+
 aType TypeTemplate(aType b,aType a)
 { // type of  b[a]
    aType r=map_type_of_map[make_pair(b,a)];
@@ -382,6 +385,7 @@ aType TypeTemplate(aType b,aType a)
    }
    return r;
 }
+
 aType TypeArray(aType c,aType b,aType a)
 {
    // type of  c[ b, a]
@@ -396,7 +400,7 @@ aType TypeArray(aType c,aType b,aType a)
    }
    return TypeArray(c,ba);
 }
-
+#ifndef kame
 
 inline  void ShowOn_cerr(const pair<const char * ,const OneOperator *> & i)
 {
@@ -1113,7 +1117,7 @@ void Init_map_type()
     Dcl_Type<ios::openmode>();
 
     // <<known_variable_types>> les types des variables
-
+/*KAME
   zzzfff->Add("real",typevarreal=atype<double*>());
   zzzfff->Add("int",atype<long*>());
   zzzfff->Add("complex",typevarcomplex=atype<Complex*>());
@@ -1122,7 +1126,7 @@ void Init_map_type()
   zzzfff->Add("ifstream",atype<istream**>());
   zzzfff->Add("ofstream",atype<ostream**>());
   zzzfff->AddF("func",atype<C_F0>());
-
+*/
 
 
 //  end of know types

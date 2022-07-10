@@ -113,7 +113,7 @@ namespace  Fem2D {
   return yy(SubArray(kk));
 
  }
-
+#endif
 ListOfTFE * ListOfTFE::all ; // list of all object of this type
 
 void init_static_FE(); //   to correct so probleme with static Library FH aout 2004
@@ -131,7 +131,7 @@ ListOfTFE::ListOfTFE (const char * n,TypeOfFE *t) : name(n),tfe(t)
  //  to correct so probleme with static Library FH aout 2004
  init_static_FE();
 }
-
+#ifndef kame
 const TypeOfFE ** Make(const FESpace **l,int k) {
   const TypeOfFE** p=new const TypeOfFE*[k];
   for (int i=0;i<k;i++)
@@ -421,7 +421,7 @@ FESumConstruct::FESumConstruct(int kk,const TypeOfFE **t)
 
   ffassert(c== 5*n+N);
 }
-
+#endif
 class TypeOfFE_P1Lagrange : public  TypeOfFE { public:
   static int Data[];
   static double Pi_h_coef[];
@@ -433,9 +433,10 @@ class TypeOfFE_P1Lagrange : public  TypeOfFE { public:
      }
    void FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat &PHat, RNMK_ & val) const;
 
-virtual R operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const ;
+	virtual R operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const ;
 
 } ;
+#ifndef kame
 ///////////////////////////////////////////////////////////////////////////////
 // FH pour tester des idee de schema ----  Juin 2005 ---
 ///////////////////////////////////////////////////////////////////////////////
@@ -549,12 +550,15 @@ class TypeOfFE_P2bLagrange : public  TypeOfFE { public:
 
    void FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat &PHat, RNMK_ & val) const;
 } ;
-
+#endif
 int TypeOfFE_P1Lagrange::Data[]={0,1,2,       0,0,0,       0,1,2,       0,0,0,        0,1,2,       0, 0,3};
+#ifndef kame
 int TypeOfFE_P1Bubble::Data[]={0,1,2,6,     0,0,0,0,     0,1,2,3,     0,0,0,0,        0,1,2,3,     0, 0,4};
 int TypeOfFE_P2Lagrange::Data[]={0,1,2,3,4,5, 0,0,0,0,0,0, 0,1,2,3,4,5, 0,0,0,0,0,0,  0,1,2,3,4,5, 0 ,0,6};
 int TypeOfFE_P2bLagrange::Data[]={0,1,2,3,4,5,6, 0,0,0,0,0,0,0, 0,1,2,3,4,5,6, 0,0,0,0,0,0,0,  0,1,2,3,4,5,6, 0,0,7};
+#endif
 double TypeOfFE_P1Lagrange::Pi_h_coef[]={1.,1.,1.};
+#ifndef kame
 double TypeOfFE_P1Bubble::Pi_h_coef[]={1.,1.,1.,1.};
 double TypeOfFE_P2Lagrange::Pi_h_coef[]={1.,1.,1.,1.,1.,1.};
 double TypeOfFE_P2bLagrange::Pi_h_coef[]={1.,1.,1.,1.,1.,1.,1.};
@@ -1075,6 +1079,7 @@ void ConstructDataFElement::renum(const long *r,int l)
        v=val(SubArray(DF[j+1]-DF[j],DF[j]),SubArray(NN[j+1]-NN[j],NN[j]),t);
     }
  }
+#endif
  R TypeOfFE_P1Lagrange::operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const
 {
    R u0(u(K(0))), u1(u(K(1))), u2(u(K(2)));
@@ -1134,7 +1139,7 @@ void TypeOfFE_P1Lagrange::FB(const bool *whatd,const Mesh & ,const Triangle & K,
   }
   }
 }
-
+#ifndef kame
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// NEW /////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -1633,7 +1638,7 @@ void TypeOfMortarCas1::ConstructionOfNode(const Mesh &Th,int im,int * NodesOfEle
 
  { ffassert(k>=Vh.Th.nt && k <Vh.Th.nt + Vh.Th.NbMortars);
    VVh->tom->ConsTheSubMortar(*this);}
-
+#endif
  R TypeOfFE::operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const
   {
    R v[10000],vf[1000];
@@ -1653,6 +1658,7 @@ void TypeOfMortarCas1::ConstructionOfNode(const Mesh &Th,int im,int * NodesOfEle
   }
 
 static TypeOfFE_P1Lagrange P1LagrangeP1;
+#ifndef kame
 static TypeOfFE_P0VF VFP0VF;
 static TypeOfFE_P1Bubble P1BubbleP1;
 static TypeOfFE_P2Lagrange P2LagrangeP2;
@@ -1661,10 +1667,13 @@ static TypeOfFE_P2bLagrange P2bLagrangeP2;
 TypeOfFE  & P2Lagrange(P2LagrangeP2);
 TypeOfFE  & P2bLagrange(P2bLagrangeP2);
 TypeOfFE  & P1Bubble(P1BubbleP1);
+#endif
 TypeOfFE  & P1Lagrange(P1LagrangeP1);
+#ifndef kame
 TypeOfFE  & P0VF(VFP0VF);
-
+#endif
 static ListOfTFE typefemP1("P1", &P1LagrangeP1);
+#ifndef kame
 static ListOfTFE typefemP0VF("P0VF", &P0VF);  //
 static ListOfTFE typefemP1b("P1b", &P1BubbleP1);
 static ListOfTFE typefemP2("P2", &P2LagrangeP2);
@@ -1680,12 +1689,12 @@ static  ListOfTFE typefemRTOrtho("RT0Ortho", &RTLagrangeOrtho);
  static ListOfTFE typefemP2b("P2b", &P2bLagrangeP2);
 
  static ListOfTFE typefemP0edge("P0edge", &P0edge);
-
+#endif
 // correct Probleme of static library link with new make file
 void init_static_FE()
 { //  list of other FE file.o
    extern void init_FE_P2h() ;
   init_FE_P2h() ;
 }
-#endif
+
 } // fin de namespace Fem2D

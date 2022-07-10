@@ -158,9 +158,6 @@
     <ClCompile Include="..\src\fflib\environment.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp">
       <Filter>ソース ファイル\src\Graphics</Filter>
     </ClCompile>
@@ -247,6 +244,18 @@
     </ClCompile>
     <ClCompile Include="..\src\bamglib\SetOfE4.cpp">
       <Filter>ソース ファイル\src\bamglib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\Element_P2h.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main_kame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\test.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="src\a_tutorial.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
