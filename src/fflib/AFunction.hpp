@@ -2215,9 +2215,7 @@ template<class T>
    ~Block(); //{}
     int nIdWithDelete() const { return table.nIdWithDelete;}
 
-	static Block * &getCurrentBlock() { return currentBlock; }
 private:
-	static Block *currentBlock;
 }; 
 
 

@@ -769,7 +769,7 @@ AnyType E_Routine::operator()(Stack s)  const  {
    return ret;
 }
 
-//KAME extern Block *currentblock;// def in lg.ypp
+extern Block *currentBlock;// def in lg.ypp
 void ListOfInst::Add(const C_F0 & ins) {
     if( (!ins.Empty()) ) {
         if( verbosity > 9999 )
@@ -792,7 +792,7 @@ void ListOfInst::Add(const C_F0 & ins) {
         }
         throwassert(list);
         linenumber[n]= TheCurrentLine;
-        lsldel[n]=Block::getCurrentBlock()->nIdWithDelete();
+        lsldel[n]=currentBlock->nIdWithDelete();
         list[n++] = ins;
     } 
 }

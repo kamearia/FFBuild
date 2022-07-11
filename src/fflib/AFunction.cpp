@@ -135,8 +135,6 @@ long storagetotal()
 #endif
 }
 
-Block *Block::currentBlock = 0;
-
 // end add mach 2014 ...
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type

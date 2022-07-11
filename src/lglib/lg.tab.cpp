@@ -303,8 +303,8 @@ Block * routineinblock[nbembtype]; // Add FH july 2005 pb clean on return
 int kkembtype=-1;
 int inloopcount=0;
 
-/// <<Block::getCurrentBlock()>> Block class from [[file:../fflib/AFunction.hpp::Block]]
-//Block *Block::getCurrentBlock();
+/// <<currentBlock>> Block class from [[file:../fflib/AFunction.hpp::Block]]
+Block *currentBlock=0;
 
 // Add FH july 2005
 //  problem clean variable after break,continue and return.
@@ -2249,11 +2249,11 @@ yyreduce:
             if(ThePlotStream) ffapi::fwriteinit(magicffglut,strlen(magicffglut),1,ThePlotStream);
 
                         // <<sizestack_set>>
-			size_t sizestack = Block::getCurrentBlock()->size()+1024 ; //  before close
+			size_t sizestack = currentBlock->size()+1024 ; //  before close
 
                         // <<close_final_block>>
-                       // $1+=Block::getCurrentBlock()->close(Block::getCurrentBlock());
-			(yyvsp[(1) - (2)].cinst).setclose(Block::snewclose(Block::getCurrentBlock()));// Sep 2016 FH
+                       // $1+=currentBlock->close(currentBlock);
+			(yyvsp[(1) - (2)].cinst).setclose(Block::snewclose(currentBlock));// Sep 2016 FH
 
 			if(verbosity>2 || ( (mpirank==0) && verbosity)) cout << " sizestack + 1024 =" << sizestack << "  ( " << sizestack-1024 <<" )\n" ;
             size_t lg0,lg1;
@@ -2475,17 +2475,17 @@ yyreduce:
 
   case 41:
 //#line 448 "lg.ypp"
-    {(yyval.cexp)=Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(1) - (1)].str),dcltype);;}
+    {(yyval.cexp)=currentBlock->NewVar<LocalVariable>((yyvsp[(1) - (1)].str),dcltype);;}
     break;
 
   case 42:
 //#line 449 "lg.ypp"
-    {(yyval.cexp)=Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(1) - (3)].str),dcltype,(yyvsp[(3) - (3)].cexp));;}
+    {(yyval.cexp)=currentBlock->NewVar<LocalVariable>((yyvsp[(1) - (3)].str),dcltype,(yyvsp[(3) - (3)].cexp));;}
     break;
 
   case 43:
 //#line 450 "lg.ypp"
-    {(yyval.cexp)=Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(1) - (4)].str),dcltype,(yyvsp[(3) - (4)].args));(yyvsp[(3) - (4)].args).destroy();;}
+    {(yyval.cexp)=currentBlock->NewVar<LocalVariable>((yyvsp[(1) - (4)].str),dcltype,(yyvsp[(3) - (4)].args));(yyvsp[(3) - (4)].args).destroy();;}
     break;
 
   case 44:
@@ -2575,42 +2575,42 @@ yyreduce:
 #ifndef kame
   case 62:
 //#line 479 "lg.ypp"
-    { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (1)].str),Block::getCurrentBlock(),fespacetype,fespacecomplex,fespacedim); ;}
+    { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (1)].str),currentBlock,fespacetype,fespacecomplex,fespacedim); ;}
     break;
 
   case 63:
 //#line 480 "lg.ypp"
-    { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),Block::getCurrentBlock(),fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}
+    { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),currentBlock,fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}
     break;
 
   case 64:
 //#line 481 "lg.ypp"
-    { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (3)].str),Block::getCurrentBlock(),fespacetype,(yyvsp[(3) - (3)].cexp),fespacecomplex,fespacedim);;}
+    { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (3)].str),currentBlock,fespacetype,(yyvsp[(3) - (3)].cexp),fespacecomplex,fespacedim);;}
     break;
 
   case 65:
 //#line 482 "lg.ypp"
-    { (yyval.cexp) =  NewFEvariable((yyvsp[(2) - (3)].clist_id),Block::getCurrentBlock(),fespacetype,fespacecomplex,fespacedim);;}
+    { (yyval.cexp) =  NewFEvariable((yyvsp[(2) - (3)].clist_id),currentBlock,fespacetype,fespacecomplex,fespacedim);;}
     break;
 
   case 66:
 //#line 483 "lg.ypp"
-    { (yyval.cexp) =  NewFEarray((yyvsp[(2) - (6)].clist_id),Block::getCurrentBlock(),fespacetype,(yyvsp[(5) - (6)].cexp),fespacecomplex,fespacedim);;}
+    { (yyval.cexp) =  NewFEarray((yyvsp[(2) - (6)].clist_id),currentBlock,fespacetype,(yyvsp[(5) - (6)].cexp),fespacecomplex,fespacedim);;}
     break;
 
   case 67:
 //#line 484 "lg.ypp"
-    { (yyval.cexp) =  NewFEvariable((yyvsp[(2) - (5)].clist_id),Block::getCurrentBlock(),fespacetype,(yyvsp[(5) - (5)].cexp),fespacecomplex,fespacedim);;}
+    { (yyval.cexp) =  NewFEvariable((yyvsp[(2) - (5)].clist_id),currentBlock,fespacetype,(yyvsp[(5) - (5)].cexp),fespacecomplex,fespacedim);;}
     break;
 
   case 68:
 //#line 488 "lg.ypp"
-    { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),Block::getCurrentBlock(),fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}
+    { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),currentBlock,fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}
     break;
 
   case 69:
 //#line 489 "lg.ypp"
-    { (yyval.cexp) =  NewFEarray((yyvsp[(2) - (6)].clist_id),Block::getCurrentBlock(),fespacetype,(yyvsp[(5) - (6)].cexp),fespacecomplex,fespacedim);;}
+    { (yyval.cexp) =  NewFEarray((yyvsp[(2) - (6)].clist_id),currentBlock,fespacetype,(yyvsp[(5) - (6)].cexp),fespacecomplex,fespacedim);;}
     break;
 #endif
   case 70:
@@ -2683,7 +2683,7 @@ yyreduce:
 #ifndef kame
   case 83:
 //#line 518 "lg.ypp"
-    {(yyval.cexp)=Block::getCurrentBlock()->NewVar<LocalVariableFES,size_t>((yyvsp[(1) - (4)].str),typeFESpace((yyvsp[(3) - (4)].args)),(yyvsp[(3) - (4)].args),dimFESpaceImage((yyvsp[(3) - (4)].args)));
+    {(yyval.cexp)=currentBlock->NewVar<LocalVariableFES,size_t>((yyvsp[(1) - (4)].str),typeFESpace((yyvsp[(3) - (4)].args)),(yyvsp[(3) - (4)].args),dimFESpaceImage((yyvsp[(3) - (4)].args)));
      (yyvsp[(3) - (4)].args).destroy(); ;}
     break;
 #endif
@@ -2714,7 +2714,7 @@ yyreduce:
 
   case 90:
 //#line 528 "lg.ypp"
-    {(yyval.cexp)=Block::getCurrentBlock()->NewID((yyvsp[(1) - (5)].type),(yyvsp[(2) - (5)].str),(yyvsp[(4) - (5)].cexp));;}
+    {(yyval.cexp)=currentBlock->NewID((yyvsp[(1) - (5)].type),(yyvsp[(2) - (5)].str),(yyvsp[(4) - (5)].cexp));;}
     break;
 
   case 91:
@@ -2722,8 +2722,8 @@ yyreduce:
     {   /* use the stack to store the prev return type*/
                       assert(kkembtype+1<nbembtype);
                       rettype[++kkembtype] = (yyvsp[(2) - (6)].type)->right();
-                      routineinblock[kkembtype] = Block::getCurrentBlock();
-                      (yyvsp[(5) - (6)].routine)=new Routine((yyvsp[(1) - (6)].type),(yyvsp[(2) - (6)].type)->right(),(yyvsp[(3) - (6)].str),(yyvsp[(5) - (6)].clist_id),Block::getCurrentBlock());
+                      routineinblock[kkembtype] = currentBlock;
+                      (yyvsp[(5) - (6)].routine)=new Routine((yyvsp[(1) - (6)].type),(yyvsp[(2) - (6)].type)->right(),(yyvsp[(3) - (6)].str),(yyvsp[(5) - (6)].clist_id),currentBlock);
 		      // routineinblock[kkembtype]->Add($3,"(",$<routine>5); //pas recursif pour l'instanat test  FH 27 dec 2008
                      // cout << " \n after new routine \n " << endl;
                       ;}
@@ -2731,8 +2731,8 @@ yyreduce:
 #ifndef kame
   case 92:
 //#line 539 "lg.ypp"
-    { Block::getCurrentBlock()=(yyvsp[(5) - (10)].routine)->Set((yyvsp[(9) - (10)].cinst));
-                       Block::getCurrentBlock()->Add((yyvsp[(3) - (10)].str),"(",(yyvsp[(5) - (10)].routine)); //pas recursif pour l'instant test  FH 27 dec 2008
+    { currentBlock=(yyvsp[(5) - (10)].routine)->Set((yyvsp[(9) - (10)].cinst));
+                       currentBlock->Add((yyvsp[(3) - (10)].str),"(",(yyvsp[(5) - (10)].routine)); //pas recursif pour l'instant test  FH 27 dec 2008
                        kkembtype--;
                        (yyval.cexp)=0;
 
@@ -2741,45 +2741,45 @@ yyreduce:
 
   case 93:
 //#line 546 "lg.ypp"
-    {Block::open(Block::getCurrentBlock()); (yyvsp[(1) - (5)].type)->SetArgs((yyvsp[(4) - (5)].clist_id));;}
+    {Block::open(currentBlock); (yyvsp[(1) - (5)].type)->SetArgs((yyvsp[(4) - (5)].clist_id));;}
     break;
 
   case 94:
 //#line 548 "lg.ypp"
-    {  //$<cinst>$=Block::getCurrentBlock()->close(Block::getCurrentBlock());
-                         (yyval.cinst).setclose(Block::snewclose(Block::getCurrentBlock()));// Sep 2016 FH.
-                         (yyval.cexp)=Block::getCurrentBlock()->NewID((yyvsp[(1) - (9)].type),(yyvsp[(2) - (9)].str),(yyvsp[(8) - (9)].cexp),*(yyvsp[(4) - (9)].clist_id));
+    {  //$<cinst>$=currentBlock->close(currentBlock);
+                         (yyval.cinst).setclose(Block::snewclose(currentBlock));// Sep 2016 FH.
+                         (yyval.cexp)=currentBlock->NewID((yyvsp[(1) - (9)].type),(yyvsp[(2) - (9)].str),(yyvsp[(8) - (9)].cexp),*(yyvsp[(4) - (9)].clist_id));
                          delete (yyvsp[(4) - (9)].clist_id); //  FH 23032005
                          ;}
     break;
 #endif
   case 95:
 //#line 555 "lg.ypp"
-    {  Block::open(Block::getCurrentBlock());;}
+    {  Block::open(currentBlock);;}
     break;
 
   case 96:
 //#line 556 "lg.ypp"
-    { (yyval.endb)=Block::snewclose(Block::getCurrentBlock());
-//  $$=Block::getCurrentBlock()->close(Block::getCurrentBlock());
+    { (yyval.endb)=Block::snewclose(currentBlock);
+//  $$=currentBlock->close(currentBlock);
 ;}
     break;
 
   case 97:
 //#line 560 "lg.ypp"
     {ffassert(inloopcount<sizeStackOfLoop);  // modif FH july 2005
-                StackOfLoop[inloopcount++]=Block::getCurrentBlock();;}
+                StackOfLoop[inloopcount++]=currentBlock;;}
     break;
 
   case 98:
 //#line 562 "lg.ypp"
     {ffassert(inloopcount<sizeStackOfLoop);
-                StackOfLoop[inloopcount++]=Block::getCurrentBlock();;}
+                StackOfLoop[inloopcount++]=currentBlock;;}
     break;
 
   case 99:
 //#line 566 "lg.ypp"
-    {dcltype=(yyvsp[(1) - (1)].type); Block::open(Block::getCurrentBlock());  ;}
+    {dcltype=(yyvsp[(1) - (1)].type); Block::open(currentBlock);  ;}
     break;
 
   case 100:
@@ -2789,22 +2789,22 @@ yyreduce:
 
   case 101:
 //#line 569 "lg.ypp"
-    { Block::open(Block::getCurrentBlock());;}
+    { Block::open(currentBlock);;}
     break;
 
   case 102:
 //#line 571 "lg.ypp"
-    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (1)].str)));Block::open(Block::getCurrentBlock()); ;}
+    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (1)].str)));Block::open(currentBlock); ;}
     break;
 
   case 103:
 //#line 572 "lg.ypp"
-    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (3)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(3) - (3)].str)));Block::open(Block::getCurrentBlock()); ;}
+    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (3)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(3) - (3)].str)));Block::open(currentBlock); ;}
     break;
 
   case 104:
 //#line 573 "lg.ypp"
-    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (5)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(3) - (5)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(5) - (5)].str)));Block::open(Block::getCurrentBlock()); ;}
+    { (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(1) - (5)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(3) - (5)].str)));(yyval.clist_id)->push_back(UnId((yyvsp[(5) - (5)].str)));Block::open(currentBlock); ;}
     break;
 
   case 105:
@@ -2824,7 +2824,7 @@ yyreduce:
 #endif
   case 108:
 //#line 578 "lg.ypp"
-    {(yyval.cexp)=Try((yyvsp[(3) - (5)].cinst),Block::getCurrentBlock()->close(Block::getCurrentBlock(),(yyvsp[(5) - (5)].cexp)));;}
+    {(yyval.cexp)=Try((yyvsp[(3) - (5)].cinst),currentBlock->close(currentBlock,(yyvsp[(5) - (5)].cexp)));;}
     break;
 
   case 109:
@@ -2839,14 +2839,14 @@ yyreduce:
 
   case 111:
 //#line 582 "lg.ypp"
-    {(yyvsp[(5) - (6)].cexp)=ForAll(Block::getCurrentBlock(),(yyvsp[(3) - (6)].clist_id),(yyvsp[(5) - (6)].cexp));;}
+    {(yyvsp[(5) - (6)].cexp)=ForAll(currentBlock,(yyvsp[(3) - (6)].clist_id),(yyvsp[(5) - (6)].cexp));;}
     break;
 
   case 112:
 //#line 583 "lg.ypp"
     {
                     inloopcount--;
-                    (yyval.cexp)=Block::close(Block::getCurrentBlock(),C_F0(ForAll((yyvsp[(5) - (8)].cexp),(yyvsp[(8) - (8)].cexp))));
+                    (yyval.cexp)=Block::close(currentBlock,C_F0(ForAll((yyvsp[(5) - (8)].cexp),(yyvsp[(8) - (8)].cexp))));
                  ;}
     break;
 
@@ -2858,7 +2858,7 @@ yyreduce:
   case 114:
 //#line 589 "lg.ypp"
     {inloopcount--;
-                 (yyval.cexp)=Block::close(Block::getCurrentBlock(),C_F0(For((yyvsp[(3) - (9)].cexp),(yyvsp[(5) - (9)].cexp),(yyvsp[(7) - (9)].cexp),(yyvsp[(9) - (9)].cexp))));
+                 (yyval.cexp)=Block::close(currentBlock,C_F0(For((yyvsp[(3) - (9)].cexp),(yyvsp[(5) - (9)].cexp),(yyvsp[(7) - (9)].cexp),(yyvsp[(9) - (9)].cexp))));
                 ;}
     break;
 
@@ -2889,13 +2889,13 @@ yyreduce:
   case 119:
 //#line 600 "lg.ypp"
     { /* <<BORDER_ID>> */
-                      (yyval.cexp)=0;Block::getCurrentBlock()->NewID(atype<const E_Border *>(),(yyvsp[(2) - (3)].str),C_F0(TheOperators,"[border]",(yyvsp[(3) - (3)].args)));;}
+                      (yyval.cexp)=0;currentBlock->NewID(atype<const E_Border *>(),(yyvsp[(2) - (3)].str),C_F0(TheOperators,"[border]",(yyvsp[(3) - (3)].args)));;}
     break;
 
   case 120:
 //#line 602 "lg.ypp"
     {
-                      (yyval.cexp)=0;Block::getCurrentBlock()->NewID(atype<const E_Border *>(),(yyvsp[(2) - (6)].str),C_F0(TheOperators,"[border]",(yyvsp[(4) - (6)].args)));;}
+                      (yyval.cexp)=0;currentBlock->NewID(atype<const E_Border *>(),(yyvsp[(2) - (6)].str),C_F0(TheOperators,"[border]",(yyvsp[(4) - (6)].args)));;}
     break;
 
   case 121:
@@ -2930,28 +2930,28 @@ yyreduce:
   case 125:
 //#line 623 "lg.ypp"
     {
-   Block::open(Block::getCurrentBlock());
-   (yyval.args) = Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(2) - (7)].str),atype<double*>());
+   Block::open(currentBlock);
+   (yyval.args) = currentBlock->NewVar<LocalVariable>((yyvsp[(2) - (7)].str),atype<double*>());
    (yyval.args)+= (yyvsp[(4) - (7)].cexp);
    (yyval.args)+= (yyvsp[(6) - (7)].cexp);
-   (yyval.args)+= Block::getCurrentBlock()->NewVar<LocalVariable>("IndexBorder",atype<long*>());;}
+   (yyval.args)+= currentBlock->NewVar<LocalVariable>("IndexBorder",atype<long*>());;}
     break;
 
   case 126:
 //#line 631 "lg.ypp"
     {
-    Block::open(Block::getCurrentBlock());
-    (yyval.args) = Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(2) - (9)].str),atype<double*>());
+    Block::open(currentBlock);
+    (yyval.args) = currentBlock->NewVar<LocalVariable>((yyvsp[(2) - (9)].str),atype<double*>());
     (yyval.args)+= (yyvsp[(4) - (9)].cexp);
     (yyval.args)+= (yyvsp[(6) - (9)].cexp);
-    (yyval.args)+= Block::getCurrentBlock()->NewVar<LocalVariable>((yyvsp[(8) - (9)].str),atype<long*>());;}
+    (yyval.args)+= currentBlock->NewVar<LocalVariable>((yyvsp[(8) - (9)].str),atype<long*>());;}
     break;
 
   case 127:
 //#line 639 "lg.ypp"
     {
-    //Block::getCurrentBlock()->close(Block::getCurrentBlock(););
-   (yyval.args) = ((yyvsp[(1) - (2)].args) += Block::getCurrentBlock()->close(Block::getCurrentBlock(),(yyvsp[(2) - (2)].cexp)));
+    //currentBlock->close(currentBlock;);
+   (yyval.args) = ((yyvsp[(1) - (2)].args) += currentBlock->close(currentBlock,(yyvsp[(2) - (2)].cexp)));
    ;}
     break;
 
@@ -3634,11 +3634,11 @@ int Compile()
   /// plglval is allocated at [[file:../fflib/global.cpp::plglval]]
   plglval = &lglval;
 
-  // <<initialize_Block::getCurrentBlock()>>
+  // <<initialize_currentBlock>>
 
-  Block::getCurrentBlock()=0;
+  currentBlock=0;
 
-  Block::open(Block::getCurrentBlock());
+  Block::open(currentBlock);
 
 	try {
 		UnShowAlloc =0;
@@ -3646,7 +3646,7 @@ int Compile()
 		retvalue=yyparse(); // grammar analysis starting from [[start_symbol]]
 
 		if(retvalue==0){
-			if(Block::getCurrentBlock())
+			if(currentBlock)
 				{retvalue=1; if(!mpirank) cerr <<  "Error:a block is not close" << endl; }
 			else {
 				if( verbosity  ) {
@@ -3854,7 +3854,7 @@ int mainff (int  argc, char **argv)
   //if(end_parallele) end_parallele();
   ff_finalize();
 
-  //  Block::getCurrentBlock()->close(Block::getCurrentBlock()).eval(thestack);
+  //  currentBlock->close(currentBlock).eval(thestack);
  // fingraphique();
   // FFCS: divert stream to FFCS
   if(ThePlotStream){
