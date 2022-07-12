@@ -51,10 +51,10 @@ namespace Fem2D {
   #include "R1.hpp"
   #include "R2.hpp"
   #include "R3.hpp"
-
+#ifndef kame
   inline void MoveTo(R2 P) { rmoveto((float) P.x, (float)P.y); }
   inline void LineTo(R2 P) { rlineto((float)P.x, (float)P.y); }
-
+#endif
   inline R Area2(const R2 A, const R2 B, const R2 C) { return (B-A)^(C-A); }
   inline R3 Area3(const R3 A, const R3 B, const R3 C) { return (B-A)^(C-A); }
   inline R Theta(R2 P) { return atan2(P.y, P.x); }

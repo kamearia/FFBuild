@@ -279,7 +279,7 @@ class SaveMesh :  public E_F0 { public:
       yy=0;
       zz=0;
       args.SetNameParam();
-      getmesh=to<pmesh>(args[0]);
+      getmesh=to<pmesh *>(args[0]);
       filename=to<string*>(args[1]);
       if (args.size() >2)
         {
@@ -1494,7 +1494,7 @@ basicAC_F0::name_and_type  MeshCarre2f::name_param[]= {
 {
    ExecError("Mesh IO Error ");
 }
-#ifndef kame
+
 
 inline pmesh *  initMesh(pmesh * const & p, string * const & s) {
   Mesh * m;
@@ -1503,6 +1503,7 @@ inline pmesh *  initMesh(pmesh * const & p, string * const & s) {
   return p;
  }
 
+#ifndef kame
 class CheckMoveMesh :  public E_F0mps { public:
 
    typedef double  Result;
@@ -2008,10 +2009,10 @@ void init_lgmesh() {
   Global.Add("emptymesh","(",new OneOperator2_<pmesh,pmesh,KN<long> *, E_F_F0F0_Add2RC<pmesh,pmesh,KN<long>*> >(EmptyTheMesh));
   Global.Add("triangulate","(",new OneOperator1_<pmesh,string*, E_F_F0_Add2RC<pmesh,string*> >(ReadTriangulate));
   Global.Add("triangulate","(",new OneOperator2_<pmesh,KN_<double>,KN_<double>,E_F_F0F0_Add2RC<pmesh,KN_<double>,KN_<double>,E_F0> >(Triangulate));
-
+#endif
   TheOperators->Add("<-",
 		    new OneOperator2_<pmesh*,pmesh*,string* >(&initMesh));
-
+#ifndef kame
     // Thg,suppi[],nnn,unssd[]
   Global.Add("AddLayers","(",new OneOperator4_<bool,const Mesh * , KN<double> * , long ,KN<double> * >(AddLayers));
   Global.Add("SameMesh","(",new OneOperator2_<bool,const Mesh * ,const  Mesh * >(SameMesh));

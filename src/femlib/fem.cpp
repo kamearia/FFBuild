@@ -667,7 +667,7 @@ void Mesh::ConsAdjacence()
 		    Pmax.y = Max(Pmax.y,P.y);
 		}
 	    }
-#ifndef kame
+
     void Mesh::read(const char * filename)
     {
 	ifstream f(filename);
@@ -729,7 +729,7 @@ void Mesh::ConsAdjacence()
 	    cout << "   End of read: area on mesh = " << area <<endl;
 	ConsAdjacence();
     }
-#endif
+
 	    Mesh::Mesh(int nbv,int nbt,int nbeb,Vertex *v,Triangle *t,BoundaryEdge  *b)
              :dfb(0)
 	    {

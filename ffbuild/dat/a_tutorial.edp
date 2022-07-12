@@ -2,20 +2,20 @@
 // simple example: -\Delta(u) = 1 in the unit cercle with u=0 on the
 // border of the unit cercle. This problem has an analytical solution
 // u = (1-x^2-y^2)/4
-
+verbosity=1000;
 // Mesh
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
-
-//mesh disk = buildmesh(a(50));
+mesh disk= buildmesh(a(50));
 //savemesh(disk, "mesh.dat");
-savemesh(buildmesh(a(50)), "mesh.dat");
-end;
+//savemesh(buildmesh(a(50)), "mesh.dat");
+//end;
 
-plot(disk);
+//plot(disk);
 
 // Fespace
 fespace femp1(disk, P1);
+end;
 femp1 u, v;
 
 // Problem

@@ -259,16 +259,16 @@ extern void closegraphique(void);
 #endif
 
 #include "AFunction.hpp"
-#ifndef kame
 //  to reserve space to graphical pointer function
+#ifndef kame
 #include "rgraph.hpp"
+#endif
 #include "fem.hpp"
 #include "FESpacen.hpp"
 #include "FESpace.hpp"
 #include "MeshPoint.hpp"
-
 #include "lgfem.hpp"
-
+#ifndef kame
 #include "lex.hpp"
 #include "environment.hpp"
 #endif
@@ -2680,13 +2680,13 @@ yyreduce:
 //#line 514 "lg.ypp"
     { (yyval.cexp)=0;  (yyval.cexp) = (yyvsp[(5) - (5)].cexp);;}
     break;
-#ifndef kame
+
   case 83:
 //#line 518 "lg.ypp"
     {(yyval.cexp)=currentBlock->NewVar<LocalVariableFES,size_t>((yyvsp[(1) - (4)].str),typeFESpace((yyvsp[(3) - (4)].args)),(yyvsp[(3) - (4)].args),dimFESpaceImage((yyvsp[(3) - (4)].args)));
      (yyvsp[(3) - (4)].args).destroy(); ;}
     break;
-#endif
+
   case 85:
 //#line 522 "lg.ypp"
     {(yyval.cexp)=C_F0((yyvsp[(1) - (3)].cexp),(yyvsp[(3) - (3)].cexp));;}

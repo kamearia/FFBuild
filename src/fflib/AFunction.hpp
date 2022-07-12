@@ -1513,7 +1513,9 @@ AnyType TTry(Stack s ,E_F0 * i0,E_F0 * i1,E_F0 * i2,E_F0 * notuse);
 extern TableOfIdentifier Global;
 
 template<class T> 
-inline C_F0 to(const C_F0 & a) { return map_type[typeid(T).name()]->CastTo(a);}
+inline C_F0 to(const C_F0 & a) { 
+	return map_type[typeid(T).name()]->CastTo(a);
+}
 
 
 /*
@@ -1919,7 +1921,7 @@ inline Type_Expr  NewVariable(aType t,size_t &off)
    off += t->un_ptr_type->size; // correction 16/09/2003 merci ÅERichard MICHEL
    return  Type_Expr(t,new T(o,t));
 } 
-#ifndef kame
+
 template<class T>
 inline Type_Expr  NewVariable(aType t,size_t &off,const basicAC_F0 &args) 
 { 
@@ -1936,7 +1938,7 @@ inline Type_Expr  NewVariable(aType t,size_t &off,const U & data)
    return  Type_Expr(t,new T(o,t,data));
 }
 //extern int NbNewVarWithDel; // def in global.cpp sep 2016 FH.
-#endif
+
 template<class T>   
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const C_F0 &i) 
    {
@@ -2195,11 +2197,11 @@ template<class T>
       topmax=Max(topmax,top);
       return r;}
 
- static   Block * open(Block *& c);
-   static  vectorOfInst * snewclose(Block *& c);
+	static   Block * open(Block *& c);
+	static  vectorOfInst * snewclose(Block *& c);
    //vectorOfInst * newclose(Block *& c) ;// sep 2016 FH
     
- static  CC_F0  close(Block *& c,C_F0  );
+	static  CC_F0  close(Block *& c,C_F0  );
 
  static  CC_F0  close(Block *& c,CListOfInst  ); /* {
      tables_of_identifier.erase(itabl);      
@@ -3149,8 +3151,8 @@ inline 	 C_F0 basicForEachType::CastTo(const C_F0 & e) const
      ce = C_F0(e.RightValue(),tr);
      at = ce;
      return C_F0(opcast->code(at),this); }
-  else    
-      { cerr << "Impossible to cast " << *e.left() << " in " << *this << endl;
+  else    { 
+	  cerr << "Impossible to cast " << *e.left() << " in " << *this << endl;
            if (casting)  casting->Show(cerr)  ;
            CompileError();} 
  return C_F0();

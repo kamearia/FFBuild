@@ -43,7 +43,7 @@ extern long verbosity ;
 extern bool lockOrientation;
 
 namespace  Fem2D {
-#ifndef kame
+
  int  Make(const TypeOfFE ** t,int k,KN<R2> & P,KN<int> & I)
  {
    typedef  TypeOfFE::IPJ IPJ;
@@ -113,7 +113,7 @@ namespace  Fem2D {
   return yy(SubArray(kk));
 
  }
-#endif
+
 ListOfTFE * ListOfTFE::all ; // list of all object of this type
 
 void init_static_FE(); //   to correct so probleme with static Library FH aout 2004
@@ -131,7 +131,7 @@ ListOfTFE::ListOfTFE (const char * n,TypeOfFE *t) : name(n),tfe(t)
  //  to correct so probleme with static Library FH aout 2004
  init_static_FE();
 }
-#ifndef kame
+
 const TypeOfFE ** Make(const FESpace **l,int k) {
   const TypeOfFE** p=new const TypeOfFE*[k];
   for (int i=0;i<k;i++)
@@ -144,7 +144,7 @@ const TypeOfFE ** Make(const TypeOfFE **l,int k) {
     p[i]=l[i];
   return p;
 }
-
+#ifndef kame
 
 bool Same(const FESpace **l,int k)
 {
@@ -152,7 +152,7 @@ bool Same(const FESpace **l,int k)
     if (l[0] != l[i] ) return false;
    return true;
 }
-
+#endif
 class FESumConstruct { protected:
    const int k;
    const TypeOfFE ** teb;
@@ -169,7 +169,7 @@ class FESumConstruct { protected:
      delete [] comp;
      delete [] data;}
 };
-
+#ifndef kame
   void FElement::Pi_h(RN_ val,InterpolFunction f,R *v, void * arg=0) const {
    // routine: a  tester FH.
     FElement::aIPJ ipj(Pi_h_ipj());
@@ -192,7 +192,7 @@ class FESumConstruct { protected:
            val[ipj_i.i] += Aipj[i]*Vp(ipj_i.j,ipj_i.p);
           }
  }
-
+#endif
 class TypeOfFESum: public FESumConstruct, public  TypeOfFE { public:
    TypeOfFESum(const FESpace **t,int kk):
      FESumConstruct(kk,Make(t,kk)),TypeOfFE(teb,kk,data,data1) {}
@@ -421,7 +421,7 @@ FESumConstruct::FESumConstruct(int kk,const TypeOfFE **t)
 
   ffassert(c== 5*n+N);
 }
-#endif
+
 class TypeOfFE_P1Lagrange : public  TypeOfFE { public:
   static int Data[];
   static double Pi_h_coef[];
@@ -570,7 +570,7 @@ inline void dump(char *m,int n,int * p)
   cout << endl;
 }
 
-
+#endif
 
 ConstructDataFElement::~ConstructDataFElement()
 {
@@ -1028,7 +1028,7 @@ FESpace::FESpace(const Mesh & TTh,const TypeOfFE ** tef,int k,int nbdfv,const in
        renum();
     Show();
      }
-#endif
+
 void ConstructDataFElement::renum(const long *r,int l)
  {
    ffassert(this);
@@ -1046,7 +1046,7 @@ void ConstructDataFElement::renum(const long *r,int l)
        delete [] n;
     }
  }
-#ifndef kame
+
  void TypeOfFEProduit::FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat & PHat,RNMK_ & val) const
  {
    int n=teb.NbDoF;
@@ -1079,7 +1079,7 @@ void ConstructDataFElement::renum(const long *r,int l)
        v=val(SubArray(DF[j+1]-DF[j],DF[j]),SubArray(NN[j+1]-NN[j],NN[j]),t);
     }
  }
-#endif
+
  R TypeOfFE_P1Lagrange::operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const
 {
    R u0(u(K(0))), u1(u(K(1))), u2(u(K(2)));

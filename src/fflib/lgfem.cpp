@@ -352,7 +352,7 @@ class E_P_Stack_Label : public E_F0mps {
 
   operator aType( ) const { return atype< long * >( ); }
 };
-#ifndef kame
+
 class E_P_Stack_Mesh : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -362,7 +362,7 @@ class E_P_Stack_Mesh : public E_F0mps {
 
   operator aType( ) const { return atype< pmesh >( ); }
 };
-#endif
+
 class E_P_Stack_Nu_Triangle : public E_F0mps {
  public:
   AnyType operator( )(Stack s) const {
@@ -1662,11 +1662,12 @@ basicAC_F0::name_and_type OP_MakePtr3::Op::name_param[] = {"periodic", &typeid(E
 basicAC_F0::name_and_type OP_MakePtrS::Op::name_param[] = {"periodic", &typeid(E_Array)};
 
 basicAC_F0::name_and_type OP_MakePtrL::Op::name_param[] = {"periodic", &typeid(E_Array)};
-
+#endif
 inline pfes *MakePtr2(pfes *const &p, pmesh *const &a) {
   *p = new pfes_tef(a, &P1Lagrange);
   return p;
 }
+#ifndef kame
 
 inline pfes *MakePtr2(pfes *const &p, pfes *const &a, long const &n) {
   *p = new pfes_fes(a, n);
@@ -6138,18 +6139,20 @@ void init_lgfem( ) {
   Global.New(UMFPACK.c_str( ), CConstant< string * >(&UMFPACK));
   Global.New(sparsesolver.c_str( ), CConstant< string * >(&sparsesolver));
   Global.New(sparsesolverSym.c_str( ), CConstant< string * >(&sparsesolverSym));
-
+#endif
   // old --
   //  init FESpace
   TheOperators->Add(
-    "<-", new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2),
+	  "<-", new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2)); /*KAME , 
     new OneOperatorCode< OP_MakePtr2 >, new OneOperatorCode< OP_MakePtr3 >,
     new OneOperatorCode< OP_MakePtrS >, new OneOperatorCode< OP_MakePtrL >,
     new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk >,
     new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >,
     new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >,    // add for 3D surface  FEspace
-    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >);
+    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >); */
+#ifndef kame
   TheOperators->Add("=", new OneOperator2< R3 *, R3 *, R3 * >(&set_eqp,2));
+
 
   Add< MeshPoint * >("P", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::P));
   Add< MeshPoint * >("N", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::N));
@@ -6253,7 +6256,7 @@ void init_lgfem( ) {
   // [[file:lgfem.hpp::typedef Mesh pmesh]]
   // pmesh is a pointer to Mesh
 #endif
-  zzzfff->Add("mesh", atype< pmesh >( ));
+  zzzfff->Add("mesh", atype< pmesh *>( ));
 
   // pmesh3 is a pointer to Mesh3 defined at [[file:lgfem.hpp::typedef Mesh3 pmesh3]]
   zzzfff->Add("mesh3", atype< pmesh3 * >( ));
@@ -7197,7 +7200,7 @@ C_F0 NewFEvariable(const char *id, Block *currentblock, C_F0 &fespacetype, CC_F0
   lid->push_back(UnId(id));
   return NewFEvariable(lid, currentblock, fespacetype, init, cplx, dim);
 }
-#ifndef kame      
+     
 size_t dimFESpaceImage(const basicAC_F0 &args) {
   aType t_tfe = atype< TypeOfFE * >( );
   aType t_tfe3 = atype< TypeOfFE3 * >( );
@@ -7223,7 +7226,7 @@ size_t dimFESpaceImage(const basicAC_F0 &args) {
   dim23 = dim23 ? dim23 : 1;
   return dim23;
 }
-#endif
+
 aType typeFESpace(const basicAC_F0 &args) {
   aType t_m2 = atype< pmesh * >( );
   aType t_m3 = atype< pmesh3 * >( );
