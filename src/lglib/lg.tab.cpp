@@ -2683,8 +2683,14 @@ yyreduce:
 
   case 83:
 //#line 518 "lg.ypp"
-    {(yyval.cexp)=currentBlock->NewVar<LocalVariableFES,size_t>((yyvsp[(1) - (4)].str),typeFESpace((yyvsp[(3) - (4)].args)),(yyvsp[(3) - (4)].args),dimFESpaceImage((yyvsp[(3) - (4)].args)));
-     (yyvsp[(3) - (4)].args).destroy(); ;}
+	{
+		const char * str = yyvsp[(1) - (4)].str;
+		AC_F0 &args=yyvsp[(3) - (4)].args;
+		size_t dim = dimFESpaceImage(args);
+		aType type = typeFESpace(args);
+		(yyval.cexp)=currentBlock->NewVar<LocalVariableFES,size_t>(str, type, args, dim);
+		args.destroy(); ;
+	}
     break;
 
   case 85:

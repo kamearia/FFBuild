@@ -1961,8 +1961,7 @@ inline  C_F0 TableOfIdentifier::NewFESpace(Key k,aType t,size_t & top,const basi
 template<class T,class U>   
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const basicAC_F0 &args,const U & data) 
    {
- //       if( t-> ExistDestroy()) NbNewVarWithDel++;
- //      return C_F0(TheOperators,"<-",New(k,t->NewVar(top)),t->Find("<-",args));}
+		
         return C_F0(TheOperators,"<-",basicAC_F0_wa(New(k,NewVariable<T,U>(t,top,data)),args));}
    
 //inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const AC_F0 &args,const C_F0& ) 

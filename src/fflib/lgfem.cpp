@@ -1254,14 +1254,14 @@ FESpace *pfes_tef::update( ) {
     return new FESpace(**ppTh, *tef);
 }
 
-
+#endif
 struct OpMake_pfes_np {
   static const int n_name_param = 1;
   static basicAC_F0::name_and_type name_param[];
 };
 
 basicAC_F0::name_and_type OpMake_pfes_np::name_param[] = {"periodic", &typeid(E_Array)};
-#endif
+
 // by default, in DSL a FE is 2D, in the building of fespace, if mesh3-S used them associate the
 // corresponding FE mapping between TypeOfFE2 and TypeOfFES
 map< TypeOfFE *, TypeOfFE3 * > TEF2dto3d;
@@ -1317,7 +1317,7 @@ TypeOfFE *FindFE2(const char *s) {
   lgerror("FindFE2 ");
   return 0;
 }
-#ifndef kame
+
 typedef TypeOfFE TypeOfFE2;
 template< class pfes, class Mesh, class TypeOfFE, class pfes_tefk >
 struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
@@ -1412,8 +1412,10 @@ struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
   OpMake_pfes( )
     : OneOperator(atype< pfes * >( ), atype< pfes * >( ), atype< const Mesh ** >( ),
                   atype< E_Array >( )) {}
+//KAME				atype< Fem2D::TypeOfFE *  >()) {}
 };
 
+#ifndef kame
 inline pfes *MakePtr2(pfes *const &p, pmesh *const &a, TypeOfFE *const &tef) {
   *p = new pfes_tef(a, tef);
   return p;
@@ -1564,7 +1566,7 @@ class OP_MakePtrL {
     return ArrayOfaType(atype< Op::A >( ), atype< Op::B >( ), atype< Op::C >( ), false);
   }
 };
-
+#endif
 void GetPeriodic(const int d, Expression perio, int &nbcperiodic, Expression *&periodic) {
   ffassert(d==1 || d == 2 || d == 3);
   if (perio) {
@@ -1595,7 +1597,7 @@ void GetPeriodic(const int d, Expression perio, int &nbcperiodic, Expression *&p
       }
   }
 }
-
+#ifndef kame
 OP_MakePtr2::Op::Op(const basicAC_F0 &args)
   : a(to< A >(args[0])), b(to< B >(args[1])), c(to< C >(args[2])) {
   nbcperiodic = 0;
@@ -1627,6 +1629,7 @@ OP_MakePtrL::Op::Op(const basicAC_F0 &args)
   args.SetNameParam(n_name_param, name_param, nargs);
   GetPeriodic(1, nargs[0], nbcperiodic, periodic);
 }
+#endif
 int GetPeriodic(Expression bb, Expression &b) {
   const E_Array *a = dynamic_cast< const E_Array * >(bb);
   if (a && a->size( ) == 1) {
@@ -1654,7 +1657,7 @@ int GetPeriodic(Expression bb, Expression &b, Expression &f1, Expression &f2) {
   } else
     return 0;
 }
-
+#ifndef kame
 basicAC_F0::name_and_type OP_MakePtr2::Op::name_param[] = {"periodic", &typeid(E_Array)};
 
 basicAC_F0::name_and_type OP_MakePtr3::Op::name_param[] = {"periodic", &typeid(E_Array)};
@@ -6143,13 +6146,13 @@ void init_lgfem( ) {
   // old --
   //  init FESpace
   TheOperators->Add(
-	  "<-", new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2)); /*KAME , 
+	  "<-", /*KAME  new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2));  , 
     new OneOperatorCode< OP_MakePtr2 >, new OneOperatorCode< OP_MakePtr3 >,
     new OneOperatorCode< OP_MakePtrS >, new OneOperatorCode< OP_MakePtrL >,
-    new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk >,
+ */   new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk >/*,
     new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >,
     new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >,    // add for 3D surface  FEspace
-    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >); */
+    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >*/);
 #ifndef kame
   TheOperators->Add("=", new OneOperator2< R3 *, R3 *, R3 * >(&set_eqp,2));
 
