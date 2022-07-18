@@ -1325,14 +1325,15 @@ struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
    public:
     Expression eppTh;
     Expression eppfes;
-    const E_Array &atef;
+	const E_F0 *epType;
+ //   const E_Array &atef;
     int nb;
     int nbcperiodic;
     Expression *periodic;
     KN< int > tedim;
-    Op(Expression ppfes, Expression ppTh, const E_Array &aatef, int nbp, Expression *pr,
+    Op(Expression ppfes, Expression ppTh, const E_F0 *ppType, const E_Array &aatef, int nbp, Expression *pr,
        KN< int > &ttedim)
-      : eppTh(ppTh), eppfes(ppfes), atef(aatef), nbcperiodic(nbp), periodic(pr), tedim(ttedim) {}
+      : eppTh(ppTh), eppfes(ppfes), epType(ppType),/* atef(aatef),*/ nbcperiodic(nbp), periodic(pr), tedim(ttedim) {}
     ~Op( ) {
       if (periodic) delete[] periodic;
     }
@@ -1349,70 +1350,88 @@ struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
 
       const Mesh **ppTh = GetAny< const Mesh ** >((*eppTh)(s));
       AnyType r = (*eppfes)(s);
-      const TypeOfFE **tef = new const TypeOfFE *[atef.size( )];
-        for (int i = 0; i < atef.size( ); i++)
+	  aType ttfe= epType->operator aType();
+	  const EConstantTypeOfFE *ec = dynamic_cast<const EConstantTypeOfFE *> (epType);
+	  int N = ec->nbitem();
+	  const TypeOfFE **tef = new const TypeOfFE *[N];
+
+        for (int i = 0; i < N; i++)
         {
          // verif  type atef[i]  coorection mars 2022 ..
-         aType  ttfe =atef[i].left();
+//         aType  ttfe =atef[i].left();
          ffassert( ttfe == t_tfe || t_tfe2) ;
          if(verbosity>9) cout << "OpMake_pfes_np :: " << i << " " << (tedim[i] == dHat && d==dfe) << " " << tedim[i]
                                                                         << dHat << d << dfe
                 << " " << typeid(TypeOfFE).name() << endl;
+		 bool b = true;
+		 if (ttfe == t_tfe) // good  type no converstion
 
-        if (ttfe == t_tfe) // good  type no converstion
-          tef[i] = GetAny< TypeOfFE * >(atef[i].eval(s));
+          tef[i] = GetAny< TypeOfFE * >(epType->eval(s, b));
+/*
         else if (tedim[i] == 2 && d==3 && dHat == 3)
           tef[i] = GetAny< TypeOfFE * >(TypeOfFE3to2(s, atef[i].eval(s)));
         else if (tedim[i] == 2 && d==3 && dHat == 2)
           tef[i] = GetAny< TypeOfFE * >(TypeOfFESto2(s, atef[i].eval(s)));
         else if (tedim[i] == 2 && d==3 && dHat == 1)
           tef[i] = GetAny< TypeOfFE * >(TypeOfFELto2(s, atef[i].eval(s)));
+*/
         else
           ffassert(0);
+
         }
       
       pfes *ppfes = GetAny< pfes * >(r);
-      bool same = true;
-      for (int i = 1; i < atef.size( ); i++) same &= atef[i].LeftValue( ) == atef[1].LeftValue( );
-      *ppfes = new pfes_tefk(ppTh, tef, atef.size( ), s, nbcperiodic, periodic);
-      return r;
+ //     bool same = true;
+//      for (int i = 1; i < atef.size( ); i++) same &= atef[i].LeftValue( ) == atef[1].LeftValue( );
+      *ppfes = new pfes_tefk(ppTh, tef, N, s, nbcperiodic, periodic);
+ 
+	return r;
+
     }
   };
 
   E_F0 *code(const basicAC_F0 &args) const {
-    int nbcperiodic = 0;
-    Expression *periodic = 0;
-    Expression nargs[n_name_param];
+	  int nbcperiodic = 0;
+	  Expression *periodic = 0;
+	  Expression nargs[n_name_param];
 
-    args.SetNameParam(n_name_param, name_param, nargs);
-      const int d = TypeOfFE::RdHat::d;
-    GetPeriodic(Mesh::RdHat::d, nargs[0], nbcperiodic, periodic);
-    aType t_tfe = atype< TypeOfFE * >( );
-    aType t_tfe2 = atype< TypeOfFE2 * >( );
-    ffassert(d>0 && d < 4);
-    char  cdim[10];
-      sprintf(cdim,"%dd",d);
-    string sdim = cdim ;
-    const E_Array *a2(dynamic_cast< const E_Array * >(args[2].LeftValue( )));
-    ffassert(a2);
-    int N = a2->size( );
-    ;
-    if (!N) CompileError(sdim + " We wait an array of Type of Element ");
-    KN< int > tedim(N);
-    for (int i = 0; i < N; i++)
-      if ((*a2)[i].left( ) == t_tfe)
-        tedim[i] = d;
-      else if ((*a2)[i].left( ) == t_tfe2)
-        tedim[i] = 2;
-      else
-        CompileError(sdim + " We wait an array of  Type of Element ");
+	  args.SetNameParam(n_name_param, name_param, nargs);
+	  const int d = TypeOfFE::RdHat::d;
+	  GetPeriodic(Mesh::RdHat::d, nargs[0], nbcperiodic, periodic);
+	  aType t_tfe = atype< TypeOfFE * >();
+	  aType t_tfe2 = atype< TypeOfFE2 * >();
+	  ffassert(d > 0 && d < 4);
+	  char  cdim[10];
+	  sprintf(cdim, "%dd", d);
+	  string sdim = cdim;
+	  const C_F0 &arg2 = args[2];
+	  const E_F0 *femType = arg2.LeftValue();
+	  const EConstantTypeOfFE *ec = dynamic_cast<const EConstantTypeOfFE *> (femType);
+	  int N = ec->nbitem();
+	  aType t = femType->operator aType();
+
+	  const E_Array *a2(static_cast<const E_Array *>(args[2].LeftValue()));
+//	  ffassert(a2);
+//	  N = a2->size();
+
+	  if (!N) CompileError(sdim + " We wait an array of Type of Element ");
+	  KN< int > tedim(N);
+	  for (int i = 0; i < N; i++) {
+		 if (t == t_tfe)
+		  tedim[i] = d;
+		else if (t == t_tfe2)
+			tedim[i] = 2;
+		else
+			CompileError(sdim + " We wait an array of  Type of Element ");
+  
+	  }
     //    ffassert(0);
-    return new Op(args[0], args[1], *a2, nbcperiodic, periodic, tedim);
+    return new Op(args[0], args[1], femType, *a2, nbcperiodic, periodic, tedim);
   }
   OpMake_pfes( )
     : OneOperator(atype< pfes * >( ), atype< pfes * >( ), atype< const Mesh ** >( ),
-                  atype< E_Array >( )) {}
-//KAME				atype< Fem2D::TypeOfFE *  >()) {}
+ //                 atype< E_Array >( )) {}
+				atype< Fem2D::TypeOfFE *  >()) {}
 };
 
 #ifndef kame
@@ -6149,7 +6168,7 @@ void init_lgfem( ) {
 	  "<-", /*KAME  new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2));  , 
     new OneOperatorCode< OP_MakePtr2 >, new OneOperatorCode< OP_MakePtr3 >,
     new OneOperatorCode< OP_MakePtrS >, new OneOperatorCode< OP_MakePtrL >,
- */   new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk >/*,
+ */   new OpMake_pfes< pfes, Mesh , TypeOfFE, pfes_tefk >/*,
     new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >,
     new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >,    // add for 3D surface  FEspace
     new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >*/);

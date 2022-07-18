@@ -29,10 +29,11 @@
 class EConstantTypeOfFE :public E_F0
 { 
 //  using namespace   Fem2D;
-  Fem2D::TypeOfFE * v;
+ Fem2D::TypeOfFE * v;
   size_t N;
   bool isconst;
 public:
+
   AnyType operator()(Stack ) const { /*cout << " ()" << v << endl*/;return SetAny<Fem2D::TypeOfFE*>(v);}
     EConstantTypeOfFE( Fem2D::TypeOfFE * o,bool ic=true):v(o),N(v->N),isconst(ic) {assert(v); /*cout << "New constant " << o << endl;*/}
   size_t nbitem() const { return N ;} 
@@ -41,6 +42,7 @@ public:
       v = vv;       
       return  *this;
   }
+//  const Fem2D::TypeOfFE & vi(int i) { return v[i]; }
    operator aType () const { assert(v);return atype<Fem2D::TypeOfFE*>();} 
 };
 

@@ -14,7 +14,7 @@ mesh disk= buildmesh(a(50));
 //plot(disk);
 
 // Fespace
-fespace femp1(disk, P1);
+fespace femp1(disk, P2);
 end;
 femp1 u, v;
 

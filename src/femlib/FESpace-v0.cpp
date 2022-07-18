@@ -1102,6 +1102,7 @@ void TypeOfFE_P1Lagrange::FB(const bool *whatd,const Mesh & ,const Triangle & K,
 ///////////////////////////////// NEW /////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 /*
+
 void TypeOfFE_P1Bubble::FB(const Mesh & Th,const Triangle & K,const R2 &P, RNMK_ & val) const
 {
   assert(0);

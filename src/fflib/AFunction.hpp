@@ -376,7 +376,8 @@ class C_LF1;
 /// [[file:../lglib/lg.ypp::evaluate_parsed_FF_script]] (see \ref index). No internal data member.
 
 
-class E_F0 :public CodeAlloc 
+class 
+	E_F0 :public CodeAlloc 
    {
    public:
        static E_F0 *tnull;
@@ -1961,8 +1962,9 @@ inline  C_F0 TableOfIdentifier::NewFESpace(Key k,aType t,size_t & top,const basi
 template<class T,class U>   
 inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const basicAC_F0 &args,const U & data) 
    {
-		
-        return C_F0(TheOperators,"<-",basicAC_F0_wa(New(k,NewVariable<T,U>(t,top,data)),args));}
+	const Type_Expr &te= New(k, NewVariable<T, U>(t, top, data));
+
+        return C_F0(TheOperators,"<-",basicAC_F0_wa(te,args));}
    
 //inline  C_F0 TableOfIdentifier::NewVar(Key k,aType t,size_t & top,const AC_F0 &args,const C_F0& ) 
 //   {   throwassert(0); return C_F0(TheOperators,"<-",New(k,NewVariable(t,top)),t->Find("<-",args));}

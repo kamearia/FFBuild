@@ -436,7 +436,7 @@ class TypeOfFE_P1Lagrange : public  TypeOfFE { public:
 	virtual R operator()(const FElement & K,const  R2 & PHat,const KN_<R> & u,int componante,int op) const ;
 
 } ;
-#ifndef kame
+
 ///////////////////////////////////////////////////////////////////////////////
 // FH pour tester des idee de schema ----  Juin 2005 ---
 ///////////////////////////////////////////////////////////////////////////////
@@ -455,6 +455,7 @@ class TypeOfFE_P0VF : public  TypeOfFE { public:
    virtual R operator()(const FElement & K,const  RdHat & PHat,const KN_<R> & u,int componante,int op) const ;
 
 } ;
+
 int TypeOfFE_P0VF::Data[]={0,1,2,       0,0,0,       0,1,2,       0,0,0,        0,1,2,       0, 0,3};
 double TypeOfFE_P0VF::Pi_h_coef[]={1.,1.,1.}; //  bofbof a verifier ...
 
@@ -520,6 +521,7 @@ class TypeOfFE_P1Bubble : public  TypeOfFE { public:
    void FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat &PHat, RNMK_ & val) const;
 
 } ;
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -550,19 +552,18 @@ class TypeOfFE_P2bLagrange : public  TypeOfFE { public:
 
    void FB(const bool * whatd,const Mesh & Th,const Triangle & K,const RdHat &PHat, RNMK_ & val) const;
 } ;
-#endif
+
 int TypeOfFE_P1Lagrange::Data[]={0,1,2,       0,0,0,       0,1,2,       0,0,0,        0,1,2,       0, 0,3};
-#ifndef kame
+
 int TypeOfFE_P1Bubble::Data[]={0,1,2,6,     0,0,0,0,     0,1,2,3,     0,0,0,0,        0,1,2,3,     0, 0,4};
 int TypeOfFE_P2Lagrange::Data[]={0,1,2,3,4,5, 0,0,0,0,0,0, 0,1,2,3,4,5, 0,0,0,0,0,0,  0,1,2,3,4,5, 0 ,0,6};
 int TypeOfFE_P2bLagrange::Data[]={0,1,2,3,4,5,6, 0,0,0,0,0,0,0, 0,1,2,3,4,5,6, 0,0,0,0,0,0,0,  0,1,2,3,4,5,6, 0,0,7};
-#endif
 double TypeOfFE_P1Lagrange::Pi_h_coef[]={1.,1.,1.};
-#ifndef kame
 double TypeOfFE_P1Bubble::Pi_h_coef[]={1.,1.,1.,1.};
 double TypeOfFE_P2Lagrange::Pi_h_coef[]={1.,1.,1.,1.,1.,1.};
 double TypeOfFE_P2bLagrange::Pi_h_coef[]={1.,1.,1.,1.,1.,1.,1.};
 
+#ifndef kame
 inline void dump(char *m,int n,int * p)
 {
   cout << m ;
@@ -1139,7 +1140,7 @@ void TypeOfFE_P1Lagrange::FB(const bool *whatd,const Mesh & ,const Triangle & K,
   }
   }
 }
-#ifndef kame
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// NEW /////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -1408,7 +1409,7 @@ void TypeOfFE_P2bLagrange::FB(const bool *whatd,const Mesh & ,const Triangle & K
  }
 
 }
-
+#ifndef kame
 //  case of   fine mesh
 class TypeOfMortarCas1: public TypeOfMortar {
   friend class FESpace;
@@ -1658,7 +1659,6 @@ void TypeOfMortarCas1::ConstructionOfNode(const Mesh &Th,int im,int * NodesOfEle
   }
 
 static TypeOfFE_P1Lagrange P1LagrangeP1;
-#ifndef kame
 static TypeOfFE_P0VF VFP0VF;
 static TypeOfFE_P1Bubble P1BubbleP1;
 static TypeOfFE_P2Lagrange P2LagrangeP2;
@@ -1667,16 +1667,15 @@ static TypeOfFE_P2bLagrange P2bLagrangeP2;
 TypeOfFE  & P2Lagrange(P2LagrangeP2);
 TypeOfFE  & P2bLagrange(P2bLagrangeP2);
 TypeOfFE  & P1Bubble(P1BubbleP1);
-#endif
+
 TypeOfFE  & P1Lagrange(P1LagrangeP1);
-#ifndef kame
 TypeOfFE  & P0VF(VFP0VF);
-#endif
 static ListOfTFE typefemP1("P1", &P1LagrangeP1);
-#ifndef kame
+
 static ListOfTFE typefemP0VF("P0VF", &P0VF);  //
 static ListOfTFE typefemP1b("P1b", &P1BubbleP1);
 static ListOfTFE typefemP2("P2", &P2LagrangeP2);
+#ifndef kame
 static  ListOfTFE typefemRT("RT0", &RTLagrange);
 static  ListOfTFE typefemRTOrtho("RT0Ortho", &RTLagrangeOrtho);
 
