@@ -35,7 +35,7 @@
 #define lgfem_hpp_
 #include <array_resize.hpp>
 
-extern Block *currentblock;
+extern Block *currentBlock;
 
 void init_lgmat( );    // initialisation for sparse mat functionnallity
 
@@ -919,10 +919,10 @@ class E_F_StackF0F0opt2 : public E_F0mps {
           } */
     deque< pair< Expression, int > > ll;
     MapOfE_F0 m;
-    size_t top = currentblock->OffSet(0), topbb = top;    // FH. bofbof ???
+    size_t top = currentBlock->OffSet(0), topbb = top;    // FH. bofbof ???
     int ret = aa1->Optimize(ll, m, top);
     a1 = new E_F0_Optimize(ll, m, ret);
-    currentblock->OffSet(top - topbb);
+    currentBlock->OffSet(top - topbb);
   }
   AnyType operator( )(Stack s) const { return (*f)(s, a0, a1); }
 };

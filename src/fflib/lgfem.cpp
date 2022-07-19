@@ -1900,7 +1900,7 @@ AnyType pfer2R(Stack s, const AnyType &a) {
   const R rr = KK(PHat, *fe.x( ), componante, dd);
   return SetAny< R >(rr);
 }
-
+#endif
 template< class R >
 AnyType set_fe(Stack s, Expression ppfe, Expression e) {
   long kkff = Mesh::kfind, kkth = Mesh::kthrough;
@@ -1983,6 +1983,7 @@ AnyType set_fe(Stack s, Expression ppfe, Expression e) {
                         << double(kkth) / Max< double >(1., kkff) << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
+#ifndef kame
 AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
                                                                    // meme chose que  v(X1,X2);
   StackOfPtr2Free *sptr = WhereStackOfPtr2Free(s);
@@ -2020,7 +2021,7 @@ AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
          << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
-
+#endif
 template< class K >
 E_set_fev< K >::E_set_fev(const E_Array *a, Expression pp, int ddim)
   : dim(ddim), aa(*a), ppfe(pp), optimize(true), where_in_stack_opt( ), optiexp0( ), optiexpK( ) {
@@ -2031,7 +2032,7 @@ E_set_fev< K >::E_set_fev(const E_Array *a, Expression pp, int ddim)
     deque< pair< Expression, int > > ll;
     MapOfE_F0 m;
     where_in_stack_opt.resize(n);
-    size_t top = currentblock->OffSet(0), topbb = top;    // FH. bofbof ???
+    size_t top = currentBlock->OffSet(0), topbb = top;    // FH. bofbof ???
     for (int i = 0; i < n; i++) {
       Expression ee = aa[i].LeftValue( );
       if (kdump)
@@ -2040,7 +2041,7 @@ E_set_fev< K >::E_set_fev(const E_Array *a, Expression pp, int ddim)
       if (kdump) cout << "\n\t\t" << i << ": " << where_in_stack_opt[i] << endl;
     }
 
-    currentblock->OffSet(top - topbb);
+    currentBlock->OffSet(top - topbb);
     int k = ll.size( ), k0 = 0, k1 = 0;
     for (int i = 0; i < k; i++)
       if (ll[i].first->MeshIndependent( )) k0++;
@@ -2188,26 +2189,26 @@ AnyType E_set_fev< K >::Op2d(Stack s) const {
   if (verbosity > 1) ShowBound(*y, cout) << endl;
   return Nothing;
 }
-
+#ifndef kame
 template< class K >
 inline FEbase< K, v_fes > *MakePtrFE(pfes *const &a) {
   FEbase< K, v_fes > *p = new FEbase< K, v_fes >(a);
   return p;
 }
-
+#endif
 template< class K >
 inline FEbase< K, v_fes > **MakePtrFE2(FEbase< K, v_fes > **const &p, pfes *const &a) {
   *p = new FEbase< K, v_fes >(a);
   return p;
 }
-
+#ifndef kame
 template< class K >
 inline FEbaseArray< K, v_fes > **MakePtrFE3(FEbaseArray< K, v_fes > **const &p, pfes *const &a,
                                             const long &N) {
   *p = new FEbaseArray< K, v_fes >(a, N);
   return p;
 }
-
+#endif
 template< class K >
 class OneOperatorMakePtrFE : public OneOperator {
  public:
@@ -2247,7 +2248,7 @@ class OneOperatorMakePtrFE : public OneOperator {
       OneOperator(map_type[typeid(R).name( )], map_type[typeid(R).name( )],
                   map_type[typeid(B).name( )], tt) {}
 };
-
+#ifndef kame
 template< class Result, class A >
 class OneOperator_Ptr_o_R : public OneOperator {
   typedef Result A::*ptr;
@@ -6085,9 +6086,9 @@ void init_lgfem( ) {
  
   /// Doxygen doc
   basicForEachType *t_form = atype< const C_args * >( );
-   
+#endif   
   Dcl_Type< const CDomainOfIntegration * >( );
- 
+#ifndef kame 
   atype< pmesh >( )->AddCast(new E_F1_funcT< pmesh, pmesh * >(UnRef< pmesh >));
   atype< pfes >( )->AddCast(new E_F1_funcT< pfes, pfes * >(UnRef< pfes >));
 
@@ -6659,28 +6660,32 @@ void init_lgfem( ) {
   //  x(y1,..,yn) est un operator n+1   (x,y1,..,yn)
   // on passe toujours par x(y) maintenant.
   //   -------
-
-  TheOperators->Add("<-", new OneOperator2_< pferbase *, pferbase *, pfes * >(MakePtrFE2),
+#endif
+  TheOperators->Add("<-", new OneOperator2_< pferbase *, pferbase *, pfes * >(MakePtrFE2)); //KAME  ,
+#ifndef kame;
                     new OneOperator3_< pferbasearray *, pferbasearray *, pfes *, long >(MakePtrFE3),
 
                     new OneOperator2_< pfecbase *, pfecbase *, pfes * >(MakePtrFE2),
                     new OneOperator3_< pfecbasearray *, pfecbasearray *, pfes *, long >(MakePtrFE3)
 
   );
+#endif
   TheOperators->Add(
-    "<-",
-    new OneOperatorMakePtrFE< double >(atype< double >( )),      //  scalar case
+	  "<-",
+	  new OneOperatorMakePtrFE< double >(atype< double >())); //KAME ,      //  scalar case
+#ifndef kame
     new OneOperatorMakePtrFE< double >(atype< E_Array >( )),     //  vect case
     new OneOperatorMakePtrFE< Complex >(atype< Complex >( )),    //  scalar complex  case
     new OneOperatorMakePtrFE< Complex >(atype< E_Array >( ))     //  vect complex case
   );
+#endif
   //  interpolation   operator
   TheOperators->Add(
     "=", new OneOperator2_< pfer, pfer, double, E_F_StackF0F0opt2< double > >(set_fe< double >),
     new OneOperator2_< pfec, pfec, Complex, E_F_StackF0F0opt2< Complex > >(set_fe< Complex >)
 
   );
-
+#ifndef kame
   //  Attention il y a moralement un bug
   //  les initialisation   x = y   ( passe par l'operateur binaire <-  dans TheOperators
   //   les initialisation   x(y)   ( passe par l'operateur unaire <-  de typedebase de x
@@ -6701,8 +6706,9 @@ void init_lgfem( ) {
                     new OneBinaryOperator< Op_Read< Matrice_Creuse< Complex > > >
 
   );
-
+#endif
   Global.Add("int2d", "(", new OneOperatorCode< CDomainOfIntegration >);
+#ifndef kame
   Global.Add("int1d", "(", new OneOperatorCode< CDomainOfIntegrationBorder >);
   Global.Add("intalledges", "(", new OneOperatorCode< CDomainOfIntegrationAllEdges >);
   Global.Add("intallBE", "(", new OneOperatorCode< CDomainOfIntegrationAllEdges >);

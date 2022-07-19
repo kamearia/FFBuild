@@ -27,7 +27,7 @@
  */
 #ifndef PROBLEM_HPP_
 #define PROBLEM_HPP_
-extern Block *currentblock;
+extern Block *currentBlock;
 
 template<class K> class Matrice_Creuse;
 //template<class K>  using MatriceMap=map<pair<int,int>,K>;
@@ -825,7 +825,7 @@ class IntFunction  : public E_F0mps { public:
 };
 
 
-extern Block *currentblock;
+extern Block *currentBlock;
 
 class TypeFormOperator: public ForEachType<const C_args*> {
 public:

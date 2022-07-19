@@ -47,7 +47,7 @@ using namespace std;
 #include "problem.hpp"
 //#include "ffstack.hpp"
 
-extern Block *currentblock;
+extern Block *currentBlock;
 
 typedef double R;
 static bool dddd = false;

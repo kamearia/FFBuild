@@ -2572,12 +2572,12 @@ yyreduce:
 //#line 475 "lg.ypp"
     {(yyval.type)=TypeArray(TypeTemplate((yyvsp[(1) - (9)].type),(yyvsp[(3) - (9)].type)),(yyvsp[(6) - (9)].type),(yyvsp[(8) - (9)].type));;}
     break;
-#ifndef kame
+
   case 62:
 //#line 479 "lg.ypp"
     { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (1)].str),currentBlock,fespacetype,fespacecomplex,fespacedim); ;}
     break;
-
+#ifndef kame
   case 63:
 //#line 480 "lg.ypp"
     { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),currentBlock,fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}

@@ -35,7 +35,7 @@ using namespace std;
 #include "NewtonRaphson.hpp"
 
 // template<class R>
-extern Block *currentblock;
+extern Block *currentBlock;
 
 typedef double R;
 

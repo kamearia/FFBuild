@@ -2184,11 +2184,11 @@ Mesh::Mesh(const Mesh & Th,int * split,bool WithMortar,int label)
 	ConsAdjacence();
 }
 
-
+#endif
 const char Mesh::magicmesh[8]="Mesh 2D";
 int  Mesh::kthrough =0;
 int  Mesh::kfind=0;
-
+#ifndef kame
 Mesh::Mesh(const  Serialize &serialized)
     :dfb(0)
 {

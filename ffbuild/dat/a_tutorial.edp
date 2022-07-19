@@ -7,16 +7,22 @@ verbosity=1000;
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
 mesh disk= buildmesh(a(50));
-//savemesh(disk, "mesh.dat");
+savemesh(disk, "mesh.dat");
+end;
 //savemesh(buildmesh(a(50)), "mesh.dat");
 //end;
 
 //plot(disk);
 
 // Fespace
-fespace femp1(disk, P2);
+fespace femp1(disk, P1);
+femp1 u;
+u=1.;
+real integ=int2d(disk)(u);
+cout<< "int2d(disk)(1)= "<< integ << endl;
 end;
 femp1 u, v;
+
 
 // Problem
 problem laplace(u, v)

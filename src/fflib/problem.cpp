@@ -25,6 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #include  <iostream>
 using namespace std;
 
@@ -62,7 +63,7 @@ basicAC_F0::name_and_type  CDomainOfIntegration::name_param[]= {
 
 
 };
-
+#ifndef kame
 basicAC_F0::name_and_type  Problem::name_param[]= {
     {  "save",&typeid(string* )},
     {  "cadna",&typeid(KN<double>*)},
@@ -3094,7 +3095,7 @@ template<class R>
         *MeshPointStack(stack) = mp;
     }
 
-
+#ifndef kame
 // 3D curve / 2D on meshL
 template<class R>
 void  AddMatElem(MatriceMap<R> & A,const MeshL & Th,const BilinearOperator & Op,bool sym,int it,int ie,int label,
@@ -3309,7 +3310,7 @@ void  AddMatElem(MatriceMap<R> & A,const MeshL & Th,const BilinearOperator & Op,
  
     *MeshPointStack(stack) = mp;
 }
-
+#endif
 // 3D Surf / 3D volume on meshS
 template<class R>
 void  AddMatElem(MatriceMap<R> & A,const MeshS & Th,const BilinearOperator & Op,bool sym,int it,int ie,int label,
@@ -4528,7 +4529,7 @@ void  AddMatElem(MatriceMap<R> & A,const MeshL & Th,const BilinearOperator & Op,
         if (where_in_stack) delete [] where_in_stack;
             }
 
-
+#ifndef kame
 
     // creating an instance of AssembleBilinearForm with map
     // case 3D curve
@@ -4852,7 +4853,7 @@ void  AddMatElem(MatriceMap<R> & A,const MeshL & Th,const BilinearOperator & Op,
        }
        if (where_in_stack) delete [] where_in_stack;
    }
-
+#endif
 // case 3D Surf / 3D volume on meshS
  template<class R>
  void AssembleBilinearForm(Stack stack,const MeshS & Th,const FESpaceS & Uh,const FESpace3 & Vh,bool sym,
@@ -11743,6 +11744,7 @@ bool GetBilinearParam(const ListOfId &l,basicAC_F0::name_and_type *name_param,in
  }
  }
  }*/
+#ifndef kame
 bool CheckSizeOfForm( list<C_F0> & largs ,int N,int M)
 {
     list<C_F0>::iterator ii,ib=largs.begin(),
@@ -11770,7 +11772,7 @@ bool CheckSizeOfForm( list<C_F0> & largs ,int N,int M)
 
     }
 }
-
+#endif
 bool FieldOfForm( list<C_F0> & largs ,bool complextype)  // true => complex problem
 {
     //  bool   iscomplextype=complextype;
@@ -11814,7 +11816,7 @@ bool FieldOfForm( list<C_F0> & largs ,bool complextype)  // true => complex prob
             assert(b->isoptimize==false);
             if (complextype)  b->mapping(&CCastToC);
             else b->mapping(&CCastToR) ;
-            Foperator * bn = b->Optimize(currentblock);
+            Foperator * bn = b->Optimize(currentBlock);
             *bb->b = *bn;
             *ii=C_F0(bb,r);
         }
@@ -11824,7 +11826,7 @@ bool FieldOfForm( list<C_F0> & largs ,bool complextype)  // true => complex prob
             Ftest * l= const_cast<Ftest *>(ll->l);
             if (complextype)  l->mapping(&CCastToC) ;
             else l->mapping(&CCastToR) ;
-            Ftest * ln = l->Optimize(currentblock);
+            Ftest * ln = l->Optimize(currentBlock);
             *ll->l=*ln;
             *ii=C_F0(ll,r);
             //cout << l <<   " ll->l " <<  ll->l << " " << ll->l->isoptimize <<endl;
@@ -11996,9 +11998,9 @@ void SetArgsFormLinear(const ListOfId *lid,int ordre)
             if (idi.r == 0 && idi.re  == 0 && idi.array==0 )
             {
                 if (k==ordre-2)  //  unknow function just in case of bilinear form
-                currentblock->NewID(uh,idi.id,C_F0(newU_(i),uh));
+                currentBlock->NewID(uh,idi.id,C_F0(newU_(i),uh));
                 else   //  test function
-                currentblock->NewID(vh,idi.id,C_F0(newV_(i),vh));
+                currentBlock->NewID(vh,idi.id,C_F0(newV_(i),vh));
             }
             else
             CompileError(" Just Variable in array parameter ");
@@ -12018,9 +12020,9 @@ void SetArgsFormLinear(const ListOfId *lid,int ordre)
         {
             SHOWVERB(cout <<"  " <<  l[i].id  << " " << (j<nn) << endl);
             if (j<nn)
-            currentblock->NewID(uh,l[i].id,C_F0(newU_(j%nn),uh));
+            currentBlock->NewID(uh,l[i].id,C_F0(newU_(j%nn),uh));
             else
-            currentblock->NewID(vh,l[i].id,C_F0(newV_(j%nn),vh));
+            currentBlock->NewID(vh,l[i].id,C_F0(newV_(j%nn),vh));
             j++;
         }
     }
@@ -12362,3 +12364,5 @@ template class Call_FormBilinear<v_fes, v_fesL>;  //  2D / 3D curve on meshL
 template class Call_FormBilinear<v_fesS, v_fes3>;  //  3D Surf / 3D volume on meshS
 template class Call_FormBilinear<v_fes3, v_fesS>;  //  3D volume / 3D Surf on meshS
 template class Call_FormBilinear<v_fesS, v_fes>;
+
+#endif
