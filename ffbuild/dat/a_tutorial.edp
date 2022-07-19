@@ -7,8 +7,8 @@ verbosity=1000;
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
 mesh disk= buildmesh(a(50));
-savemesh(disk, "mesh.dat");
-end;
+//savemesh(disk, "mesh.dat");
+//end;
 //savemesh(buildmesh(a(50)), "mesh.dat");
 //end;
 
