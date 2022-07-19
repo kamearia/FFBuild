@@ -208,6 +208,7 @@
     <ClCompile Include="..\src\fflib\lgfem.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh3.cpp" />
+    <ClCompile Include="..\src\fflib\load.cpp" />
     <ClCompile Include="..\src\fflib\problem.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />

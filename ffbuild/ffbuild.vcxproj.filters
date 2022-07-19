@@ -260,6 +260,9 @@
     <ClCompile Include="..\src\fflib\problem.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\fflib\load.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

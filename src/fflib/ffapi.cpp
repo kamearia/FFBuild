@@ -314,7 +314,6 @@ static  bool ffapi_protectedservermode(){
     ffapi::ff_pclose = ffapi::ffapi_ff_pclose; // <<ff_pclose>>
     ffapi::fwriteinit = ffapi::ffapi_fwriteinit;
     ffapi::ff_fwrite = ffapi::ffapi_ff_fwrite;
-#ifndef kame
     ffapi::ff_fflush = ffapi::ffapi_ff_fflush;
     ffapi::ff_ferror = ffapi::ffapi_ff_ferror;
     ffapi::ff_feof = ffapi::ffapi_ff_feof;
@@ -323,7 +322,7 @@ static  bool ffapi_protectedservermode(){
     ffapi::mpi_init = ffapi::ffapi_mpi_init;
     ffapi::mpi_finalize = ffapi::ffapi_mpi_finalize;
     ffapi::protectedservermode = ffapi::ffapi_protectedservermode;
-#endif
+
   }
 }
 

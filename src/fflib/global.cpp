@@ -69,7 +69,7 @@ namespace ffapi {
 
 	int (*ff_pclose)(FILE *stream); // [[file:ffapi.cpp::ff_pclose]]
     size_t (*ff_fwrite)(const void *ptr, size_t size, size_t nmemb,FILE *stream);
-#ifndef kame
+
 	int (*ff_fflush)(FILE *stream);
     int (*ff_ferror)(FILE *stream);
     int (*ff_feof)(FILE *stream);
@@ -88,15 +88,15 @@ namespace ffapi {
 
     void (*mpi_init)(int &argc, char **& argv);
     void (*mpi_finalize)();
-
+#ifndef kame
     // Permanent server control
     // ------------------------
 
     /// if true, FF is considered to be accessible from remote anonymous connections and some commands (like shell
     /// commands) are not allowed.
-
-    bool (*protectedservermode)();
 #endif
+    bool (*protectedservermode)();
+
 }
 
 // TODO: remove this block as soon as autoconf is removed from FreeFem++

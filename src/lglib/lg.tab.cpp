@@ -2368,7 +2368,7 @@ yyreduce:
 			{ (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(2) - (2)].str),Find((yyvsp[(1) - (2)].str)),atype<FE<double,4> **>()));;}
 		break;
 
-  case 14:
+		case 14:
 //#line 418 "lg.ypp"
 			{ (yyval.clist_id) = new ListOfId(); (yyval.clist_id)->push_back(UnId((yyvsp[(3) - (3)].str),Find((yyvsp[(1) - (3)].str)),atype<FE<double,4> **>(),true));;}
 		break;
@@ -2577,7 +2577,7 @@ yyreduce:
 //#line 479 "lg.ypp"
     { (yyval.cexp) =  NewFEvariable((yyvsp[(1) - (1)].str),currentBlock,fespacetype,fespacecomplex,fespacedim); ;}
     break;
-#ifndef kame
+
   case 63:
 //#line 480 "lg.ypp"
     { (yyval.cexp) =  NewFEarray((yyvsp[(1) - (4)].str),currentBlock,fespacetype,(yyvsp[(3) - (4)].cexp),fespacecomplex,fespacedim); ;}
@@ -2612,7 +2612,7 @@ yyreduce:
 //#line 489 "lg.ypp"
     { (yyval.cexp) =  NewFEarray((yyvsp[(2) - (6)].clist_id),currentBlock,fespacetype,(yyvsp[(5) - (6)].cexp),fespacecomplex,fespacedim);;}
     break;
-#endif
+
   case 70:
 //#line 494 "lg.ypp"
     { fespacedim=2;;}
@@ -2734,7 +2734,7 @@ yyreduce:
                      // cout << " \n after new routine \n " << endl;
                       ;}
     break;
-#ifndef kame
+
   case 92:
 //#line 539 "lg.ypp"
     { currentBlock=(yyvsp[(5) - (10)].routine)->Set((yyvsp[(9) - (10)].cinst));
@@ -2758,7 +2758,7 @@ yyreduce:
                          delete (yyvsp[(4) - (9)].clist_id); //  FH 23032005
                          ;}
     break;
-#endif
+
   case 95:
 //#line 555 "lg.ypp"
     {  Block::open(currentBlock);;}
@@ -2822,12 +2822,12 @@ yyreduce:
 //#line 576 "lg.ypp"
     {zzzfff->input((yyvsp[(2) - (2)].str));(yyval.cexp)= 0; ;}
     break;
-#ifndef kame
+
   case 107:
 //#line 577 "lg.ypp"
     {load((yyvsp[(2) - (2)].str));(yyval.cexp)= 0; ;}
     break;
-#endif
+
   case 108:
 //#line 578 "lg.ypp"
     {(yyval.cexp)=Try((yyvsp[(3) - (5)].cinst),currentBlock->close(currentBlock,(yyvsp[(5) - (5)].cexp)));;}

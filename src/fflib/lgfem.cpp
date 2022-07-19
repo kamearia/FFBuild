@@ -6724,9 +6724,11 @@ void init_lgfem( ) {
   Global.Add("otherside", "(",new OneUnaryOperator< OthersideOp< Complex >, OthersideOp< Complex > >);
 
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
+
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
 
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< double >, 1 >);
+
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);
       
   map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));

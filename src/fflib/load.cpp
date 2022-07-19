@@ -21,6 +21,7 @@
 // E-MAIL  : frederic.hecht@sorbonne-universite.fr
 
 // TODO: remove this block as soon as autoconf is removed from FreeFEM
+#include "stdafx.h"
 #ifndef CMAKE
 #include <config.h> // needed for HAVE_DLFCN_H
 #endif
@@ -48,6 +49,18 @@ using namespace std;
 #endif
 
 #include "ffapi.hpp"
+
+std::wstring s2ws(const std::string& s)
+{
+	int len;
+	int slength = (int)s.length() + 1;
+	len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	wchar_t* buf = new wchar_t[len];
+	MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	std::wstring r(buf);
+	delete[] buf;
+	return r;
+}
 
 set<string> SetLoadFile;
 
@@ -106,7 +119,7 @@ bool load (string ss) {
         }
 #elif _WIN32
         {
-          HINSTANCE mod = LoadLibrary(s.c_str());
+          HINSTANCE mod = LoadLibrary(s2ws(s).c_str());
           if (verbosity > 9) cout << " test LoadLibrary(" << s << ") = " << mod << endl;
           if (mod == 0) {
             DWORD merr = GetLastError();
