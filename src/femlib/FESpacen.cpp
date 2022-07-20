@@ -46,7 +46,7 @@
 
 #include "splitsimplex.hpp"
  int UniqueffId::count=0;
-#ifndef kame
+
  namespace Fem2D {
 
 //template<class Element>
@@ -143,7 +143,7 @@ int *builddata_d(const int ndfitem[4],const int nd[4],int N)
      dim_which_sub_fem(data+5*NbDoF)
    {}
 
-
+#ifndef kame
 int *builddata_d(const int nitemdim[4],const KN< dataTypeOfFE const  *> &teb)
 {
     const int k = teb.N(); 
@@ -701,6 +701,5 @@ template<class MMesh>
      template  KN<Complex>  GFESpace<Mesh2>::newSaveDraw<Complex>(const KN_<Complex> & U,int componante,int & lg,KN<typename Mesh2::RdHat> &Psub,KN<int> &Ksub,int op_U) const ;
      template  KN<Complex>  GFESpace<Mesh1>::newSaveDraw<Complex>(const KN_<Complex> & U,int componante,int & lg,KN<typename Mesh1::RdHat> &Psub,KN<int> &Ksub,int op_U) const  ;
      
-     
+#endif    
  }
-#endif

@@ -194,6 +194,9 @@
     <ClCompile Include="..\src\femlib\Mesh3dn.cpp" />
     <ClCompile Include="..\src\femlib\MeshLn.cpp" />
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
+    <ClCompile Include="..\src\femlib\P012_3d.cpp" />
+    <ClCompile Include="..\src\femlib\QuadratureFormular.cpp" />
+    <ClCompile Include="..\src\femlib\splitsimplex.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
     <ClCompile Include="..\src\fflib\array_complex.cpp" />
@@ -209,6 +212,7 @@
     <ClCompile Include="..\src\fflib\lgmesh.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh3.cpp" />
     <ClCompile Include="..\src\fflib\load.cpp" />
+    <ClCompile Include="..\src\fflib\P1IsoValue.cpp" />
     <ClCompile Include="..\src\fflib\problem.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />

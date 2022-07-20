@@ -56,7 +56,7 @@ For 3d  order formula:
  */
 
 
-
+#include "stdafx.h"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>

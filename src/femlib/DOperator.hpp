@@ -1,4 +1,5 @@
 #include <queue>
+#include "meshtype.h"
 // class for 1 linear form
 // just copy a array 
 
@@ -275,14 +276,14 @@ LinearComb<I,R> operator*(const R & b,const LinearComb<I,R> & a)
  {LinearComb<I,R> r(a);r*=b;return r;}
  
 
- 
+#define kameMax(a,b) (a>b? a:b)
 class MGauche :public pair<int,operatortype> {public:
   MGauche() {}
   MGauche(int i,operatortype j) {first = i;second= j;}
   MGauche(const pair<int,operatortype> &p) : pair<int,operatortype>(p){}
   bool operator==(const MGauche& a) const {
     return static_cast<bool>(first == a.first && second == a.second);}
-  int maxop(int op) const { return Max(op,(int) second);}
+  int maxop(int op) const { return kameMax(op,(int) second);}
     
 };
 
@@ -319,11 +320,11 @@ typedef LinearComb<MDroit ,C_F0> LinearOperatorD;
 typedef LinearComb<pair<MGauche,MDroit>,C_F0> BilinearOperator;
 
 inline  int maxop(int op,const MGauche & v) 
-    { return Max(op,(int) v.second);}
+    { return kameMax(op,(int) v.second);}
 inline  int maxop(int op,const MDroit & v) 
-    { return Max(op,(int) v.second);}
+    { return kameMax(op,(int) v.second);}
 inline  int maxop(int op,const pair<MGauche,MDroit> & b) 
-    { return Max(op,(int) b.first.second,(int) b.second.second );}
+    { return kameMax(op,(int) b.first.second,(int) b.second.second );}
  
 inline BilinearOperator operator*(const LinearOperatorG & a,const LinearOperatorD & b) 
  {

@@ -38,7 +38,7 @@ $:
 
  Thank to the ARN ()  FF2A3 grant
  ref:ANR-07-CIS7-002-01  */
-
+#include "stdafx.h"
 #include <cmath>
 #include <cstdlib>
 #include <iostream>

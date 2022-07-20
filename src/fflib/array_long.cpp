@@ -69,7 +69,7 @@ class OneBinaryOperatorInv_KN_long : public OneOperator {
       return new E_F_F0<Inv_KN_long, KN_<long> >(Build<Inv_KN_long, KN_<long> >, to< KN_<long> >(args[0]));
     }
 };
-
+#endif
 // Add mars 2010
 template<class R> R *set_init_init( R* const & a,const long & n) {
   SHOWVERB(cout << " set_init " << typeid(R).name() << " " << n << endl);
@@ -78,7 +78,7 @@ template<class R> R *set_init_init( R* const & a,const long & n) {
     (*a)[i].init();
   return a;
 }
-
+#ifndef kame
 inline string **get_elements(KN<String> *const &a, long const &b) {
   ffassert(a && b >=0 && b < a->size());
   String &Sret = (*a)[b]; // correction FH feb 2004
@@ -165,7 +165,9 @@ void initArrayOperatorlong()
   // ArrayDCL<long>();
   Dcl_TypeandPtr_<KN_<String>, KN<String> *>(0, 0, 0, ::Destroy<KN<String> >, ::ClearReturnKK_<K,KN<String>, KN_<String> >, ::ClearReturnpKK<String, KN<String> >);
   atype<KN<String>* >()->Add("[", "", new OneOperator2_<string**, KN<String>*, long >(get_elements));
+
   TheOperators->Add("<-", new OneOperator2_<KN<String> *, KN<String> *, long>(&set_init_init), new InitArrayfromArray<string*, KN<String>*, true>);
+
   map_type_of_map[make_pair(atype<long>(), atype<string*>())] = atype<KN<String>*>(); // vector [string] 
   Add<KN<String> *>("n", ".", new OneOperator1<long, KN<String> *>(get_n));
   extern KN<String> *pkarg;

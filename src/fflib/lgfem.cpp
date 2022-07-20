@@ -45,7 +45,7 @@
 #include "Mesh3dn.hpp"
 
 #include "HashMatrix.hpp"
-
+#include "QuadratureFormular.hpp"
 #include "SparseLinearSolver.hpp"
 
 #include "MeshPoint.hpp"
@@ -64,6 +64,7 @@
 #include "AddNewFE.h"
 #include "array_resize.hpp"
 #include "PlotStream.hpp"
+
 #ifndef kame
 using namespace std;
 extern Polymorphic * TheOperators;  //KAME
@@ -74,7 +75,7 @@ extern Polymorphic * TheOperators;  //KAME
 namespace bamg {
   class Triangles;
 }
-
+#endif
 namespace Fem2D {
   void DrawIsoT(const R2 Pt[3], const R ff[3], const RN_ &Viso);
   extern GTypeOfFE< Mesh3 > &P1bLagrange3d;
@@ -111,10 +112,11 @@ extern GTypeOfFE< MeshL > &G_P3dc_L;
 extern GTypeOfFE< MeshL > &G_P4dc_L;
 extern GTypeOfFE<MeshL> & G_P0VF_L ;
 extern GTypeOfFE<MeshL> & G_P0VFdc_L ;
-
+#ifndef kame
   void Expandsetoflab(Stack stack, const CDomainOfIntegration &di, set< int > &setoflab, bool &all);
+#endif
 }    // namespace Fem2D
-
+#ifndef kame
 #include "BamgFreeFem.hpp"
 
 static bool TheWait = false;
@@ -3271,6 +3273,7 @@ struct set_eqvect_fl : public binary_function< KN< K > *, const FormLinear *, KN
     return a;
   }
 };
+#endif
 
 template< class R >
 AnyType IntFunction< R >::operator( )(Stack stack) const {
@@ -3981,7 +3984,7 @@ AnyType IntFunction< R >::operator( )(Stack stack) const {
   *MeshPointStack(stack) = mp;
   return SetAny< R >(r);
 }
-
+#ifndef kame
 void Show(const char *s, int k = 1) {
   if (k) {
     couleur(1);
@@ -6726,9 +6729,9 @@ void init_lgfem( ) {
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
 
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
-
+#endif
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< double >, 1 >);
-
+#ifndef kame
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);
       
   map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
@@ -7394,8 +7397,9 @@ C_F0 NewFEarray(const char *id, Block *currentblock, C_F0 &fespacetype, CC_F0 si
   lid->push_back(UnId(id));
   return NewFEarray(lid, currentblock, fespacetype, sizeofarray, cplx, dim);
 }
-#ifndef kame
+
 namespace Fem2D {
+
   void Expandsetoflab(Stack stack, const BC_set &bc, set< long > &setoflab) {
     for (size_t i = 0; i < bc.on.size( ); i++)
       if (bc.onis[i] == 0) {
@@ -7430,8 +7434,9 @@ namespace Fem2D {
         all = false;
       }
   }
-}    // namespace Fem2D
 
+}    // namespace Fem2D
+#ifndef kame
 #include "InitFunct.hpp"
 
 static addingInitFunct TheaddingInitFunct(-20, init_lgfem);

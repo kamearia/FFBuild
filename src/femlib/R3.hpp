@@ -34,7 +34,7 @@
 #define  R3_HPP
 #include "R1.hpp" 
 #include "R2.hpp" 
-
+#include "ufunction.hpp"
 class R3  {
 
 public:  

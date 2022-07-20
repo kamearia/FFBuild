@@ -5,6 +5,7 @@
 //  Created by Frédéric Hecht on 07/03/2014.
 //
 //
+#include "stdafx.h"
 #include <cassert>
 #include <cmath>
 using namespace std;

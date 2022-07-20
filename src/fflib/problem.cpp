@@ -12031,7 +12031,7 @@ void SetArgsFormLinear(const ListOfId *lid,int ordre)
         CompileError(" Sorry you mixte formulation with and without array ");
     }
 }
-
+#endif
 const Fem2D::GQuadratureFormular<R3> & CDomainOfIntegration::FIV(Stack stack) const
 {
     using namespace Fem2D;
@@ -12096,7 +12096,7 @@ const Fem2D::QuadratureFormular1d & CDomainOfIntegration::FIE(Stack stack) const
     ExecError(" We find  no Quadrature Formular on Edge  for this  order:  too high.");
     return QF_GaussLegendre1;
 }
-
+#ifndef kame
 
 namespace Fem2D {
 

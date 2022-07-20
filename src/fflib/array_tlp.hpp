@@ -346,13 +346,13 @@ RR * get_elementp2__(const A & a,const B & b,const C & c){
       ExecError("Out of bound in operator (,)");}
 return  &((a)(b,c));}
 
-
+#endif
 template<typename T>
 struct myremove_pointer
 {
     typedef T type;
 };
-
+#ifndef kame
 template<typename T>
 struct myremove_pointer<T*>
 {
