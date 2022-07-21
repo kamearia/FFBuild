@@ -1128,9 +1128,13 @@ template<class R,class A0,class A1,class E=E_F0>
   E_F_F0F0_(func ff,Expression aa0,Expression aa1) 
     : f(ff),a0(aa0),a1(aa1) {}
   AnyType operator()(Stack s)  const 
-    {return SetAny<R>( f( GetAny<A0>((*a0)(s)) , GetAny<A1>((*a1)(s)) ) );} 
-    bool MeshIndependent() const 
-      {return E::MeshIndependent() && a0->MeshIndependent() && a1->MeshIndependent();} //
+  {
+	  return SetAny<R>( f( GetAny<A0>((*a0)(s)) , GetAny<A1>((*a1)(s)) ) );
+  } 
+	bool MeshIndependent() const 
+      {
+		return E::MeshIndependent() && a0->MeshIndependent() && a1->MeshIndependent();
+	} //
  
 };
 #ifndef kame

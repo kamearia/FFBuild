@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>/D"CMAKE"  /D"kame" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\EMSolution\FreeFem\FreeFem-sources\src\fflib;C:\EMSolution\FreeFem\FreeFem-sources\src\femlib;C:\EMSolution\FreeFem\FreeFem-sources\src\lglib;C:\EMSolution\FreeFem\FreeFem-sources\ffbuild;C:\EMSolution\FreeFem\FreeFem-sources\src\Graphics;C:\EMSolution\FreeFem\FreeFem-sources\src\bamglib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\src\fflib;..\src\femlib;..\src\lglib;..\src\Graphics;..\src\bamglib;.\src</AdditionalIncludeDirectories>
       <ShowIncludes>true</ShowIncludes>
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommand>C:\EMSolution\FreeFem\FreeFem-sources\ffbuild\x64\Debug\ffbuild</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>a_tutorial.edp</LocalDebuggerCommandArguments>
-    <LocalDebuggerWorkingDirectory>C:\EMSolution\FreeFem\FreeFem-sources\ffbuild\dat</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommandArguments>test.edp</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>.\dat</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
