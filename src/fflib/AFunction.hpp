@@ -251,14 +251,12 @@ template<class T>
 class basicForEachType : public CodeAlloc {
     const type_info  * ktype;  // the real type_info
   //  const type_info *ktypefunc;// the type of code 
-    public:
+public:
     static  basicForEachType * tnull;
      const size_t size;
 
-    
     typedef OneOperator * CastFunc;
     typedef std::map<aType,CastFunc>::const_iterator const_cast_iterator;
-
     typedef const char * Key;
 
    // virtual  void print(ostream &f,const void *p) const =0;
@@ -266,13 +264,13 @@ class basicForEachType : public CodeAlloc {
     friend ostream & operator<<(ostream & f,const basicForEachType & e)
     { f << '<' << e.name() << '>' ;return f;}
     void Show(ostream & f) const ;
-     const char * name() const  { return this!=tnull  ?  ktype->name() :"NULL" ;}
-	 virtual bool CastingFrom(const basicForEachType * t) const ;
+    const char * name() const  { return this!=tnull  ?  ktype->name() :"NULL" ;}
+	virtual bool CastingFrom(const basicForEachType * t) const ;
 
      //  modif FH -----  A TESTER  // 
-     virtual bool SametypeRight(const basicForEachType * t) const {return  (this == t) || (t == un_ptr_type) || (t == type_C_F0);}
+    virtual bool SametypeRight(const basicForEachType * t) const {return  (this == t) || (t == un_ptr_type) || (t == type_C_F0);}
 //     virtual Type_Expr init(const Type_Expr & te) const { return Type_Expr(0,0);}
-     virtual int TYPEOFID() const  {return 0;}
+    virtual int TYPEOFID() const  {return 0;}
 //     bool SametypeLeft(const basicForEachType * t) const {return  t == this;}
    //  bool To(const basicForEachType * t) const { throwassert(t && this);return un_ptr_type == this ? t->un_ptr_type == this :  t == this;}
      virtual C_F0 CastTo(const C_F0 & e) const ; 
@@ -376,33 +374,34 @@ class C_LF1;
 /// [[file:../lglib/lg.ypp::evaluate_parsed_FF_script]] (see \ref index). No internal data member.
 
 
-class 
-	E_F0 :public CodeAlloc 
-   {
-   public:
-       static E_F0 *tnull;
-  struct kless : binary_function<Expression,Expression, bool>
-   { bool operator()(const Expression& x, const Expression& y) const{ 
-     //cout << x << " " << y << x->compare(y) << " ::: ";
-      int r1 = x->compare(y);// , r2 = y->compare(x);
-     //assert(r1+r2==0);
-     return r1<0;} };  
-   typedef map< E_F0 *,int,kless> MapOfE_F0;
+class E_F0 :public CodeAlloc 
+{
+public:
+	static E_F0 *tnull;
+	struct kless : binary_function<Expression,Expression, bool>
+	{ 
+		bool operator()(const Expression& x, const Expression& y) const{ 
+			//cout << x << " " << y << x->compare(y) << " ::: ";
+			int r1 = x->compare(y);// , r2 = y->compare(x);
+			//assert(r1+r2==0);
+			 return r1<0;} 
+	};  
+	typedef map< E_F0 *,int,kless> MapOfE_F0;
 
-    virtual AnyType operator()(Stack)  const =0;
-    virtual bool Empty() const {return this==tnull; }
-   // virtual E_F0 * destroy(Stack ) const {return 0;}
-  //  virtual const E_F0 * Parameter(Stack ) const {return this;}
-    virtual size_t nbitem() const {return 1;}
-    virtual bool EvaluableWithOutStack() const {return false;} // 
-    virtual bool MeshIndependent() const {return true;} // 
-    virtual bool Zero() const {return false;} //
-    virtual E_F0 * right_E_F0() const { return 0;}
-    virtual bool ReadOnly() const { return true;} // the expression do not change the memory     
-    virtual ~E_F0() {}
+	virtual AnyType operator()(Stack)  const =0;
+	virtual bool Empty() const {return this==tnull; }
+	// virtual E_F0 * destroy(Stack ) const {return 0;}
+	//  virtual const E_F0 * Parameter(Stack ) const {return this;}
+	virtual size_t nbitem() const {return 1;}
+	virtual bool EvaluableWithOutStack() const {return false;} // 
+	virtual bool MeshIndependent() const {return true;} // 
+	virtual bool Zero() const {return false;} //
+	virtual E_F0 * right_E_F0() const { return 0;}
+	virtual bool ReadOnly() const { return true;} // the expression do not change the memory     
+	virtual ~E_F0() {}
     virtual int compare (const E_F0 *t) const { int r= (t==this) ? 0 : ( ( this<t) ?-1 : 1);
-     //cout << "cmp " <<  typeid(*this).name() << r << endl; 
-     return r;} // to give a order in instuction 
+		//cout << "cmp " <<  typeid(*this).name() << r << endl; 
+		return r;} // to give a order in instuction 
     virtual int Optimize(deque<pair<Expression,int> > &l,MapOfE_F0 & m, size_t & n) ;  // build optimisation
     virtual AnyType operator()(Stack stack,AnyType *)  const { return operator()(stack);}  // call optim code
     virtual  operator aType ()  const { assert(0);return 0;}   // the type of the expression
@@ -414,8 +413,8 @@ class
     // ajoute for optimisation to say if a expression in meshindep a exec time
     // to solve   0*x // question 
     // juin 2007 FH
-    virtual AnyType eval(Stack stack, bool & meshindep ) const  
-    { meshindep=MeshIndependent();return operator()(stack);}
+    virtual AnyType eval(Stack stack, bool & meshindep ) const  { 
+		meshindep=MeshIndependent();return operator()(stack);}
      
  };  
  
@@ -738,14 +737,16 @@ class ForEachType:  public basicForEachType{public:
       }
     }
 };
-#ifndef kame
+
 template<class T> 
-class ForEachType<T*>:  public basicForEachType{public:// coorection july 2009..... FH  Hoooo....  (Il y a un bug DUR DUR FH  ...) 
-    ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0):basicForEachType(typeid(T),sizeof(T),0,0,iv,id,OOnReturn) {
+class ForEachType<T*>:  public basicForEachType{
+public:// coorection july 2009..... FH  Hoooo....  (Il y a un bug DUR DUR FH  ...) 
+    ForEachType(Function1 iv=0,Function1 id=0,Function1 OOnReturn=0)
+		:basicForEachType(typeid(T),sizeof(T),0,0,iv,id,OOnReturn) {
 	//T i= 0.0;
     }
 };
-#endif
+
 template<class A,class B>  AnyType UnRef(Stack,const AnyType &a) ; 
 template<class A>  AnyType Initialize(Stack,const AnyType &a) ; 
 template<class A>  AnyType Destroy(Stack,const AnyType &a) ; 
@@ -1129,7 +1130,12 @@ template<class R,class A0,class A1,class E=E_F0>
     : f(ff),a0(aa0),a1(aa1) {}
   AnyType operator()(Stack s)  const 
   {
-	  return SetAny<R>( f( GetAny<A0>((*a0)(s)) , GetAny<A1>((*a1)(s)) ) );
+	  const char* typeA0=typeid(A0).name();
+	  const char* typeA1 = typeid(A1).name();
+	  const A0 &x0 = GetAny<A0>((*a0)(s));
+	  const A1 &x1 = GetAny<A1>((*a1)(s));
+
+	  return SetAny<R>( f( x0 , x1 ) );
   } 
 	bool MeshIndependent() const 
       {
@@ -1297,23 +1303,25 @@ template<class R> int ccompare(const complex<R> & a,const complex<R>& b){
   int c=ccompare(a.real(),b.real()); 
   return c==0 ? ccompare(a.imag(),b.imag()): c ;}
 
-template<class R> class EConstant:public E_F0
- { 
-  const R v;
-  public:
-  AnyType operator()(Stack ) const { /*cout << " ()" << v << endl*/;return SetAny<R>(v);}
-  EConstant(const R & o):v(o) { /*cout << "New constant " << o << endl;*/}
-  bool EvaluableWithOutStack() const {return true;} //   
-  operator aType () const { return atype<R>();}
-     bool Zero()const  { return v == R();}
-  int compare (const E_F0 *t) const { 
+template<class R> class EConstant:public E_F0 { 
+	const R v;
+public:
+	AnyType operator()(Stack ) const { /*cout << " ()" << v << endl*/;
+		return SetAny<R>(v);}
+	EConstant(const R & o):v(o) { /*cout << "New constant " << o << endl;*/}
+	bool EvaluableWithOutStack() const {return true;} //   
+	operator aType () const { return atype<R>();}
+	bool Zero()const  { return v == R();}
+	int compare (const E_F0 *t) const { 
         int rr;
         const  EConstant * tt=dynamic_cast<const EConstant *>(t);
             if (tt) rr = ccompare(v,tt->v);
              else rr = E_F0::compare(t);
          return rr;
        } 
-   ostream & dump(ostream &f) const { f << " ((" <<typeid(R).name()  << ") " << v << ") " ;return f;}  
+	ostream & dump(ostream &f) const { f << " ((" <<typeid(R).name()  << ") " << v << ") " ;return f;}  
+	
+	static void test();
 };
 
 

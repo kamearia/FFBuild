@@ -279,7 +279,8 @@ class SaveMesh :  public E_F0 { public:
       yy=0;
       zz=0;
       args.SetNameParam();
-      getmesh=to<pmesh *>(args[0]);
+      getmesh=to<pmesh>(args[0]);
+//	  getmesh = to<pmesh *>(args[0]);
       filename=to<string*>(args[1]);
       if (args.size() >2)
         {

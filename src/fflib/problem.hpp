@@ -303,8 +303,7 @@ public:
     mapu[0]=mapu[1]=mapu[2]=0; // no map of intergration points for unknows function
     args.SetNameParam(n_name_param,name_param,nargs);
     if(d==2) // 3d
-//KAME      Th=CastTo<pmesh>(args[0]);
-		Th = CastTo<pmesh *>(args[0]);
+      Th=CastTo<pmesh>(args[0]);
     else if(d==3 && dHat==3){
         Th=CastTo<pmesh3>(args[0]);}
     else if(d==3 && dHat==2){

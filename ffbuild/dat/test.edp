@@ -7,25 +7,25 @@ verbosity=1000;
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
 mesh disk= buildmesh(a(50));
-
-//savemesh(disk, "mesh.dat");
-//end;
 //savemesh(buildmesh(a(50)), "mesh.dat");
+savemesh(disk, "mesh.dat");
 //end;
+
 
 //plot(disk);
 
 // Fespace
-fespace femp1(disk, P1);
-femp1 u;
-u=1.;
+//fespace femp1(disk, P1);
+//femp1 u;
+//u=1.;
 //u=-x^2-y^2+1.;
 //end;
 //real value;
-//value=u(0,0);
+//real value=u(0,0);
 //cout << "value="<< value<<endl;
 //end;
 
+//real integ=int2d(buildmesh(a(50)))(1.);
 real integ=int2d(disk)(1.);
 cout<< "int2d(disk)(1)= "<< integ << endl;
 end;

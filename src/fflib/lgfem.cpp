@@ -6091,13 +6091,13 @@ void init_lgfem( ) {
   basicForEachType *t_form = atype< const C_args * >( );
 #endif   
   Dcl_Type< const CDomainOfIntegration * >( );
-#ifndef kame 
   atype< pmesh >( )->AddCast(new E_F1_funcT< pmesh, pmesh * >(UnRef< pmesh >));
   atype< pfes >( )->AddCast(new E_F1_funcT< pfes, pfes * >(UnRef< pfes >));
 
   atype< pferbase >( )->AddCast(new E_F1_funcT< pferbase, pferbase >(UnRef< pferbase >));
   atype< pfecbase >( )->AddCast(new E_F1_funcT< pfecbase, pfecbase >(UnRef< pfecbase >));
 
+#ifndef kame 
   Add< pfer >("[]", ".", new OneOperator1< KN< double > *, pfer >(pfer2vect< R >));
   Add< pfec >("[]", ".", new OneOperator1< KN< Complex > *, pfec >(pfer2vect< Complex >));
 
