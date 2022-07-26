@@ -1863,7 +1863,7 @@ class Op_CopyArray : public OneOperator {
   Op_CopyArray( ) : OneOperator(atype< void >( ), atype< E_Array >( ), atype< E_Array >( )) {}
   E_F0 *code(const basicAC_F0 &args) const;
 };
-
+#endif
 template< class R, int dd >
 AnyType pfer2R(Stack s, const AnyType &a) {
   pair< FEbase< R, v_fes > *, int > ppfe = GetAny< pair< FEbase< R, v_fes > *, int > >(a);
@@ -1902,7 +1902,7 @@ AnyType pfer2R(Stack s, const AnyType &a) {
   const R rr = KK(PHat, *fe.x( ), componante, dd);
   return SetAny< R >(rr);
 }
-#endif
+
 template< class R >
 AnyType set_fe(Stack s, Expression ppfe, Expression e) {
   long kkff = Mesh::kfind, kkth = Mesh::kthrough;
@@ -6001,9 +6001,9 @@ void init_lgfem( ) {
 
   map_type[typeid(pfesL).name( )] = new ForEachType< pfesL >( );                  // 3D curve
   map_type[typeid(pfesL *).name( )] = new ForEachTypePtrfspace< pfesL, 5 >( );    // 3D curve
-#ifndef kame 
   //
   Dcl_Type< const QuadratureFormular * >( );
+#ifndef kame 
   Dcl_Type< const QuadratureFormular1d * >( );
   Dcl_Type< const GQuadratureFormular< R3 > * >( );
   TheOperators->Add("\'",   new OneOperator1<Transpose<R3* >,R3* >(&Build<Transpose<R3* >,R3* >,2));
@@ -6046,11 +6046,11 @@ void init_lgfem( ) {
   Global.New("wait", CConstant< bool * >(&TheWait));
   Global.New("NoUseOfWait", CConstant< bool * >(&NoWait));
   Global.New("NoGraphicWindow", CConstant< bool * >(&NoGraphicWindow));
-
+#endif
   //Dcl_Type< MeshPoint * >( );
   Dcl_Type< finconnue * >( );
   Dcl_Type< ftest * >( );
-    
+#ifndef kame
   Dcl_Type< foperator * >( );
   Dcl_Type< const BC_set * >( );                         // a set of boundary condition
   Dcl_Type< const Call_FormLinear< v_fes > * >( );       //   to set Vector
@@ -6076,12 +6076,16 @@ void init_lgfem( ) {
   map_type[typeid(const FormLinear *).name( )] = new TypeFormLinear;
     
   aType t_C_args = map_type[typeid(const C_args *).name( )] = new TypeFormOperator;
+#endif
   map_type[typeid(const Problem *).name( )] = new TypeSolve< false, Problem >;
+#ifndef kame
   map_type[typeid(const Solve *).name( )] = new TypeSolve< true, Solve >;
   Dcl_Type< const IntFunction< double > * >( );
   Dcl_Type< const IntFunction< complex< double > > * >( );
   basicForEachType *t_solve = atype< const Solve * >( );
+#endif
   basicForEachType *t_problem = atype< const Problem * >( );
+#ifndef kame
   basicForEachType *t_fbilin = atype< const FormBilinear * >( );
 
   basicForEachType *t_flin = atype< const FormLinear * >( );
@@ -6307,8 +6311,10 @@ void init_lgfem( ) {
 
   zzzfff->AddF("varf", t_form);    //  var. form ~  <<varf>>
   zzzfff->AddF("solve", t_solve);
+#endif
   zzzfff->AddF("problem", t_problem);
-  
+#ifndef kame
+
   Global.Add("jump", "(", new OneOperatorCode< Code_VF< Ftest, Code_Jump > >);
   Global.Add("jump", "(", new OneOperatorCode< Code_VF< Finconnue, Code_Jump > >);
   Global.Add("average", "(", new OneOperatorCode< Code_VF< Ftest, Code_Mean > >);
@@ -6324,12 +6330,12 @@ void init_lgfem( ) {
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Finconnue > >);
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Ftest > >);
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Foperator > >);
-
+#endif
   Global.Add("dx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dx > >);
   Global.Add("dy", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dy > >);
   Global.Add("dx", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dx > >);
   Global.Add("dy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dy > >);
-
+#ifndef kame
   Global.Add("dxx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dxx > >);
   Global.Add("dxy", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dxy > >);
   Global.Add("dyx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dyx > >);
@@ -6391,6 +6397,8 @@ void init_lgfem( ) {
 
   );
 
+#endif
+#ifndef kame
   TheOperators->Add("*", new OneOperatorCode< CODE_L_Mul< Foperator, Ftest, Finconnue > >,
                     new OneOperatorCode< CODE_L_Mul< Foperator, Finconnue, Ftest > >);
 
@@ -6405,6 +6413,7 @@ void init_lgfem( ) {
                     new OneOperatorCode< CODE_L_MulRL< double, Finconnue >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Foperator >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Ftest >, 20 >);
+
   TheOperators->Add("*", new OneOperatorCode< CODE_L_MulLR< Finconnue, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Foperator, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Ftest, Complex >, 10 >,
@@ -6725,9 +6734,9 @@ void init_lgfem( ) {
   Global.Add("mean", "(", new OneUnaryOperator< MeanOp< Complex >, MeanOp< Complex > >);
   Global.Add("average", "(", new OneUnaryOperator< MeanOp< Complex >, MeanOp< Complex > >);
   Global.Add("otherside", "(",new OneUnaryOperator< OthersideOp< Complex >, OthersideOp< Complex > >);
-
+#endif
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
-
+#ifndef kame
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
 #endif
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< double >, 1 >);
@@ -6737,9 +6746,10 @@ void init_lgfem( ) {
   map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
 
   map_type[typeid(Complex).name( )]->AddCast(new E_F1_funcT< Complex, pfec >(pfer2R< Complex, 0 >));
-
+#endif
   // bof
   Global.Add("dx", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dx >));
+#ifndef kame
   Global.Add("dy", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dy >));
   Global.Add("dxx", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dxx >));
   Global.Add("dyy", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dyy >));

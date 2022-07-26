@@ -3076,7 +3076,6 @@ TheOperators->Add("=",
  Global.Add("dzz","(",new OneOperatorCode<CODE_Diff<Finconnue,op_dzz> >);
 
 
- 
 // bof
  // volume 3D real
  Global.Add("dx","(",new E_F1_funcT<double,pf3r>(pf3r2R<R,op_dx,v_fes3>));

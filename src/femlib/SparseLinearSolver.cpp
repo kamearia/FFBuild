@@ -8,6 +8,7 @@ template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffs
     if(ds) delete ds;
     ds = new string(s);
 }
+#endif
 template<class R>
 void Data_Sparse_Solver::Init_sym_positive_var(int syma)
 {
@@ -58,7 +59,7 @@ void Data_Sparse_Solver::Init_sym_positive_var(int syma)
         if( solver == "CHOLMOD") {sym=1;}
     }
 }
-
+#ifndef kame
 template<class Z,class K>
   int TypeOfMat( Data_Sparse_Solver & ds)
 {

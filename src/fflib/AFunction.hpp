@@ -2911,7 +2911,7 @@ class  OneOperatorCode : public OneOperator {
     OneOperatorCode(aType rr,aType a,aType b,aType c):  OneOperator(rr,a,b,c)  {pref=ppref;}
     
 };
-#ifndef kame
+
 template<class A,class B> struct binary_trait{ typedef  A R  ;}; 
 template<>  struct binary_trait<int,double> { typedef  double R;}; 
 template<>  struct binary_trait<long,double> { typedef  double R;}; 
@@ -2919,7 +2919,7 @@ template<>  struct binary_trait<int,complex<double> > { typedef  complex<double>
 template<>  struct binary_trait<long,complex<double> > { typedef  complex<double> R;}; 
 template<>  struct binary_trait<double,complex<double> > { typedef  complex<double> R ;}; 
 template<class A>  struct binary_trait<A,string* > { typedef  string*  R ;}; 
-#endif
+
 //  1 variable pour les operation de cast 
 class E_F1_funcT_Type: public OneOperator{ public:
     //  const basicForEachType *r,*a;

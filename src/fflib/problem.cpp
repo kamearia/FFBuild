@@ -11546,7 +11546,7 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
     return SetAny<const Problem *>(this);
 }
 
-
+#endif
 // dimProblem read the number of arguments of problem ex: problem a(u,v) or a([u1,u2], [v1,v2])
 int dimProblem(const ListOfId &l)
 {
@@ -11599,6 +11599,8 @@ int dimProblem(const ListOfId &l)
 
 AnyType Problem::operator()(Stack stack) const
 {
+	assert(false);
+#ifndef kame
     if(dim==2) {
         Data<FESpace> *data= dataptr(stack);
         if (complextype)
@@ -11629,8 +11631,10 @@ AnyType Problem::operator()(Stack stack) const
     }
 
     else ffassert(0);
+#endif
+	ffassert(0);
 }
-
+#ifndef kame
 template<class pfer,class pfec>
 bool GetBilinearParam(const ListOfId &l,basicAC_F0::name_and_type *name_param,int n_name_param,
                       Expression *nargs,int & N,int & M,  vector<Expression> & var )
@@ -11848,7 +11852,7 @@ bool FieldOfForm( list<C_F0> & largs ,bool complextype)  // true => complex prob
     return complextype;
 }
 
-
+#endif
 Problem::Problem(const C_args * ca,const ListOfId &l,size_t & top) :
 op(new C_args(*ca)),
 var(l.size()),
@@ -11858,7 +11862,7 @@ dim(dimProblem(l))
 {
     if( verbosity > 999)  cout << "Problem : ----------------------------- " << top << " dim = " << dim<<" " << nargs <<  endl;
     top = offset + max(sizeof(Data<FESpace>),sizeof(Data<FESpace>));
-
+#ifndef kame
     bool iscomplex;
     if(dim==2)
     iscomplex=GetBilinearParam<pfer,pfec>(l,name_param,n_name_param,nargs, Nitem,Mitem,var);
@@ -11869,7 +11873,7 @@ dim(dimProblem(l))
     else if (dim==5)  // dim = 5 for a 3D curve problem
         iscomplex=GetBilinearParam<pfLr,pfLc>(l,name_param,n_name_param,nargs, Nitem,Mitem,var);
     else ffassert(0); // bug
-
+#endif
     precon = 0; //  a changer
     if ( nargs[3+3])
     {
@@ -11878,7 +11882,8 @@ dim(dimProblem(l))
         precon = op->Find("(",ArrayOfaType(atype<KN<R>* >(),false));
         ffassert(precon);
     }
-
+	assert(false);
+#ifndef kame
     VF=isVF(op->largs);
     // cout << " Problem ) VF = " << VF << endl;
     complextype =  FieldOfForm(op->largs,iscomplex)  ;  // Warning do the casting of all expression in double or complex
@@ -11886,8 +11891,9 @@ dim(dimProblem(l))
     CompileError("Error: Problem  a complex problem with no complex FE function ");
     if( verbosity > 1)
     cout << "  -- Problem type  ( complex : " << complextype << " )  "  <<endl;
+#endif
 }
-
+#ifndef kame
 Expression IsFebaseArray(Expression f)
 {
     assert(f);
@@ -11964,7 +11970,7 @@ bool C_args::IsBilinearOperator() const {
     }
     return true;}
 
-
+#endif
 void SetArgsFormLinear(const ListOfId *lid,int ordre)
 {
     //  the local parameter are
@@ -12031,7 +12037,7 @@ void SetArgsFormLinear(const ListOfId *lid,int ordre)
         CompileError(" Sorry you mixte formulation with and without array ");
     }
 }
-#endif
+
 const Fem2D::GQuadratureFormular<R3> & CDomainOfIntegration::FIV(Stack stack) const
 {
     using namespace Fem2D;
