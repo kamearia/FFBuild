@@ -3093,7 +3093,7 @@ template<class T>
       OneOperator *p2=0,OneOperator *p3=0,OneOperator *p4=0,
       OneOperator *p5=0,OneOperator *p6=0)  
      {atype<T>()->Add(k,op,p0,p1,p2,p3,p4,p5,p6);}     
-#ifndef kame
+
 inline C_F0 operator *(const C_F0 &a,const C_F0 &b)
 {    
   return a==*pOne ? b : ( b ==*pOne ? a : C_F0(TheOperators,"*",a,b)) ;}
@@ -3107,7 +3107,7 @@ inline C_F0 &operator +=(C_F0 &a,const C_F0 &b)
    a=r;
    return a;}
 
-#endif 
+
 //inline  bool CC_F0::Empty() const {return !f || f->Empty();}
 inline  void CC_F0::operator=(const CListOfInst& c) 
   { C_F0 cc=c;f=cc.f;r=cc.r;}

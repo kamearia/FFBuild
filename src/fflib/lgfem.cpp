@@ -6050,18 +6050,19 @@ void init_lgfem( ) {
   //Dcl_Type< MeshPoint * >( );
   Dcl_Type< finconnue * >( );
   Dcl_Type< ftest * >( );
-#ifndef kame
   Dcl_Type< foperator * >( );
+
   Dcl_Type< const BC_set * >( );                         // a set of boundary condition
   Dcl_Type< const Call_FormLinear< v_fes > * >( );       //   to set Vector
   Dcl_Type< const Call_FormBilinear<v_fes, v_fes > * >( );     // to set Matrix
+#ifndef kame
   Dcl_Type< const Call_FormLinear< v_fes3 > * >( );      //   to set Vector 3D volume
   Dcl_Type< const Call_FormBilinear<v_fes3, v_fes3 > * >( );    // to set Matrix 3D volume
   Dcl_Type< const Call_FormLinear< v_fesS > * >( );      //   to set Vector 3D surface
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fesS > * >( );    // to set Matrix 3D surface
   Dcl_Type< const Call_FormLinear< v_fesL > * >( );      //   to set Vector 3D curve
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fesL > * >( );    // to set Matrix 3D curve
-  
+ 
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fes> * >( );   // 3D curve / 2D on meshL
   Dcl_Type< const Call_FormBilinear<v_fes, v_fesL> * >( );   // 2D / 3D curve on meshL
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fes3> * >( );   // 3D Surf / 3D volume on meshS
@@ -6069,23 +6070,21 @@ void init_lgfem( ) {
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fesS> * >( );   // 3D curve / 3D Surf on meshL
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fesL> * >( );   // 3D Surf / 3D curve on meshL and bem
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fes> * >( );
-        
+#endif        
   Dcl_Type< interpolate_f_X_1< double >::type >( );      // to make  interpolation x=f o X^1 ;
 
   map_type[typeid(const FormBilinear *).name( )] = new TypeFormBilinear;
   map_type[typeid(const FormLinear *).name( )] = new TypeFormLinear;
     
   aType t_C_args = map_type[typeid(const C_args *).name( )] = new TypeFormOperator;
-#endif
   map_type[typeid(const Problem *).name( )] = new TypeSolve< false, Problem >;
-#ifndef kame
+
   map_type[typeid(const Solve *).name( )] = new TypeSolve< true, Solve >;
   Dcl_Type< const IntFunction< double > * >( );
   Dcl_Type< const IntFunction< complex< double > > * >( );
   basicForEachType *t_solve = atype< const Solve * >( );
-#endif
   basicForEachType *t_problem = atype< const Problem * >( );
-#ifndef kame
+
   basicForEachType *t_fbilin = atype< const FormBilinear * >( );
 
   basicForEachType *t_flin = atype< const FormLinear * >( );
@@ -6093,7 +6092,7 @@ void init_lgfem( ) {
  
   /// Doxygen doc
   basicForEachType *t_form = atype< const C_args * >( );
-#endif   
+   
   Dcl_Type< const CDomainOfIntegration * >( );
   atype< pmesh >( )->AddCast(new E_F1_funcT< pmesh, pmesh * >(UnRef< pmesh >));
   atype< pfes >( )->AddCast(new E_F1_funcT< pfes, pfes * >(UnRef< pfes >));
@@ -6353,7 +6352,7 @@ void init_lgfem( ) {
   Global.Add("plot", "(", new OneOperatorCode< Plot >);
 #ifndef kame
   Global.Add("convect", "(", new OneOperatorCode< Convect >);
-  
+#endif
   TheOperators->Add("+", new OneOperatorCode< CODE_L_Add< Foperator > >,
                     new OneOperatorCode< CODE_L_Add< Ftest > >,
                     new OneOperatorCode< CODE_L_Add< Finconnue > >,
@@ -6376,7 +6375,7 @@ void init_lgfem( ) {
     new OneOperatorCode< C_args >(t_C_args, t_flin),
     new OneOperatorCode< C_args >(t_C_args, t_BC)
   );
-
+#ifndef kame
   atype< const C_args * >( )->AddCast(
     new OneOperatorCode< C_args >(t_C_args, atype< DotSlash_KN_< R > >( )),
     new OneOperatorCode< C_args >(t_C_args, atype< KN< R > * >( )),
@@ -6398,7 +6397,7 @@ void init_lgfem( ) {
   );
 
 #endif
-#ifndef kame
+
   TheOperators->Add("*", new OneOperatorCode< CODE_L_Mul< Foperator, Ftest, Finconnue > >,
                     new OneOperatorCode< CODE_L_Mul< Foperator, Finconnue, Ftest > >);
 
@@ -6413,7 +6412,7 @@ void init_lgfem( ) {
                     new OneOperatorCode< CODE_L_MulRL< double, Finconnue >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Foperator >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Ftest >, 20 >);
-
+#ifndef kame
   TheOperators->Add("*", new OneOperatorCode< CODE_L_MulLR< Finconnue, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Foperator, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Ftest, Complex >, 10 >,
@@ -6623,7 +6622,7 @@ void init_lgfem( ) {
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< Complex, MeshL, v_fesL, v_fesS >(1));    // 3D curve / 3D Surf on meshL
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< double, MeshL, v_fesS, v_fesL >(1));     // 3D Surf / 3D curve on meshL
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< Complex, MeshL, v_fesS, v_fesL >(1));    // 3D Surf / 3D curve on meshL
-        
+       
   Add< const FormLinear * >("(", "", new OpCall_FormLinear< FormLinear, v_fes >);
   Add< const FormBilinear * >("(", "", new OpCall_FormBilinear< FormBilinear, v_fes, v_fes >);
   Add< const FormBilinear * >("(", "", new OpCall_FormLinear2< FormBilinear, v_fes >);
