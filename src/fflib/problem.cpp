@@ -63,7 +63,7 @@ basicAC_F0::name_and_type  CDomainOfIntegration::name_param[]= {
 
 
 };
-#ifndef kame
+
 basicAC_F0::name_and_type  Problem::name_param[]= {
     {  "save",&typeid(string* )},
     {  "cadna",&typeid(KN<double>*)},
@@ -95,7 +95,7 @@ basicAC_F0::name_and_type  Problem::name_param[]= {
      {   "filepermcol",&typeid(string*)} //22
      */
 };
-
+#ifndef kame
 struct pair_stack_double
 {
     Stack first;
@@ -11044,7 +11044,7 @@ void AssembleLinearForm(Stack stack,const MeshS & Th,const FESpaceS & Vh,KN_<R> 
 
 }// END of NameSpace Fem2D
 
-
+#endif
 bool isVF(const list<C_F0> & largs)  // true => VF type of Matrix
 {
     list<C_F0>::const_iterator ii,ib=largs.begin(),
@@ -11081,7 +11081,7 @@ bool isVF(const list<C_F0> & largs)  // true => VF type of Matrix
     }
     return VVF;
 }
-
+#ifndef kame
 
 bool isSameMesh(const list<C_F0> & largs,const void * Thu,const void * Thv,Stack stack)  // true => VF type of Matrix
 {
@@ -11634,7 +11634,7 @@ AnyType Problem::operator()(Stack stack) const
 #endif
 	ffassert(0);
 }
-#ifndef kame
+
 template<class pfer,class pfec>
 bool GetBilinearParam(const ListOfId &l,basicAC_F0::name_and_type *name_param,int n_name_param,
                       Expression *nargs,int & N,int & M,  vector<Expression> & var )
@@ -11715,7 +11715,7 @@ bool GetBilinearParam(const ListOfId &l,basicAC_F0::name_and_type *name_param,in
     }
     return complextype;
 }
-
+#ifndef kame
 
 /*
  int DimForm( list<C_F0> & largs)
@@ -11748,7 +11748,7 @@ bool GetBilinearParam(const ListOfId &l,basicAC_F0::name_and_type *name_param,in
  }
  }
  }*/
-#ifndef kame
+
 bool CheckSizeOfForm( list<C_F0> & largs ,int N,int M)
 {
     list<C_F0>::iterator ii,ib=largs.begin(),
@@ -11852,7 +11852,7 @@ bool FieldOfForm( list<C_F0> & largs ,bool complextype)  // true => complex prob
     return complextype;
 }
 
-#endif
+
 Problem::Problem(const C_args * ca,const ListOfId &l,size_t & top) :
 op(new C_args(*ca)),
 var(l.size()),
@@ -11862,10 +11862,11 @@ dim(dimProblem(l))
 {
     if( verbosity > 999)  cout << "Problem : ----------------------------- " << top << " dim = " << dim<<" " << nargs <<  endl;
     top = offset + max(sizeof(Data<FESpace>),sizeof(Data<FESpace>));
-#ifndef kame
+
     bool iscomplex;
     if(dim==2)
     iscomplex=GetBilinearParam<pfer,pfec>(l,name_param,n_name_param,nargs, Nitem,Mitem,var);
+#ifndef kame
     else if (dim==3)
     iscomplex=GetBilinearParam<pf3r,pf3c>(l,name_param,n_name_param,nargs, Nitem,Mitem,var);
     else if (dim==4)  // dim = 4 for a 3D surface problem
@@ -11882,8 +11883,7 @@ dim(dimProblem(l))
         precon = op->Find("(",ArrayOfaType(atype<KN<R>* >(),false));
         ffassert(precon);
     }
-	assert(false);
-#ifndef kame
+
     VF=isVF(op->largs);
     // cout << " Problem ) VF = " << VF << endl;
     complextype =  FieldOfForm(op->largs,iscomplex)  ;  // Warning do the casting of all expression in double or complex
@@ -11891,7 +11891,6 @@ dim(dimProblem(l))
     CompileError("Error: Problem  a complex problem with no complex FE function ");
     if( verbosity > 1)
     cout << "  -- Problem type  ( complex : " << complextype << " )  "  <<endl;
-#endif
 }
 #ifndef kame
 Expression IsFebaseArray(Expression f)

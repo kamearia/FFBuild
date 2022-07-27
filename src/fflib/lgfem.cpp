@@ -6344,9 +6344,9 @@ void init_lgfem( ) {
   Global.Add("dyy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dyy > >);
   Global.Add("dxy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dxy > >);
   Global.Add("dyx", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dyx > >);
-
-  Global.Add("on", "(", new OneOperatorCode< BC_set >);
 #endif
+  Global.Add("on", "(", new OneOperatorCode< BC_set >);
+
   /// <<plot_keyword>> uses [[Plot]] and [[file:AFunction.hpp::OneOperatorCode]] and
   /// [[file:AFunction.hpp::Global]]
   Global.Add("plot", "(", new OneOperatorCode< Plot >);
@@ -6735,17 +6735,13 @@ void init_lgfem( ) {
   Global.Add("otherside", "(",new OneUnaryOperator< OthersideOp< Complex >, OthersideOp< Complex > >);
 #endif
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
-#ifndef kame
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
-#endif
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< double >, 1 >);
-#ifndef kame
-  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);
-      
-  map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
 
+  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);    
+  map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
   map_type[typeid(Complex).name( )]->AddCast(new E_F1_funcT< Complex, pfec >(pfer2R< Complex, 0 >));
-#endif
+
   // bof
   Global.Add("dx", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dx >));
 #ifndef kame
