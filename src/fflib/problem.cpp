@@ -11599,15 +11599,21 @@ int dimProblem(const ListOfId &l)
 
 AnyType Problem::operator()(Stack stack) const
 {
-	assert(false);
-#ifndef kame
+
+
     if(dim==2) {
         Data<FESpace> *data= dataptr(stack);
-        if (complextype)
-            return eval<Complex,FESpace,v_fes>(stack,data,data->AC,data->AcadnaC);
+		if (complextype) {
+			assert(false);
+#ifndef kame
+
+			return eval<Complex, FESpace, v_fes>(stack, data, data->AC, data->AcadnaC);
+#endif
+		}
         else
             return eval<double,FESpace,v_fes>(stack,data,data->AR,data->AcadnaR);
     }
+#ifndef kame
     else if(dim==3) {
         Data<FESpace3> *data= dataptr3(stack);
         if (complextype)
@@ -11629,10 +11635,9 @@ AnyType Problem::operator()(Stack stack) const
         else
             return eval<double,FESpaceL,v_fesL>(stack,data,data->AR,data->AcadnaR);
     }
-
-    else ffassert(0);
 #endif
-	ffassert(0);
+    else ffassert(0);
+
 }
 
 template<class pfer,class pfec>

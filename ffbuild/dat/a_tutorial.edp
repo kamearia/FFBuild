@@ -21,15 +21,14 @@ problem laplace(u, v)
 		  dx(u)*dx(v)
 		+ dy(u)*dy(v)
 	)
-	+ int2d(disk)(	// linear form
-		- 1*v
-	)
+	+int2d(disk)(-1.*v)	// linear form
+
 	+ on(1, u=0)	// boundary condition
 	;
-end;
+
 // Solve
 laplace;
-
+end;
 // Error
 femp1 err = u - (1-x^2-y^2)/4;
 
