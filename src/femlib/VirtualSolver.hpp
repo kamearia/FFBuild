@@ -100,6 +100,7 @@ struct Data_Sparse_Solver {
         if(einitmat)
             initmat= GetAny<bool>((*einitmat)(s));
     }
+
     template<class R> 
     void Init_sym_positive_var(int syma);
 

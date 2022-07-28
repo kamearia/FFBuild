@@ -673,10 +673,10 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
         if (nargs[++kk])  { ds.getnbiter= GetAny<long*>((*nargs[kk])(stack));
             if( ds.getnbiter) *ds.getnbiter=-1; //undef 
         }
+
+        ds.Init_sym_positive_var<R>(ds.sym);//  set def value of sym and posi
 		assert(false);
 #ifndef kame
-        ds.Init_sym_positive_var<R>(ds.sym);//  set def value of sym and posi
- 
         if(ds.solver == "")
         { // SET DEFAULT SOLVER TO HRE ... 
             if( ds.sym && ds.positive ) ds.solver=*def_solver_sym_dp;

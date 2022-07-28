@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "SparseLinearSolver.hpp"
+#include "VirtualSolver.hpp"
 #include <complex>
 #ifndef kame
 template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffsolver;
@@ -203,8 +204,9 @@ template class TheFFSolver<int,C>;
 
 template int TypeOfMat<int,R>( Data_Sparse_Solver & ds);
 template  int TypeOfMat<int,C>( Data_Sparse_Solver & ds);
-
+#endif
 template void Data_Sparse_Solver::Init_sym_positive_var<R>(int );
+#ifndef kame
 template void Data_Sparse_Solver::Init_sym_positive_var<C>(int );
 
 template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A, const Data_Sparse_Solver & ds);
