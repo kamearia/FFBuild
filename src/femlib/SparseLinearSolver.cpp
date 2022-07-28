@@ -80,7 +80,7 @@ template<class Z,class K>
     if( sn == "SPARSESOLVERSYM") {sym=true;}
     return sym + pos*2;
 }
-
+#endif
 template<class Z,class K>
  typename VirtualMatrix<Z,K>::VSolver * TheFFSolver<Z,K>::Find(HashMatrix<Z,K> &A, const Data_Sparse_Solver & ds,Stack stack )
 {
@@ -142,7 +142,7 @@ template<class Z,class K>
     }
 
 }
-
+#ifndef kame
 
 template<class R>
 void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A,const  Data_Sparse_Solver & ds)
@@ -165,7 +165,7 @@ void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A,const  Data_Sparse_S
 
 }
 
-
+#endif
 template<class R>
 void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver & ds)
 {
@@ -182,7 +182,7 @@ void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver &
 
 
 }
-
+#ifndef kame
 typedef double R;
 typedef complex<double> C;
 
@@ -212,8 +212,9 @@ template void Data_Sparse_Solver::Init_sym_positive_var<C>(int );
 
 template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A, const Data_Sparse_Solver & ds);
 template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,C> & A, const     Data_Sparse_Solver & ds);
-
+#endif
 template void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver & ds);
+#ifndef kame
 template void DefSolver(Stack stack, VirtualMatrix<int,C> & A,const  Data_Sparse_Solver & ds);
 
 #endif

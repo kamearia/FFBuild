@@ -108,7 +108,7 @@ namespace Fem2D {
 
     void  Expandsetoflab(Stack stack,const CDomainOfIntegration & di,set<int> & setoflab,bool &all);
     void  Expandsetoflab(Stack stack,const BC_set & bc,set<long> & setoflab);
-#ifndef kame
+
     void Check(const Opera &Op,int N,int  M)
     {
         int err=0;
@@ -168,6 +168,7 @@ namespace Fem2D {
         if (err)
         ExecError("Incompatibility between linear varf  and FE space");
     }
+#ifndef kame
   template<class R>
   inline void  CheckErrorOptimisation(const R& ccc,const R& cc,const char * cmm)
     {
@@ -179,6 +180,7 @@ namespace Fem2D {
                  cerr << " remark if you add  (..  ,   optimize=2) then  you remove this check (be careful); "<< endl;
                 ExecError("In Optimized version "); }}
    }
+#endif
     inline void  CheckErrorOptimisation(const Complex ccc,const Complex& cc,const char * cmm)
     {
         if ( ccc != cc) {
@@ -191,7 +193,7 @@ namespace Fem2D {
 
                 ExecError("In Optimized version "); }}
     }
-
+#ifndef kame
     //---------------------------------------------------------------------------------------
 /*  just fo debug ...
   long bbnElementonB(Stack s)  {
@@ -783,8 +785,7 @@ template<class R>
                               MatriceCreuse<R>  & A, const  FormBilinear * b  )
 
     {
-		assert(false);
-#ifndef kame
+
         /*FH:  case ..in 2D
          in varf ...
          standard case ..
@@ -900,6 +901,7 @@ template<class R>
             if (all) cout << " all " << endl ;
             else cout << endl;
         }
+
         if(VF) {
             if(&Uh != &Vh || sym)
             cout << ("To Day in bilinear form with discontinuous Galerkin (2d):   \n"
@@ -925,8 +927,8 @@ template<class R>
             matep= new MatriceElementairePleine<R,FESpace>(Uh,Vh,FIT,FIE,useopt);
             matep->element = Element_Op<R>;
         }
-        MatriceElementaireFES<R,FESpace> & mate(*( sym? (MatriceElementaireFES<R,FESpace> *)mates : (MatriceElementaireFES<R,FESpace> *) matep));
 
+        MatriceElementaireFES<R,FESpace> & mate(*( sym? (MatriceElementaireFES<R,FESpace> *)mates : (MatriceElementaireFES<R,FESpace> *) matep));
 
         mate.bilinearform=b->b;
 
@@ -1079,7 +1081,7 @@ template<class R>
         if (where_in_stack) delete [] where_in_stack;
         delete &mate;
         if(verbosity>9) cout << "  -- CPU assemble mat " <<  CPUtime()-CPU0 << " s\n";
-#endif
+
     }
 #ifndef kame
     // creating an instance of AssembleBilinearForm with MatriceCreuse
@@ -6560,7 +6562,7 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
         *MeshPointStack(stack) = mp;
     }
 
-
+#endif
 
     ////////////////////////////////////////////////
     // Element_Op for MatriceElementaireSymetrique
@@ -6884,7 +6886,7 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
         *MeshPointStack(stack) = mp;
 
     }
-
+#ifndef kame
 
 
     // creating an instance of Element_Op MatriceElementaireSymetrique
@@ -7431,14 +7433,15 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
         ffassert(0);
     }
 
-
+#endif
    //////////////////////////////////
    // Element_rhs
    //////////////////////////////////
 
     // #pragma optimization_level 0
     // creating an instance of Element_rhs
-    // case 2d
+
+	// case 2d
     template<class R>
     void  Element_rhs(const FElement & Kv,const LOperaD &Op,double * p,void * vstack,KN_<R> & B,
                       const QuadratureFormular & FI = QuadratureFormular_T_2,int optim=1)
@@ -7514,7 +7517,7 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
 
 
     }
-
+#ifndef kame
     // creating an instance of Element_rhs
     // case 3D volume
     template<class R>
@@ -7844,7 +7847,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         }
         *MeshPointStack(stack) = mp;
     }
-
+#endif
     // #pragma optimization_level 0
 
     // creating an instance of Element_rhs
@@ -7925,7 +7928,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
 
 
     }
-
+#ifndef kame
 
     // creating an instance of Element_rhs
     // case 3D volume
@@ -8032,7 +8035,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
     {
         ffassert(0);
     }
-
+#endif
     // creating an instance of Element_rhs
     // case 2d
     template<class R>
@@ -8115,6 +8118,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
 
 
     }
+#ifndef kame
     // creating an instance of Element_rhs
     // case 3D volume
     template<class R>
@@ -8208,7 +8212,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         ffassert(0);
     }
 
-
+#endif
     // creating an instance of Element_rhs
     // case 2d
     template<class R>
@@ -8287,7 +8291,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         *MeshPointStack(stack) = mp;
 
     }
-
+#ifndef kame
 
     // creating an instance of Element_rhs
     // case 3D volume isoline ... levelset ...
@@ -8534,7 +8538,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
 
     // end 3d
 
-
+#endif
     // creating an instance of Element_rhs
     // case 2d
     template<class R>
@@ -8614,7 +8618,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         *MeshPointStack(stack) = mp;
 
     }
-
+#ifndef kame
 
     // case 3D surface
     template<class R>
@@ -8632,7 +8636,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         ffassert(0);
     }
 
-
+#endif
 
     // creating an instance of Element_rhsVF
     // case 2d
@@ -8768,7 +8772,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         *MeshPointStack(stack) = mp;
 
     }
-
+#ifndef kame
     // creating an instance of Element_rhs
     // case 3D volume
     template<class R>
@@ -8886,7 +8890,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
     {
         ffassert(0);
     }
-
+#endif
     // creating an instance of Element_rhs
     // case 2d
     template<class R>
@@ -9089,7 +9093,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
         *MeshPointStack(stack) = mp;
 
     }
-
+#ifndef kame
 
     // creating an instance of Element_rhs
     // case 3D surface
@@ -9252,8 +9256,7 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
                     MatriceCreuse<R>  * A,KN_<R> * B,KN_<R> * X, const  BC_set * bc, double tgv  )
 
     {
-		assert(false);
-#ifndef kame
+
         MeshPoint *mps= MeshPointStack(stack),mp=*mps;
         StackOfPtr2Free * sptr = WhereStackOfPtr2Free(stack);
         bool sptrclean=true;
@@ -9391,7 +9394,6 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
             cout << " Warning: -- Your set of boundary condition is incompatible with the mesh label." << endl;
         }
         *mps =mp;
-#endif
     }
 
     // creating an instance of AssembleBC
@@ -9889,8 +9891,7 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
     template<class R>
     void AssembleLinearForm(Stack stack,const Mesh & Th,const FESpace & Vh,KN_<R> * B,const  FormLinear * l )
     {
-		assert(false);
-#ifndef kame
+
         StackOfPtr2Free * sptr = WhereStackOfPtr2Free(stack);
         bool sptrclean=true;
         //     sptr->clean(); // modif FH mars 2006  clean Ptr
@@ -10194,7 +10195,6 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
         }
 
         if (n_where_in_stack_opt) delete [] where_in_stack;
-#endif
     }
 
 #ifndef kame
@@ -11341,7 +11341,6 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
     //  Data *data= dataptr(stack);
     //   data->init();
     KN<int>  which_comp(Nbcomp2),which_uh(Nbcomp2);
-	assert(false);
 
     TabFuncArg tabexp(stack,Nbcomp);
     typedef pair< FEbase<R,v_fes> *,int> pfer;
@@ -11466,8 +11465,7 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
     }
     else
     *B = - *B;
-	assert(false);
-#ifndef kame
+
     dynamic_cast<HashMatrix<int,R> *>(&A)->half = ds.sym;
 
     MatriceCreuse<R_st>  * ACadna = 0;
@@ -11556,8 +11554,8 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
     // delete [] LL;
     // if (save) delete save; // clean memory
     *mps=mp;
-#endif
-    return SetAny<const Problem *>(this);
+
+	return SetAny<const Problem *>(this);
 }
 
 
