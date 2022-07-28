@@ -25,6 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #ifndef REMOVE_CODE
  // to do  F. HECHT
 #ifdef __MWERKS__
@@ -528,7 +529,7 @@ basicAC_F0::name_and_type  SetMatrix_Op<R>::name_param[]= {
  LIST_NAME_PARM_MAT
 
 };
-
+#ifndef kame
 template<class R>
 AnyType SetMatrix_Op<R>::operator()(Stack stack)  const
 {
@@ -556,7 +557,7 @@ AnyType SetMatrix_Op<R>::operator()(Stack stack)  const
 
   return Nothing;
 }
-
+#endif
 
 template<class R>
 void BuildCombMat(MatriceMorse<R> & mij,const KNM_<R> & A, int ii00=0,int jj00=0,R coef=R(1.),bool cnj=false)
@@ -574,7 +575,7 @@ void BuildCombMat(MatriceMorse<R> & mij,const KNM_<R> & A, int ii00=0,int jj00=0
    }
 
 }
-
+#ifndef kame
 MatriceMorse<R> * buildInterpolationMatrix(const FESpace & Uh,const FESpace & Vh,void *data)
 {  //  Uh = Vh
     MatriceMorse<R> * m=0;
@@ -730,7 +731,7 @@ MatriceMorse<R> * buildInterpolationMatrix(const FESpace & Uh,const FESpace & Vh
    // sij.clear();
     return m;
 }
-
+#endif
 template<typename RdHatT1,typename RdHatT2>
 void copyKNPt( KN<RdHatT1> &A, KN<RdHatT2> B)
 {  A=B; };
@@ -953,7 +954,7 @@ MatriceMorse<R> * buildInterpolationMatrixT(const FESpaceT1 & Uh,const FESpaceT2
   return m;
 }
 
-
+#ifndef kame
 // ( FESpaceS/FESpaceL - FESpace)
 template<class FESpaceT>
 MatriceMorse<R> * funcBuildInterpolationMatrixT2(const FESpaceT & Uh,const FESpace & Vh,void *data) {
@@ -1391,7 +1392,7 @@ MatriceMorse<R> *  buildInterpolationMatrix1(const FESpace & Uh,const KN_<double
   //  sij.clear();
    return m;
 }
-
+#endif
 template<class FESpaceT>
 MatriceMorse<R> *  buildInterpolationMatrixT1(const FESpaceT & Uh,const KN_<double> & xx,const KN_<double> & yy ,const KN_<double> & zz,int *data)
 {
@@ -1468,7 +1469,7 @@ MatriceMorse<R> *  buildInterpolationMatrixT1(const FESpaceT & Uh,const KN_<doub
   return m;
 }
 
-
+#ifndef kame
 template<>
 MatriceMorse<R> *  buildInterpolationMatrixT1<FESpace>(const FESpace & Uh,const KN_<double> & xx,const KN_<double> & yy ,const KN_<double> & zz,int *data)
 {
@@ -1538,7 +1539,7 @@ AnyType SetMatrixInterpolation1(Stack stack,Expression emat,Expression einter,in
   delete [] data;
    return sparse_mat; // Warning .. no correct gestion of temp ptr ..
 }
-
+#endif
 
 
 template<class pfesT1, class FESpaceT1, class pfesT2, class FESpaceT2 >
@@ -1676,7 +1677,7 @@ AnyType ProdMat(Stack stack,Expression emat,Expression prodmat)
 
 }
 
-
+#ifndef kame
 template<class R,int init>
 AnyType CombMat(Stack stack,Expression emat,Expression combMat)
 {
@@ -1692,6 +1693,7 @@ AnyType CombMat(Stack stack,Expression emat,Expression combMat)
   delete lcB;
   return sparse_mat;
 }
+
 template<class R,int cc> //  July 2019 FH  A += c M +  ...
 AnyType AddCombMat(Stack stack,Expression emat,Expression combMat)
 {
@@ -1707,7 +1709,7 @@ AnyType AddCombMat(Stack stack,Expression emat,Expression combMat)
     delete lcB;
     return pMCA;
 }
-
+#endif
 template<class R,int init>
 AnyType DiagMat(Stack stack,Expression emat,Expression edia)
 {
@@ -1803,7 +1805,7 @@ struct Op2_pair: public binary_function<AA,BB,RR> {
 template<class R>
 long get_mat_n(Matrice_Creuse<R> * p)
  { ffassert(p ) ;  return p->A ?p->A->n: 0  ;}
-
+#ifndef kame
 template<class R>
 bool set_mat_COO(Matrice_Creuse<R> * p)
 { ffassert(p ) ;
@@ -1825,7 +1827,7 @@ bool set_mat_CSC(Matrice_Creuse<R> * p)
     if(phm) phm->CSC();
     return phm;
 }
-
+#endif
 template<class R>
 long get_mat_m(Matrice_Creuse<R> * p)
  { ffassert(p ) ;  return p->A ?p->A->m: 0  ;}
@@ -2115,7 +2117,7 @@ template<class T> struct  Thresholding {
     Matrice_Creuse<T> *v;
     Thresholding (Matrice_Creuse<T> *vv): v(vv) {}
 };
-
+#ifndef kame
 template<class R>
 Matrice_Creuse<R>*thresholding2 (const Thresholding<R> &t, const double &threshold) {
     typedef HashMatrix<int,R> HMat;
@@ -2133,7 +2135,7 @@ Matrice_Creuse<R>*thresholding2 (const Thresholding<R> &t, const double &thresho
     
     return t.v;
 }
-
+#endif
 template<class T>
 long symmetrizeCSR (Matrice_Creuse<T> *const &sparse_mat)
 {
@@ -2223,7 +2225,7 @@ class BlockMatrix1 :  public BlockMatrix<R> { public:
     }
 
 };
-
+#ifndef kame
 template<typename R>
 newpMatrice_Creuse<R> Matrixfull2mapIJ_inv (Stack s,KNM<R>   * const & pa,const Inv_KN_long & iii,const Inv_KN_long & jjj)
 {
@@ -2909,7 +2911,7 @@ AnyType mM2L3 (Stack , const AnyType & pp)
     minusMat<R> mpp(to(GetAny<Matrice_Creuse<R> *>(pp)));
     return SetAny<minusMat<R> >(mpp);
 }
-
+#ifndef kame
 template<class R>
 class E_ForAllLoopMatrix
 {  public:
@@ -2951,7 +2953,7 @@ class E_ForAllLoopMatrix
     }
 
 };
-
+#endif
 //  Mat real -> mat complex .... ??? FH.   april  2016 ....
 struct  VirtualMatCR :public RNM_VirtualMatrix<Complex>{ public:
    RNM_VirtualMatrix<double>& VM;
@@ -3712,12 +3714,13 @@ template<class K>
 basicAC_F0::name_and_type  plotMatrix<K>::Op::name_param[]= {
 	{  "wait", &typeid(bool)}
 };
-
+#endif
 void  init_lgmat()
 
 {
 
   Dcl_Type<const  MatrixInterpolation<pfes,pfes>::Op *>();
+#ifndef kame
   Dcl_Type<const  MatrixInterpolation<pfes3,pfes3>::Op *>();
   Dcl_Type<const  MatrixInterpolation<pfesS,pfesS>::Op *>();
   Dcl_Type<const  MatrixInterpolation<pfesL,pfesL>::Op *>();
@@ -3891,8 +3894,9 @@ void  init_lgmat()
                      new Op2_mulvirtAvCR< RNM_VirtualMatrix<Complex>::solveAxeqb,Matrice_Creuse_inv<R>,KN_<Complex> >,
                      new Op2_mulvirtAvCR< RNM_VirtualMatrix<Complex>::solveAtxeqb,Matrice_Creuse_inv<R>,KN_<Complex> >
                      );
+#endif
      init_SparseLinearSolver();
-
+#ifndef kame
 
     Global.New("DefaultSolver",CPValue<string*>(def_solver));
     Global.New("DefaultSolverSym",CPValue<string*>(def_solver_sym));
@@ -3901,7 +3905,7 @@ void  init_lgmat()
     Global.Add("removeHalf", "(", new OneOperator2s_<newpMatrice_Creuse<R> ,Matrice_Creuse<R> * ,long>(removeHalf));
     Global.Add("removeHalf", "(", new OneOperator3s_<newpMatrice_Creuse<R> ,Matrice_Creuse<R> * ,long,double>(removeHalf));
     Global.Add("removeHalf", "(", new OneOperator4s_<bool,Matrice_Creuse<R> * ,Matrice_Creuse<R> * ,long,double>(removeHalf));
-
+#endif
 }
 
 int Data_Sparse_Solver_version() { return VDATASPARSESOLVER;}

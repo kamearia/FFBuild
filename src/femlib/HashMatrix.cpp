@@ -1,4 +1,4 @@
-
+#include "stdafx.h"
 #include "HashMatrix.hpp"
 //   Warning the instation will be don a the add Of the File
 // F. hecht

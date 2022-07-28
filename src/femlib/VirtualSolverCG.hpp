@@ -109,6 +109,7 @@ struct HMatVirtPrecon: CGMatVirt<I,K> {
         if(code_del) delete  code_del;
     }
 };
+
 template<class I=int,class K=double>
 class SolverCG: public VirtualSolver<I,K> {
 public:

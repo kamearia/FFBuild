@@ -6896,8 +6896,8 @@ void init_lgfem( ) {
   TheOperators->Add(
     "=",
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
-  init_lgmat( );
 #endif
+  init_lgmat( );
   init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
   using namespace FreeFempp;

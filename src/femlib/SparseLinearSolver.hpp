@@ -55,7 +55,7 @@ struct TheFFSolver {
     typedef pair<string,OneFFSlver *>  MValue;
     typedef  map<string,OneFFSlver *> MAPSF;
     static MAPSF ffsolver;
-#ifndef kame
+
     static void  ChangeSolver( string name, string  from)
     {
         std::transform(name.begin(), name.end(), name.begin(), static_cast<int(*)(int)>(std::toupper));
@@ -69,7 +69,7 @@ struct TheFFSolver {
             delete n->second;
         ffsolver[name] = f->second->clone();
     }
-#endif   
+  
     template<class VS>
     static void addsolver (const char* name,int pp,int ts,const  VS* pvs,int sp=0)
     {
@@ -109,11 +109,12 @@ void DestroySolver( )
 {
     for(auto& p : TheFFSolver<Z, K>::ffsolver) delete p.second;
 }
-#ifndef kame
+
 template<class Z, class K> void InitSolver()
 {
  
    addsolver<SolverCG<Z,K>>("CG",10);
+#ifndef kame
    addsolver<SolverGMRES<Z,K>>("GMRES",10,  3);// add set SparseSolver and SparseSolverSym
    addsolver<VirtualSolverSkyLine<Z,K>>("LU",10);
    addsolver<VirtualSolverSkyLine<Z,K>>("CROUT",9);
@@ -123,8 +124,9 @@ template<class Z, class K> void InitSolver()
    addsolver<VirtualSolverCHOLMOD<Z,K>>("CHOLMOD",99,  2);// add set SparseSolverSym
 #endif
     ff_atend(DestroySolver<Z,K>);
-}
 #endif
+}
+
 template<class Z, class K>
 typename VirtualMatrix<Z,K>::VSolver * NewVSolver(HashMatrix<Z,K> &A, const Data_Sparse_Solver & ds,Stack stack )
 {
