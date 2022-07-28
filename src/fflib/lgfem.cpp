@@ -126,12 +126,12 @@ extern bool NoGraphicWindow;
 extern long verbosity;
 extern FILE *ThePlotStream;    //  Add for new plot. FH oct 2008
 void init_lgmesh( );
-
+#endif
 namespace FreeFempp {
   template< class R >
   TypeVarForm< R > *TypeVarForm< R >::Global;
 }
-
+#ifndef kame
 basicAC_F0::name_and_type OpCall_FormBilinear_np::name_param[] = {
   {"bmat", &typeid(Matrice_Creuse< R > *)}, LIST_NAME_PARM_MAT,
   // param for bem solver
@@ -6902,10 +6902,11 @@ void init_lgfem( ) {
   init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
   using namespace FreeFempp;
-#ifndef kame
+
   FreeFempp::TypeVarForm< double >::Global = new TypeVarForm< double >( );
   FreeFempp::TypeVarForm< Complex >::Global = new TypeVarForm< Complex >( );
 
+#ifndef kame
   Global.New("P13d", CConstantTFE3(&DataFE< Mesh3 >::P1));
   Global.New("P23d", CConstantTFE3(&DataFE< Mesh3 >::P2));
   Global.New("P03d", CConstantTFE3(&DataFE< Mesh3 >::P0));
