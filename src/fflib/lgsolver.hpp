@@ -632,7 +632,7 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
                 ffassert(ds.precon);
             } // add miss 
 	}
-      
+  
 	if (nargs[++kk]) ds.NbSpace= GetAny<long>((*nargs[kk])(stack));
 	if (nargs[++kk]) ds.tgv= GetAny<double>((*nargs[kk])(stack));
 	if (nargs[++kk]) ds.factorize= GetAny<long>((*nargs[kk])(stack));	
@@ -673,7 +673,10 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
         if (nargs[++kk])  { ds.getnbiter= GetAny<long*>((*nargs[kk])(stack));
             if( ds.getnbiter) *ds.getnbiter=-1; //undef 
         }
+		assert(false);
+#ifndef kame
         ds.Init_sym_positive_var<R>(ds.sym);//  set def value of sym and posi
+ 
         if(ds.solver == "")
         { // SET DEFAULT SOLVER TO HRE ... 
             if( ds.sym && ds.positive ) ds.solver=*def_solver_sym_dp;
@@ -683,6 +686,7 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
         }
 
         ffassert(++kk == n_name_param);
+#endif
     }
 } // end of namespace Fem2D
 #endif

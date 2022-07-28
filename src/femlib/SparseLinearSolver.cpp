@@ -1,6 +1,7 @@
+#include "stdafx.h"
 #include "SparseLinearSolver.hpp"
 #include <complex>
-
+#ifndef kame
 template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffsolver;
 
  void setptrstring( string * & ds, const string & s)
@@ -12,6 +13,8 @@ template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffs
 template<class R>
 void Data_Sparse_Solver::Init_sym_positive_var(int syma)
 {
+	assert(false);
+#ifndef kame
     //  put the solver name in UPPER CASE
    std::transform(solver.begin(), solver.end(), solver.begin(), static_cast<int(*)(int)>(std::toupper));
     auto i=  TheFFSolver<int,R>::ffsolver.find(solver);
@@ -58,6 +61,7 @@ void Data_Sparse_Solver::Init_sym_positive_var(int syma)
         if( solver == "SPARSESOLVERSYM") {sym=1;}
         if( solver == "CHOLMOD") {sym=1;}
     }
+#endif
 }
 #ifndef kame
 template<class Z,class K>
@@ -184,8 +188,11 @@ std::map<std::string,int> * Data_Sparse_Solver::mds = Data_Sparse_Solver::Set_md
 
 void init_SparseLinearSolver()
 {
+	assert(false);
+#ifndef kame
     InitSolver<int,R>();
     InitSolver<int,C>();
+#endif
 }
 
 template class SparseLinearSolver<int,R>;
@@ -205,3 +212,5 @@ template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,C> & A, const     
 
 template void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver & ds);
 template void DefSolver(Stack stack, VirtualMatrix<int,C> & A,const  Data_Sparse_Solver & ds);
+
+#endif

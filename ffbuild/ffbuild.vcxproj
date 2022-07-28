@@ -196,6 +196,7 @@
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\femlib\P012_3d.cpp" />
     <ClCompile Include="..\src\femlib\QuadratureFormular.cpp" />
+    <ClCompile Include="..\src\femlib\SparseLinearSolver.cpp" />
     <ClCompile Include="..\src\femlib\splitsimplex.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />

@@ -112,9 +112,9 @@ extern GTypeOfFE< MeshL > &G_P3dc_L;
 extern GTypeOfFE< MeshL > &G_P4dc_L;
 extern GTypeOfFE<MeshL> & G_P0VF_L ;
 extern GTypeOfFE<MeshL> & G_P0VFdc_L ;
-#ifndef kame
+
   void Expandsetoflab(Stack stack, const CDomainOfIntegration &di, set< int > &setoflab, bool &all);
-#endif
+
 }    // namespace Fem2D
 #ifndef kame
 #include "BamgFreeFem.hpp"

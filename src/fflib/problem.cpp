@@ -95,7 +95,7 @@ basicAC_F0::name_and_type  Problem::name_param[]= {
      {   "filepermcol",&typeid(string*)} //22
      */
 };
-#ifndef kame
+
 struct pair_stack_double
 {
     Stack first;
@@ -108,7 +108,7 @@ namespace Fem2D {
 
     void  Expandsetoflab(Stack stack,const CDomainOfIntegration & di,set<int> & setoflab,bool &all);
     void  Expandsetoflab(Stack stack,const BC_set & bc,set<long> & setoflab);
-
+#ifndef kame
     void Check(const Opera &Op,int N,int  M)
     {
         int err=0;
@@ -598,7 +598,7 @@ template<class R>
         
         
     }
-
+#endif
     template<class R>
     void  Element_OpVF(MatriceElementairePleine<R,FESpace> & mat,
                        const FElement & Ku,const FElement & KKu,
@@ -775,7 +775,6 @@ template<class R>
 
 
 
-
     // creating an instance of AssembleBilinearForm with MatriceCreuse
     // case 2d
     // --------- FH 120105
@@ -784,6 +783,8 @@ template<class R>
                               MatriceCreuse<R>  & A, const  FormBilinear * b  )
 
     {
+		assert(false);
+#ifndef kame
         /*FH:  case ..in 2D
          in varf ...
          standard case ..
@@ -1078,8 +1079,9 @@ template<class R>
         if (where_in_stack) delete [] where_in_stack;
         delete &mate;
         if(verbosity>9) cout << "  -- CPU assemble mat " <<  CPUtime()-CPU0 << " s\n";
+#endif
     }
-
+#ifndef kame
     // creating an instance of AssembleBilinearForm with MatriceCreuse
     // case 3D volume
     // --------- FH 120105
@@ -5650,7 +5652,7 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
       if (where_in_stack) delete [] where_in_stack;
   }
 
-
+#endif
 
     // --------- FH 170605
     ////////////////////////////////////////////////
@@ -5931,7 +5933,7 @@ pmeshS  pThdi = GetAny<pmeshS>((*b->di->Th)(stack));
         *MeshPointStack(stack) = mp;
     }
 
-
+#ifndef kame
 
     // creating an instance of Element_Op with MatriceElementairePleine
     // case 3D volume
@@ -9109,7 +9111,7 @@ void  Element_rhsVF(const FElementL & Kv,const FElementL & KKv,int ie,int iie,in
     {
         ffassert(0);
     }
-
+#endif
 // generic template for AssembleVarForm
 template<class R,typename MC,class MMesh,class FESpace1,class FESpace2>
 bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESpace2 & Vh,bool sym,
@@ -9250,6 +9252,8 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
                     MatriceCreuse<R>  * A,KN_<R> * B,KN_<R> * X, const  BC_set * bc, double tgv  )
 
     {
+		assert(false);
+#ifndef kame
         MeshPoint *mps= MeshPointStack(stack),mp=*mps;
         StackOfPtr2Free * sptr = WhereStackOfPtr2Free(stack);
         bool sptrclean=true;
@@ -9387,6 +9391,7 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
             cout << " Warning: -- Your set of boundary condition is incompatible with the mesh label." << endl;
         }
         *mps =mp;
+#endif
     }
 
     // creating an instance of AssembleBC
@@ -9827,7 +9832,7 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
         }
         *mps =mp;
     }
-
+#ifndef kame
    // case 3D curve / 2D on meshL
    template<class R>
    void AssembleBC(Stack stack,const MeshL & Th,const FESpaceL & Uh,const FESpace & Vh,bool sym,
@@ -9874,7 +9879,7 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
 
     void  Expandsetoflab(Stack stack,const BC_set & bc,set<long> & setoflab);
     void  Expandsetoflab(Stack stack,const CDomainOfIntegration & di,set<int> & setoflab,bool &all);
-
+#endif
     //////////////////////////////////
     // AssembleLinearForm
     //////////////////////////////////
@@ -9884,6 +9889,8 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
     template<class R>
     void AssembleLinearForm(Stack stack,const Mesh & Th,const FESpace & Vh,KN_<R> * B,const  FormLinear * l )
     {
+		assert(false);
+#ifndef kame
         StackOfPtr2Free * sptr = WhereStackOfPtr2Free(stack);
         bool sptrclean=true;
         //     sptr->clean(); // modif FH mars 2006  clean Ptr
@@ -10187,10 +10194,10 @@ bool AssembleVarForm(Stack stack,const MMesh & Th,const FESpace1 & Uh,const FESp
         }
 
         if (n_where_in_stack_opt) delete [] where_in_stack;
-
+#endif
     }
 
-
+#ifndef kame
     // creating an instance of AssembleLinearForm
     // case 3D volume
     template<class R>
@@ -11041,10 +11048,10 @@ void AssembleLinearForm(Stack stack,const MeshS & Th,const FESpaceS & Vh,KN_<R> 
    {
        ffassert(0);
    }
-
+#endif
 }// END of NameSpace Fem2D
 
-#endif
+
 bool isVF(const list<C_F0> & largs)  // true => VF type of Matrix
 {
     list<C_F0>::const_iterator ii,ib=largs.begin(),
@@ -11109,7 +11116,7 @@ bool isSameMesh(const list<C_F0> & largs,const void * Thu,const void * Thv,Stack
     }
     return true;
 }
-
+#endif
 template<class R,class FESpace,class v_fes>
 void InitProblem( int Nb, const FESpace & Uh,
                  const FESpace & Vh,
@@ -11189,7 +11196,7 @@ void InitProblem( int Nb, const FESpace & Uh,
 
 }
 
-
+#ifndef kame
 
 template<class R>
  MatriceCreuse<typename CadnaType<R>::Scalaire> * DefSolverCadna(
@@ -11236,7 +11243,7 @@ template<class R>
       }
    return 0;
   }
-
+#endif
 template<class R,class FESpace,class v_fes>
 void   DispatchSolution(const typename FESpace::Mesh & Th,int Nb, vector<  FEbase<R,v_fes> * > & u_h,KN<R> * X,KN<R> * B,const FESpace **  LL,const FESpace &  Uh)
 {
@@ -11295,6 +11302,7 @@ template<class R,class FESpace,class v_fes>    // TODO if coupling FE wit proble
 AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreuse<R> > & dataA,
                       MatriceCreuse< typename CadnaType<R>::Scalaire >   * & cadnamat ) const
 {
+
     typedef typename  FESpace::Mesh MeshT;
     typedef typename  FESpace::FElement FElement;
     typedef typename  MeshT::Element Element;
@@ -11311,13 +11319,16 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
      double epsilon=1e-6;*/
     string save;
 
+
      KN<double>* cadna=0;
 
     if (nargs[0]) save = *GetAny<string*>((*nargs[0])(stack));
     if (nargs[1]) cadna= GetAny<KN<double>* >((*nargs[1])(stack));
 
-    SetEnd_Data_Sparse_Solver<R>(stack,ds,nargs,n_name_param);
 
+    SetEnd_Data_Sparse_Solver<R>(stack,ds,nargs,n_name_param);
+	assert(false);
+#ifndef kame
 
     //  for the gestion of the PTR.
     WhereStackOfPtr2Free(stack)=new StackOfPtr2Free(stack);// FH aout 2007
@@ -11543,10 +11554,11 @@ AnyType Problem::eval(Stack stack,Data<FESpace> * data,CountPointer<MatriceCreus
     // delete [] LL;
     // if (save) delete save; // clean memory
     *mps=mp;
+#endif
     return SetAny<const Problem *>(this);
 }
 
-#endif
+
 // dimProblem read the number of arguments of problem ex: problem a(u,v) or a([u1,u2], [v1,v2])
 int dimProblem(const ListOfId &l)
 {
