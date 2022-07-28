@@ -6151,7 +6151,7 @@ void init_lgfem( ) {
     ffassert(i->tfe);    // check
     AddNewFE(i->name, i->tfe);
   }
-#ifndef kame
+
   static string LU = "LU";
   static string CG = "CG";
   static string GMRES = "GMRES";
@@ -6160,6 +6160,7 @@ void init_lgfem( ) {
   static string UMFPACK = "UMFPACK";
   static string sparsesolver = "sparsesolver";
   static string sparsesolverSym = "sparsesolverSym";
+
   Global.New("LU", CConstant< string * >(&LU));
   Global.New(CG.c_str( ), CConstant< string * >(&CG));
   Global.New(GMRES.c_str( ), CConstant< string * >(&GMRES));
@@ -6168,7 +6169,7 @@ void init_lgfem( ) {
   Global.New(UMFPACK.c_str( ), CConstant< string * >(&UMFPACK));
   Global.New(sparsesolver.c_str( ), CConstant< string * >(&sparsesolver));
   Global.New(sparsesolverSym.c_str( ), CConstant< string * >(&sparsesolverSym));
-#endif
+
   // old --
   //  init FESpace
   TheOperators->Add(

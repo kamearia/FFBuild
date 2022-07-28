@@ -5,13 +5,13 @@
 #include <cctype>
 
 template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffsolver;
-#ifndef kame
+
  void setptrstring( string * & ds, const string & s)
 {
     if(ds) delete ds;
     ds = new string(s);
 }
-#endif
+
 template<class R>
 void Data_Sparse_Solver::Init_sym_positive_var(int syma)
 {

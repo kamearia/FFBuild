@@ -3872,7 +3872,9 @@ void  init_lgmat()
     Add<Matrice_Creuse<Complex>*>("re",".",new OneOperator1s_<newpMatrice_Creuse<double> ,Matrice_Creuse<Complex>* >(Build_Matrice_Creuse_C2R<0> ));
     Add<Matrice_Creuse<Complex>*>("im",".",new OneOperator1s_<newpMatrice_Creuse<double>  ,Matrice_Creuse<Complex>* >(Build_Matrice_Creuse_C2R<1> ));
     // construction of complex matrix form a double matrix
- init_UMFPack_solver();
+#endif
+	init_UMFPack_solver();
+#ifndef kame
  init_HashMatrix ();
 
  Global.Add("renumbering", "(", new removeDOF<double>);
@@ -3896,12 +3898,12 @@ void  init_lgmat()
                      );
 #endif
      init_SparseLinearSolver();
-#ifndef kame
+
 
     Global.New("DefaultSolver",CPValue<string*>(def_solver));
     Global.New("DefaultSolverSym",CPValue<string*>(def_solver_sym));
     Global.New("DefaultSolverSDP",CPValue<string*>(def_solver_sym_dp));
-
+#ifndef kame
     Global.Add("removeHalf", "(", new OneOperator2s_<newpMatrice_Creuse<R> ,Matrice_Creuse<R> * ,long>(removeHalf));
     Global.Add("removeHalf", "(", new OneOperator3s_<newpMatrice_Creuse<R> ,Matrice_Creuse<R> * ,long,double>(removeHalf));
     Global.Add("removeHalf", "(", new OneOperator4s_<bool,Matrice_Creuse<R> * ,Matrice_Creuse<R> * ,long,double>(removeHalf));

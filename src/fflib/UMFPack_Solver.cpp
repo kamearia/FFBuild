@@ -1,5 +1,5 @@
 //  file to add UMFPACK solver with dynamic load.
-
+#include "stdafx.h"
 #include  <iostream>
 using namespace std;
 

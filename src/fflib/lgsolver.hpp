@@ -675,8 +675,7 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
         }
 
         ds.Init_sym_positive_var<R>(ds.sym);//  set def value of sym and posi
-		assert(false);
-#ifndef kame
+
         if(ds.solver == "")
         { // SET DEFAULT SOLVER TO HRE ... 
             if( ds.sym && ds.positive ) ds.solver=*def_solver_sym_dp;
@@ -686,7 +685,7 @@ inline void SetEnd_Data_Sparse_Solver(Stack stack,Data_Sparse_Solver & ds,Expres
         }
 
         ffassert(++kk == n_name_param);
-#endif
+
     }
 } // end of namespace Fem2D
 #endif

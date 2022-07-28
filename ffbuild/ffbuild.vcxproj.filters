@@ -287,6 +287,9 @@
     <ClCompile Include="..\src\femlib\CG.cpp">
       <Filter>ソース ファイル\src\femlib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\fflib\UMFPack_Solver.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

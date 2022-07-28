@@ -112,13 +112,14 @@ void DestroySolver( )
 
 template<class Z, class K> void InitSolver()
 {
- 
-   addsolver<SolverCG<Z,K>>("CG",10);
 #ifndef kame
+   addsolver<SolverCG<Z,K>>("CG",10);
    addsolver<SolverGMRES<Z,K>>("GMRES",10,  3);// add set SparseSolver and SparseSolverSym
    addsolver<VirtualSolverSkyLine<Z,K>>("LU",10);
    addsolver<VirtualSolverSkyLine<Z,K>>("CROUT",9);
+#endif
    addsolver<VirtualSolverSkyLine<Z,K>>("CHOLESKY",9);
+#ifndef kame
  #ifdef HAVE_LIBUMFPACK
    addsolver<VirtualSolverUMFPACK<Z,K>>("UMFPACK",100, 1);// add set SparseSolver
    addsolver<VirtualSolverCHOLMOD<Z,K>>("CHOLMOD",99,  2);// add set SparseSolverSym
