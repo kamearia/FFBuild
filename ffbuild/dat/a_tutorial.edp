@@ -2,14 +2,14 @@
 // simple example: -\Delta(u) = 1 in the unit cercle with u=0 on the
 // border of the unit cercle. This problem has an analytical solution
 // u = (1-x^2-y^2)/4
-verbosity=1000;
+//verbosity=1000;
 // Mesh
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
-mesh disk= buildmesh(a(50));
+mesh disk= buildmesh(a(200));
 
-plot(disk);
-end;
+//plot(disk);
+
 // Fespace
 fespace femp1(disk, P1);
 femp1 u, v;
@@ -39,8 +39,10 @@ femp1 err = u - (1-x^2-y^2)/4;
 // Display (on terminal)
 cout << "u-norm R2 = " << sqrt(int2d(disk)( u^2 ) )<< endl;
 cout << "error L2 = " << sqrt(int2d(disk)( (u-(1-x^2-y^2)/4)^2 )) << endl;
-//cout << "error H10 = " << sqrt(int2d(disk)( (dx(u)+x/2)^2 )
-//			     + int2d(disk)( (dy(u)+y/2)^2 ) )<< endl;
+cout << "d-norm D10 = " << sqrt(int2d(disk)( (dx(u))^2 )
+			     + int2d(disk)( (dy(u))^2 ) )<< endl;
+cout << "error H10 = " << sqrt(int2d(disk)( (dx(u)+x/2)^2 )
+			     + int2d(disk)( (dy(u)+y/2)^2 ) )<< endl;
 end;
 // Mesh adaptation
 disk = adaptmesh(disk, u, err=0.01);

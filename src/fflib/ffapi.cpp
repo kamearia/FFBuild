@@ -27,16 +27,16 @@
 // Proposed FreeFem++ Application Programming Interface
 // ----------------------------------------------------
 #include "stdafx.h"
+#include <cstdio>    // _popen
 
-#ifndef kame
 #ifdef WITH_PETSC
 #include <petsc.h>
 #endif
 
 // headerfilter [[shell:headerfilter '../../ff/src/fflib/ffapi.cpp']] [[file:~/alh/bin/headerfilter]]
-#endif
+
 #include "ffapi.hpp" // [[file:ffapi.hpp]] found by [[file:~/alh/bin/headerfilter]]
-#ifndef kame
+
 #include <cstdlib> 
 #ifdef FFLANG
 #include "socket.hpp"
@@ -94,7 +94,7 @@ void bufferwrite(const char *b,const int l){
 Buffer buffer(NULL,bufferwrite); // need #include "buffer.hpp" // [[file:~/ffcs/src/buffer.hpp::Buffer]]
 #endif
 //  allocation/definition of all ffapi in Global.cpp
-#endif
+
 namespace ffapi{
 
     
@@ -112,7 +112,7 @@ static  FILE *ffapi_ffstdout(){return stdout;}
 static  FILE *ffapi_ffstderr(){return stderr;}
 static  FILE *ffapi_ffstdin(){return stdin;}
 static  void ffapi_newplot(){}
-#ifndef kame
+
 FILE *ffapi_ff_popen(const char *command, const char *type){
 #ifdef FFLANG
 
@@ -124,7 +124,7 @@ FILE *ffapi_ff_popen(const char *command, const char *type){
     return (FILE*)FFAPISTREAM;
 #else
     // need #include <cstdio>
-      FILE *f= popen(command,type);
+      FILE *f= _popen(command,type);
       if( f!=0) {
 //     ne marche pas car ffglut plante si flux  vide  
 //          int ppok=pclose(f);
@@ -141,7 +141,7 @@ FILE *ffapi_ff_popen(const char *command, const char *type){
       return f;
 #endif
   }
-#endif
+
   // <<ffapi_ff_pclose>>
 static  int ffapi_ff_pclose(FILE *stream){
 #ifdef FFLANG
@@ -304,13 +304,15 @@ static  bool ffapi_protectedservermode(){
     ffapi::cin = ffapi::ffapi_cin;
     ffapi::cout = ffapi::ffapi_cout;
     ffapi::cerr = ffapi::ffapi_cerr;
+	ffapi::newplot = ffapi::ffapi_newplot;
+#endif
+
     ffapi::ffstdout = ffapi::ffapi_ffstdout;
     ffapi::ffstderr = ffapi::ffapi_ffstderr;
     ffapi::ffstdin = ffapi::ffapi_ffstdin;
-    ffapi::newplot = ffapi::ffapi_newplot;
 
     ffapi::ff_popen = ffapi::ffapi_ff_popen;
-#endif
+
     ffapi::ff_pclose = ffapi::ffapi_ff_pclose; // <<ff_pclose>>
     ffapi::fwriteinit = ffapi::ffapi_fwriteinit;
     ffapi::ff_fwrite = ffapi::ffapi_ff_fwrite;

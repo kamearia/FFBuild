@@ -529,7 +529,7 @@ basicAC_F0::name_and_type  SetMatrix_Op<R>::name_param[]= {
  LIST_NAME_PARM_MAT
 
 };
-#ifndef kame
+
 template<class R>
 AnyType SetMatrix_Op<R>::operator()(Stack stack)  const
 {
@@ -557,7 +557,7 @@ AnyType SetMatrix_Op<R>::operator()(Stack stack)  const
 
   return Nothing;
 }
-#endif
+
 
 template<class R>
 void BuildCombMat(MatriceMorse<R> & mij,const KNM_<R> & A, int ii00=0,int jj00=0,R coef=R(1.),bool cnj=false)
@@ -3116,10 +3116,12 @@ template <class K> long Set_BC(Matrice_Creuse<K> * const & pA,KN_<double>  const
 template <class K> long Set_BC(Matrice_Creuse<K> * const & pA,KN_<double>  const & bc)
 { return Set_BC(pA,bc,ff_tgv);
 }
+#endif
 template <class R>
 void AddSparseMat()
 {
  SetMatrix_Op<R>::btype = Dcl_Type<const  SetMatrix_Op<R> * >();
+#ifndef kame
  Dcl_Type<TheDiagMat<R> >();
  Dcl_Type<TheCoefMat<R> >(); // Add FH oct 2005
  Dcl_Type< map< pair<int,int>, R> * >(); // Add FH mars 2005
@@ -3290,8 +3292,9 @@ TheOperators->Add("+",
     Add<TMR>("(", "", new OneOperator2_<MR *, TMR, double>(thresholding2));
     Global.Add("symmetrizeCSR", "(", new OneOperator1_<long, Matrice_Creuse<R> *>(symmetrizeCSR<R> ));
 //  --- end
+#endif
 }
-
+#ifndef kame
 extern int lineno();
 class  PrintErrorCompile : public OneOperator {
     public:
@@ -3732,12 +3735,12 @@ void  init_lgmat()
   Dcl_Type<const  MatrixInterpolation<pfes,pfesL>::Op *>();
   Dcl_Type<const  MatrixInterpolation<pfes,pfesS>::Op *>();
   Dcl_Type<const  MatrixInterpolation<pfes,pfes3>::Op *>();
-    
+#endif   
   map_type_of_map[make_pair(atype<Matrice_Creuse<double>* >(),atype<double*>())]=atype<Matrice_Creuse<double> *>();
   map_type_of_map[make_pair(atype<Matrice_Creuse<double>* >(),atype<Complex*>())]=atype<Matrice_Creuse<Complex> *>();
   AddSparseMat<double>();
   AddSparseMat<Complex>();
-
+#ifndef kame
   Add<const MatrixInterpolation<pfes,pfes>::Op *>("<-","(", new MatrixInterpolation<pfes,pfes>);
   Add<const MatrixInterpolation<pfes,pfes>::Op *>("<-","(", new MatrixInterpolation<pfes,pfes>(1));
   Add<const MatrixInterpolation<pfes,pfes>::Op *>("<-","(", new MatrixInterpolation<pfes3,pfes3>);

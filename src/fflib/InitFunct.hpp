@@ -35,18 +35,18 @@ void  addInitFunct(int i,void  (* f)(),const char *name) ;
 
 // [[file:InitFunct.cpp::callInitsFunct]]
 void  callInitsFunct();
-#endif
+
 class  addingInitFunct {  public:
   addingInitFunct(int i,void  (* f)(),const char *name="") {
     // [[file:~/ff/src/fflib/InitFunct.cpp::addInitFunct]]
     addInitFunct(i,f,name);
   }
 } ;
-#ifndef kame
+//#ifndef kame
 // <<LOADINITIO>> In Emscripten manipulating input and output streams is not allowed (cf
 // [[file:~/fflib/Makefile::NO_STREAM_REDIRECT]])
 
-#ifdef NO_STREAM_REDIRECT
+#ifdef NO_STREAM_REDIRECT//
 #define LOADINITIO
 #else
 #if _WIN32
