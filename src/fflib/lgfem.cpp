@@ -116,7 +116,7 @@ extern GTypeOfFE<MeshL> & G_P0VFdc_L ;
   void Expandsetoflab(Stack stack, const CDomainOfIntegration &di, set< int > &setoflab, bool &all);
 
 }    // namespace Fem2D
-#ifndef kame
+
 #include "BamgFreeFem.hpp"
 
 static bool TheWait = false;
@@ -126,7 +126,7 @@ extern bool NoGraphicWindow;
 extern long verbosity;
 extern FILE *ThePlotStream;    //  Add for new plot. FH oct 2008
 void init_lgmesh( );
-#endif
+
 namespace FreeFempp {
   template< class R >
   TypeVarForm< R > *TypeVarForm< R >::Global;
@@ -2373,7 +2373,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 	typedef pfLcbasearray asolcL;
 
 	typedef long Result;
-#ifndef kame
+
 	struct ListWhat {
 		int what, i;
 		int cmp[4];
@@ -2462,7 +2462,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			cmp1 = cmp[1];
 		}
 	};
-#endif
+
   /// <<Expression2>>
 	struct Expression2 {    //  FH. change nov 2016  add one  expression  for  colored curve ...
 		long what;            // 0 mesh, 1 iso, 2 vector, 3 curve , 4 border , 5  mesh3, 6 iso 3d,
@@ -2480,7 +2480,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			what = 0;
 		}
 		Expression &operator[](int i) { return e[i]; }
-#ifndef kame
+
 		int EvalandPush(Stack s, int ii, vector< ListWhat > &ll,
                     vector< AnyType > &lat) const {    // add for curve ... and multi curve ...
       //  store date in lat..
@@ -2628,6 +2628,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			} else
 			return 0;
 		}
+
 		sol3 eval3(int i, Stack s, int &cmp) const {
 			cmp = -1;
 			if (e[i]) {
@@ -2641,6 +2642,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			} else
 				return 0;
 		}
+
 		solS evalS(int i, Stack s, int &cmp) const {
 			cmp = -1;
 			if (e[i]) {
@@ -2821,11 +2823,12 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
       throwassert(e[i]);
       return GetAny< tab >((*e[i])(s));
     }
+
     pttab evalptt(int i, Stack s) const {
       throwassert(e[i]);
       return GetAny< pttab >((*e[i])(s));
     }
-#endif
+
   };
 
   // see [[Plot_name_param]]
@@ -2873,7 +2876,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 				  l[i].what = asizea;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfer >((*a)[j]);
 			  }
-#ifndef kame
+
 			  else if (bpfec && asizea < 3) {
 				  l[i].what = 10 + asizea;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfec >((*a)[j]);
@@ -2890,6 +2893,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 				  l[i].what = 103;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pttab >((*a)[j]);
 			  }
+
 			  else if (asizea == 3 && bpf3r)    // 3d vector ...
 			  {
 				  l[i].what = 7;    // new 3d vector
@@ -2937,7 +2941,6 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			  else {
 				  CompileError("plot of array with wrong  number of components (!= 2 or 3) ");
 			  }
-#endif
 		  }
 		  else if (BCastTo< pferbase >(
 			  args[i])) {    // [[file:problem.hpp::pferbase]] [[file:lgmesh3.hpp::BCastTo]]
@@ -4206,11 +4209,12 @@ inline void NewSetColorTable(int nb, float *colors = 0, int nbcolors = 0, bool h
 #endif
 /// <<Plot_operator_brackets>> from class [[Plot]]
 AnyType Plot::operator( )(Stack s) const {
-#ifndef kame
+
   // remap  case 107 and 108 , 109  for array of FE.
   vector< ListWhat > ll;
   vector< AnyType > lat;
   ll.reserve(l.size( ));
+
   // generation de la list de plot ...
   for (size_t i = 0; i < l.size( ); i++) {
     switch (l[i].what) {
@@ -4331,6 +4335,7 @@ AnyType Plot::operator( )(Stack s) const {
   }
 
   if (ThePlotStream) {
+#ifndef kame
     /*
      les different item of the plot are given by the number what:
      what = 0 -> mesh
@@ -5121,7 +5126,9 @@ AnyType Plot::operator( )(Stack s) const {
       }
     }
     *mps = mp;
+#endif
   }    //  end plotting
+#ifndef kame
   NoirEtBlanc(0);
   setgrey(greyo);
   if (colors) delete[] colors;

@@ -274,9 +274,9 @@ int getprog(char *fn, int argc, char **argv) {
 
 	if (progffglut && mpirank == 0) {
     // FFCS: divert stream to FFCS
-#ifndef kame
+
 		ThePlotStream = ffapi::ff_popen(progffglut, "w");
-#endif
+
     // FFCS: just forget the following message because it could be understood as an error during FFCS execution
     // although ffglut is not used there.
 
