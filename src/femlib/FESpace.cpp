@@ -169,7 +169,7 @@ class FESumConstruct { protected:
      delete [] comp;
      delete [] data;}
 };
-#ifndef kame
+
   void FElement::Pi_h(RN_ val,InterpolFunction f,R *v, void * arg=0) const {
    // routine: a  tester FH.
     FElement::aIPJ ipj(Pi_h_ipj());
@@ -192,7 +192,7 @@ class FESumConstruct { protected:
            val[ipj_i.i] += Aipj[i]*Vp(ipj_i.j,ipj_i.p);
           }
  }
-#endif
+
 class TypeOfFESum: public FESumConstruct, public  TypeOfFE { public:
    TypeOfFESum(const FESpace **t,int kk):
      FESumConstruct(kk,Make(t,kk)),TypeOfFE(teb,kk,data,data1) {}

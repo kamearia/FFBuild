@@ -1985,7 +1985,7 @@ AnyType set_fe(Stack s, Expression ppfe, Expression e) {
                         << double(kkth) / Max< double >(1., kkff) << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
-#ifndef kame
+
 AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
                                                                    // meme chose que  v(X1,X2);
   StackOfPtr2Free *sptr = WhereStackOfPtr2Free(s);
@@ -2023,7 +2023,7 @@ AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
          << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
-#endif
+
 template< class K >
 E_set_fev< K >::E_set_fev(const E_Array *a, Expression pp, int ddim)
   : dim(ddim), aa(*a), ppfe(pp), optimize(true), where_in_stack_opt( ), optiexp0( ), optiexpK( ) {
@@ -6892,12 +6892,12 @@ void init_lgfem( ) {
       &Build< Matrice_Creuse_Transpose< R >, Matrice_Creuse< R > * >),
     new OneOperator1< Matrice_Creuse_Transpose< Complex >, Matrice_Creuse< Complex > * >(
       &Build< Matrice_Creuse_Transpose< Complex >, Matrice_Creuse< Complex > * >));
-
+#endif
   Add< pfer >("(", "", new interpolate_f_X_1< R >);
   TheOperators->Add(
     "=",
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
-#endif
+
   init_lgmat( );
   init_mesh_array( );
   l2interpreter = new LinkToInterpreter;

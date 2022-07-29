@@ -8,8 +8,8 @@ verbosity=1000;
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
 mesh disk= buildmesh(a(50));
 
-//plot(disk);
-
+plot(disk);
+end;
 // Fespace
 fespace femp1(disk, P1);
 femp1 u, v;
@@ -28,19 +28,20 @@ problem laplace(u, v)
 
 // Solve
 laplace;
-end;
+
 // Error
 femp1 err = u - (1-x^2-y^2)/4;
 
 // Plot
-plot(u, value=true, wait=true);
-plot(err, value=true, wait=true);
+//plot(u, value=true, wait=true);
+//plot(err, value=true, wait=true);
 
 // Display (on terminal)
+cout << "u-norm R2 = " << sqrt(int2d(disk)( u^2 ) )<< endl;
 cout << "error L2 = " << sqrt(int2d(disk)( (u-(1-x^2-y^2)/4)^2 )) << endl;
-cout << "error H10 = " << sqrt(int2d(disk)((dx(u)+x/2)^2)
-							 + int2d(disk)((dy(u)+y/2)^2) )<< endl;
-
+//cout << "error H10 = " << sqrt(int2d(disk)( (dx(u)+x/2)^2 )
+//			     + int2d(disk)( (dy(u)+y/2)^2 ) )<< endl;
+end;
 // Mesh adaptation
 disk = adaptmesh(disk, u, err=0.01);
 plot(disk, wait=1);

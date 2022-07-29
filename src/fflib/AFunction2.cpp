@@ -809,7 +809,10 @@ AnyType ListOfInst::operator()(Stack s) const {
 	{
 	    TheCurrentLine=linenumber[i]  ;
 		cout << "line:" << TheCurrentLine << "*list[" << i << "],type:" << typeid(*list[i]).name() << endl;
-            r=(*list[i])(s);
+		if (TheCurrentLine == 11) {
+			int xxxx = 1;
+		}
+		r=(*list[i])(s);
 	    sptr->clean(); // modif FH mars 2006  clean Ptr
 	    s1=CPUtime();
 	    if (showCPU)

@@ -1205,7 +1205,7 @@ template<class R,class A0,class A1>
 
 
 
-
+#endif
  class E_F_StackF0F0 :public  E_F0mps { public:
   typedef   AnyType (*func)(Stack,Expression ,Expression ) ; 
   func f;
@@ -1216,7 +1216,7 @@ template<class R,class A0,class A1>
     {return  (*f)(s, a0 , a1) ;}  
 
 };
-
+#ifndef kame
 
 /*
  class E_F_F0F0_<AnyType,AnyType,AnyType> :public  E_F0 { public:
