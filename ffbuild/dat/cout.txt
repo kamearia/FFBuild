@@ -1,0 +1,73 @@
+-- FreeFem++ v?.?
+   file : a_tutorial.edp
+ Load: lg_fem  no UMFPACK -> replace by LU or GMRES  lg_mesh3
+    1 : // This test shows some powerful features of FreeFEM on a
+    2 : // simple example: -\Delta(u) = 1 in the unit cercle with u=0 on the
+    3 : // border of the unit cercle. This problem has an analytical solution
+    4 : // u = (1-x^2-y^2)/4
+    5 : //verbosity=1000;
+    6 : // Mesh
+    7 : //real pi = 4*atan(1);
+    8 : border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
+    9 : mesh disk= buildmesh(a(50));
+   10 :
+   11 : //plot(disk);
+   12 :
+   13 : // Fespace
+   14 : fespace femp1(disk, P1);
+   15 : femp1 u, v;
+   16 :
+   17 :
+   18 : // Problem
+   19 : problem laplace(u, v)
+   20 :         = int2d(disk)(  // bilinear form
+   21 :                   dx(u)*dx(v)
+   22 :                 + dy(u)*dy(v)
+   23 :         )
+   24 :         +int2d(disk)(-1.*v)     // linear form
+   25 :
+   26 :         + on(1, u=0)    // boundary condition
+   27 :         ;
+   28 :
+   29 : // Solve
+   30 : laplace;
+   31 :
+   32 : // Error
+   33 : femp1 err = u - (1-x^2-y^2)/4;
+   34 :
+   35 : // Plot
+   36 : //plot(u, value=true, wait=true);
+   37 : //plot(err, value=true, wait=true);
+   38 :
+   39 : // Display (on terminal)
+   40 : cout << "u-norm R2 = " << sqrt(int2d(disk)( u^2 ) )<< endl;
+   41 : cout << "error L2 = " << sqrt(int2d(disk)( (u-(1-x^2-y^2)/4)^2 )) << endl;
+   42 : cout << "d-norm D10 = " << sqrt(int2d(disk)( (dx(u))^2 )
+   43 :                              + int2d(disk)( (dy(u))^2 ) )<< endl;
+   44 : cout << "error H10 = " << sqrt(int2d(disk)( (dx(u)+x/2)^2 )
+   45 :                              + int2d(disk)( (dy(u)+y/2)^2 ) )<< endl;
+   46 : end sizestack + 1024 =2584  ( 1560 )
+
+  --  mesh:  Nb of Triangles =    434, Nb of Vertices 243
+  SkyLineMatrix: size pL/pU: 243 3722 3722 moy=15.3169
+  -- Solve :
+          min 5.38249e-32  max 0.250061
+u-norm R2 = 0.254101
+error L2 = 0.00210456
+d-norm D10 = 0.623871
+error H10 = 0.0377092
+times: compile 0.111s, execution 0.211s,  mpirank:0
+ CodeAlloc : nb ptr  1076,  size :127128 mpirank: 0
+Ok: Normal End
+
+    9 : mesh disk= buildmesh(a(100));
+u-norm R2 = 0.255416
+error L2 = 0.000513786
+d-norm D10 = 0.625975
+error H10 = 0.0183739
+
+    9 : mesh disk= buildmesh(a(200));
+u-norm R2 = 0.255724
+error L2 = 0.000131351
+d-norm D10 = 0.626483
+error H10 = 0.00940587

@@ -31,21 +31,21 @@
 #include "AFunction.hpp"
 #include "String.hpp"
 #include "environment.hpp"
-#ifndef kame
+
 #include <iostream>
 #include <cstdio>
 
-#endif
 namespace ffapi {
-#ifndef kame
+
     //  void init) ();
     // need #include <iostream>
     // need #include <sstream>
     // need using namespace std;
     std::istream * (*cin)();
+#ifndef kame
     std::ostream *(*cout)();
     std::ostream *(*cerr)();
-
+#endif
     // <<mingw32_stdout>> Cannot name these functions identically to the original file pointers under MingW32 (compile
     // error). Impacts [[file:InitFunct.hpp::LOADINITIO]]. Changed from stdxxx_ptr() to ffstdxxx() according to the way FF
     // itself was changed.
@@ -56,7 +56,7 @@ namespace ffapi {
 
     /// Initiate graphical pipe output. I need a separate function for this to warn ffcs to check the corresponding ffglut
     /// magic number
-#endif
+
     size_t (*fwriteinit)(const void *ptr, size_t size, size_t nmemb,FILE *stream);
 #ifndef kame
     /// Indicates the begining of a new plot to avoid sending socket control data with each plot item.
@@ -88,13 +88,13 @@ namespace ffapi {
 
     void (*mpi_init)(int &argc, char **& argv);
     void (*mpi_finalize)();
-#ifndef kame
+
     // Permanent server control
     // ------------------------
 
     /// if true, FF is considered to be accessible from remote anonymous connections and some commands (like shell
     /// commands) are not allowed.
-#endif
+
     bool (*protectedservermode)();
 
 }

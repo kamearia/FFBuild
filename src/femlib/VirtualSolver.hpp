@@ -94,11 +94,13 @@ struct Data_Sparse_Solver {
     positive(false),
     getnbiter(0) // add Mars 201
     {epsilon=1e-6;}
+
     void Update(Stack s)
     {
         if(einitmat)
             initmat= GetAny<bool>((*einitmat)(s));
     }
+
     template<class R> 
     void Init_sym_positive_var(int syma);
 

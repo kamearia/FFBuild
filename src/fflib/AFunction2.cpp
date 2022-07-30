@@ -808,8 +808,9 @@ AnyType ListOfInst::operator()(Stack s) const {
 	for (i=0;i<n;i++)
 	{
 	    TheCurrentLine=linenumber[i]  ;
-		cout << "line:" << TheCurrentLine << "*list[" << i << "],type:" << typeid(*list[i]).name() << endl;
-            r=(*list[i])(s);
+		if(verbosity>=10) cout << "line:" << TheCurrentLine << "*list[" << i << "],type:" << typeid(*list[i]).name() << endl;
+
+		r=(*list[i])(s);
 	    sptr->clean(); // modif FH mars 2006  clean Ptr
 	    s1=CPUtime();
 	    if (showCPU)

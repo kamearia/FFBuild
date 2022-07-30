@@ -1,3 +1,4 @@
+#pragma once
 #include <queue>
 #include "meshtype.h"
 // class for 1 linear form

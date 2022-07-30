@@ -1,5 +1,8 @@
+#include "stdafx.h"
 #include "SparseLinearSolver.hpp"
+#include "VirtualSolver.hpp"
 #include <complex>
+#include <cctype>
 
 template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffsolver;
 
@@ -8,12 +11,16 @@ template<class I,class R> typename TheFFSolver<I,R>::MAPSF TheFFSolver<I,R>::ffs
     if(ds) delete ds;
     ds = new string(s);
 }
+
 template<class R>
 void Data_Sparse_Solver::Init_sym_positive_var(int syma)
 {
+
     //  put the solver name in UPPER CASE
    std::transform(solver.begin(), solver.end(), solver.begin(), static_cast<int(*)(int)>(std::toupper));
+
     auto i=  TheFFSolver<int,R>::ffsolver.find(solver);
+
     if ( i != TheFFSolver<int,R>::ffsolver.end())
     {
         // sym = 0:unsym, sym = 1:herm, sym = 2:sym
@@ -57,8 +64,9 @@ void Data_Sparse_Solver::Init_sym_positive_var(int syma)
         if( solver == "SPARSESOLVERSYM") {sym=1;}
         if( solver == "CHOLMOD") {sym=1;}
     }
-}
 
+}
+#ifndef kame
 template<class Z,class K>
   int TypeOfMat( Data_Sparse_Solver & ds)
 {
@@ -72,7 +80,7 @@ template<class Z,class K>
     if( sn == "SPARSESOLVERSYM") {sym=true;}
     return sym + pos*2;
 }
-
+#endif
 template<class Z,class K>
  typename VirtualMatrix<Z,K>::VSolver * TheFFSolver<Z,K>::Find(HashMatrix<Z,K> &A, const Data_Sparse_Solver & ds,Stack stack )
 {
@@ -134,7 +142,7 @@ template<class Z,class K>
     }
 
 }
-
+#ifndef kame
 
 template<class R>
 void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A,const  Data_Sparse_Solver & ds)
@@ -157,7 +165,7 @@ void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A,const  Data_Sparse_S
 
 }
 
-
+#endif
 template<class R>
 void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver & ds)
 {
@@ -174,19 +182,21 @@ void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver &
 
 
 }
-
+#ifndef kame
 typedef double R;
 typedef complex<double> C;
 
 // explicit instentition of solver ...
 std::map<std::string,int> * Data_Sparse_Solver::mds = Data_Sparse_Solver::Set_mds();
-
+#endif
 void init_SparseLinearSolver()
 {
     InitSolver<int,R>();
+#ifndef kame
     InitSolver<int,C>();
+#endif
 }
-
+#ifndef kame
 template class SparseLinearSolver<int,R>;
 template class SparseLinearSolver<int,C>;
 
@@ -195,12 +205,16 @@ template class TheFFSolver<int,C>;
 
 template int TypeOfMat<int,R>( Data_Sparse_Solver & ds);
 template  int TypeOfMat<int,C>( Data_Sparse_Solver & ds);
-
+#endif
 template void Data_Sparse_Solver::Init_sym_positive_var<R>(int );
+#ifndef kame
 template void Data_Sparse_Solver::Init_sym_positive_var<C>(int );
 
 template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,R> & A, const Data_Sparse_Solver & ds);
 template void SetSolver(Stack stack,bool VF,VirtualMatrix<int,C> & A, const     Data_Sparse_Solver & ds);
-
+#endif
 template void DefSolver(Stack stack, VirtualMatrix<int,R>  & A,const Data_Sparse_Solver & ds);
+#ifndef kame
 template void DefSolver(Stack stack, VirtualMatrix<int,C> & A,const  Data_Sparse_Solver & ds);
+
+#endif

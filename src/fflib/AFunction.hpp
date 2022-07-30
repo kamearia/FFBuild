@@ -1205,7 +1205,7 @@ template<class R,class A0,class A1>
 
 
 
-
+#endif
  class E_F_StackF0F0 :public  E_F0mps { public:
   typedef   AnyType (*func)(Stack,Expression ,Expression ) ; 
   func f;
@@ -1216,7 +1216,7 @@ template<class R,class A0,class A1>
     {return  (*f)(s, a0 , a1) ;}  
 
 };
-
+#ifndef kame
 
 /*
  class E_F_F0F0_<AnyType,AnyType,AnyType> :public  E_F0 { public:
@@ -2911,7 +2911,7 @@ class  OneOperatorCode : public OneOperator {
     OneOperatorCode(aType rr,aType a,aType b,aType c):  OneOperator(rr,a,b,c)  {pref=ppref;}
     
 };
-#ifndef kame
+
 template<class A,class B> struct binary_trait{ typedef  A R  ;}; 
 template<>  struct binary_trait<int,double> { typedef  double R;}; 
 template<>  struct binary_trait<long,double> { typedef  double R;}; 
@@ -2919,7 +2919,7 @@ template<>  struct binary_trait<int,complex<double> > { typedef  complex<double>
 template<>  struct binary_trait<long,complex<double> > { typedef  complex<double> R;}; 
 template<>  struct binary_trait<double,complex<double> > { typedef  complex<double> R ;}; 
 template<class A>  struct binary_trait<A,string* > { typedef  string*  R ;}; 
-#endif
+
 //  1 variable pour les operation de cast 
 class E_F1_funcT_Type: public OneOperator{ public:
     //  const basicForEachType *r,*a;
@@ -3093,7 +3093,7 @@ template<class T>
       OneOperator *p2=0,OneOperator *p3=0,OneOperator *p4=0,
       OneOperator *p5=0,OneOperator *p6=0)  
      {atype<T>()->Add(k,op,p0,p1,p2,p3,p4,p5,p6);}     
-#ifndef kame
+
 inline C_F0 operator *(const C_F0 &a,const C_F0 &b)
 {    
   return a==*pOne ? b : ( b ==*pOne ? a : C_F0(TheOperators,"*",a,b)) ;}
@@ -3107,7 +3107,7 @@ inline C_F0 &operator +=(C_F0 &a,const C_F0 &b)
    a=r;
    return a;}
 
-#endif 
+
 //inline  bool CC_F0::Empty() const {return !f || f->Empty();}
 inline  void CC_F0::operator=(const CListOfInst& c) 
   { C_F0 cc=c;f=cc.f;r=cc.r;}

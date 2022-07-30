@@ -182,6 +182,7 @@
     <ClCompile Include="..\src\bamglib\SetOfE4.cpp" />
     <ClCompile Include="..\src\bamg\bamg_global.cpp" />
     <ClCompile Include="..\src\femlib\BamgFreeFem.cpp" />
+    <ClCompile Include="..\src\femlib\CG.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\femlib\Element_P2h.cpp" />
     <ClCompile Include="..\src\femlib\fem.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="..\src\femlib\FESpacen.cpp" />
     <ClCompile Include="..\src\femlib\FQuadTree.cpp" />
     <ClCompile Include="..\src\femlib\gibbs.cpp" />
+    <ClCompile Include="..\src\femlib\HashMatrix.cpp" />
     <ClCompile Include="..\src\femlib\Mesh1dn.cpp" />
     <ClCompile Include="..\src\femlib\Mesh2dn.cpp" />
     <ClCompile Include="..\src\femlib\Mesh3dn.cpp" />
@@ -196,6 +198,7 @@
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\femlib\P012_3d.cpp" />
     <ClCompile Include="..\src\femlib\QuadratureFormular.cpp" />
+    <ClCompile Include="..\src\femlib\SparseLinearSolver.cpp" />
     <ClCompile Include="..\src\femlib\splitsimplex.cpp" />
     <ClCompile Include="..\src\fflib\AFunction.cpp" />
     <ClCompile Include="..\src\fflib\AFunction2.cpp" />
@@ -209,11 +212,13 @@
     <ClCompile Include="..\src\fflib\InitFunct.cpp" />
     <ClCompile Include="..\src\fflib\lex.cpp" />
     <ClCompile Include="..\src\fflib\lgfem.cpp" />
+    <ClCompile Include="..\src\fflib\lgmat.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh.cpp" />
     <ClCompile Include="..\src\fflib\lgmesh3.cpp" />
     <ClCompile Include="..\src\fflib\load.cpp" />
     <ClCompile Include="..\src\fflib\P1IsoValue.cpp" />
     <ClCompile Include="..\src\fflib\problem.cpp" />
+    <ClCompile Include="..\src\fflib\UMFPack_Solver.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />
     <ClCompile Include="..\src\Graphics\Pcrgraph.cpp" />

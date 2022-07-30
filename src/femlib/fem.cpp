@@ -1065,7 +1065,7 @@ int Walk(const Mesh & Th,int& it, R *l,
             gp << "\n\n";
         }
     }
-#ifndef kame   
+ 
     int Mesh::DataFindBoundary::Find(R2 PP,R *l,int & outside) const
     {  // FH: outside : 0 inside, 1 out close, 2, out fare, , -1 inside
         int nu=-1,ne=-1;
@@ -1215,7 +1215,7 @@ int Walk(const Mesh & Th,int& it, R *l,
                 cout  << i << " " << d0[i] << " " <<delta[i] << endl;
         if(debug>5)      gnuplot("dfb1.gp");
     }
-    
+      
 void Mesh::BuildDataFindBoundary() const
     {
         static int count =0;
@@ -1225,6 +1225,7 @@ void Mesh::BuildDataFindBoundary() const
         }
         
     }
+
 const Triangle *  Mesh::Find( R2 P, R2 & Phat,bool & outside,const Triangle * tstart) const
 {
     int CasePichon=0;
@@ -1482,7 +1483,7 @@ PICHON:	// Add dec 2010 ...
 
     return rett;
 }
-
+#ifndef kame
 
 int  WalkInTriangle(const Mesh & Th,int it, double *lambda,
 		    R u, R v, R & dt)

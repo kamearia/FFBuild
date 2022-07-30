@@ -112,11 +112,11 @@ extern GTypeOfFE< MeshL > &G_P3dc_L;
 extern GTypeOfFE< MeshL > &G_P4dc_L;
 extern GTypeOfFE<MeshL> & G_P0VF_L ;
 extern GTypeOfFE<MeshL> & G_P0VFdc_L ;
-#ifndef kame
+
   void Expandsetoflab(Stack stack, const CDomainOfIntegration &di, set< int > &setoflab, bool &all);
-#endif
+
 }    // namespace Fem2D
-#ifndef kame
+
 #include "BamgFreeFem.hpp"
 
 static bool TheWait = false;
@@ -139,7 +139,7 @@ basicAC_F0::name_and_type OpCall_FormBilinear_np::name_param[] = {
 };
 
 basicAC_F0::name_and_type OpCall_FormLinear_np::name_param[] = {"tgv", &typeid(double)};
-#endif
+
 const E_Array *Array(const C_F0 &a) {
   if (a.left( ) == atype< E_Array >( ))
     return dynamic_cast< const E_Array * >(a.LeftValue( ));
@@ -1863,7 +1863,7 @@ class Op_CopyArray : public OneOperator {
   Op_CopyArray( ) : OneOperator(atype< void >( ), atype< E_Array >( ), atype< E_Array >( )) {}
   E_F0 *code(const basicAC_F0 &args) const;
 };
-
+#endif
 template< class R, int dd >
 AnyType pfer2R(Stack s, const AnyType &a) {
   pair< FEbase< R, v_fes > *, int > ppfe = GetAny< pair< FEbase< R, v_fes > *, int > >(a);
@@ -1902,7 +1902,7 @@ AnyType pfer2R(Stack s, const AnyType &a) {
   const R rr = KK(PHat, *fe.x( ), componante, dd);
   return SetAny< R >(rr);
 }
-#endif
+
 template< class R >
 AnyType set_fe(Stack s, Expression ppfe, Expression e) {
   long kkff = Mesh::kfind, kkth = Mesh::kthrough;
@@ -1985,7 +1985,7 @@ AnyType set_fe(Stack s, Expression ppfe, Expression e) {
                         << double(kkth) / Max< double >(1., kkff) << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
-#ifndef kame
+
 AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
                                                                    // meme chose que  v(X1,X2);
   StackOfPtr2Free *sptr = WhereStackOfPtr2Free(s);
@@ -2023,7 +2023,7 @@ AnyType set_feoX_1(Stack s, Expression ppfeX_1, Expression e) {    // inutile
          << endl;
   return SetAny< FEbase< R, v_fes > * >(&fe);
 }
-#endif
+
 template< class K >
 E_set_fev< K >::E_set_fev(const E_Array *a, Expression pp, int ddim)
   : dim(ddim), aa(*a), ppfe(pp), optimize(true), where_in_stack_opt( ), optiexp0( ), optiexpK( ) {
@@ -2373,7 +2373,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 	typedef pfLcbasearray asolcL;
 
 	typedef long Result;
-#ifndef kame
+
 	struct ListWhat {
 		int what, i;
 		int cmp[4];
@@ -2462,7 +2462,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			cmp1 = cmp[1];
 		}
 	};
-#endif
+
   /// <<Expression2>>
 	struct Expression2 {    //  FH. change nov 2016  add one  expression  for  colored curve ...
 		long what;            // 0 mesh, 1 iso, 2 vector, 3 curve , 4 border , 5  mesh3, 6 iso 3d,
@@ -2480,7 +2480,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			what = 0;
 		}
 		Expression &operator[](int i) { return e[i]; }
-#ifndef kame
+
 		int EvalandPush(Stack s, int ii, vector< ListWhat > &ll,
                     vector< AnyType > &lat) const {    // add for curve ... and multi curve ...
       //  store date in lat..
@@ -2628,6 +2628,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			} else
 			return 0;
 		}
+
 		sol3 eval3(int i, Stack s, int &cmp) const {
 			cmp = -1;
 			if (e[i]) {
@@ -2641,6 +2642,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			} else
 				return 0;
 		}
+
 		solS evalS(int i, Stack s, int &cmp) const {
 			cmp = -1;
 			if (e[i]) {
@@ -2821,11 +2823,12 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
       throwassert(e[i]);
       return GetAny< tab >((*e[i])(s));
     }
+
     pttab evalptt(int i, Stack s) const {
       throwassert(e[i]);
       return GetAny< pttab >((*e[i])(s));
     }
-#endif
+
   };
 
   // see [[Plot_name_param]]
@@ -2873,7 +2876,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 				  l[i].what = asizea;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfer >((*a)[j]);
 			  }
-#ifndef kame
+
 			  else if (bpfec && asizea < 3) {
 				  l[i].what = 10 + asizea;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pfec >((*a)[j]);
@@ -2890,6 +2893,7 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 				  l[i].what = 103;
 				  for (int j = 0; j < a->size(); j++) l[i][j] = CastTo< pttab >((*a)[j]);
 			  }
+
 			  else if (asizea == 3 && bpf3r)    // 3d vector ...
 			  {
 				  l[i].what = 7;    // new 3d vector
@@ -2937,7 +2941,6 @@ class Plot : public E_F0mps /* [[file:AFunction.hpp::E_F0mps]] */ {
 			  else {
 				  CompileError("plot of array with wrong  number of components (!= 2 or 3) ");
 			  }
-#endif
 		  }
 		  else if (BCastTo< pferbase >(
 			  args[i])) {    // [[file:problem.hpp::pferbase]] [[file:lgmesh3.hpp::BCastTo]]
@@ -4206,436 +4209,440 @@ inline void NewSetColorTable(int nb, float *colors = 0, int nbcolors = 0, bool h
 #endif
 /// <<Plot_operator_brackets>> from class [[Plot]]
 AnyType Plot::operator( )(Stack s) const {
-#ifndef kame
+
   // remap  case 107 and 108 , 109  for array of FE.
   vector< ListWhat > ll;
   vector< AnyType > lat;
   ll.reserve(l.size( ));
-  // generation de la list de plot ...
-  for (size_t i = 0; i < l.size( ); i++) {
-    switch (l[i].what) {
-      case 0:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 1:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 2:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 3:
-        l[i].EvalandPush(s, i, ll, lat);
-        break;
-      case 5:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 6:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 7:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 8:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 9:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 11:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 12:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 14:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 15:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 16:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 17:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 18:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 19:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 20:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 21:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 50:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 55:
-        l[i].EvalandPush< void * >(s, i, ll);
-        break;
-      case 100:
-        l[i].MEvalandPush< pmesh >(s, i, ll);
-        break;
-      case 101:
-        l[i].AEvalandPush< asol, sol >(s, i, ll);
-        break;
-      case 102:
-        l[i].AEvalandPush< asol, sol >(s, i, ll);
-        break;
-      case 103:
-        l[i].AEvalandPush(s, i, ll, lat);
-        break;
-      case 105:
-        l[i].MEvalandPush< pmesh3 >(s, i, ll);
-        break;
-      case 150:
-        l[i].MEvalandPush< pmeshS >(s, i, ll);
-        break;
-      case 155:
-        l[i].MEvalandPush< pmeshL >(s, i, ll);
-        break;
-      case 106:
-        l[i].AEvalandPush< asol3, sol3 >(s, i, ll);
-        break;
-      case 108:
-        l[i].AEvalandPush< asolS, solS >(s, i, ll);
-        break;
-      case 114:
-        l[i].AEvalandPush< asolL, solL >(s, i, ll);
-        break;
-      case 111:
-        l[i].AEvalandPush< asolc, solc >(s, i, ll);
-        break;
-      case 112:
-        l[i].AEvalandPush< asolc, solc >(s, i, ll);
-        break;
-      case 116:
-        l[i].AEvalandPush< asolc3, solc3 >(s, i, ll);
-        break;
-      case 118:
-        l[i].AEvalandPush< asolcS, solcS >(s, i, ll);
-        break;
-      case 120:
-        l[i].AEvalandPush< asolcL, solcL >(s, i, ll);
-        break;
 
-      default:
-        ffassert(l[i].what < 100);    // missing piece of code FH (jan 2010) ...
-        ll.push_back(ListWhat(l[i].what, i));
-        break;
-    }
+  // generation de la list de plot ...
+  for (size_t i = 0; i < l.size(); i++) {
+	  switch (l[i].what) {
+	  case 0:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 1:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 2:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 3:
+		  l[i].EvalandPush(s, i, ll, lat);
+		  break;
+	  case 5:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 6:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 7:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 8:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 9:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 11:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 12:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 14:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 15:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 16:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 17:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 18:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 19:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 20:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 21:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 50:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 55:
+		  l[i].EvalandPush< void * >(s, i, ll);
+		  break;
+	  case 100:
+		  l[i].MEvalandPush< pmesh >(s, i, ll);
+		  break;
+	  case 101:
+		  l[i].AEvalandPush< asol, sol >(s, i, ll);
+		  break;
+	  case 102:
+		  l[i].AEvalandPush< asol, sol >(s, i, ll);
+		  break;
+	  case 103:
+		  l[i].AEvalandPush(s, i, ll, lat);
+		  break;
+	  case 105:
+		  l[i].MEvalandPush< pmesh3 >(s, i, ll);
+		  break;
+	  case 150:
+		  l[i].MEvalandPush< pmeshS >(s, i, ll);
+		  break;
+	  case 155:
+		  l[i].MEvalandPush< pmeshL >(s, i, ll);
+		  break;
+	  case 106:
+		  l[i].AEvalandPush< asol3, sol3 >(s, i, ll);
+		  break;
+	  case 108:
+		  l[i].AEvalandPush< asolS, solS >(s, i, ll);
+		  break;
+	  case 114:
+		  l[i].AEvalandPush< asolL, solL >(s, i, ll);
+		  break;
+	  case 111:
+		  l[i].AEvalandPush< asolc, solc >(s, i, ll);
+		  break;
+	  case 112:
+		  l[i].AEvalandPush< asolc, solc >(s, i, ll);
+		  break;
+	  case 116:
+		  l[i].AEvalandPush< asolc3, solc3 >(s, i, ll);
+		  break;
+	  case 118:
+		  l[i].AEvalandPush< asolcS, solcS >(s, i, ll);
+		  break;
+	  case 120:
+		  l[i].AEvalandPush< asolcL, solcL >(s, i, ll);
+		  break;
+
+	  default:
+		  ffassert(l[i].what < 100);    // missing piece of code FH (jan 2010) ...
+		  ll.push_back(ListWhat(l[i].what, i));
+		  break;
+	  }
   }
 
   if (ThePlotStream) {
-    /*
-     les different item of the plot are given by the number what:
-     what = 0 -> mesh
-     what = 1 -> real scalar field (FE function  2d)
-     what = 2 -> 2d vector field (two FE function  2d)
-     what = 3 -> curve def by 2,.., 4 array
-     what = 4 -> border 2d
-     what = 5 -> 3d mesh, real volume or if contains a surface mesh
-     what = 6 -> real FE function 3D volume
-     what = 7 -> real 3d vector field (tree FE function  3d) volume
-     what = 8 -> real FE function 3D surface
-     what = 9 -> real 3d vector field (tree FE function  3d) surface
-     what = 11 -> complex scalar field (FE function  2d) real
-     what = 13 -> curve def by 4  array : x,y,z,  value for color ...
-     what = 14 -> real FE function 3D curve
-     what = 15 -> real 3d vector field (tree FE function  3d) curve
-     what = 16 -> complex FE function 3D volume
-     what = 17 -> complex 3d vector field (tree FE function  3d) volume
-     what = 18 -> complex FE function 3D surface
-     what = 19 -> complex 3d vector field (tree FE function  3d) surface
-     what = 20 -> complex FE function 3D curve
-     what = 21 -> complex 3d vector field (tree FE function  3d) curve
-     what = 50 -> 3D surface mesh
-     what = 55 -> 3D line mesh
-     what = 100,101,106,109,114 ->   remap with real ... 2d, 3D volume, 3D surface, 3D curve
-     what = 111, 116, 117 ,120 ->  remap with complex ... 2d, 3D volume, 3D surface, 3D curve
-     what = -1 -> error, item empty
-     */
-    PlotStream theplot(ThePlotStream);
-    pferbase fe[3] = {0, 0, 0};
-    pf3rbase fe3[3] = {0, 0, 0};
-    pfSrbase feS[3] = {0, 0, 0};
-    pfLrbase feL[3] = {0, 0, 0};
-    double echelle = 1;
-    int cmp[3] = {-1, -1, -1};
-    theplot.SendNewPlot( );
-    if (nargs[0]) (theplot << 0L) <= GetAny< double >((*nargs[0])(s));
-    if (nargs[1]) (theplot << 1L) <= GetAny< string * >((*nargs[1])(s));
-    if (nargs[2]) (theplot << 2L) <= GetAny< string * >((*nargs[2])(s));
-    if (nargs[3])
-      (theplot << 3L) <= (bool)(!NoWait && GetAny< bool >((*nargs[3])(s)));
-    else
-      (theplot << 3L) <= (bool)(TheWait && !NoWait);
-    if (nargs[4]) (theplot << 4L) <= GetAny< bool >((*nargs[4])(s));
-    if (nargs[5]) (theplot << 5L) <= GetAny< bool >((*nargs[5])(s));
-    if (nargs[6]) (theplot << 6L) <= GetAny< bool >((*nargs[6])(s));
-    if (nargs[7]) (theplot << 7L) <= GetAny< bool >((*nargs[7])(s));
-    if (nargs[8]) {
-      KN< double > bbox(4);
-      for (int i = 0; i < 4; i++) bbox[i] = GetAny< double >((*bb[i])(s));
+#ifndef kame
+	  /*
+	   les different item of the plot are given by the number what:
+	   what = 0 -> mesh
+	   what = 1 -> real scalar field (FE function  2d)
+	   what = 2 -> 2d vector field (two FE function  2d)
+	   what = 3 -> curve def by 2,.., 4 array
+	   what = 4 -> border 2d
+	   what = 5 -> 3d mesh, real volume or if contains a surface mesh
+	   what = 6 -> real FE function 3D volume
+	   what = 7 -> real 3d vector field (tree FE function  3d) volume
+	   what = 8 -> real FE function 3D surface
+	   what = 9 -> real 3d vector field (tree FE function  3d) surface
+	   what = 11 -> complex scalar field (FE function  2d) real
+	   what = 13 -> curve def by 4  array : x,y,z,  value for color ...
+	   what = 14 -> real FE function 3D curve
+	   what = 15 -> real 3d vector field (tree FE function  3d) curve
+	   what = 16 -> complex FE function 3D volume
+	   what = 17 -> complex 3d vector field (tree FE function  3d) volume
+	   what = 18 -> complex FE function 3D surface
+	   what = 19 -> complex 3d vector field (tree FE function  3d) surface
+	   what = 20 -> complex FE function 3D curve
+	   what = 21 -> complex 3d vector field (tree FE function  3d) curve
+	   what = 50 -> 3D surface mesh
+	   what = 55 -> 3D line mesh
+	   what = 100,101,106,109,114 ->   remap with real ... 2d, 3D volume, 3D surface, 3D curve
+	   what = 111, 116, 117 ,120 ->  remap with complex ... 2d, 3D volume, 3D surface, 3D curve
+	   what = -1 -> error, item empty
+	   */
+	  PlotStream theplot(ThePlotStream);
+	  pferbase fe[3] = { 0, 0, 0 };
+	  pf3rbase fe3[3] = { 0, 0, 0 };
+	  pfSrbase feS[3] = { 0, 0, 0 };
+	  pfLrbase feL[3] = { 0, 0, 0 };
+	  double echelle = 1;
+	  int cmp[3] = { -1, -1, -1 };
+	  theplot.SendNewPlot();
+	  if (nargs[0]) (theplot << 0L) <= GetAny< double >((*nargs[0])(s));
+	  if (nargs[1]) (theplot << 1L) <= GetAny< string * >((*nargs[1])(s));
+	  if (nargs[2]) (theplot << 2L) <= GetAny< string * >((*nargs[2])(s));
+	  if (nargs[3])
+		  (theplot << 3L) <= (bool)(!NoWait && GetAny< bool >((*nargs[3])(s)));
+	  else
+		  (theplot << 3L) <= (bool)(TheWait && !NoWait);
+	  if (nargs[4]) (theplot << 4L) <= GetAny< bool >((*nargs[4])(s));
+	  if (nargs[5]) (theplot << 5L) <= GetAny< bool >((*nargs[5])(s));
+	  if (nargs[6]) (theplot << 6L) <= GetAny< bool >((*nargs[6])(s));
+	  if (nargs[7]) (theplot << 7L) <= GetAny< bool >((*nargs[7])(s));
+	  if (nargs[8]) {
+		  KN< double > bbox(4);
+		  for (int i = 0; i < 4; i++) bbox[i] = GetAny< double >((*bb[i])(s));
 
-      (theplot << 8L) <= bbox;
-    }
-    if (nargs[9]) (theplot << 9L) <= GetAny< long >((*nargs[9])(s));
-    if (nargs[10]) (theplot << 10L) <= GetAny< long >((*nargs[10])(s));
-    if (nargs[11]) {
-      KN_< double > v = GetAny< KN_< double > >((*nargs[11])(s));
-      (theplot << 11L) <= v;
-    }
+		  (theplot << 8L) <= bbox;
+	  }
+	  if (nargs[9]) (theplot << 9L) <= GetAny< long >((*nargs[9])(s));
+	  if (nargs[10]) (theplot << 10L) <= GetAny< long >((*nargs[10])(s));
+	  if (nargs[11]) {
+		  KN_< double > v = GetAny< KN_< double > >((*nargs[11])(s));
+		  (theplot << 11L) <= v;
+	  }
 
-    if (nargs[12]) (theplot << 12L) <= GetAny< KN_< double > >((*nargs[12])(s));
+	  if (nargs[12]) (theplot << 12L) <= GetAny< KN_< double > >((*nargs[12])(s));
 
-    if (nargs[13]) (theplot << 13L) <= GetAny< bool >((*nargs[13])(s));
-    if (nargs[14]) (theplot << 14L) <= GetAny< bool >((*nargs[14])(s));
-    if (nargs[15]) (theplot << 15L) <= GetAny< KN_< double > >((*nargs[15])(s));
-    if (nargs[16]) (theplot << 16L) <= GetAny< bool >((*nargs[16])(s));
-    // add frev 2008 FH for 3d plot ...
-    if (nargs[17]) (theplot << 17L) <= GetAny< long >((*nargs[17])(s));
-    if (nargs[18]) (theplot << 18L) <= GetAny< bool >((*nargs[18])(s));
-    if (nargs[19]) (theplot << 19L) <= GetAny< bool >((*nargs[19])(s));
-    if (nargs[20]) (theplot << 20L) <= (echelle = GetAny< double >((*nargs[20])(s)));
+	  if (nargs[13]) (theplot << 13L) <= GetAny< bool >((*nargs[13])(s));
+	  if (nargs[14]) (theplot << 14L) <= GetAny< bool >((*nargs[14])(s));
+	  if (nargs[15]) (theplot << 15L) <= GetAny< KN_< double > >((*nargs[15])(s));
+	  if (nargs[16]) (theplot << 16L) <= GetAny< bool >((*nargs[16])(s));
+	  // add frev 2008 FH for 3d plot ...
+	  if (nargs[17]) (theplot << 17L) <= GetAny< long >((*nargs[17])(s));
+	  if (nargs[18]) (theplot << 18L) <= GetAny< bool >((*nargs[18])(s));
+	  if (nargs[19]) (theplot << 19L) <= GetAny< bool >((*nargs[19])(s));
+	  if (nargs[20]) (theplot << 20L) <= (echelle = GetAny< double >((*nargs[20])(s)));
 
-      // FFCS: extra plot options for VTK (indexed from 1 to keep these lines unchanged even if the
-      // number of standard FF parameters above changes) received in
-      // [[file:../ffcs/src/visudata.cpp::receiving_plot_parameters]]. When adding a parameter here,
-      // do _NOT_ forget to change the size of the array at
-      // [[number_of_distinct_named_parameters_for_plot]] and to name the new parameters at
-      // [[Plot_name_param]]. Also update the list of displayed values at
-      // [[file:../ffcs/src/plot.cpp::Plotparam_listvalues]] and read the parameter value from the
-      // pipe at [[file:../ffcs/src/visudata.cpp::receiving_plot_parameters]].
+	  // FFCS: extra plot options for VTK (indexed from 1 to keep these lines unchanged even if the
+	  // number of standard FF parameters above changes) received in
+	  // [[file:../ffcs/src/visudata.cpp::receiving_plot_parameters]]. When adding a parameter here,
+	  // do _NOT_ forget to change the size of the array at
+	  // [[number_of_distinct_named_parameters_for_plot]] and to name the new parameters at
+	  // [[Plot_name_param]]. Also update the list of displayed values at
+	  // [[file:../ffcs/src/plot.cpp::Plotparam_listvalues]] and read the parameter value from the
+	  // pipe at [[file:../ffcs/src/visudata.cpp::receiving_plot_parameters]].
 
 #define VTK_START 20
 #define SEND_VTK_PARAM(index, type) \
   if (nargs[VTK_START + index])     \
     (theplot << (long)(VTK_START + index)) <= GetAny< type >((*nargs[VTK_START + index])(s));
 
-    SEND_VTK_PARAM(1, double);            // ZScale
-    SEND_VTK_PARAM(2, bool);              // WhiteBackground
-    SEND_VTK_PARAM(3, bool);              // OpaqueBorders
-    SEND_VTK_PARAM(4, bool);              // BorderAsMesh
-    SEND_VTK_PARAM(5, bool);              // ShowMeshes
-    SEND_VTK_PARAM(6, long);              // ColorScheme
-    SEND_VTK_PARAM(7, long);              // ArrowShape
-    SEND_VTK_PARAM(8, double);            // ArrowSize
-    SEND_VTK_PARAM(9, long);              // ComplexDisplay
-    SEND_VTK_PARAM(10, bool);             // LabelColors
-    SEND_VTK_PARAM(11, bool);             // ShowAxes
-    SEND_VTK_PARAM(12, bool);             // CutPlane
-    SEND_VTK_PARAM(13, KN_< double >);    // CameraPosition
-    SEND_VTK_PARAM(14, KN_< double >);    // CameraFocalPoint
-    SEND_VTK_PARAM(15, KN_< double >);    // CameraViewUp
-    SEND_VTK_PARAM(16, double);           // CameraViewAngle
-    SEND_VTK_PARAM(17, KN_< double >);    // CameraClippingRange
-    SEND_VTK_PARAM(18, KN_< double >);    // CutPlaneOrigin
-    SEND_VTK_PARAM(19, KN_< double >);    // CutPlaneNormal
-    SEND_VTK_PARAM(20, long);             // WindowIndex
-    SEND_VTK_PARAM(21, long);             // NbColorTicks
-    SEND_VTK_PARAM(22, long);             // NbColors
-    SEND_VTK_PARAM(23, bool);             // pNormalT
-    theplot.SendEndArgPlot( );
-    map< const Mesh *, long > mapth;
-    map< const Mesh3 *, long > mapth3;
-    map< const MeshS *, long > mapthS;
-    map< const MeshL *, long > mapthL;
+	  SEND_VTK_PARAM(1, double);            // ZScale
+	  SEND_VTK_PARAM(2, bool);              // WhiteBackground
+	  SEND_VTK_PARAM(3, bool);              // OpaqueBorders
+	  SEND_VTK_PARAM(4, bool);              // BorderAsMesh
+	  SEND_VTK_PARAM(5, bool);              // ShowMeshes
+	  SEND_VTK_PARAM(6, long);              // ColorScheme
+	  SEND_VTK_PARAM(7, long);              // ArrowShape
+	  SEND_VTK_PARAM(8, double);            // ArrowSize
+	  SEND_VTK_PARAM(9, long);              // ComplexDisplay
+	  SEND_VTK_PARAM(10, bool);             // LabelColors
+	  SEND_VTK_PARAM(11, bool);             // ShowAxes
+	  SEND_VTK_PARAM(12, bool);             // CutPlane
+	  SEND_VTK_PARAM(13, KN_< double >);    // CameraPosition
+	  SEND_VTK_PARAM(14, KN_< double >);    // CameraFocalPoint
+	  SEND_VTK_PARAM(15, KN_< double >);    // CameraViewUp
+	  SEND_VTK_PARAM(16, double);           // CameraViewAngle
+	  SEND_VTK_PARAM(17, KN_< double >);    // CameraClippingRange
+	  SEND_VTK_PARAM(18, KN_< double >);    // CutPlaneOrigin
+	  SEND_VTK_PARAM(19, KN_< double >);    // CutPlaneNormal
+	  SEND_VTK_PARAM(20, long);             // WindowIndex
+	  SEND_VTK_PARAM(21, long);             // NbColorTicks
+	  SEND_VTK_PARAM(22, long);             // NbColors
+	  SEND_VTK_PARAM(23, bool);             // pNormalT
+	  theplot.SendEndArgPlot();
+	  map< const Mesh *, long > mapth;
+	  map< const Mesh3 *, long > mapth3;
+	  map< const MeshS *, long > mapthS;
+	  map< const MeshL *, long > mapthL;
 
-    long kth = 0, kth3 = 0, kthS = 0, kthL = 0;
-    //  send all the mesh:
-    for (size_t ii = 0; ii < ll.size( ); ii++) {
-      int i= ll[ii].i;
-      long what = ll[ii].what;
-      const Mesh *th = 0;
-      const Mesh3 *th3 = 0;
-      const MeshS *thS = 0;
-      const MeshL *thL = 0;
-      // Prepare for the sending mesh 2d
-      if (what == 0) th = ll[ii].th( );
-      // Prepare for the sending mesh 3d with differenciation 3D line / surface / volumuic /
-      // volum+surfac / line+volum+surfac
-      if (what == 5) th3 = ll[ii].th3( ); //&(l[i].evalm3(0, s));
-      // 3d mesh3 -> if contains a meshS or meshL pointer, send only the principal mesh: the mesh3
-      if (what == 50) thS = ll[ii].thS( ); //(&(l[i].evalmS(0, s)));    // 3d meshS
-      if (what == 55) thL = ll[ii].thL( );//(&(l[ii].evalmL(0, s)));    // 3d  meshL
-      // Prepare for the sending 2d iso values for ffglut
-      else if (what == 1 || what == 2 || what == 11 || what == 12) {
-        ll[ii].eval(fe, cmp);
-        if (fe[0]->x( )) th = &fe[0]->Vh->Th;
-        if (fe[1] && fe[1]->x( )) ffassert(th == &fe[1]->Vh->Th);
-      }
-      // Prepare for the sending 3D volume iso values for ffglut
-      else if (what == 6 || what == 7 || what == 16 || what == 17) {
-        ll[ii].eval(fe3, cmp);
-        if (fe3[0]->x( )) th3 = &fe3[0]->Vh->Th;
-        if (fe3[1]) ffassert(th3 == &fe3[1]->Vh->Th);
-        if (fe3[2]) ffassert(th3 == &fe3[2]->Vh->Th);
+	  long kth = 0, kth3 = 0, kthS = 0, kthL = 0;
+	  //  send all the mesh:
+	  for (size_t ii = 0; ii < ll.size(); ii++) {
+		  int i = ll[ii].i;
+		  long what = ll[ii].what;
+		  const Mesh *th = 0;
+		  const Mesh3 *th3 = 0;
+		  const MeshS *thS = 0;
+		  const MeshL *thL = 0;
+		  // Prepare for the sending mesh 2d
+		  if (what == 0) th = ll[ii].th();
+		  // Prepare for the sending mesh 3d with differenciation 3D line / surface / volumuic /
+		  // volum+surfac / line+volum+surfac
+		  if (what == 5) th3 = ll[ii].th3(); //&(l[i].evalm3(0, s));
+		  // 3d mesh3 -> if contains a meshS or meshL pointer, send only the principal mesh: the mesh3
+		  if (what == 50) thS = ll[ii].thS(); //(&(l[i].evalmS(0, s)));    // 3d meshS
+		  if (what == 55) thL = ll[ii].thL();//(&(l[ii].evalmL(0, s)));    // 3d  meshL
+		  // Prepare for the sending 2d iso values for ffglut
+		  else if (what == 1 || what == 2 || what == 11 || what == 12) {
+			  ll[ii].eval(fe, cmp);
+			  if (fe[0]->x()) th = &fe[0]->Vh->Th;
+			  if (fe[1] && fe[1]->x()) ffassert(th == &fe[1]->Vh->Th);
+		  }
+		  // Prepare for the sending 3D volume iso values for ffglut
+		  else if (what == 6 || what == 7 || what == 16 || what == 17) {
+			  ll[ii].eval(fe3, cmp);
+			  if (fe3[0]->x()) th3 = &fe3[0]->Vh->Th;
+			  if (fe3[1]) ffassert(th3 == &fe3[1]->Vh->Th);
+			  if (fe3[2]) ffassert(th3 == &fe3[2]->Vh->Th);
 
-      }
-      // Prepare for the sending 3D surface iso values for ffglut
-      else if (what == 8 || what == 9 || what == 18 || what == 19) {
-        ll[ii].eval(feS, cmp);
-        if (feS[0]->x( )) thS = &feS[0]->Vh->Th;
-        if (feS[1] && feS[1]->x( )) ffassert(thS == &feS[1]->Vh->Th);
-        if (feS[2] && feS[2]->x( )) ffassert(thS == &feS[2]->Vh->Th);
-      }
-      // Prepare for the sending 3D curve iso values for ffglut
-      else if (what == 14 || what == 15 || what == 20 || what == 21) {
-        ll[ii].eval(feL, cmp);
-        if (feL[0]->x( )) thL = &feL[0]->Vh->Th;
-        if (feL[1] && feL[1]->x( )) ffassert(thL == &feL[1]->Vh->Th);
-        if (feL[2] && feL[2]->x( )) ffassert(thL == &feL[2]->Vh->Th);
-      }
-      // test on the type meshes --- 2D, 3D volume and 3D surface
-      if (th && mapth.find(th) == mapth.end( )) mapth[th] = ++kth;
-      if (th3 && (mapth3.find(th3) == mapth3.end( ))) mapth3[th3] = ++kth3;
-      if (thS && (mapthS.find(thS) == mapthS.end( ))) mapthS[thS] = ++kthS;
-      if (thL && (mapthL.find(thL) == mapthL.end( ))) mapthL[thL] = ++kthL;
-    }
-    // send of meshes 2d
-    theplot.SendMeshes( );
-    theplot << kth;
+		  }
+		  // Prepare for the sending 3D surface iso values for ffglut
+		  else if (what == 8 || what == 9 || what == 18 || what == 19) {
+			  ll[ii].eval(feS, cmp);
+			  if (feS[0]->x()) thS = &feS[0]->Vh->Th;
+			  if (feS[1] && feS[1]->x()) ffassert(thS == &feS[1]->Vh->Th);
+			  if (feS[2] && feS[2]->x()) ffassert(thS == &feS[2]->Vh->Th);
+		  }
+		  // Prepare for the sending 3D curve iso values for ffglut
+		  else if (what == 14 || what == 15 || what == 20 || what == 21) {
+			  ll[ii].eval(feL, cmp);
+			  if (feL[0]->x()) thL = &feL[0]->Vh->Th;
+			  if (feL[1] && feL[1]->x()) ffassert(thL == &feL[1]->Vh->Th);
+			  if (feL[2] && feL[2]->x()) ffassert(thL == &feL[2]->Vh->Th);
+		  }
+		  // test on the type meshes --- 2D, 3D volume and 3D surface
+		  if (th && mapth.find(th) == mapth.end()) mapth[th] = ++kth;
+		  if (th3 && (mapth3.find(th3) == mapth3.end())) mapth3[th3] = ++kth3;
+		  if (thS && (mapthS.find(thS) == mapthS.end())) mapthS[thS] = ++kthS;
+		  if (thL && (mapthL.find(thL) == mapthL.end())) mapthL[thL] = ++kthL;
+	  }
+	  // send of meshes 2d
+	  theplot.SendMeshes();
+	  theplot << kth;
 
-    for (map< const Mesh *, long >::const_iterator i = mapth.begin( ); i != mapth.end( ); ++i)
-      theplot << i->second << *i->first;
+	  for (map< const Mesh *, long >::const_iterator i = mapth.begin(); i != mapth.end(); ++i)
+		  theplot << i->second << *i->first;
 
-    // only send of volume meshes 3D if completed mesh3 (meshS!=NULL or/and !=meshL!=NULL)
-    if (kth3) {
-      theplot.SendMeshes3( );
-      theplot << kth3;
-      for (map< const Mesh3 *, long >::const_iterator i = mapth3.begin( ); i != mapth3.end( ); ++i)
-        theplot << i->second << *i->first;
-    }
-    if (kthS) {
-      theplot.SendMeshesS( );
-      theplot << kthS;
-      for (map< const MeshS *, long >::const_iterator i = mapthS.begin( ); i != mapthS.end( ); ++i)
-        theplot << i->second << *i->first;
-    }
-    if (kthL) {
-      theplot.SendMeshesL( );
-      theplot << kthL;
-      for (map< const MeshL *, long >::const_iterator i = mapthL.begin( ); i != mapthL.end( ); ++i)
-        theplot << i->second << *i->first;
-    }
+	  // only send of volume meshes 3D if completed mesh3 (meshS!=NULL or/and !=meshL!=NULL)
+	  if (kth3) {
+		  theplot.SendMeshes3();
+		  theplot << kth3;
+		  for (map< const Mesh3 *, long >::const_iterator i = mapth3.begin(); i != mapth3.end(); ++i)
+			  theplot << i->second << *i->first;
+	  }
+	  if (kthS) {
+		  theplot.SendMeshesS();
+		  theplot << kthS;
+		  for (map< const MeshS *, long >::const_iterator i = mapthS.begin(); i != mapthS.end(); ++i)
+			  theplot << i->second << *i->first;
+	  }
+	  if (kthL) {
+		  theplot.SendMeshesL();
+		  theplot << kthL;
+		  for (map< const MeshL *, long >::const_iterator i = mapthL.begin(); i != mapthL.end(); ++i)
+			  theplot << i->second << *i->first;
+	  }
 
-    // end of what ploting for meshes
-    theplot.SendPlots( );
+	  // end of what ploting for meshes
+	  theplot.SendPlots();
 
-    theplot << (long)ll.size( );
-    for (size_t ii = 0; ii < ll.size( ); ii++) {
-      int i = ll[ii].i;
-      long what = ll[ii].what;
-      int err = 1;    //  by default we are in error
-      const Mesh *pTh = 0;
-      const Mesh3 *pTh3 = 0;
-      const MeshS *pThS = 0;
-      const MeshL *pThL = 0;
+	  theplot << (long)ll.size();
+	  for (size_t ii = 0; ii < ll.size(); ii++) {
+		  int i = ll[ii].i;
+		  long what = ll[ii].what;
+		  int err = 1;    //  by default we are in error
+		  const Mesh *pTh = 0;
+		  const Mesh3 *pTh3 = 0;
+		  const MeshS *pThS = 0;
+		  const MeshL *pThL = 0;
 
-      // send 2d meshes for ffglut
-      if (what == 0) {
-        pTh = ll[ii].th( );
-        if (pTh) {
-          err = 0;
-          theplot << what;
-          theplot << mapth[ll[ii].th( )];    // numero du maillage 2d
-        }
-      }
-      // send 2d iso values for ffglut
-      else if (what == 1 || what == 2)
-        err = Send2d< R, v_fes >(theplot, ll[ii], mapth);
-      else if (what == 11 || what == 12)
-        err = Send2d< Complex, v_fes >(theplot, ll[ii], mapth);
+		  // send 2d meshes for ffglut
+		  if (what == 0) {
+			  pTh = ll[ii].th();
+			  if (pTh) {
+				  err = 0;
+				  theplot << what;
+				  theplot << mapth[ll[ii].th()];    // numero du maillage 2d
+			  }
+		  }
+		  // send 2d iso values for ffglut
+		  else if (what == 1 || what == 2)
+			  err = Send2d< R, v_fes >(theplot, ll[ii], mapth);
+		  else if (what == 11 || what == 12)
+			  err = Send2d< Complex, v_fes >(theplot, ll[ii], mapth);
 
-      else if (what == 3 || what == 13) {
-        what = 13;
-        theplot << what;    //
-        KN< double > z0;
-        if (verbosity > 99) cout << " sendplot curve " << what << " " << ii;
+		  else if (what == 3 || what == 13) {
+			  what = 13;
+			  theplot << what;    //
+			  KN< double > z0;
+			  if (verbosity > 99) cout << " sendplot curve " << what << " " << ii;
 
-        for (int k = 0; k < 4; ++k) {
-          int ilat = ll[ii].l[k];
-          if (ilat >= 0) {
-            KN_< double > t = GetAny< KN_< double > >(lat[ilat]);
-            theplot << t;
-            if (verbosity > 99) cout << " (" << k << " " << ilat << ") " << t.N( );
-          } else
-            theplot << z0;    // empty arry ...
-        }
-        if (verbosity > 99) cout << endl;
-        err = 0;
-      }
+			  for (int k = 0; k < 4; ++k) {
+				  int ilat = ll[ii].l[k];
+				  if (ilat >= 0) {
+					  KN_< double > t = GetAny< KN_< double > >(lat[ilat]);
+					  theplot << t;
+					  if (verbosity > 99) cout << " (" << k << " " << ilat << ") " << t.N();
+				  }
+				  else
+					  theplot << z0;    // empty arry ...
+			  }
+			  if (verbosity > 99) cout << endl;
+			  err = 0;
+		  }
 
-      else if (l[i].what == 4) {
-        err = 0;
-        theplot << what;
-        const E_BorderN *Bh = l[i].evalb(0, s);
-        Bh->SavePlot(s, theplot);
-      }
-      // send volume 3d meshes for ffglut
-      else if (what == 5) {
-        pTh3 = ll[ii].th3();;
-        if (pTh3) {
-          err = 0;
-          theplot << what;
-          theplot << mapth3[ll[ii].th3()];    // numero du maillage 3D volume
-        }
-      }
-      else if (what == 50) {
-        pThS = ll[ii].thS();
-        if (pThS) {
-          err = 0;
-          theplot << what;
-          theplot << mapthS[ll[ii].thS()];     // numero du maillage 3D surface
-        }
-      } else if (what == 55) {
-        pThL = ll[ii].thL();
-        if (pThL) {
-          err = 0;
-          theplot << what;
-          theplot << mapthL[ll[ii].thL()];    // numero du maillage 3D curve
-        }
-      }
+		  else if (l[i].what == 4) {
+			  err = 0;
+			  theplot << what;
+			  const E_BorderN *Bh = l[i].evalb(0, s);
+			  Bh->SavePlot(s, theplot);
+		  }
+		  // send volume 3d meshes for ffglut
+		  else if (what == 5) {
+			  pTh3 = ll[ii].th3();;
+			  if (pTh3) {
+				  err = 0;
+				  theplot << what;
+				  theplot << mapth3[ll[ii].th3()];    // numero du maillage 3D volume
+			  }
+		  }
+		  else if (what == 50) {
+			  pThS = ll[ii].thS();
+			  if (pThS) {
+				  err = 0;
+				  theplot << what;
+				  theplot << mapthS[ll[ii].thS()];     // numero du maillage 3D surface
+			  }
+		  }
+		  else if (what == 55) {
+			  pThL = ll[ii].thL();
+			  if (pThL) {
+				  err = 0;
+				  theplot << what;
+				  theplot << mapthL[ll[ii].thL()];    // numero du maillage 3D curve
+			  }
+		  }
 
-      // send 3D volume iso values for ffglut
-      else if (what == 6 || what == 7)
-        err = Send3d< R, v_fes3 >(theplot, ll[ii], mapth3);
-      else if (what == 16 || what == 17)
-        err = Send3d< Complex, v_fes3 >(theplot, ll[ii], mapth3);
-      // send 3D surface iso values for ffglut
-      else if (what == 8 || what == 9)
-        err = SendS< R, v_fesS >(theplot, ll[ii], mapthS);
-      else if (what == 18 || what == 19)
-        err = SendS< Complex, v_fesS >(theplot, ll[ii], mapthS);
-      // send 3D curve iso values for ffglut
-      else if (what == 14 || what == 15)
-        err = SendL< R, v_fesL >(theplot, ll[ii], mapthL);
-      else if (what == 20 || what == 21)
-        err = SendL< Complex, v_fesL >(theplot, ll[ii], mapthL);
-      else
-        ffassert(0);    // erreur type theplot inconnue
-      if (err == 1) {
-        if (verbosity)
-          cerr << "Warning: May be a bug in your script, \n"
-               << " a part of the plot is wrong t (mesh or FE function, curve)  => skip the item  "
-               << i + 1 << " in plot command " << endl;
-        theplot << -1L << (long)i;
-      }
-    }
-    theplot.SendEndPlot( );
+		  // send 3D volume iso values for ffglut
+		  else if (what == 6 || what == 7)
+			  err = Send3d< R, v_fes3 >(theplot, ll[ii], mapth3);
+		  else if (what == 16 || what == 17)
+			  err = Send3d< Complex, v_fes3 >(theplot, ll[ii], mapth3);
+		  // send 3D surface iso values for ffglut
+		  else if (what == 8 || what == 9)
+			  err = SendS< R, v_fesS >(theplot, ll[ii], mapthS);
+		  else if (what == 18 || what == 19)
+			  err = SendS< Complex, v_fesS >(theplot, ll[ii], mapthS);
+		  // send 3D curve iso values for ffglut
+		  else if (what == 14 || what == 15)
+			  err = SendL< R, v_fesL >(theplot, ll[ii], mapthL);
+		  else if (what == 20 || what == 21)
+			  err = SendL< Complex, v_fesL >(theplot, ll[ii], mapthL);
+		  else
+			  ffassert(0);    // erreur type theplot inconnue
+		  if (err == 1) {
+			  if (verbosity)
+				  cerr << "Warning: May be a bug in your script, \n"
+				  << " a part of the plot is wrong t (mesh or FE function, curve)  => skip the item  "
+				  << i + 1 << " in plot command " << endl;
+			  theplot << -1L << (long)i;
+		  }
+	  }
+	  theplot.SendEndPlot();
   }
 
   // begin to the post scrit procedure
   if (!withrgraphique) {
-    initgraphique( );
-    withrgraphique = true;
+	  initgraphique();
+	  withrgraphique = true;
   }
-  viderbuff( );
+  viderbuff();
   MeshPoint *mps = MeshPointStack(s), mp = *mps;
   int nbcolors = 0;
   float *colors = 0;
@@ -4659,7 +4666,7 @@ AnyType Plot::operator( )(Stack s) const {
   string *cm = 0;
   pferbase fe = 0, fe1 = 0;
   int cmp0, cmp1;
-  bool grey = getgrey( );
+  bool grey = getgrey();
   bool greyo = grey;
   bool drawborder = true;
   if (nargs[0]) coeff = GetAny< double >((*nargs[0])(s));
@@ -4671,35 +4678,36 @@ AnyType Plot::operator( )(Stack s) const {
   if (nargs[6]) clean = GetAny< bool >((*nargs[6])(s));
   if (nargs[7]) uaspectratio = true, uaspectratio = GetAny< bool >((*nargs[7])(s));
   if (nargs[8])
-    for (int i = 0; i < 4; i++) boundingbox[i] = GetAny< double >((*bb[i])(s));
+	  for (int i = 0; i < 4; i++) boundingbox[i] = GetAny< double >((*bb[i])(s));
   if (nargs[9]) Niso = GetAny< long >((*nargs[9])(s));
   if (nargs[10]) Narrow = GetAny< long >((*nargs[10])(s));
   if (nargs[11]) {
-    KN_< double > v = GetAny< KN_< double > >((*nargs[11])(s));
-    Niso = v.N( );
-    Viso.init(Niso);
-    Viso = v;
-    pViso = true;
+	  KN_< double > v = GetAny< KN_< double > >((*nargs[11])(s));
+	  Niso = v.N();
+	  Viso.init(Niso);
+	  Viso = v;
+	  pViso = true;
   }
 
   if (nargs[12]) {
-    KN_< double > v = GetAny< KN_< double > >((*nargs[12])(s));
-    Niso = v.N( );
-    Varrow.init(Niso);
-    Varrow = v;
-    pVarrow = true;
+	  KN_< double > v = GetAny< KN_< double > >((*nargs[12])(s));
+	  Niso = v.N();
+	  Varrow.init(Niso);
+	  Varrow = v;
+	  pVarrow = true;
   }
 
   if (nargs[13]) bw = GetAny< bool >((*nargs[13])(s));
   if (nargs[14]) grey = GetAny< bool >((*nargs[14])(s));
   if (nargs[15]) {
-    KN_< double > cc = GetAny< KN_< double > >((*nargs[15])(s));
-    nbcolors = cc.N( ) / 3;
-    if (nbcolors > 1 && nbcolors < 100) {
-      colors = new float[nbcolors * 3];
-      for (int i = 0; i < 3 * nbcolors; i++) colors[i] = cc[i];
-    } else
-      nbcolors = 0;
+	  KN_< double > cc = GetAny< KN_< double > >((*nargs[15])(s));
+	  nbcolors = cc.N() / 3;
+	  if (nbcolors > 1 && nbcolors < 100) {
+		  colors = new float[nbcolors * 3];
+		  for (int i = 0; i < 3 * nbcolors; i++) colors[i] = cc[i];
+	  }
+	  else
+		  nbcolors = 0;
   }
   if (nargs[16]) drawborder = GetAny< bool >((*nargs[16])(s));
   int dimplot = 2;
@@ -4713,415 +4721,428 @@ AnyType Plot::operator( )(Stack s) const {
   WhereStackOfPtr2Free(s) = new StackOfPtr2Free(s);    // FH aout 2007
 
   setgrey(grey);
-  if (Viso.unset( )) Viso.init(Niso);
-  if (Varrow.unset( )) Varrow.init(Narrow);
+  if (Viso.unset()) Viso.init(Niso);
+  if (Varrow.unset()) Varrow.init(Narrow);
 
   const Mesh *cTh = 0;
   bool vecvalue = false, isovalue = false;
   bool ops = psfile;
   bool drawmeshes = false;
   if (clean) {
-    // ALH - 28/3/15 - Open PS file before blanking the current picture because Javascript needs to
-    // know any "ps=" parameter to send the graphical commands to the right canvas.
+	  // ALH - 28/3/15 - Open PS file before blanking the current picture because Javascript needs to
+	  // know any "ps=" parameter to send the graphical commands to the right canvas.
 
-    if (psfile) {
-      // [[file:../Graphics/sansrgraph.cpp::openPS]]
-      openPS(psfile->c_str( ));
-    }
+	  if (psfile) {
+		  // [[file:../Graphics/sansrgraph.cpp::openPS]]
+		  openPS(psfile->c_str());
+	  }
 
-    reffecran( );
+	  reffecran();
 
-    if (bw) NoirEtBlanc(1);
-    R2 Pmin, Pmax;
-    R2 uminmax(1e100, -1e100);
-    R2 Vminmax(1e100, -1e100);
-    bool first = true;
-    for (size_t ii = 0; ii < ll.size( ); ii++) {
-      int i = ll[ii].i;
-      long what = ll[ii].what;
-        if(verbosity>99) cout << " plot " << ii << " "<< what << endl;
-      R2 P1(1e100,1e100), P2(-1e100,-1e100);
-  //    R3 P11(1e100,1e100,1e100), P22(-1e100,-1e100,-1e100);
-      if (what == 1 || what == 2) {
-        if (!uaspectratio) aspectratio = true;
-        ll[ii].eval(fe, cmp0, fe1, cmp1);
+	  if (bw) NoirEtBlanc(1);
+	  R2 Pmin, Pmax;
+	  R2 uminmax(1e100, -1e100);
+	  R2 Vminmax(1e100, -1e100);
+	  bool first = true;
+	  for (size_t ii = 0; ii < ll.size(); ii++) {
+		  int i = ll[ii].i;
+		  long what = ll[ii].what;
+		  if (verbosity > 99) cout << " plot " << ii << " " << what << endl;
+		  R2 P1(1e100, 1e100), P2(-1e100, -1e100);
+		  //    R3 P11(1e100,1e100,1e100), P22(-1e100,-1e100,-1e100);
+		  if (what == 1 || what == 2) {
+			  if (!uaspectratio) aspectratio = true;
+			  ll[ii].eval(fe, cmp0, fe1, cmp1);
 
-        if (!fe->x( )) continue;
+			  if (!fe->x()) continue;
 
-        fe->Vh->cmesh->BoundingBox(P1, P2);
-        cTh = fe->Vh->cmesh;
-        if (fe1 == 0)
-          uminmax = minmax(uminmax, fe->Vh->MinMax(*fe->x( ), cmp0));
-        else {
-          if (fe1) {
-            if (fe->Vh == fe1->Vh) {
-              KN_< R > u(*fe->x( )), v(*fe1->x( ));
-              Vminmax = minmax(Vminmax, fe->Vh->MinMax(u, v, cmp0, cmp1));
-            } else
-              cerr << " On ne sait tracer que de vecteur sur un meme type element finite. " << endl;
-          }
-        }
-      } else if (l[i].what == 0 && ll[ii].th( ) ) {
-        if (!uaspectratio) aspectratio = true;
-          
-        const Mesh &Th = *ll[ii].th( );
-        Th.BoundingBox(P1, P2);
-        cTh = &Th;
-      } else if (l[i].what == 4) {
-        if (!uaspectratio) aspectratio = true;
-        const E_BorderN *Bh = l[i].evalb(0, s);
-        double pminz=1e100,pmaxz=-1e100;
-        Bh->BoundingBox(s, P1.x, P2.x, P1.y, P2.y, pminz, pmaxz);
-      
-      } else if (l[i].what == 3) {
-        tab ttx = l[i].evalt(0, s);
-        tab tty = l[i].evalt(1, s);
-        tab *tx = &ttx, *ty = &tty;
-        P1 = R2(tx->min( ), ty->min( ));
-        P2 = R2(tx->max( ), ty->max( ));
-        if (verbosity > 2) cout << "Plot: bound  Pmin=" << P1 << ",  Pmax=" << P2 << endl;
-      } else
-        continue;
+			  fe->Vh->cmesh->BoundingBox(P1, P2);
+			  cTh = fe->Vh->cmesh;
+			  if (fe1 == 0)
+				  uminmax = minmax(uminmax, fe->Vh->MinMax(*fe->x(), cmp0));
+			  else {
+				  if (fe1) {
+					  if (fe->Vh == fe1->Vh) {
+						  KN_< R > u(*fe->x()), v(*fe1->x());
+						  Vminmax = minmax(Vminmax, fe->Vh->MinMax(u, v, cmp0, cmp1));
+					  }
+					  else
+						  cerr << " On ne sait tracer que de vecteur sur un meme type element finite. " << endl;
+				  }
+			  }
+		  }
+		  else if (l[i].what == 0 && ll[ii].th()) {
+			  if (!uaspectratio) aspectratio = true;
 
-      if (first) {
-        first = false;
-        Pmin = P1;
-        Pmax = P2;
-      } else {
-        Pmin.x = Min(Pmin.x, P1.x);
-        Pmin.y = Min(Pmin.y, P1.y);
-        Pmax.x = Max(Pmax.x, P2.x);
-        Pmax.y = Max(Pmax.y, P2.y);
-      }
-    }
+			  const Mesh &Th = *ll[ii].th();
+			  Th.BoundingBox(P1, P2);
+			  cTh = &Th;
+		  }
+		  else if (l[i].what == 4) {
+			  if (!uaspectratio) aspectratio = true;
+			  const E_BorderN *Bh = l[i].evalb(0, s);
+			  double pminz = 1e100, pmaxz = -1e100;
+			  Bh->BoundingBox(s, P1.x, P2.x, P1.y, P2.y, pminz, pmaxz);
 
-    {
-      R umx = uminmax.y, umn = uminmax.x;
-      if (verbosity > 5) cout << " u bound " << uminmax << "  V : " << Vminmax << endl;
+		  }
+		  else if (l[i].what == 3) {
+			  tab ttx = l[i].evalt(0, s);
+			  tab tty = l[i].evalt(1, s);
+			  tab *tx = &ttx, *ty = &tty;
+			  P1 = R2(tx->min(), ty->min());
+			  P2 = R2(tx->max(), ty->max());
+			  if (verbosity > 2) cout << "Plot: bound  Pmin=" << P1 << ",  Pmax=" << P2 << endl;
+		  }
+		  else
+			  continue;
 
-      if (verbosity > 1) cout << "Plot bound [x,y] " << Pmin << " max [x,y] " << Pmax << endl;
-      int N = Viso.N( );
-      int Na = Varrow.N( );
-      R2 O((Pmin + Pmax) / 2);
-      R rx(Pmax.x - Pmin.x), ry(Pmax.y - Pmin.y);
-      // bug   version 1.41 correct FH to remove div by zero.
-      rx = Max(rx, 1e-30);
-      ry = Max(ry, 1e-30);
-      // -- end correction
-      R r = (Max(rx, ry) * 0.55);
-      showgraphic( );
-      if (aspectratio)
-        cadreortho((float)O.x, (float)(O.y + r * 0.05), (float)r);
-      else
-        cadre((float)(O.x - rx * .55), (float)(O.x + rx * 0.55), (float)(O.y - ry * .55),
-              (float)(O.y + ry * .55));
-      R d = fill ? (umx - umn) / (N - 1) : (umx - umn) / (N);
-      R x = fill ? umn - d / 2 : umn + d / 2;
-      if (!pViso)
-        for (int i = 0; i < N; i++) {
-          Viso[i] = x;
-          x += d;
-        }
-      if (fill && !pViso) {
-        Viso[0] = umn - d;
-        Viso[N - 1] = umx + d;
-      }
-      x = 0;
-      d = sqrt(Vminmax.y) / (Na - 1.001);
-      if (!pVarrow)
-        for (int i = 0; i < Na; i++) {
-          Varrow[i] = x;
-          x += d;
-        }
+		  if (first) {
+			  first = false;
+			  Pmin = P1;
+			  Pmax = P2;
+		  }
+		  else {
+			  Pmin.x = Min(Pmin.x, P1.x);
+			  Pmin.y = Min(Pmin.y, P1.y);
+			  Pmax.x = Max(Pmax.x, P2.x);
+			  Pmax.y = Max(Pmax.y, P2.y);
+		  }
+	  }
 
-      SetColorTable(Max(N, Na) + 4);
-    }
+	  {
+		  R umx = uminmax.y, umn = uminmax.x;
+		  if (verbosity > 5) cout << " u bound " << uminmax << "  V : " << Vminmax << endl;
+
+		  if (verbosity > 1) cout << "Plot bound [x,y] " << Pmin << " max [x,y] " << Pmax << endl;
+		  int N = Viso.N();
+		  int Na = Varrow.N();
+		  R2 O((Pmin + Pmax) / 2);
+		  R rx(Pmax.x - Pmin.x), ry(Pmax.y - Pmin.y);
+		  // bug   version 1.41 correct FH to remove div by zero.
+		  rx = Max(rx, 1e-30);
+		  ry = Max(ry, 1e-30);
+		  // -- end correction
+		  R r = (Max(rx, ry) * 0.55);
+		  showgraphic();
+		  if (aspectratio)
+			  cadreortho((float)O.x, (float)(O.y + r * 0.05), (float)r);
+		  else
+			  cadre((float)(O.x - rx * .55), (float)(O.x + rx * 0.55), (float)(O.y - ry * .55),
+			  (float)(O.y + ry * .55));
+		  R d = fill ? (umx - umn) / (N - 1) : (umx - umn) / (N);
+		  R x = fill ? umn - d / 2 : umn + d / 2;
+		  if (!pViso)
+			  for (int i = 0; i < N; i++) {
+				  Viso[i] = x;
+				  x += d;
+			  }
+		  if (fill && !pViso) {
+			  Viso[0] = umn - d;
+			  Viso[N - 1] = umx + d;
+		  }
+		  x = 0;
+		  d = sqrt(Vminmax.y) / (Na - 1.001);
+		  if (!pVarrow)
+			  for (int i = 0; i < Na; i++) {
+				  Varrow[i] = x;
+				  x += d;
+			  }
+
+		  SetColorTable(Max(N, Na) + 4);
+	  }
   }    // clean
   float xx0, xx1, yy0, yy1;
   if (nargs[8]) {
-    xx0 = min(boundingbox[0], boundingbox[2]);
-    xx1 = max(boundingbox[0], boundingbox[2]);
-    yy0 = min(boundingbox[1], boundingbox[3]);
-    yy1 = max(boundingbox[1], boundingbox[3]);
-    if (verbosity > 2)
-      cout << "bb=  xmin =" << xx0 << ", max =" << xx1 << ", ymin = " << yy0 << ", ymax = " << yy1
-           << endl;
-    if (aspectratio)
-      cadreortho((xx0 + xx1) * 0.5, (yy0 + yy1) * 0.5, max(xx1 - xx0, yy1 - yy0) * 0.5);
-    else
-      cadre(xx0, xx1, yy0, yy1);
+	  xx0 = min(boundingbox[0], boundingbox[2]);
+	  xx1 = max(boundingbox[0], boundingbox[2]);
+	  yy0 = min(boundingbox[1], boundingbox[3]);
+	  yy1 = max(boundingbox[1], boundingbox[3]);
+	  if (verbosity > 2)
+		  cout << "bb=  xmin =" << xx0 << ", max =" << xx1 << ", ymin = " << yy0 << ", ymax = " << yy1
+		  << endl;
+	  if (aspectratio)
+		  cadreortho((xx0 + xx1) * 0.5, (yy0 + yy1) * 0.5, max(xx1 - xx0, yy1 - yy0) * 0.5);
+	  else
+		  cadre(xx0, xx1, yy0, yy1);
   }
   getcadre(xx0, xx1, yy0, yy1);
   const R ccoeff = coeff;
   bool plotting = true;
   //  drawing part  ------------------------------
   while (plotting) {
-    if (verbosity > 99) cout << "plot::operator() Drawing part \n";
-    plotting = false;
-    bool thfill = fill;
-    for (size_t ii = 0; ii < ll.size( ); ii++) {
-      int i = ll[ii].i;
-      long what = ll[ii].what;//  correction FH 20201208 i->ii (wrong what)
-        if (verbosity > 99) cout << " plot " << ii << " i " << i << " " << what << endl;
-      if (l[i].what == 0 &&  ll[ii].th( ))
-        if (fill)
-          ll[ii].th( )->Draw(0, thfill);
-        else
-          ll[ii].th( )->Draw(0, thfill);
-      else if (what == 1 || what == 2) {
-        ll[ii].eval(fe, cmp0, fe1, cmp1);
-        if (!fe->x( )) continue;
+	  if (verbosity > 99) cout << "plot::operator() Drawing part \n";
+	  plotting = false;
+	  bool thfill = fill;
+	  for (size_t ii = 0; ii < ll.size(); ii++) {
+		  int i = ll[ii].i;
+		  long what = ll[ii].what;//  correction FH 20201208 i->ii (wrong what)
+		  if (verbosity > 99) cout << " plot " << ii << " i " << i << " " << what << endl;
+		  if (l[i].what == 0 && ll[ii].th())
+			  if (fill)
+				  ll[ii].th()->Draw(0, thfill);
+			  else
+				  ll[ii].th()->Draw(0, thfill);
+		  else if (what == 1 || what == 2) {
+			  ll[ii].eval(fe, cmp0, fe1, cmp1);
+			  if (!fe->x()) continue;
 #ifdef VVVVVVV
-        cout << "   Min = " << fe->x->min( ) << " max = " << fe->x->max( );
-        if (fe1 && verbosity > 1)
-          cout << " Min = " << fe1->x->min( ) << " max = " << fe1->x->max( );
-        cout << endl;
+			  cout << "   Min = " << fe->x->min() << " max = " << fe->x->max();
+			  if (fe1 && verbosity > 1)
+				  cout << " Min = " << fe1->x->min() << " max = " << fe1->x->max();
+			  cout << endl;
 #endif
-        if (fe1) {
-          if (fe->Vh == fe1->Vh)
-            vecvalue = true, fe->Vh->Draw(*fe->x( ), *fe1->x( ), Varrow, coeff, cmp0, cmp1, colors,
-                                          nbcolors, hsv, drawborder, ArrowSize);
-          else
-            cerr << " Draw only vector field on same Finites Element , Sorry. " << endl;
-          if (drawmeshes) fe->Vh->Th.Draw(0, fill);
-        } else
+			  if (fe1) {
+				  if (fe->Vh == fe1->Vh)
+					  vecvalue = true, fe->Vh->Draw(*fe->x(), *fe1->x(), Varrow, coeff, cmp0, cmp1, colors,
+						  nbcolors, hsv, drawborder, ArrowSize);
+				  else
+					  cerr << " Draw only vector field on same Finites Element , Sorry. " << endl;
+				  if (drawmeshes) fe->Vh->Th.Draw(0, fill);
+			  }
+			  else
 
-          if (fill)
-          isovalue = true,
-          fe->Vh->Drawfill(*fe->x( ), Viso, cmp0, 1., colors, nbcolors, hsv, drawborder);
-        else
-          isovalue = true, fe->Vh->Draw(*fe->x( ), Viso, cmp0, colors, nbcolors, hsv, drawborder);
+				  if (fill)
+					  isovalue = true,
+					  fe->Vh->Drawfill(*fe->x(), Viso, cmp0, 1., colors, nbcolors, hsv, drawborder);
+				  else
+					  isovalue = true, fe->Vh->Draw(*fe->x(), Viso, cmp0, colors, nbcolors, hsv, drawborder);
 
-        if (drawmeshes) fe->Vh->Th.Draw(0, fill);
+			  if (drawmeshes) fe->Vh->Th.Draw(0, fill);
 
-      } else if (l[i].what == 4) {
-        const E_BorderN *Bh = l[i].evalb(0, s);
-        Bh->Plot(s);
-      } else if (l[i].what == 3) {
-        penthickness(6);
-        tab x = l[i].evalt(0, s);
-        tab y = l[i].evalt(1, s);
-        KN< double > pz0;
-        KN_< double > z(pz0), v(pz0);
-        if (l[i].e[2]) {
-          z.set(l[i].evalt(2, s));
-        }
-        if (l[i].e[3]) {
-          v.set(l[i].evalt(3, s));
-        }
-        long k = Min(x.N( ), y.N( ));
-        NewSetColorTable(Viso.N( ) + 4, colors, nbcolors, hsv);
-        rmoveto(x[0], y[0]);
-        couleur(2 + i);
-        for (int i = 1; i < k; i++) rlineto(x[i], y[i]);
-      } else {
-          static int kerr=0; 
-        if (verbosity && kerr++< 5 && mpirank==0)
-          cout << "  Plot::  Sorry no ps version for this type of plot " << l[i].what << endl;
-      }
-      thfill = false;
-    }
-    if (value) {
-      int k = 0;
-      if (isovalue) {
-        PlotValue(Viso, k, "IsoValue");
-        k += Viso.N( ) + 3;
-      }
-      if (vecvalue) {
-        PlotValue(Varrow, k, "Vec Value");
-        k += Varrow.N( ) + 3;
-      }
-    }
+		  }
+		  else if (l[i].what == 4) {
+			  const E_BorderN *Bh = l[i].evalb(0, s);
+			  Bh->Plot(s);
+		  }
+		  else if (l[i].what == 3) {
+			  penthickness(6);
+			  tab x = l[i].evalt(0, s);
+			  tab y = l[i].evalt(1, s);
+			  KN< double > pz0;
+			  KN_< double > z(pz0), v(pz0);
+			  if (l[i].e[2]) {
+				  z.set(l[i].evalt(2, s));
+			  }
+			  if (l[i].e[3]) {
+				  v.set(l[i].evalt(3, s));
+			  }
+			  long k = Min(x.N(), y.N());
+			  NewSetColorTable(Viso.N() + 4, colors, nbcolors, hsv);
+			  rmoveto(x[0], y[0]);
+			  couleur(2 + i);
+			  for (int i = 1; i < k; i++) rlineto(x[i], y[i]);
+		  }
+		  else {
+			  static int kerr = 0;
+			  if (verbosity && kerr++ < 5 && mpirank == 0)
+				  cout << "  Plot::  Sorry no ps version for this type of plot " << l[i].what << endl;
+		  }
+		  thfill = false;
+	  }
+	  if (value) {
+		  int k = 0;
+		  if (isovalue) {
+			  PlotValue(Viso, k, "IsoValue");
+			  k += Viso.N() + 3;
+		  }
+		  if (vecvalue) {
+			  PlotValue(Varrow, k, "Vec Value");
+			  k += Varrow.N() + 3;
+		  }
+	  }
 
-    if (cm) {
-      couleur(1);
-      DrawCommentaire(cm->c_str( ), 0.1, 0.97);
-    }
-    if (ops) {
-      ops = false;
-      closePS( );
-    }
-    if (wait && !NoWait) {
-    next:
-      float x, y, x0, y0, x1, y1, dx, dy, coef = 1.5;
-      getcadre(x0, x1, y0, y1);
-      char c = Getxyc(x, y);
-      dx = (x1 - x0) / 2.;
-      dy = (y1 - y0) / 2.;
+	  if (cm) {
+		  couleur(1);
+		  DrawCommentaire(cm->c_str(), 0.1, 0.97);
+	  }
+	  if (ops) {
+		  ops = false;
+		  closePS();
+	  }
+	  if (wait && !NoWait) {
+	  next:
+		  float x, y, x0, y0, x1, y1, dx, dy, coef = 1.5;
+		  getcadre(x0, x1, y0, y1);
+		  char c = Getxyc(x, y);
+		  dx = (x1 - x0) / 2.;
+		  dy = (y1 - y0) / 2.;
 
-      switch (c) {
-        case '+':
-          plotting = true;
-          cadre(x - dx / coef, x + dx / coef, y - dy / coef, y + dy / coef);
-          reffecran( );
-          break;
-        case '-':
-          plotting = true;
-          cadre(x - dx * coef, x + dx * coef, y - dy * coef, y + dy * coef);
-          ;
-          reffecran( );
-          break;
-        case '=':
-          plotting = true;
-          coeff = ccoeff;
-          cadre(xx0, xx1, yy0, yy1);
-          ;
-          reffecran( );
-          break;
-        case 'r':
-          plotting = true;
-          reffecran( );
-          break;
-        case 'a':
-        case 'c':
-          coeff /= 1.5;
-          plotting = true;
-          reffecran( );
-          reffecran( );
-          break;
-        case 'A':
-        case 'C':
-          coeff *= 1.5;
-          plotting = true;
-          reffecran( );
-          break;
-        case 'b':
-          bw = !bw;
-          NoirEtBlanc(bw);
-          plotting = true;
-          reffecran( );
-          break;
-        case 'v':
-          value = !value;
-          plotting = true;
-          reffecran( );
-          break;
-        case 'f':
-          fill = !fill;
-          plotting = true;
-          reffecran( );
-          break;
-        case 'g':
-          setgrey(grey = !getgrey( ));
-          plotting = true;
-          reffecran( );
-          break;
+		  switch (c) {
+		  case '+':
+			  plotting = true;
+			  cadre(x - dx / coef, x + dx / coef, y - dy / coef, y + dy / coef);
+			  reffecran();
+			  break;
+		  case '-':
+			  plotting = true;
+			  cadre(x - dx * coef, x + dx * coef, y - dy * coef, y + dy * coef);
+			  ;
+			  reffecran();
+			  break;
+		  case '=':
+			  plotting = true;
+			  coeff = ccoeff;
+			  cadre(xx0, xx1, yy0, yy1);
+			  ;
+			  reffecran();
+			  break;
+		  case 'r':
+			  plotting = true;
+			  reffecran();
+			  break;
+		  case 'a':
+		  case 'c':
+			  coeff /= 1.5;
+			  plotting = true;
+			  reffecran();
+			  reffecran();
+			  break;
+		  case 'A':
+		  case 'C':
+			  coeff *= 1.5;
+			  plotting = true;
+			  reffecran();
+			  break;
+		  case 'b':
+			  bw = !bw;
+			  NoirEtBlanc(bw);
+			  plotting = true;
+			  reffecran();
+			  break;
+		  case 'v':
+			  value = !value;
+			  plotting = true;
+			  reffecran();
+			  break;
+		  case 'f':
+			  fill = !fill;
+			  plotting = true;
+			  reffecran();
+			  break;
+		  case 'g':
+			  setgrey(grey = !getgrey());
+			  plotting = true;
+			  reffecran();
+			  break;
 
-        case 'm':
-          reffecran( );
-          drawmeshes = !drawmeshes;
-          plotting = true;
-          break;
-        case 'p':
-          plotting = true;
-          reffecran( );
-          ops = true;
-          openPS(0);
-          plotting = true;
-          break;
-        case 'q':
-          couleur(8);
+		  case 'm':
+			  reffecran();
+			  drawmeshes = !drawmeshes;
+			  plotting = true;
+			  break;
+		  case 'p':
+			  plotting = true;
+			  reffecran();
+			  ops = true;
+			  openPS(0);
+			  plotting = true;
+			  break;
+		  case 'q':
+			  couleur(8);
 #ifdef DRAWING
-          if (cTh) cTh->quadtree->Draw( );
+			  if (cTh) cTh->quadtree->Draw();
 #endif
-          couleur(1);
-          goto next;
-        case 's':
-          if (cTh) {
-            R2 P(x, y), PF(P), Phat;
-            bool outside;
-            const Vertex *v = cTh->quadtree->NearestVertexWithNormal(P);
-            if (!v)
-              v = cTh->quadtree->NearestVertex(P);
-            else {
-              couleur(2);
-              const Triangle *t = cTh->Find(PF, Phat, outside, &(*cTh)[cTh->Contening(v)]);
-              t->Draw(0.8);
-              couleur(2);
-              PF = (*t)(Phat);
-              DrawMark(PF, 0.003);
-            }
-            couleur(5);
-            DrawMark(P, 0.0015);
+			  couleur(1);
+			  goto next;
+		  case 's':
+			  if (cTh) {
+				  R2 P(x, y), PF(P), Phat;
+				  bool outside;
+				  const Vertex *v = cTh->quadtree->NearestVertexWithNormal(P);
+				  if (!v)
+					  v = cTh->quadtree->NearestVertex(P);
+				  else {
+					  couleur(2);
+					  const Triangle *t = cTh->Find(PF, Phat, outside, &(*cTh)[cTh->Contening(v)]);
+					  t->Draw(0.8);
+					  couleur(2);
+					  PF = (*t)(Phat);
+					  DrawMark(PF, 0.003);
+				  }
+				  couleur(5);
+				  DrawMark(P, 0.0015);
 
-            couleur(1);
-            if (v) DrawMark(*v, 0.005);
+				  couleur(1);
+				  if (v) DrawMark(*v, 0.005);
 
-            goto next;
-          }
-        case '?':
-          int i = 2;
-          reffecran( );
-          Show("Enter a keyboard character in the FreeFem Graphics window in order to:", i++);
+				  goto next;
+			  }
+		  case '?':
+			  int i = 2;
+			  reffecran();
+			  Show("Enter a keyboard character in the FreeFem Graphics window in order to:", i++);
 
-          i += 2;
-          Show("+)  zoom in around the cursor 3/2 times ", i++);
-          Show("-)  zoom out around the cursor 3/2 times  ", i++);
-          Show("=)  reset zooming  ", i++);
-          Show("r)  refresh plot ", i++);
-          Show("ac) increase   the size arrow ", i++);
-          Show("AC) decrease the size arrow  ", i++);
-          Show("b)  switch between black and white or color plotting ", i++);
-          Show("g)  switch between grey or color plotting ", i++);
-          Show("f)  switch between filling iso or not  ", i++);
-          Show("v)  switch between show  the numerical value of iso or not", i++);
-          Show("p)   save  plot in a Postscprit file", i++);
-          Show("m)  switch between show  meshes or not", i++);
-          Show("p)  switch between show  quadtree or not (for debugging)", i++);
-          Show("t)  find  Triangle ", i++);
-          Show("?)  show this help window", i++);
-          Show("any other key : continue ", ++i);
-          goto next;
-      }
-      if (!pViso || !pVarrow) {    //  recompute the iso bound
-        R2 uminmax(1e100, -1e100);
-        R2 Vminmax(1e100, -1e100);
-        for (size_t i = 0; i < l.size( ); i++) {
-          R2 P1, P2;
-          if (l[i].what == 1 || l[i].what == 2) {
-            fe = l[i].eval(0, s, cmp0);
-            fe1 = l[i].eval(1, s, cmp1);
+			  i += 2;
+			  Show("+)  zoom in around the cursor 3/2 times ", i++);
+			  Show("-)  zoom out around the cursor 3/2 times  ", i++);
+			  Show("=)  reset zooming  ", i++);
+			  Show("r)  refresh plot ", i++);
+			  Show("ac) increase   the size arrow ", i++);
+			  Show("AC) decrease the size arrow  ", i++);
+			  Show("b)  switch between black and white or color plotting ", i++);
+			  Show("g)  switch between grey or color plotting ", i++);
+			  Show("f)  switch between filling iso or not  ", i++);
+			  Show("v)  switch between show  the numerical value of iso or not", i++);
+			  Show("p)   save  plot in a Postscprit file", i++);
+			  Show("m)  switch between show  meshes or not", i++);
+			  Show("p)  switch between show  quadtree or not (for debugging)", i++);
+			  Show("t)  find  Triangle ", i++);
+			  Show("?)  show this help window", i++);
+			  Show("any other key : continue ", ++i);
+			  goto next;
+		  }
+		  if (!pViso || !pVarrow) {    //  recompute the iso bound
+			  R2 uminmax(1e100, -1e100);
+			  R2 Vminmax(1e100, -1e100);
+			  for (size_t i = 0; i < l.size(); i++) {
+				  R2 P1, P2;
+				  if (l[i].what == 1 || l[i].what == 2) {
+					  fe = l[i].eval(0, s, cmp0);
+					  fe1 = l[i].eval(1, s, cmp1);
 
-            if (!fe->x( )) continue;
+					  if (!fe->x()) continue;
 
-            if (fe1 == 0)
-              uminmax = minmax(uminmax, fe->Vh->MinMax(*fe->x( ), cmp0, false));
-            else {
-              if (fe1)
-                if (fe->Vh == fe1->Vh) {
-                  KN_< R > u(*fe->x( )), v(*fe1->x( ));
-                  Vminmax = minmax(uminmax, fe->Vh->MinMax(u, v, cmp0, cmp1, false));
-                }
-            }
-          } else
-            continue;
-        }
-        if (verbosity > 5) cout << " u bound " << uminmax << endl;
-        R umx = uminmax.y, umn = uminmax.x;
-        int N = Viso.N( );
-        int Na = Varrow.N( );
-        R d = fill ? (umx - umn) / (N - 1) : (umx - umn) / (N);
-        R x = fill ? umn - d / 2 : umn + d / 2;
-        if (!pViso)
-          for (int i = 0; i < N; i++) {
-            Viso[i] = x;
-            x += d;
-          }
-        if (fill && !pViso) {
-          Viso[0] = umn - d;
-          Viso[N - 1] = umx + d;
-        }
-        x = 0;
-        d = sqrt(Vminmax.y) / Na;
-        if (!pVarrow)
-          for (int i = 0; i < Na; i++) {
-            Varrow[i] = x;
-            x += d;
-          }
-      }
-    }
-    *mps = mp;
+					  if (fe1 == 0)
+						  uminmax = minmax(uminmax, fe->Vh->MinMax(*fe->x(), cmp0, false));
+					  else {
+						  if (fe1)
+							  if (fe->Vh == fe1->Vh) {
+								  KN_< R > u(*fe->x()), v(*fe1->x());
+								  Vminmax = minmax(uminmax, fe->Vh->MinMax(u, v, cmp0, cmp1, false));
+							  }
+					  }
+				  }
+				  else
+					  continue;
+			  }
+			  if (verbosity > 5) cout << " u bound " << uminmax << endl;
+			  R umx = uminmax.y, umn = uminmax.x;
+			  int N = Viso.N();
+			  int Na = Varrow.N();
+			  R d = fill ? (umx - umn) / (N - 1) : (umx - umn) / (N);
+			  R x = fill ? umn - d / 2 : umn + d / 2;
+			  if (!pViso)
+				  for (int i = 0; i < N; i++) {
+					  Viso[i] = x;
+					  x += d;
+				  }
+			  if (fill && !pViso) {
+				  Viso[0] = umn - d;
+				  Viso[N - 1] = umx + d;
+			  }
+			  x = 0;
+			  d = sqrt(Vminmax.y) / Na;
+			  if (!pVarrow)
+				  for (int i = 0; i < Na; i++) {
+					  Varrow[i] = x;
+					  x += d;
+				  }
+		  }
+	  }
+	  *mps = mp;
+#endif
   }    //  end plotting
+#ifndef kame
   NoirEtBlanc(0);
   setgrey(greyo);
   if (colors) delete[] colors;
@@ -6001,9 +6022,9 @@ void init_lgfem( ) {
 
   map_type[typeid(pfesL).name( )] = new ForEachType< pfesL >( );                  // 3D curve
   map_type[typeid(pfesL *).name( )] = new ForEachTypePtrfspace< pfesL, 5 >( );    // 3D curve
-#ifndef kame 
   //
   Dcl_Type< const QuadratureFormular * >( );
+#ifndef kame 
   Dcl_Type< const QuadratureFormular1d * >( );
   Dcl_Type< const GQuadratureFormular< R3 > * >( );
   TheOperators->Add("\'",   new OneOperator1<Transpose<R3* >,R3* >(&Build<Transpose<R3* >,R3* >,2));
@@ -6046,22 +6067,23 @@ void init_lgfem( ) {
   Global.New("wait", CConstant< bool * >(&TheWait));
   Global.New("NoUseOfWait", CConstant< bool * >(&NoWait));
   Global.New("NoGraphicWindow", CConstant< bool * >(&NoGraphicWindow));
-
+#endif
   //Dcl_Type< MeshPoint * >( );
   Dcl_Type< finconnue * >( );
   Dcl_Type< ftest * >( );
-    
   Dcl_Type< foperator * >( );
+
   Dcl_Type< const BC_set * >( );                         // a set of boundary condition
   Dcl_Type< const Call_FormLinear< v_fes > * >( );       //   to set Vector
   Dcl_Type< const Call_FormBilinear<v_fes, v_fes > * >( );     // to set Matrix
+#ifndef kame
   Dcl_Type< const Call_FormLinear< v_fes3 > * >( );      //   to set Vector 3D volume
   Dcl_Type< const Call_FormBilinear<v_fes3, v_fes3 > * >( );    // to set Matrix 3D volume
   Dcl_Type< const Call_FormLinear< v_fesS > * >( );      //   to set Vector 3D surface
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fesS > * >( );    // to set Matrix 3D surface
   Dcl_Type< const Call_FormLinear< v_fesL > * >( );      //   to set Vector 3D curve
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fesL > * >( );    // to set Matrix 3D curve
-  
+ 
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fes> * >( );   // 3D curve / 2D on meshL
   Dcl_Type< const Call_FormBilinear<v_fes, v_fesL> * >( );   // 2D / 3D curve on meshL
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fes3> * >( );   // 3D Surf / 3D volume on meshS
@@ -6069,7 +6091,7 @@ void init_lgfem( ) {
   Dcl_Type< const Call_FormBilinear<v_fesL, v_fesS> * >( );   // 3D curve / 3D Surf on meshL
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fesL> * >( );   // 3D Surf / 3D curve on meshL and bem
   Dcl_Type< const Call_FormBilinear<v_fesS, v_fes> * >( );
-        
+#endif        
   Dcl_Type< interpolate_f_X_1< double >::type >( );      // to make  interpolation x=f o X^1 ;
 
   map_type[typeid(const FormBilinear *).name( )] = new TypeFormBilinear;
@@ -6077,11 +6099,13 @@ void init_lgfem( ) {
     
   aType t_C_args = map_type[typeid(const C_args *).name( )] = new TypeFormOperator;
   map_type[typeid(const Problem *).name( )] = new TypeSolve< false, Problem >;
+
   map_type[typeid(const Solve *).name( )] = new TypeSolve< true, Solve >;
   Dcl_Type< const IntFunction< double > * >( );
   Dcl_Type< const IntFunction< complex< double > > * >( );
   basicForEachType *t_solve = atype< const Solve * >( );
   basicForEachType *t_problem = atype< const Problem * >( );
+
   basicForEachType *t_fbilin = atype< const FormBilinear * >( );
 
   basicForEachType *t_flin = atype< const FormLinear * >( );
@@ -6089,7 +6113,7 @@ void init_lgfem( ) {
  
   /// Doxygen doc
   basicForEachType *t_form = atype< const C_args * >( );
-#endif   
+   
   Dcl_Type< const CDomainOfIntegration * >( );
   atype< pmesh >( )->AddCast(new E_F1_funcT< pmesh, pmesh * >(UnRef< pmesh >));
   atype< pfes >( )->AddCast(new E_F1_funcT< pfes, pfes * >(UnRef< pfes >));
@@ -6148,7 +6172,7 @@ void init_lgfem( ) {
     ffassert(i->tfe);    // check
     AddNewFE(i->name, i->tfe);
   }
-#ifndef kame
+
   static string LU = "LU";
   static string CG = "CG";
   static string GMRES = "GMRES";
@@ -6157,6 +6181,7 @@ void init_lgfem( ) {
   static string UMFPACK = "UMFPACK";
   static string sparsesolver = "sparsesolver";
   static string sparsesolverSym = "sparsesolverSym";
+
   Global.New("LU", CConstant< string * >(&LU));
   Global.New(CG.c_str( ), CConstant< string * >(&CG));
   Global.New(GMRES.c_str( ), CConstant< string * >(&GMRES));
@@ -6165,7 +6190,7 @@ void init_lgfem( ) {
   Global.New(UMFPACK.c_str( ), CConstant< string * >(&UMFPACK));
   Global.New(sparsesolver.c_str( ), CConstant< string * >(&sparsesolver));
   Global.New(sparsesolverSym.c_str( ), CConstant< string * >(&sparsesolverSym));
-#endif
+
   // old --
   //  init FESpace
   TheOperators->Add(
@@ -6307,8 +6332,10 @@ void init_lgfem( ) {
 
   zzzfff->AddF("varf", t_form);    //  var. form ~  <<varf>>
   zzzfff->AddF("solve", t_solve);
+#endif
   zzzfff->AddF("problem", t_problem);
-  
+#ifndef kame
+
   Global.Add("jump", "(", new OneOperatorCode< Code_VF< Ftest, Code_Jump > >);
   Global.Add("jump", "(", new OneOperatorCode< Code_VF< Finconnue, Code_Jump > >);
   Global.Add("average", "(", new OneOperatorCode< Code_VF< Ftest, Code_Mean > >);
@@ -6324,12 +6351,12 @@ void init_lgfem( ) {
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Finconnue > >);
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Ftest > >);
   TheOperators->Add("\'", new OneOperatorCode< CODE_conj< Foperator > >);
-
+#endif
   Global.Add("dx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dx > >);
   Global.Add("dy", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dy > >);
   Global.Add("dx", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dx > >);
   Global.Add("dy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dy > >);
-
+#ifndef kame
   Global.Add("dxx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dxx > >);
   Global.Add("dxy", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dxy > >);
   Global.Add("dyx", "(", new OneOperatorCode< CODE_Diff< Ftest, op_dyx > >);
@@ -6339,15 +6366,15 @@ void init_lgfem( ) {
   Global.Add("dyy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dyy > >);
   Global.Add("dxy", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dxy > >);
   Global.Add("dyx", "(", new OneOperatorCode< CODE_Diff< Finconnue, op_dyx > >);
-
-  Global.Add("on", "(", new OneOperatorCode< BC_set >);
 #endif
+  Global.Add("on", "(", new OneOperatorCode< BC_set >);
+
   /// <<plot_keyword>> uses [[Plot]] and [[file:AFunction.hpp::OneOperatorCode]] and
   /// [[file:AFunction.hpp::Global]]
   Global.Add("plot", "(", new OneOperatorCode< Plot >);
 #ifndef kame
   Global.Add("convect", "(", new OneOperatorCode< Convect >);
-  
+#endif
   TheOperators->Add("+", new OneOperatorCode< CODE_L_Add< Foperator > >,
                     new OneOperatorCode< CODE_L_Add< Ftest > >,
                     new OneOperatorCode< CODE_L_Add< Finconnue > >,
@@ -6370,7 +6397,7 @@ void init_lgfem( ) {
     new OneOperatorCode< C_args >(t_C_args, t_flin),
     new OneOperatorCode< C_args >(t_C_args, t_BC)
   );
-
+#ifndef kame
   atype< const C_args * >( )->AddCast(
     new OneOperatorCode< C_args >(t_C_args, atype< DotSlash_KN_< R > >( )),
     new OneOperatorCode< C_args >(t_C_args, atype< KN< R > * >( )),
@@ -6391,6 +6418,8 @@ void init_lgfem( ) {
 
   );
 
+#endif
+
   TheOperators->Add("*", new OneOperatorCode< CODE_L_Mul< Foperator, Ftest, Finconnue > >,
                     new OneOperatorCode< CODE_L_Mul< Foperator, Finconnue, Ftest > >);
 
@@ -6405,6 +6434,7 @@ void init_lgfem( ) {
                     new OneOperatorCode< CODE_L_MulRL< double, Finconnue >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Foperator >, 20 >,
                     new OneOperatorCode< CODE_L_MulRL< double, Ftest >, 20 >);
+#ifndef kame
   TheOperators->Add("*", new OneOperatorCode< CODE_L_MulLR< Finconnue, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Foperator, Complex >, 10 >,
                     new OneOperatorCode< CODE_L_MulLR< Ftest, Complex >, 10 >,
@@ -6614,7 +6644,7 @@ void init_lgfem( ) {
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< Complex, MeshL, v_fesL, v_fesS >(1));    // 3D curve / 3D Surf on meshL
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< double, MeshL, v_fesS, v_fesL >(1));     // 3D Surf / 3D curve on meshL
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< Complex, MeshL, v_fesS, v_fesL >(1));    // 3D Surf / 3D curve on meshL
-        
+       
   Add< const FormLinear * >("(", "", new OpCall_FormLinear< FormLinear, v_fes >);
   Add< const FormBilinear * >("(", "", new OpCall_FormBilinear< FormBilinear, v_fes, v_fes >);
   Add< const FormBilinear * >("(", "", new OpCall_FormLinear2< FormBilinear, v_fes >);
@@ -6725,22 +6755,19 @@ void init_lgfem( ) {
   Global.Add("mean", "(", new OneUnaryOperator< MeanOp< Complex >, MeanOp< Complex > >);
   Global.Add("average", "(", new OneUnaryOperator< MeanOp< Complex >, MeanOp< Complex > >);
   Global.Add("otherside", "(",new OneUnaryOperator< OthersideOp< Complex >, OthersideOp< Complex > >);
-
-  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
-
-  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
 #endif
+  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormBilinear >);
+  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< FormLinear >);
   Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< double >, 1 >);
-#ifndef kame
-  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);
-      
-  map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
 
+  Add< const CDomainOfIntegration * >("(", "", new OneOperatorCode< IntFunction< complex< double > >, 0 >);    
+  map_type[typeid(double).name( )]->AddCast(new E_F1_funcT< double, pfer >(pfer2R< R, 0 >));
   map_type[typeid(Complex).name( )]->AddCast(new E_F1_funcT< Complex, pfec >(pfer2R< Complex, 0 >));
 
   // bof
   Global.Add("dx", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dx >));
   Global.Add("dy", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dy >));
+#ifndef kame
   Global.Add("dxx", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dxx >));
   Global.Add("dyy", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dyy >));
   Global.Add("dxy", "(", new E_F1_funcT< double, pfer >(pfer2R< R, op_dxy >));
@@ -6886,20 +6913,21 @@ void init_lgfem( ) {
       &Build< Matrice_Creuse_Transpose< R >, Matrice_Creuse< R > * >),
     new OneOperator1< Matrice_Creuse_Transpose< Complex >, Matrice_Creuse< Complex > * >(
       &Build< Matrice_Creuse_Transpose< Complex >, Matrice_Creuse< Complex > * >));
-
+#endif
   Add< pfer >("(", "", new interpolate_f_X_1< R >);
   TheOperators->Add(
     "=",
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
+
   init_lgmat( );
-#endif
-  init_mesh_array( );
+//  init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
   using namespace FreeFempp;
-#ifndef kame
+
   FreeFempp::TypeVarForm< double >::Global = new TypeVarForm< double >( );
   FreeFempp::TypeVarForm< Complex >::Global = new TypeVarForm< Complex >( );
 
+#ifndef kame
   Global.New("P13d", CConstantTFE3(&DataFE< Mesh3 >::P1));
   Global.New("P23d", CConstantTFE3(&DataFE< Mesh3 >::P2));
   Global.New("P03d", CConstantTFE3(&DataFE< Mesh3 >::P0));

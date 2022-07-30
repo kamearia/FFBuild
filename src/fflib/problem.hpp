@@ -1122,7 +1122,7 @@ namespace Fem2D {
     MeshPointStack(tabe.s)->set(X.x,X.y);
     tabe.eval_2(v);
   }
-
+#ifndef kame
 //general templates for 2d and 3d volume // for Surf version ...
 template<class R,typename MC,class MMesh,class FESpace1,class FESpace2>  bool AssembleVarForm(Stack stack,const MMesh & Th,
                                                                    const FESpace1 & Uh,const FESpace2 & Vh,bool sym,
@@ -1175,7 +1175,7 @@ template<class R>   void  Element_Op(MatriceElementairePleine<R,FESpaceL> & mat,
                                      int ie,int label, void *stack,R3 *B);
 template<class R>   void  Element_Op(MatriceElementaireSymetrique<R,FESpaceL> & mat,const FElementL & Ku,double * p,int ie,int label,
                                      void * stack,R3 *B);
-    
+#endif
 }
 
 
