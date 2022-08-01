@@ -290,6 +290,9 @@
     <ClCompile Include="..\src\fflib\UMFPack_Solver.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\fflib\string_def.cpp">
+      <Filter>ソース ファイル\src\fflib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

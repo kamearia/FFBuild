@@ -11088,7 +11088,7 @@ bool isVF(const list<C_F0> & largs)  // true => VF type of Matrix
     }
     return VVF;
 }
-#ifndef kame
+
 
 bool isSameMesh(const list<C_F0> & largs,const void * Thu,const void * Thv,Stack stack)  // true => VF type of Matrix
 {
@@ -11116,7 +11116,7 @@ bool isSameMesh(const list<C_F0> & largs,const void * Thu,const void * Thv,Stack
     }
     return true;
 }
-#endif
+
 template<class R,class FESpace,class v_fes>
 void InitProblem( int Nb, const FESpace & Uh,
                  const FESpace & Vh,

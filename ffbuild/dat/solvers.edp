@@ -2,7 +2,7 @@
 // simple example: -\Delta(u) = 1 in the unit cercle with u=0 on the
 // border of the unit cercle. This problem has an analytical solution
 // u = (1-x^2-y^2)/4
-verbosity=5;
+//verbosity=10;
 // Mesh
 //real pi = 4*atan(1);
 border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
@@ -14,20 +14,40 @@ mesh disk= buildmesh(a(200));
 fespace femp1(disk, P1);
 femp1 u, v;
 
+// Error
+femp1 ana =(1-x^2-y^2)/4;
 
 // Problem
-problem laplace(u, v, solver="GMRES")
-	= int2d(disk)(	// bilinear form
-		  dx(u)*dx(v)
-		+ dy(u)*dy(v)
-	)
-	+int2d(disk)(-1.*v)	// linear form
+/*
+string[int] sol(6);
+sol[0]="LU";
+sol[1]="CHOLESKY";
+sol[2]="CROUT";
+sol[3]="CG";
+sol[4]="GMRES";
+sol[5]="SPARSESOLVERSYM";
+*/
+for(int i=0; i<6;  ++i){
+string sol;
+if(i==0) sol="LU";
+else if(i==1) sol="CHOLESKY";
+else if(i==2) sol="CROUT";
+else if(i==3) sol="CG";
+else if(i==4) sol="GMRES";
+else if(i==5) sol="SPARSESOLVERSYM";
 
+cout << "********* Solve problem by "<< sol<< " ***************"<< endl; 
+solve laplace(u, v, solver=sol)
+	= int2d(disk)( dx(u)*dx(v) + dy(u)*dy(v))
+	+int2d(disk)(-1.*v)	// linear form
 	+ on(1, u=0)	// boundary condition
 	;
+cout << "error L2 = " << sqrt(int2d(disk)( (u-ana)^2)) << endl;
+}
 
+end;
 // Solve
-laplace;
+//laplace;
 
 // Error
 femp1 err = u - (1-x^2-y^2)/4;

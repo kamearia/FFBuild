@@ -49,7 +49,7 @@ void initArrayDCLlong() {
   ArrayDCL<long>();
 //  aaaa_knlp = atype<KN<long>*>();
 }
-#ifndef kame
+
 class OneBinaryOperatorInv_KN_long : public OneOperator {
   public:
     OneBinaryOperatorInv_KN_long(basicForEachType * ti) : OneOperator(atype<Inv_KN_long >(), ti ,atype<long>()) {}
@@ -69,7 +69,7 @@ class OneBinaryOperatorInv_KN_long : public OneOperator {
       return new E_F_F0<Inv_KN_long, KN_<long> >(Build<Inv_KN_long, KN_<long> >, to< KN_<long> >(args[0]));
     }
 };
-#endif
+
 // Add mars 2010
 template<class R> R *set_init_init( R* const & a,const long & n) {
   SHOWVERB(cout << " set_init " << typeid(R).name() << " " << n << endl);
@@ -124,7 +124,7 @@ struct set_Inv_pKN_longI: public binary_function<A,B,A> {
     return a;
   }
 };
-
+#endif
 long findall(const  KN_<long> & a,  const long &v,  KN<long> * const &  pI)
 {
     long nn=0,k=0;;
@@ -140,20 +140,22 @@ long findall(const  KN_<long> & a,  const long &v,  KN<long> * const &  pI)
 }
 
 
-#endif
+
 extern Polymorphic * TheOperators;
 void initArrayOperatorlong()
 {
   typedef long K;
-#ifndef kame
+
   Dcl_Type< Eye > ();// OK this is the fist array def ..
   Global.Add("eye","(",new OneOperator1<Eye,long>(fEye));
   Global.Add("eye","(",new OneOperator2<Eye,long>(fEye));
   Global.Add("findall", "(", new OneOperator3_< long, KN_<long>, long ,KN<long>*>(findall));// oct 2020 FH.
 
   ArrayOperator<long, long>();
+
   // to define inverse permutation // Add FH mars 2005
   TheOperators->Add("^", new OneBinaryOperatorInv_KN_long(atype<KN_<long> >()));
+
   //- TheOperators->Add("^", new OneBinaryOperatorInv_KN_long(atype<KN<long> *>()));
   aatypeknlongp = atype<KN<long>*>(); // for compilation error with g++ 3.2.2
 
@@ -161,7 +163,7 @@ void initArrayOperatorlong()
   // Add<KN<long> >("sort", ".", new OneOperator1_<KN<K>,KN<K> >(SortKn<K, KN<K> >));
   Add<KN<long> *>("sort", ".", new OneOperator1_<KN<K>*, KN<K>* >(SortpKn<K>));
   Global.Add("sort", "(", new OneOperator2_<KN<K>*, KN<K>*, KN<long>* >(SortpKn2<K,long>));
-
+#ifndef kame
   // ArrayDCL<long>();
   Dcl_TypeandPtr_<KN_<String>, KN<String> *>(0, 0, 0, ::Destroy<KN<String> >, ::ClearReturnKK_<K,KN<String>, KN_<String> >, ::ClearReturnpKK<String, KN<String> >);
   atype<KN<String>* >()->Add("[", "", new OneOperator2_<string**, KN<String>*, long >(get_elements));

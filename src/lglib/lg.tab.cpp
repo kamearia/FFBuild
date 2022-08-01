@@ -67,7 +67,7 @@
 /* Substitute the variable and function names.  */
 #define yyparse lgparse
 #define yylex   lglex
-#define yyerror lgerror
+//KAME #define yyerror lgerror
 #define yylval  lglval
 #define yychar  lgchar
 #define yydebug lgdebug
@@ -1420,7 +1420,7 @@ static const yytype_uint8 yystos[] =
 #define YYERROR		goto yyerrorlab
 
 
-/* Like YYERROR except do call yyerror.  This remains here temporarily
+/* Like YYERROR except do call lgerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
    Once GCC version 2 has supplanted version 1, this can go.  */
 
@@ -1440,7 +1440,7 @@ do								\
     }								\
   else								\
     {								\
-      yyerror (YY_("syntax error: cannot back up")); \
+      lgerror (YY_("syntax error: cannot back up")); \
       YYERROR;							\
     }								\
 while (YYID (0))
@@ -1683,29 +1683,27 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-#ifndef kame
-
 #if YYERROR_VERBOSE
 
 # ifndef yystrlen
 #  if defined __GLIBC__ && defined _STRING_H
 #   define yystrlen strlen
 #  else
-/* Return the length of YYSTR.  */
+   /* Return the length of YYSTR.  */
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static YYSIZE_T
-yystrlen (const char *yystr)
+yystrlen(const char *yystr)
 #else
 static YYSIZE_T
-yystrlen (yystr)
-    const char *yystr;
+yystrlen(yystr)
+const char *yystr;
 #endif
 {
-  YYSIZE_T yylen;
-  for (yylen = 0; yystr[yylen]; yylen++)
-    continue;
-  return yylen;
+	YYSIZE_T yylen;
+	for (yylen = 0; yystr[yylen]; yylen++)
+		continue;
+	return yylen;
 }
 #  endif
 # endif
@@ -1715,187 +1713,186 @@ yystrlen (yystr)
 #   define yystpcpy stpcpy
 #  else
 /* Copy YYSRC to YYDEST, returning the address of the terminating '\0' in
-   YYDEST.  */
+YYDEST.  */
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static char *
-yystpcpy (char *yydest, const char *yysrc)
+yystpcpy(char *yydest, const char *yysrc)
 #else
 static char *
-yystpcpy (yydest, yysrc)
-    char *yydest;
-    const char *yysrc;
+yystpcpy(yydest, yysrc)
+char *yydest;
+const char *yysrc;
 #endif
 {
-  char *yyd = yydest;
-  const char *yys = yysrc;
+	char *yyd = yydest;
+	const char *yys = yysrc;
 
-  while ((*yyd++ = *yys++) != '\0')
-    continue;
+	while ((*yyd++ = *yys++) != '\0')
+		continue;
 
-  return yyd - 1;
+	return yyd - 1;
 }
 #  endif
 # endif
 
 # ifndef yytnamerr
 /* Copy to YYRES the contents of YYSTR after stripping away unnecessary
-   quotes and backslashes, so that it's suitable for yyerror.  The
-   heuristic is that double-quoting is unnecessary unless the string
-   contains an apostrophe, a comma, or backslash (other than
-   backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
-   null, do not copy; instead, return the length of what the result
-   would have been.  */
+quotes and backslashes, so that it's suitable for lgerror.  The
+heuristic is that double-quoting is unnecessary unless the string
+contains an apostrophe, a comma, or backslash (other than
+backslash-backslash).  YYSTR is taken from yytname.  If YYRES is
+null, do not copy; instead, return the length of what the result
+would have been.  */
 static YYSIZE_T
-yytnamerr (char *yyres, const char *yystr)
+yytnamerr(char *yyres, const char *yystr)
 {
-  if (*yystr == '"')
-    {
-      YYSIZE_T yyn = 0;
-      char const *yyp = yystr;
+	if (*yystr == '"')
+	{
+		YYSIZE_T yyn = 0;
+		char const *yyp = yystr;
 
-      for (;;)
-	switch (*++yyp)
-	  {
-	  case '\'':
-	  case ',':
-	    goto do_not_strip_quotes;
+		for (;;)
+			switch (*++yyp)
+			{
+			case '\'':
+			case ',':
+				goto do_not_strip_quotes;
 
-	  case '\\':
-	    if (*++yyp != '\\')
-	      goto do_not_strip_quotes;
-	    /* Fall through.  */
-	  default:
-	    if (yyres)
-	      yyres[yyn] = *yyp;
-	    yyn++;
-	    break;
+			case '\\':
+				if (*++yyp != '\\')
+					goto do_not_strip_quotes;
+				/* Fall through.  */
+			default:
+				if (yyres)
+					yyres[yyn] = *yyp;
+				yyn++;
+				break;
 
-	  case '"':
-	    if (yyres)
-	      yyres[yyn] = '\0';
-	    return yyn;
-	  }
-    do_not_strip_quotes: ;
-    }
+			case '"':
+				if (yyres)
+					yyres[yyn] = '\0';
+				return yyn;
+			}
+	do_not_strip_quotes:;
+	}
 
-  if (! yyres)
-    return yystrlen (yystr);
+	if (!yyres)
+		return yystrlen(yystr);
 
-  return yystpcpy (yyres, yystr) - yyres;
+	return yystpcpy(yyres, yystr) - yyres;
 }
 # endif
 
 /* Copy into YYRESULT an error message about the unexpected token
-   YYCHAR while in state YYSTATE.  Return the number of bytes copied,
-   including the terminating null byte.  If YYRESULT is null, do not
-   copy anything; just return the number of bytes that would be
-   copied.  As a special case, return 0 if an ordinary "syntax error"
-   message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
-   size calculation.  */
+YYCHAR while in state YYSTATE.  Return the number of bytes copied,
+including the terminating null byte.  If YYRESULT is null, do not
+copy anything; just return the number of bytes that would be
+copied.  As a special case, return 0 if an ordinary "syntax error"
+message will do.  Return YYSIZE_MAXIMUM if overflow occurs during
+size calculation.  */
 static YYSIZE_T
-yysyntax_error (char *yyresult, int yystate, int yychar)
+yysyntax_error(char *yyresult, int yystate, int yychar)
 {
-  int yyn = yypact[yystate];
+	int yyn = yypact[yystate];
 
-  if (! (YYPACT_NINF < yyn && yyn <= YYLAST))
-    return 0;
-  else
-    {
-      int yytype = YYTRANSLATE (yychar);
-      YYSIZE_T yysize0 = yytnamerr (0, yytname[yytype]);
-      YYSIZE_T yysize = yysize0;
-      YYSIZE_T yysize1;
-      int yysize_overflow = 0;
-      enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
-      char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
-      int yyx;
+	if (!(YYPACT_NINF < yyn && yyn <= YYLAST))
+		return 0;
+	else
+	{
+		int yytype = YYTRANSLATE(yychar);
+		YYSIZE_T yysize0 = yytnamerr(0, yytname[yytype]);
+		YYSIZE_T yysize = yysize0;
+		YYSIZE_T yysize1;
+		int yysize_overflow = 0;
+		enum { YYERROR_VERBOSE_ARGS_MAXIMUM = 5 };
+		char const *yyarg[YYERROR_VERBOSE_ARGS_MAXIMUM];
+		int yyx;
 
 # if 0
-      /* This is so xgettext sees the translatable formats that are
-	 constructed on the fly.  */
-      YY_("syntax error, unexpected %s");
-      YY_("syntax error, unexpected %s, expecting %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s");
-      YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
+		/* This is so xgettext sees the translatable formats that are
+		constructed on the fly.  */
+		YY_("syntax error, unexpected %s");
+		YY_("syntax error, unexpected %s, expecting %s");
+		YY_("syntax error, unexpected %s, expecting %s or %s");
+		YY_("syntax error, unexpected %s, expecting %s or %s or %s");
+		YY_("syntax error, unexpected %s, expecting %s or %s or %s or %s");
 # endif
-      char *yyfmt;
-      char const *yyf;
-      static char const yyunexpected[] = "syntax error, unexpected %s";
-      static char const yyexpecting[] = ", expecting %s";
-      static char const yyor[] = " or %s";
-      char yyformat[sizeof yyunexpected
-		    + sizeof yyexpecting - 1
-		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-		       * (sizeof yyor - 1))];
-      char const *yyprefix = yyexpecting;
+		char *yyfmt;
+		char const *yyf;
+		static char const yyunexpected[] = "syntax error, unexpected %s";
+		static char const yyexpecting[] = ", expecting %s";
+		static char const yyor[] = " or %s";
+		char yyformat[sizeof yyunexpected
+			+ sizeof yyexpecting - 1
+			+ ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
+				* (sizeof yyor - 1))];
+		char const *yyprefix = yyexpecting;
 
-      /* Start YYX at -YYN if negative to avoid negative indexes in
-	 YYCHECK.  */
-      int yyxbegin = yyn < 0 ? -yyn : 0;
+		/* Start YYX at -YYN if negative to avoid negative indexes in
+		YYCHECK.  */
+		int yyxbegin = yyn < 0 ? -yyn : 0;
 
-      /* Stay within bounds of both yycheck and yytname.  */
-      int yychecklim = YYLAST - yyn + 1;
-      int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
-      int yycount = 1;
+		/* Stay within bounds of both yycheck and yytname.  */
+		int yychecklim = YYLAST - yyn + 1;
+		int yyxend = yychecklim < YYNTOKENS ? yychecklim : YYNTOKENS;
+		int yycount = 1;
 
-      yyarg[0] = yytname[yytype];
-      yyfmt = yystpcpy (yyformat, yyunexpected);
+		yyarg[0] = yytname[yytype];
+		yyfmt = yystpcpy(yyformat, yyunexpected);
 
-      for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-	  {
-	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-	      {
-		yycount = 1;
-		yysize = yysize0;
-		yyformat[sizeof yyunexpected - 1] = '\0';
-		break;
-	      }
-	    yyarg[yycount++] = yytname[yyx];
-	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-	    yysize_overflow |= (yysize1 < yysize);
-	    yysize = yysize1;
-	    yyfmt = yystpcpy (yyfmt, yyprefix);
-	    yyprefix = yyor;
-	  }
+		for (yyx = yyxbegin; yyx < yyxend; ++yyx)
+			if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
+			{
+				if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+				{
+					yycount = 1;
+					yysize = yysize0;
+					yyformat[sizeof yyunexpected - 1] = '\0';
+					break;
+				}
+				yyarg[yycount++] = yytname[yyx];
+				yysize1 = yysize + yytnamerr(0, yytname[yyx]);
+				yysize_overflow |= (yysize1 < yysize);
+				yysize = yysize1;
+				yyfmt = yystpcpy(yyfmt, yyprefix);
+				yyprefix = yyor;
+			}
 
-      yyf = YY_(yyformat);
-      yysize1 = yysize + yystrlen (yyf);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
+		yyf = YY_(yyformat);
+		yysize1 = yysize + yystrlen(yyf);
+		yysize_overflow |= (yysize1 < yysize);
+		yysize = yysize1;
 
-      if (yysize_overflow)
-	return YYSIZE_MAXIMUM;
+		if (yysize_overflow)
+			return YYSIZE_MAXIMUM;
 
-      if (yyresult)
-	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
-	     Don't have undefined behavior even if the translation
-	     produced a string with the wrong number of "%s"s.  */
-	  char *yyp = yyresult;
-	  int yyi = 0;
-	  while ((*yyp = *yyf) != '\0')
-	    {
-	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
+		if (yyresult)
 		{
-		  yyp += yytnamerr (yyp, yyarg[yyi++]);
-		  yyf += 2;
+			/* Avoid sprintf, as that infringes on the user's name space.
+			Don't have undefined behavior even if the translation
+			produced a string with the wrong number of "%s"s.  */
+			char *yyp = yyresult;
+			int yyi = 0;
+			while ((*yyp = *yyf) != '\0')
+			{
+				if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
+				{
+					yyp += yytnamerr(yyp, yyarg[yyi++]);
+					yyf += 2;
+				}
+				else
+				{
+					yyp++;
+					yyf++;
+				}
+			}
 		}
-	      else
-		{
-		  yyp++;
-		  yyf++;
-		}
-	    }
+		return yysize;
 	}
-      return yysize;
-    }
 }
 #endif /* YYERROR_VERBOSE */
-
-#endif
+
 
 /*-----------------------------------------------.
 | Release the memory associated to this symbol.  |
@@ -2013,6 +2010,7 @@ yyparse()
      to reallocate them elsewhere.  */
 
   /* The state stack.  */
+//	lg_stack ss;
 	yytype_int16 yyssa[YYINITDEPTH];
 	yytype_int16 *yyss = yyssa;
 	yytype_int16 *yyssp;
@@ -3421,12 +3419,12 @@ yyreduce:
 `------------------------------------*/
 yyerrlab:
   /* If not already recovering from an error, report this error.  */
-#ifndef kame
+
 	if (!yyerrstatus)
     {
 		++yynerrs;
 #if ! YYERROR_VERBOSE
-		yyerror (YY_("syntax error"));
+		lgerror (YY_("syntax error"));
 #else
 		{
 			YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
@@ -3450,11 +3448,11 @@ yyerrlab:
 				if (0 < yysize && yysize <= yymsg_alloc)
 				{
 					(void) yysyntax_error (yymsg, yystate, yychar);
-					yyerror (yymsg);
+					lgerror (yymsg);
 				}
 				else
 				{
-					yyerror (YY_("syntax error"));
+					lgerror (YY_("syntax error"));
 					if (yysize != 0)
 						goto yyexhaustedlab;
 				}
@@ -3462,7 +3460,7 @@ yyerrlab:
 #endif
 		}
 
-
+#ifndef kame
 
 		if (yyerrstatus == 3)
 		{
@@ -3574,7 +3572,7 @@ yyabortlab:
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
 		yyexhaustedlab:
-		yyerror (YY_("memory exhausted"));
+		lgerror (YY_("memory exhausted"));
 		yyresult = 2;
   /* Fall through.  */
 

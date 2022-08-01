@@ -218,6 +218,7 @@
     <ClCompile Include="..\src\fflib\load.cpp" />
     <ClCompile Include="..\src\fflib\P1IsoValue.cpp" />
     <ClCompile Include="..\src\fflib\problem.cpp" />
+    <ClCompile Include="..\src\fflib\string_def.cpp" />
     <ClCompile Include="..\src\fflib\UMFPack_Solver.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />

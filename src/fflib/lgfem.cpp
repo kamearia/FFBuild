@@ -6331,8 +6331,8 @@ void init_lgfem( ) {
   Global.Add("NLCG", "(", new LinearCG< R >(-1));             //  without right handsize
 
   zzzfff->AddF("varf", t_form);    //  var. form ~  <<varf>>
-  zzzfff->AddF("solve", t_solve);
 #endif
+  zzzfff->AddF("solve", t_solve);
   zzzfff->AddF("problem", t_problem);
 #ifndef kame
 
@@ -6619,8 +6619,9 @@ void init_lgfem( ) {
     new OpArraytoLinearForm< Complex, MeshL, v_fesL >(atype< KN_< Complex > >( ), false, false,
                                                false)    // 3D curve
   );
-
+#endif
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< double, Mesh, v_fes, v_fes >(1));
+#ifndef kame
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< Complex, Mesh, v_fes, v_fes >(1));
 
   TheOperators->Add("<-", new OpMatrixtoBilinearForm< double, Mesh3, v_fes3,v_fes3 >(1));     // 3D volume

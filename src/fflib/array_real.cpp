@@ -23,13 +23,10 @@
 #include "RNM.hpp"
 extern long verbosity;
 #include "array_tlp.hpp"
-
-#ifndef kame
-
 #include "array_init.hpp"
 
 double square(double x) { return x*x; }
-#endif
+
 void initArrayDCLdouble() {
   // ArrayOperator<long>();
   ArrayDCL<double>();

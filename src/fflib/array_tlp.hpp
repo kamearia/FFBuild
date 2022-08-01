@@ -33,7 +33,7 @@
 #include "String.hpp"
 #include "AFunction.hpp"
 
-#ifndef kame
+
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
@@ -64,6 +64,8 @@
 namespace Fem2D {
 #include "R3.hpp"
 }
+#ifndef kame
+
 template <class T>
 struct affectation: binary_function<T, T, T>
 {
@@ -106,7 +108,7 @@ struct Op2_dotproduct_: public binary_function<Transpose<KN_<K> >,KN_<K> ,K> {
   static K f( Transpose<KN_<K> > const & a, KN_<K>  const& b)
    { return (conj(a.t),b);} };
 
-
+#endif
 template<class T>
 void  HeapSort(T *c,long n,long o)
 { // trie un tableau c de n valeur avec un decalage de o.
@@ -170,7 +172,7 @@ template<class R> KN<R> *  SortpKn( KN<R> * const & pa){
     if(a.n > 0)
         HeapSort<R>(&a[0],a.n,a.step);
     return pa;}
-
+#ifndef kame
 template<class R>
 class QuantileKN:  public KN_<R> { public:
     QuantileKN(const KN_<R> &a): KN_<R>(a) {}
@@ -221,7 +223,7 @@ inline   string ** get_elements( MyMap<String,String> *  const  &  a,string*  co
  { String* Sret=  &((*a)[*b]); // correction FH feb 2004
    //  delete b;  modif mars 2006 auto del ptr
     return Sret->getap();}
-
+#endif
 template<class RR,class A,class B>
 RR * get_element_(const A & a,const B & b){
   if( b<0 || a.N() <= b)
@@ -240,6 +242,7 @@ RR * get_elementp_(const A & a,const B & b){
 template<class K>
 KN_<K> fSubArray(const KN_<K> & a,const SubArray & b)
  { return a(b);}
+
 template<class K>
 KN_<K> fSubArrayp( KN<K>  * const & a,const SubArray & b)
  { return (*a)(b);}
@@ -264,7 +267,6 @@ KN_<K> fSubArraypib( KNM<K> *const & a,const long &i,const SubArray & b)
 template<class K>
 KN_<K> fSubArraypbi( KNM<K> *const & a,const SubArray & b,const long &i)
 { return (*a)(b,i);}
-
 
 template<class A>
 A fSubArrayc(const A & a,const char & b)
@@ -346,7 +348,6 @@ RR * get_elementp2__(const A & a,const B & b,const C & c){
       ExecError("Out of bound in operator (,)");}
 return  &((a)(b,c));}
 
-#endif
 template<typename T>
 struct myremove_pointer
 {
@@ -750,7 +751,7 @@ template<class K> NothingType get_ijmin(KNM<K> * const & p,long * const & pi,lon
     *pi = i;
     *pj = j;
     return NothingType() ;}
-
+#endif
 template<class K> K get_sum(KN<K> * p){ return p->sum();}
 template<class K> double get_l2(KN<K> * p){ return p->l2();}
 template<class K> double get_l1(KN<K> * p){ return p->l1();}
@@ -770,7 +771,7 @@ template<class K,class T> K  get_l2_0(const T &p){ return p.l2();}
 template<class K,class T> K  get_l1_0(const T &p){ return p.l1();}
 template<class K,class T> K  get_linfty_0(const T &p){ return p.linfty();}
 
-
+#ifndef kame
 
  class ostream_precis { public:
  ostream_precis(ostream * ff) :f(ff) {}
@@ -1372,7 +1373,7 @@ KNM<K> * set_Eye(KNM<K> *pA,const  Eye eye)
     return  pA;
 }
 extern aType aaaa_knlp;
-
+#endif
 template<class K,class Z>
 void ArrayOperator()
 {
@@ -1433,7 +1434,7 @@ void ArrayOperator()
     atype<KNM_<K> >()->Add("(","",new OneOperator3_<KN_<K>,KNM_<K>,char,Z >(get_element_lineorcol_<KN_<K>,KNM_<K>,char,Z>));
     atype<KNM_<K> >()->Add("(","",new OneOperator3_<K*,KNM_<K>,Z,Z >(get_elementp2__<K,KNM_<K>,Z,Z>));
 
-
+#ifndef kame
      Add<KN<K> *>("sum",".",new OneOperator1<K,KN<K> *>(get_sum));
      Add<KN<K> *>("min",".",new OneOperator1<K,KN<K> *>(get_min));
      Add<KN<K> *>("max",".",new OneOperator1<K,KN<K> *>(get_max));
@@ -1441,6 +1442,7 @@ void ArrayOperator()
      Add<KN<K> *>("l2",".",new OneOperator1<double,KN<K> *>(get_l2));
      Add<KN<K> *>("l1",".",new OneOperator1<double,KN<K> *>(get_l1));
      Add<KN<K> *>("linfty",".",new OneOperator1<double,KN<K> *>(get_linfty));
+
 // add july 2009
     Add<KNM<K> *>("sum",".",new OneOperator1<K,KNM<K> *>(get_sum));
     Add<KNM<K> *>("min",".",new OneOperator1<K,KNM<K> *>(get_min));
@@ -1888,7 +1890,7 @@ void ArrayOperator()
     TheOperators->Add("{}",new ForAllLoop<E_ForAllLoopRN<K> >);
 
     TheOperators->Add("<-",new InitMapfromArray<MyMap<String,K>*,string *,K,true> );
-
+#endif
 }
 
 template<class R,class A,class B=A,class BB=B>
@@ -1945,7 +1947,7 @@ void ArrayOperatorF()
     TheOperators->Add("<-", new OneOperator2_<KN<K> *,KN<K> *,F_KN_<K,K,K,KK> >(set_init_N));
 
 }
-#endif
+
 // Add nov 2019  version 4.4-3 FH
 template<class K> struct KN_rmeps {KN_<K> v;
     KN_rmeps(KN_<K> vv):v(vv) {}

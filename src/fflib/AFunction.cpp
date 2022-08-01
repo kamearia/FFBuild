@@ -87,9 +87,9 @@ extern basicForEachType *  typevarreal;
 #include "rgraph.hpp"
 #include "InitFunct.hpp"
 #include <queue>
-
-#include "array_init.hpp"
 #endif
+#include "array_init.hpp"
+
 #include "AFunction_ext.hpp"
 #ifndef kame
 // Add FH to get memroy used in test .. march 2014
@@ -1369,8 +1369,9 @@ void Init_map_type()
 #ifndef kame
      initArrayOperatordouble();
      initArrayOperatorComplex();
-     initStringOperator();
 #endif
+     initStringOperator();
+
 
      TheOperators->Add("+=",
        new OneBinaryOperator<set_eq_add<long>,OneBinaryOperatorMIWO >,
