@@ -245,14 +245,13 @@ template<class RR> RR LIncremantation(RR* a){ return ++(*a);}
 template<class RR> RR RIncremantation(RR* a){ return (*a)++;}
 template<class RR> RR LDecremantation(RR* a){ return --(*a);}
 template<class RR> RR RDecremantation(RR* a){ return (*a)--;}
-#ifndef kame
 template<class RR,class B>
  RR * New_form_string(string * s) {B * r=  new B(s);freestring(s);return r;}// correct Mars 2011 remove * if delete
 
 inline   string ** get_elements( MyMap<String,String> *  const  &  a,string*  const   & b)
  { String* Sret=  &((*a)[*b]); // correction FH feb 2004
     return Sret->getap();}
-#endif
+
 template<class RR> RR Abs(RR a) { return a<0?-a:a;}
 #ifndef kame
 template<class R,class A,class B>
@@ -1366,10 +1365,8 @@ void Init_map_type()
        );
 
      initArrayOperatorlong();
-#ifndef kame
      initArrayOperatordouble();
      initArrayOperatorComplex();
-#endif
      initStringOperator();
 
 

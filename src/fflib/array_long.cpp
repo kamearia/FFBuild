@@ -78,7 +78,7 @@ template<class R> R *set_init_init( R* const & a,const long & n) {
     (*a)[i].init();
   return a;
 }
-#ifndef kame
+
 inline string **get_elements(KN<String> *const &a, long const &b) {
   ffassert(a && b >=0 && b < a->size());
   String &Sret = (*a)[b]; // correction FH feb 2004
@@ -124,7 +124,7 @@ struct set_Inv_pKN_longI: public binary_function<A,B,A> {
     return a;
   }
 };
-#endif
+
 long findall(const  KN_<long> & a,  const long &v,  KN<long> * const &  pI)
 {
     long nn=0,k=0;;
@@ -163,7 +163,7 @@ void initArrayOperatorlong()
   // Add<KN<long> >("sort", ".", new OneOperator1_<KN<K>,KN<K> >(SortKn<K, KN<K> >));
   Add<KN<long> *>("sort", ".", new OneOperator1_<KN<K>*, KN<K>* >(SortpKn<K>));
   Global.Add("sort", "(", new OneOperator2_<KN<K>*, KN<K>*, KN<long>* >(SortpKn2<K,long>));
-#ifndef kame
+
   // ArrayDCL<long>();
   Dcl_TypeandPtr_<KN_<String>, KN<String> *>(0, 0, 0, ::Destroy<KN<String> >, ::ClearReturnKK_<K,KN<String>, KN_<String> >, ::ClearReturnpKK<String, KN<String> >);
   atype<KN<String>* >()->Add("[", "", new OneOperator2_<string**, KN<String>*, long >(get_elements));
@@ -186,7 +186,8 @@ void initArrayOperatorlong()
   Add<KNM<K> *>("jmax", ".", new OneOperator1<long, KNM<K> *>(get_jmax)); // Add april 2018 FH
   TheOperators->Add("ijmax", new OneOperator3_<NothingType,KNM<K> *, long*, long*>(get_ijmax)); // Add april 2018 FH
   TheOperators->Add("ijmin", new OneOperator3_<NothingType,KNM<K> *, long*, long*>(get_ijmin)); // Add april 2018 FH
-  // madd FH. march 2015 ...
+
+																								// madd FH. march 2015 ...
   Global.Add("Unique", "(", new Unique<K, K>);
   Global.Add("Unique", "(", new Unique<K, double>);
   // convertion double -> long (via lround)
@@ -201,8 +202,6 @@ void initArrayOperatorlong()
   TheOperators->Add("<-", new InitMapfromArray<MyMap<String,String>*, string *, string*, true> );
 
   TheOperators->Add("<<", new OneBinaryOperator<PrintPnd<KN<String> * > >); // add may 2018 FH
-#endif
+
 }
 
-// void xxxx() {
-// }

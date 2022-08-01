@@ -36,7 +36,7 @@ void initArrayDCLdouble() {
         if(abs(p.v[i]) < eps) p.v[i]=0;
     return p.v;}//
 
-#ifndef kame
+
 //template<class A, class B>  A Build(B b) { return A(b); }
 
 
@@ -94,4 +94,3 @@ void initArrayOperatordouble() {
   //     ArrayDCL<long>();
 }
 
-#endif

@@ -211,7 +211,7 @@ struct Op_ReadP : public binary_function<istream*,A**,istream*> {
      return f;
    }
 };
-
+#endif
 template<class A>
 struct Op_ReadKN : public binary_function<istream*,KN<A>*,istream*> {
   static istream *  f(istream  * const  & f,KN<A>* const  &  a)  
@@ -240,6 +240,7 @@ struct Op_ReadKN : public binary_function<istream*,KN<A>*,istream*> {
      return f;
    }
 };
+
 template<class A>
 struct Op_ReadKNM : public binary_function<istream*,KNM<A>*,istream*> {
     static istream *  f(istream  * const  & f,KNM<A>* const  &  a)
@@ -269,7 +270,7 @@ struct Op_ReadKNM : public binary_function<istream*,KNM<A>*,istream*> {
         return f;
     }
 };
-
+#ifndef kame
 
 template<class A>
 struct Op_WriteKNM : public binary_function<ostream*,KNM<A>*,ostream*> {
@@ -373,13 +374,13 @@ struct set_peqstring: public binary_function<string**,string*,string**> {
     }
      return a;}
 };
-#ifndef kame
+
 //  ---------------------------------------------
 template<class A,class B>
 struct set_eqarrayp: public binary_function<A*,B,A*> {
   static A* f(A* const  & a, B const & b)  {  *a = *b; return a;}
 };
-
+#ifndef kame
 template<class A,class B>
 struct set_eqarrayp_add: public binary_function<A*,B,A*> {
   static A* f(A* const  & a, B const & b)  { assert(SameShape(*a,*b)); *a += *b; return a;}
@@ -400,7 +401,7 @@ template<class A,class B>
 struct set_eqarrayp_div: public binary_function<A*,B,A*> {
   static A* f(A* const  & a, B const & b)  { assert(SameShape(*a,*b)); *a /= *b; return a;}
 };
-
+#endif
 //  ---------------------------------------------
 template<class A,class B>
 struct set_eqarraypd: public binary_function<A*,B,A*> {
@@ -503,7 +504,7 @@ struct set_eq_array: public binary_function<A,B,A> {
   {  A aa=a;aa = b;
      return a;}
 };
-
+#ifndef kame
 /*
 template<class A,class B>
 struct set_eq_array_call: public binary_function<A,B,A> {
@@ -513,6 +514,7 @@ struct set_eq_array_call: public binary_function<A,B,A> {
         return a;}
 };
  */
+#endif
 template<class A,class B>
 struct set_eq_array_add: public binary_function<A,B,A> {
   static A f(A const  & a, B const & b)  {assert(SameShape(a,b));  A aa(a);  aa += b; return a;}
@@ -536,6 +538,7 @@ template<class A,class B>
 struct set_eq_arrayp: public binary_function<A,B,A> {
   static A f(A const  & a, B const & b)  {  A aa(a);  aa = *b; return a;}
 };
+
 //  ---------------------------------------------
 template<class A,class B>
 struct set_eq_arraypd: public binary_function<A,B,A> {
@@ -589,7 +592,7 @@ struct set_eq_arraypd_div: public binary_function<A,B,A> {
    delete b;
    return a;}
 };
-#endif
+
 template<class A>
 struct PrintP: public binary_function<ostream*,A,ostream*> {
     static ostream* f(ostream* const  & a,const A & b)  {  if(b) *a << *b; 
@@ -651,7 +654,7 @@ template<class R>  R ** set_copy_incr( R** const & a, R * const & b){
     SHOWVERB( cout << "set_copy_incr  " << b << " dans  "<< a << endl);
    if(b) b->increment();
    return a;}
-#ifndef kame
+
 template<class R,class A>  R * set_init2( R* const & a,const A & b,const A & c){ 
  SHOWVERB( cout << " set_init2 " << typeid(R).name() << " " << &b << " " << &c << endl);
   a->init(b,c); return a;}
@@ -735,7 +738,6 @@ template<class R,class A=R,class B=A>
 struct Op2_sub_pn: public binary_function<A,B,R*> { 
   static R* f(const A & a,const B & b)  { return new R(a - *b);} };   
 
-#endif
 template<class R,class A=R,class B=A,class C=A> 
 struct Op3_p: public ternary_function<A,B,C,R*> { 
   static R* f(Stack s,const A & a,const B & b,const  C & c )  { return new R(a,b,c);} };   
