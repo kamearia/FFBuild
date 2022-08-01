@@ -1401,6 +1401,7 @@ void Init_map_type()
      TheOperators->Add("+",
        new AddBorderOperator
        );
+//	 assert(false);
 #ifndef kame    
       // add frev 2007
       TheOperators->Add("\'", new opTrans);
