@@ -2324,7 +2324,7 @@ struct quad_function
 	typedef Arg4   fourth_argument_type;
 	typedef Result result_type;
 };
-#ifndef kame
+
 template<typename T,class CODE >
 class  OneTernaryOperator : public OneOperator{
   typedef typename T::result_type R;
@@ -2354,7 +2354,7 @@ class  OneTernaryOperator : public OneOperator{
                   map_type[typeid(B).name()],
                   map_type[typeid(C).name()]) {}
 };
-
+#ifndef kame
 template<typename T,class CODE >
 class  OneQuadOperator : public OneOperator{
   typedef typename T::result_type R;

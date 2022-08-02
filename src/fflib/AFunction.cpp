@@ -605,7 +605,7 @@ struct  MIMul {
 
 };
 #ifndef kame
-
+#endif
 // add frev 2007
 class opTrans : public OneOperator{
 public:
@@ -650,7 +650,7 @@ public:
     E_F0 *  code(const basicAC_F0 & ) const {ffassert(0);}
     C_F0  code2(const basicAC_F0 &args) const;
 };
-#endif
+
 class opFormal : public OneOperator{
 public:
     AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
@@ -660,7 +660,7 @@ public:
     E_F0 *  code(const basicAC_F0 & ) const {ffassert(0);}
     C_F0  code2(const basicAC_F0 &args) const { return (*thecode2)(args);}
 };
-#ifndef kame
+
 // fin frev 2007
 // nov 2007   v[i]
 class opVI : public OneOperator{
@@ -755,7 +755,7 @@ C_F0  formalMatCofactor(const basicAC_F0 &args)
 
 
 }
-#endif
+
 C_F0  formalMatTrace(const basicAC_F0 &args)
 {
     bool ta =args[0].left()==atype<TransE_Array>();
@@ -805,7 +805,7 @@ C_F0  formalMatTrace(const basicAC_F0 &args)
 
 }
 
-#ifndef kame
+
 C_F0  formalMatDet(const basicAC_F0 &args)
 {
     bool ta =args[0].left()==atype<TransE_Array>();
@@ -873,7 +873,7 @@ C_F0  formalMatDet(const basicAC_F0 &args)
     return  C_F0();
 
 }
-#endif
+
 //  Add juin  2007
 template<class A,class B=A,class R=A>
 struct evalE_mul {
@@ -1401,8 +1401,7 @@ void Init_map_type()
      TheOperators->Add("+",
        new AddBorderOperator
        );
-//	 assert(false);
-#ifndef kame    
+   
       // add frev 2007
       TheOperators->Add("\'", new opTrans);
 
@@ -1438,6 +1437,7 @@ void Init_map_type()
       TheOperators->Add("./",new opSum("/",atype<TransE_Array >(),atype<TransE_Array>() )   );  // a faire mais dur
 
 
+
      // il faut refechir  .....  FH
      // il faut definir le type d'un tableau bof, bof (atype<C_F0>())
      TheOperators->Add(">>",
@@ -1448,7 +1448,7 @@ void Init_map_type()
        new OneBinaryOperator<Op_ReadP<string>,OneBinaryOperatorMIWO >
 
        );
-#endif
+
      TheOperators->Add("<<",
        new OneBinaryOperator<Print<bool> >,
        new OneBinaryOperator<Print<long> >,
@@ -1541,7 +1541,7 @@ void Init_map_type()
     Global.Add("getline","(",new OneOperator2<istream*,istream*,string **>(Getline));
 // add 2.16
      Global.Add("trace","(",new opFormal(atype<E_Array>(),formalMatTrace ));
-#ifndef kame
+
      Global.Add("det","(",new opFormal(atype<E_Array>(),formalMatDet ));
 // end add
 #
@@ -1549,7 +1549,7 @@ void Init_map_type()
     Global.Add("Cofactor","(",new opFormal(atype<E_Array>(),formalMatCofactor ));
 
      TheOperators->Add("[]",new OneOperator_array );
-#endif
+
      TheOperators->Add("[border]",new OneOperator_border );
 
     Global.Add("cos","(",new OneOperator1<double>(cos,2));
@@ -1797,7 +1797,7 @@ void Init_map_type()
 #endif
 // <<addingInitFunct>>
 static addingInitFunct TheaddingInitFunct(-10000,Init_map_type);
-#ifndef kame
+
 C_F0  opVI::code2(const basicAC_F0 &args) const
 {
     Expression p=args[1];
@@ -1963,6 +1963,7 @@ C_F0  opDot::code2(const basicAC_F0 &args) const
     return C_F0();
 
 }
+
 C_F0  opColumn::code2(const basicAC_F0 &args) const
 {
     bool ta =args[0].left()==atype<TransE_Array>();
@@ -2113,7 +2114,7 @@ C_F0  opSum::code2(const basicAC_F0 &args) const
 	return C_F0(TheOperators,"[]",v);
 
 }
-#endif
+
 //  to be sure new and delele be in see dll for windows
 string  *newstring(){string * p=new string();
     if(verbosity>999999) cout << p << "=newstring() " <<endl;;

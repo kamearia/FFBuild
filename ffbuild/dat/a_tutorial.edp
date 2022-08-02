@@ -29,6 +29,17 @@ problem laplace(u, v, solver="GMRES")
 // Solve
 laplace;
 
+y=0.;
+for(x=-1.; x<=1.; x +=0.1){
+   cout<< "x= "<<x<< "  u="<<  u(x,y)<< endl;
+}
+end;
+u(0.,0.);
+endl;
+x=0.;
+y=0.;
+cout<< "u(0,0)= "<< u(x,y)<< endl;
+end;
 // Error
 femp1 err = u - (1-x^2-y^2)/4;
 

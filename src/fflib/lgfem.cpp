@@ -1711,7 +1711,7 @@ long FindTxy(Stack s, pmesh *const &ppTh, const double &x, const double &y) {
     return 0;
   return 1;
 }
-
+#endif
 template< class K >
 KN< K > *pfer2vect(pair< FEbase< K, v_fes > *, int > p) {
   KN< K > *x = p.first->x( );
@@ -1863,7 +1863,7 @@ class Op_CopyArray : public OneOperator {
   Op_CopyArray( ) : OneOperator(atype< void >( ), atype< E_Array >( ), atype< E_Array >( )) {}
   E_F0 *code(const basicAC_F0 &args) const;
 };
-#endif
+
 template< class R, int dd >
 AnyType pfer2R(Stack s, const AnyType &a) {
   pair< FEbase< R, v_fes > *, int > ppfe = GetAny< pair< FEbase< R, v_fes > *, int > >(a);
@@ -5389,7 +5389,7 @@ AnyType Convect::eval3(
   MeshPointStack(s, mp);
   return r;
 }
-
+#endif
 template< class K >
 class Op3_pfe2K : public ternary_function< pair< FEbase< K, v_fes > *, int >, R, R, K > {
  public:
@@ -5435,7 +5435,7 @@ class Op3_Mesh2mp : public ternary_function< pmesh *, R, R, MeshPoint * > {
     }
   };
 };
-
+#ifndef kame
 template< class RR, class AA = RR >
 class JumpOp : public E_F0mps {
  public:
@@ -5521,7 +5521,7 @@ long resize(pfecbasearray *const &a, long const &n) {
   (**a).resize(n);
   return n;
 }
-
+#endif
 pferbase *get_element(pferbasearray *const &a, long const &n) { return (**a)[n]; }
 
 pfer get_element(pferarray const &a, long const &n) { return pfer(*(*a.first)[n], a.second); }
@@ -5537,7 +5537,7 @@ lgElement get_element(pmesh *const &a, long const &n) { return lgElement(*a, n);
 lgBoundaryEdge get_belement(lgBoundaryEdge::BE const &a, long const &n) {
   return lgBoundaryEdge(a, n);
 }
-
+#ifndef kame
 lgElement get_adj(lgElement::Adj const &a, long *const &n) { return a.adj(*n); }
 
 lgVertex get_vertex(pmesh const &a, long const &n) { return lgVertex(a, n); }
@@ -5720,7 +5720,7 @@ AnyType AddIncrement(Stack stack, const AnyType &a) {
   if (verbosity > 1) cout << "AddIncrement:: increment + Add2StackOfPtr2FreeRC " << endl;
   return a;
 }
-#ifndef kame
+
 // FE 3D volume
 Type_Expr CConstantTFE3(const EConstantTypeOfFE3::T &v) {
   throwassert(map_type[typeid(EConstantTypeOfFE3::T).name( )]);
@@ -5738,7 +5738,7 @@ Type_Expr CConstantTFEL(const EConstantTypeOfFEL::T &v) {
   throwassert(map_type[typeid(EConstantTypeOfFEL::T).name( )] != 0);
   return make_pair(map_type[typeid(EConstantTypeOfFEL::T).name( )], new EConstantTypeOfFEL(v));
 }
-
+#ifndef kame
 //  end --- call meth be ..
 // 2013 resize of array of fe function..
 template< typename T >
@@ -5756,6 +5756,7 @@ R3 *set_eqp(R3 *a, R3 *b) {
   *a = *b;
   return a;
 }
+#endif
         class opDotR3 : public OneOperator{
         public:
             AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
@@ -5806,7 +5807,7 @@ R3 *set_eqp(R3 *a, R3 *b) {
             
         }
         // Add FH ...  mars 2020 for N'.x
-        
+#ifndef kame        
 template< class Result, class A >
         class E_F_trans_A_Ptr_o_R : public E_F0 {
         public:
@@ -5830,12 +5831,13 @@ template<  class A >
             }
             OneOperator_trans_Ptr_o_R(ptr pp) : OneOperator(atype< Result * >( ), atype< Transpose<A *> >( )), p(pp) {}
         };
+
 template <class R,class A, class B> 
 struct OppR3dot: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
       B pu = a;
       return (*pu,*b);} };
-
+#endif
 template <class R,class A, class B>
 struct OppqR3dot: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
@@ -5847,7 +5849,7 @@ struct OpR3dot: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  {
       B pu = a;
       return (pu,b);} };
-
+#ifndef kame
 R3 CrossProduct(const R3 & A,const R3 & B){ return A^B;}
 R Det(const R3 & A,const R3 & B,const R3 & C){ return det(A,B,C);}
 R3* initR3(R3  *const & p,const  R& a,const  R& b,const  R &c){*p = R3(a,b,c); return p;}
@@ -6024,13 +6026,14 @@ void init_lgfem( ) {
   map_type[typeid(pfesL *).name( )] = new ForEachTypePtrfspace< pfesL, 5 >( );    // 3D curve
   //
   Dcl_Type< const QuadratureFormular * >( );
-#ifndef kame 
+
   Dcl_Type< const QuadratureFormular1d * >( );
   Dcl_Type< const GQuadratureFormular< R3 > * >( );
   TheOperators->Add("\'",   new OneOperator1<Transpose<R3* >,R3* >(&Build<Transpose<R3* >,R3* >,2));
   TheOperators->Add("\'",   new OneOperator1<Transpose<R3>,R3>(&Build<Transpose<R3 >,R3>,1));
   //TheOperators->Add("*",new opDotR3(atype<TransE_Array >(),atype< R3* >() )   );
   TheOperators->Add("*",new opDotR3(atype<TransE_Array >(),atype< R3 >() )   );  // 
+ 
     // "N" a faire mais dur
     // R3dot
   //TheOperators->Add("*",new OneBinaryOperator< OppR3dot<double,Transpose<R3* >, R3* >> () );  // "N" a faire mais dur
@@ -6067,7 +6070,7 @@ void init_lgfem( ) {
   Global.New("wait", CConstant< bool * >(&TheWait));
   Global.New("NoUseOfWait", CConstant< bool * >(&NoWait));
   Global.New("NoGraphicWindow", CConstant< bool * >(&NoGraphicWindow));
-#endif
+
   //Dcl_Type< MeshPoint * >( );
   Dcl_Type< finconnue * >( );
   Dcl_Type< ftest * >( );
@@ -6121,11 +6124,11 @@ void init_lgfem( ) {
   atype< pferbase >( )->AddCast(new E_F1_funcT< pferbase, pferbase >(UnRef< pferbase >));
   atype< pfecbase >( )->AddCast(new E_F1_funcT< pfecbase, pfecbase >(UnRef< pfecbase >));
 
-#ifndef kame 
+
   Add< pfer >("[]", ".", new OneOperator1< KN< double > *, pfer >(pfer2vect< R >));
   Add< pfec >("[]", ".", new OneOperator1< KN< Complex > *, pfec >(pfer2vect< Complex >));
 
-  Add< pfer >("(", "", new OneTernaryOperator< Op3_pfe2K< R >, Op3_pfe2K< R >::Op >);
+  Add< pfer >("(", "", new OneTernaryOperator< Op3_pfe2K< R >, Op3_pfe2K< R >::Op >); 
   Add< pfec >("(", "", new OneTernaryOperator< Op3_pfe2K< Complex >, Op3_pfe2K< Complex >::Op >);
   Add< double >("(", "", new OneTernaryOperator< Op3_K2R< R >, Op3_K2R< R >::Op >);
   Add< Complex >("(", "", new OneTernaryOperator< Op3_K2R< Complex >, Op3_K2R< Complex >::Op >);
@@ -6133,10 +6136,9 @@ void init_lgfem( ) {
 
   Add< MeshPoint * >("nuTriangle", ".", new OneOperator1< long, MeshPoint * >(mp_nuTriangle));
   Add< MeshPoint * >("region", ".", new OneOperator1< long, MeshPoint * >(mp_region));
-        
+      
   Add< pfer >("refresh", ".", new OneOperator1< bool, pfer >(pfer_refresh< R, v_fes >));
   Add< pfec >("refresh", ".", new OneOperator1< bool, pfec >(pfer_refresh< Complex, v_fes >));
-
   Add< pfer >("n", ".", new OneOperator1< long, pfer >(pfer_nbdf< R >));
   Add< pfec >("n", ".", new OneOperator1< long, pfec >(pfer_nbdf< Complex >));
   Add< pfer >("Th", ".", new OneOperator1< pmesh, pfer >(pfer_Th< R >));
@@ -6148,13 +6150,10 @@ void init_lgfem( ) {
   Add< pmesh * >("bordermeasure", ".",
                  new OneOperator1< double, pmesh * >(pmesh_bordermeasure));    // add june 2017 F.H
   Add< pmesh * >("nt", ".", new OneOperator1< long, pmesh * >(pmesh_nt));
-  Add< pmesh * >("nbe", ".", new OneOperator1< long, pmesh * >(pmesh_nbe));
-
+  Add< pmesh * >("nbe", ".", new OneOperator1< long, pmesh * >(pmesh_nbe)); 
   Add< pmesh * >("nv", ".", new OneOperator1< long, pmesh * >(pmesh_nv));
-
   Add< pmesh * >("hmax", ".", new OneOperator1< double, pmesh * >(pmesh_hmax));
   Add< pmesh * >("hmin", ".", new OneOperator1< double, pmesh * >(pmesh_hmin));
-
   Add< pfes * >("ndof", ".", new OneOperator1< long, pfes * >(pVh_ndof));
   Add< pfes * >("Th", ".", new OneOperator1< pmesh, pfes * >(pVh_Th));
   Add< pfes * >("nt", ".", new OneOperator1< long, pfes * >(pVh_nt));
@@ -6163,7 +6162,7 @@ void init_lgfem( ) {
   /* FH: ne peux pas marcher, il faut passer aussi le nouveau Vh
    Add<pfes*>("(","", new OneBinaryOperator_st<pVh_renumber>  );
    */
-
+#ifndef kame
   atype< Matrice_Creuse< R > * >( )->AddCast(new OneOperatorCode< pb2mat< R > >);
   atype< Matrice_Creuse< Complex > * >( )->AddCast(new OneOperatorCode< pb2mat< Complex > >);
 #endif
@@ -6719,7 +6718,7 @@ void init_lgfem( ) {
     new OneOperator2_< pfec, pfec, Complex, E_F_StackF0F0opt2< Complex > >(set_fe< Complex >)
 
   );
-#ifndef kame
+
   //  Attention il y a moralement un bug
   //  les initialisation   x = y   ( passe par l'operateur binaire <-  dans TheOperators
   //   les initialisation   x(y)   ( passe par l'operateur unaire <-  de typedebase de x
@@ -6740,7 +6739,7 @@ void init_lgfem( ) {
                     new OneBinaryOperator< Op_Read< Matrice_Creuse< Complex > > >
 
   );
-#endif
+
   Global.Add("int2d", "(", new OneOperatorCode< CDomainOfIntegration >);
 #ifndef kame
   Global.Add("int1d", "(", new OneOperatorCode< CDomainOfIntegrationBorder >);
@@ -6921,28 +6920,27 @@ void init_lgfem( ) {
     new OneOperator2_< void, interpolate_f_X_1< R >::type, double, E_F_StackF0F0 >(set_feoX_1));
 
   init_lgmat( );
-//  init_mesh_array( );
+  init_mesh_array( );
   l2interpreter = new LinkToInterpreter;
   using namespace FreeFempp;
 
   FreeFempp::TypeVarForm< double >::Global = new TypeVarForm< double >( );
   FreeFempp::TypeVarForm< Complex >::Global = new TypeVarForm< Complex >( );
 
-#ifndef kame
   Global.New("P13d", CConstantTFE3(&DataFE< Mesh3 >::P1));
   Global.New("P23d", CConstantTFE3(&DataFE< Mesh3 >::P2));
   Global.New("P03d", CConstantTFE3(&DataFE< Mesh3 >::P0));
   Global.New("RT03d", CConstantTFE3(&RT03d));
   Global.New("Edge03d", CConstantTFE3(&Edge03d));
   Global.New("P1b3d", CConstantTFE3(&P1bLagrange3d));
-    
+  
     // add FH 22 march 2021
 
   AddNewFE3("P1dc3d", &G_P1dc_3d,"P1dc");// deja code dans
   AddNewFE3("P2dc3d", &G_P2dc_3d,"P2dc");// deja code dans
   AddNewFE3("P3dc3d", &G_P3dc_3d);// deja code dans
   AddNewFE3("P4dc3d", &G_P4dc_3d);// deja code dans
- 
+
   AddNewFE3("P0edge3d", &G_P0Edge_3d,"P0edge");// deja code dans
   AddNewFE3("P0edgedc3d", &G_P0Edgedc_3d);// deja code dans
   AddNewFE3("P0VF3d", &G_P0VF_3d,"P0VF");
@@ -6956,7 +6954,7 @@ void init_lgfem( ) {
     AddNewFES("P2dcS", &G_P2dc_S,"P2dc");// deja code dans
     AddNewFES("P3dcS", &G_P3dc_S);// deja code dans
     AddNewFES("P4dcS", &G_P4dc_S);// deja code dans
-   
+  
     AddNewFES("P0edgeS", &G_P0Edge_S,"P0edge");// deja code dans
     AddNewFES("P0edgedcS", &G_P0Edgedc_S);// deja code dans
     AddNewFES("P0VF3S", &G_P0VF_S,"P0VF");
@@ -6968,7 +6966,7 @@ void init_lgfem( ) {
     AddNewFEL("P4dcL", &G_P4dc_L);//
     AddNewFEL("P0VF3L", &G_P0VF_L,"P0VF");
     AddNewFEL("P0VF3dcL", &G_P0VFdc_L);
-    
+  
   // end  add ..
   Global.New("Edge0S",CConstantTFES(&RT0orthosurf));
   Global.New("RT0orthoS",CConstantTFES(&RT0orthosurf));
@@ -6990,7 +6988,7 @@ void init_lgfem( ) {
   TEF2dtoS[FindFE2("P1b")] = &P1bLagrange_surf;
   TEF2dtoS[FindFE2("P2b")] = &P2bLagrange_surf;
   TEF2dtoS[FindFE2("RT0")] = &RT0surf;
-        
+       
   TEF2dtoL[FindFE2("P0")] = &DataFE< MeshL >::P0;
   TEF2dtoL[FindFE2("P1")] = &DataFE< MeshL >::P1;
   TEF2dtoL[FindFE2("P2")] = &DataFE< MeshL >::P2;
@@ -7000,7 +6998,7 @@ void init_lgfem( ) {
   TEF2dto3d[FindFE2("P0")] = &DataFE< Mesh3 >::P0;
   TEF2dto3d[FindFE2("P1b")] = &P1bLagrange3d;
   TEF2dto3d[FindFE2("RT0")] = &RT03d;
-#endif
+
 }
 #ifndef kame
 void clean_lgfem( ) {
@@ -7008,6 +7006,7 @@ void clean_lgfem( ) {
   delete FreeFempp::TypeVarForm< double >::Global;
   delete FreeFempp::TypeVarForm< Complex >::Global;
 }
+#endif
 template< class K, class v_fes >
 Expression IsFEcomp(const C_F0 &c, int i, Expression &rrr, Expression &iii) {
   Expression r = 0;
@@ -7068,12 +7067,15 @@ Expression Op_CopyArrayT(const E_Array &a, const E_Array &b) {
     }
     if (v_fes::dHat == 2 && v_fes::d == 2)
       r = new E_set_fev< K >(&b, rr, 2);
+	else assert(false);
+#ifndef kame
     else if (v_fes::dHat == 3 && v_fes::d == 3)
       r = new E_set_fev3< K, v_fes3 >(&b, rr);
     else if (v_fes::dHat == 2 && v_fes::d == 3)
       r = new E_set_fev3< K, v_fesS >(&b, rr);
     else if (v_fes::dHat == 1 && v_fes::d == 3)
       r = new E_set_fev3< K, v_fesL >(&b, rr);
+#endif
   }
   //  try complex vector value FE interpolation
   return r;
@@ -7087,84 +7089,86 @@ E_F0 *Op_CopyArray::code(const basicAC_F0 &args) const {
   int nb = b.size( );
   if (na != nb) CompileError("Copy of Array with incompatible size!");
   if (0) {    // old code !!!!!!! before removing FH sept. 2009
-    Expression rr = 0, rrr, iii;
-    //  try real voctor value FE interpolation
-    rr = IsFEcomp< double, v_fes >(a[0], 0, rrr, iii);
-    if (rr != 0) {
-      for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< double, v_fes >(a[i], i, rrr, iii))
-          CompileError("Copy of Array with incompatible real vector value FE function () !");
-      ;
-      return new E_set_fev< double >(&b, rr, 2);
-    }
-    //  try complex vector value FE interpolation
+	  Expression rr = 0, rrr, iii;
+	  //  try real voctor value FE interpolation
+	  rr = IsFEcomp< double, v_fes >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< double, v_fes >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible real vector value FE function () !");
+		  ;
+		  return new E_set_fev< double >(&b, rr, 2);
+	  }
+	  //  try complex vector value FE interpolation
 
-    rr = IsFEcomp< Complex, v_fes >(a[0], 0, rrr, iii);
-    if (rr != 0) {
-      for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< Complex, v_fes >(a[i], i, rrr, iii))
-          CompileError("Copy of Array with incompatible complex vector value FE function () !");
-      ;
-      return new E_set_fev< Complex >(&b, rr, 2);
-    }
+	  rr = IsFEcomp< Complex, v_fes >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< Complex, v_fes >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible complex vector value FE function () !");
+		  ;
+		  return new E_set_fev< Complex >(&b, rr, 2);
+	  }
 
-    rr = IsFEcomp< double, v_fes3 >(a[0], 0, rrr, iii);
-    if (rr != 0) {
-      for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< double, v_fes3 >(a[i], i, rrr, iii))
-          CompileError("Copy of Array with incompatible real vector value FE function () !");
-      ;
-      return new E_set_fev3< double, v_fes3 >(&b, rr);
-    }
-    //  try complex vector value FE interpolation
+#ifndef kame
+	  rr = IsFEcomp< double, v_fes3 >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< double, v_fes3 >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible real vector value FE function () !");
+		  ;
+		  return new E_set_fev3< double, v_fes3 >(&b, rr);
+	  }
+	  //  try complex vector value FE interpolation
 
-    rr = IsFEcomp< Complex, v_fes3 >(a[0], 0, rrr, iii);
-    if (rr != 0) {
-      for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< Complex, v_fes3 >(a[i], i, rrr, iii))
-          CompileError("Copy of Array with incompatible complex vector value FE function () !");
-      ;
-      return new E_set_fev3< Complex, v_fes3 >(&b, rr);
-    }
-      
-        rr = IsFEcomp< double, v_fesS >(a[0], 0, rrr, iii);
-        if (rr != 0) {
-        for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< double, v_fesS >(a[i], i, rrr, iii))
-        CompileError("Copy of Array with incompatible real vector value FE function () !");
-        ;
-        return new E_set_fev3< double, v_fesS >(&b, rr);
-        }
-        //  try complex vector value FE interpolation
-        
-        rr = IsFEcomp< Complex, v_fesS >(a[0], 0, rrr, iii);
-        if (rr != 0) {
-        for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< Complex, v_fesS >(a[i], i, rrr, iii))
-        CompileError("Copy of Array with incompatible complex vector value FE function () !");
-        ;
-        return new E_set_fev3< Complex, v_fesS >(&b, rr);
-        }
-     
-        rr = IsFEcomp< double, v_fesL >(a[0], 0, rrr, iii);
-        if (rr != 0) {
-        for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< double, v_fesL >(a[i], i, rrr, iii))
-        CompileError("Copy of Array with incompatible real vector value FE function () !");
-        ;
-        return new E_set_fev3< double, v_fesL >(&b, rr);
-        }
-        //  try complex vector value FE interpolation
-        
-        rr = IsFEcomp< Complex, v_fesL >(a[0], 0, rrr, iii);
-        if (rr != 0) {
-        for (int i = 1; i < nb; i++)
-        if (!IsFEcomp< Complex, v_fesL >(a[i], i, rrr, iii))
-        CompileError("Copy of Array with incompatible complex vector value FE function () !");
-        ;
-        return new E_set_fev3< Complex, v_fesL >(&b, rr);
-        }
-        }
+	  rr = IsFEcomp< Complex, v_fes3 >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< Complex, v_fes3 >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible complex vector value FE function () !");
+		  ;
+		  return new E_set_fev3< Complex, v_fes3 >(&b, rr);
+	  }
+
+	  rr = IsFEcomp< double, v_fesS >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< double, v_fesS >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible real vector value FE function () !");
+		  ;
+		  return new E_set_fev3< double, v_fesS >(&b, rr);
+	  }
+	  //  try complex vector value FE interpolation
+
+	  rr = IsFEcomp< Complex, v_fesS >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< Complex, v_fesS >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible complex vector value FE function () !");
+		  ;
+		  return new E_set_fev3< Complex, v_fesS >(&b, rr);
+	  }
+
+	  rr = IsFEcomp< double, v_fesL >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< double, v_fesL >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible real vector value FE function () !");
+		  ;
+		  return new E_set_fev3< double, v_fesL >(&b, rr);
+	  }
+	  //  try complex vector value FE interpolation
+
+	  rr = IsFEcomp< Complex, v_fesL >(a[0], 0, rrr, iii);
+	  if (rr != 0) {
+		  for (int i = 1; i < nb; i++)
+			  if (!IsFEcomp< Complex, v_fesL >(a[i], i, rrr, iii))
+				  CompileError("Copy of Array with incompatible complex vector value FE function () !");
+		  ;
+		  return new E_set_fev3< Complex, v_fesL >(&b, rr);
+	  }
+#endif
+  }
         
         
         
@@ -7172,18 +7176,21 @@ E_F0 *Op_CopyArray::code(const basicAC_F0 &args) const {
     Expression r = 0;    // new code FH sep 2009.
     if (!r) r = Op_CopyArrayT< double, v_fes >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fes >(a, b);
+	else assert(false);
+#ifndef kame
     if (!r) r = Op_CopyArrayT< double, v_fes3 >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fes3 >(a, b);
     if (!r) r = Op_CopyArrayT< double, v_fesS >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fesS >(a, b);
     if (!r) r = Op_CopyArrayT< double, v_fesL >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fesL >(a, b);
+#endif;
     if (r) return r;
   }
   CompileError("Internal Error: General Copy of Array : to do ");
   return ret;
 }
-#endif
+
 template< class v_fes, int DIM >
 C_F0 NewFEvariableT(ListOfId *pids, Block *currentblock, C_F0 &fespacetype, CC_F0 init, bool cplx,
                     int dim) {

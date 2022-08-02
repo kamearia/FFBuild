@@ -1760,22 +1760,6 @@ AnyType set_fe3 (Stack s,Expression ppfe, Expression e)
   return SetAny<FEbase<R,v_fes>*>(&fe); 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 template<class K,class v_fes>
 E_set_fev3<K,v_fes>::E_set_fev3(const E_Array * a,Expression pp) 
   :aa(*a),ppfe(pp),optimize(true),

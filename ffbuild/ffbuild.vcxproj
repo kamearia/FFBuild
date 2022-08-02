@@ -185,6 +185,7 @@
     <ClCompile Include="..\src\femlib\CG.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\femlib\Element_P2h.cpp" />
+    <ClCompile Include="..\src\femlib\Element_RT.cpp" />
     <ClCompile Include="..\src\femlib\fem.cpp" />
     <ClCompile Include="..\src\femlib\FESpace.cpp" />
     <ClCompile Include="..\src\femlib\FESpacen.cpp" />
@@ -197,6 +198,8 @@
     <ClCompile Include="..\src\femlib\MeshLn.cpp" />
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\femlib\P012_3d.cpp" />
+    <ClCompile Include="..\src\femlib\P012_3dCurve.cpp" />
+    <ClCompile Include="..\src\femlib\P012_3dSurf.cpp" />
     <ClCompile Include="..\src\femlib\QuadratureFormular.cpp" />
     <ClCompile Include="..\src\femlib\SparseLinearSolver.cpp" />
     <ClCompile Include="..\src\femlib\splitsimplex.cpp" />

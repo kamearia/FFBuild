@@ -31,7 +31,7 @@
  ref:ANR-07-CIS7-002-01 
  */
 
-
+#include "stdafx.h"
 
  #include "PkLagrange.hpp"
 

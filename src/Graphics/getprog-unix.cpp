@@ -80,14 +80,14 @@ char *Shell_Space(const char *s) {
   assert(q - p <= i + nbspace);
   return p;
 }
-#ifndef kame
+
 extern void (*init_lgparallele)();
 extern bool load(string s);
 // <<getprog>> called by [[file:../lglib/lg.ypp::getprog]]
 
 
 extern bool ShowOpenDialogBox1(char *fileName);
-#endif
+
 int getprog(char *fn, int argc, char **argv) {
 	int ret = 0;
 	*fn = '\0';

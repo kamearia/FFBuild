@@ -91,6 +91,7 @@ template<typename T>   AnyTypeWithCheck SetAny(const T & x)
 	memcpy(&any, &x, sizeof(x));
 	return any;
 }
+
 template<typename T>   AnyTypeWithOutCheck inline SetPtrAny(T *  p)
 {
 	throwassert((any.ktype = map_type[typeid(T*).name()]));

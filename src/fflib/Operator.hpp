@@ -185,7 +185,7 @@ struct Op2_pne: public binary_function<A,B,bool> {
 template<class R,class A=R,class B=A>
 struct Op2_pow: public binary_function<A,B,R> {
   static R f(const A & a,const B & b)  { return R(pow(a,b));}};
-#ifndef kame 
+
 
 
 template<class A>
@@ -211,7 +211,7 @@ struct Op_ReadP : public binary_function<istream*,A**,istream*> {
      return f;
    }
 };
-#endif
+
 template<class A>
 struct Op_ReadKN : public binary_function<istream*,KN<A>*,istream*> {
   static istream *  f(istream  * const  & f,KN<A>* const  &  a)  

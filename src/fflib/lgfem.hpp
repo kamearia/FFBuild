@@ -1046,13 +1046,14 @@ class E_FEcomp_get_elmnt_array : public E_F0 {
   Expression a0, a1;
   const E_KFEArray *a00;
   const int comp, N;
-
+#ifndef kame
   E_FEcomp_get_elmnt_array(Expression aa0, Expression aa1, int compp, int NN,
                            const E_KFEArray *aa00)
     : a0(aa0), a1(aa1), a00(aa00), comp(compp), N(NN) {}
   AnyType operator( )(Stack s) const {
     return SetAny< R >(get_element(GetAny< A >((*a0)(s)), GetAny< B >((*a1)(s))));
   }
+#endif
   bool MeshIndependent( ) const { return a0->MeshIndependent( ) && a1->MeshIndependent( ); }    //
 };
 

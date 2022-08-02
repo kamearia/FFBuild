@@ -293,6 +293,15 @@
     <ClCompile Include="..\src\fflib\string_def.cpp">
       <Filter>ソース ファイル\src\fflib</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\femlib\Element_RT.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\P012_3dSurf.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\femlib\P012_3dCurve.cpp">
+      <Filter>ソース ファイル\src\femlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lglib\lg.ypp">

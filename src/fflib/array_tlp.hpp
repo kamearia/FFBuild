@@ -209,7 +209,7 @@ inline   K * get_element( MyMap<String,K> *  const  &  a,string*  const   & b)
 template<class K>
 inline   bool exist_element( MyMap<String,K> *  const  &  a,string*  const   & b)
 {     return  a->exist(*b);}
-#ifndef kame
+
 template<>
 inline   string ** get_element<string*>( MyMap<String,string*> *  const  &  a,string*  const   & b)
  { string** ret=  &((*a)[*b]); // correction FH feb 2004
@@ -222,7 +222,7 @@ inline   string ** get_elements( MyMap<String,String> *  const  &  a,string*  co
  { String* Sret=  &((*a)[*b]); // correction FH feb 2004
    //  delete b;  modif mars 2006 auto del ptr
     return Sret->getap();}
-#endif
+
 template<class RR,class A,class B>
 RR * get_element_(const A & a,const B & b){
   if( b<0 || a.N() <= b)
