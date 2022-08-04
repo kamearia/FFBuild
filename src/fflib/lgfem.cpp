@@ -237,7 +237,7 @@ class LinkToInterpreter {
 };
 
 LinkToInterpreter *l2interpreter;
-#ifndef kame
+
 
 using namespace Fem2D;
 using namespace EF23;
@@ -252,7 +252,7 @@ class E_F_A_Ptr_o_R : public E_F0 {
   AnyType operator( )(Stack s) const { return SetAny< Result * >(&(GetAny< A * >((*a0)(s))->*p)); }
   bool MeshIndependent( ) const { return a0->MeshIndependent( ); }
 };
-#endif
+
 //  ----
 //  remarque pas de template, cela ne marche pas encore ......
 class E_P_Stack_P : public E_F0mps {
@@ -1456,7 +1456,7 @@ inline pfesL *MakePtrL(pfesL *const &p, pmeshL *const &a, TypeOfFEL *const &tef)
   *p = new pfesL_tef(a, tef);
   return p;
 }
-
+#endif
 class OP_MakePtr2 {
  public:
   class Op : public E_F0mps {
@@ -1489,7 +1489,7 @@ class OP_MakePtr2 {
     return ArrayOfaType(atype< Op::A >( ), atype< Op::B >( ), atype< Op::C >( ), false);
   }
 };
-
+#ifndef kame
 class OP_MakePtr3 {
  public:
   class Op : public E_F0mps {
@@ -1618,7 +1618,7 @@ void GetPeriodic(const int d, Expression perio, int &nbcperiodic, Expression *&p
       }
   }
 }
-#ifndef kame
+
 OP_MakePtr2::Op::Op(const basicAC_F0 &args)
   : a(to< A >(args[0])), b(to< B >(args[1])), c(to< C >(args[2])) {
   nbcperiodic = 0;
@@ -1626,6 +1626,7 @@ OP_MakePtr2::Op::Op(const basicAC_F0 &args)
   args.SetNameParam(n_name_param, name_param, nargs);
   GetPeriodic(2, nargs[0], nbcperiodic, periodic);
 }
+#ifndef kame
 // 3D volume
 OP_MakePtr3::Op::Op(const basicAC_F0 &args)
   : a(to< A >(args[0])), b(to< B >(args[1])), c(to< C >(args[2])) {
@@ -1678,9 +1679,9 @@ int GetPeriodic(Expression bb, Expression &b, Expression &f1, Expression &f2) {
   } else
     return 0;
 }
-#ifndef kame
-basicAC_F0::name_and_type OP_MakePtr2::Op::name_param[] = {"periodic", &typeid(E_Array)};
 
+basicAC_F0::name_and_type OP_MakePtr2::Op::name_param[] = {"periodic", &typeid(E_Array)};
+#ifndef kame
 basicAC_F0::name_and_type OP_MakePtr3::Op::name_param[] = {"periodic", &typeid(E_Array)};
 
 basicAC_F0::name_and_type OP_MakePtrS::Op::name_param[] = {"periodic", &typeid(E_Array)};
@@ -1691,13 +1692,13 @@ inline pfes *MakePtr2(pfes *const &p, pmesh *const &a) {
   *p = new pfes_tef(a, &P1Lagrange);
   return p;
 }
-#ifndef kame
+
 
 inline pfes *MakePtr2(pfes *const &p, pfes *const &a, long const &n) {
   *p = new pfes_fes(a, n);
   return p;
 }
-
+#ifndef kame
 long FindTxy(Stack s, pmesh *const &ppTh, const double &x, const double &y) {
   R2 P(x, y), PHat;
   bool outside;
@@ -2250,7 +2251,7 @@ class OneOperatorMakePtrFE : public OneOperator {
       OneOperator(map_type[typeid(R).name( )], map_type[typeid(R).name( )],
                   map_type[typeid(B).name( )], tt) {}
 };
-#ifndef kame
+
 template< class Result, class A >
 class OneOperator_Ptr_o_R : public OneOperator {
   typedef Result A::*ptr;
@@ -2262,7 +2263,7 @@ class OneOperator_Ptr_o_R : public OneOperator {
   }
   OneOperator_Ptr_o_R(ptr pp) : OneOperator(atype< Result * >( ), atype< A * >( )), p(pp) {}
 };
-
+#ifndef kame
 template< class K >
 K *PAddition(const K *a, const K *b) {
   return new K(*a + *b);
@@ -3163,7 +3164,7 @@ basicAC_F0::name_and_type Plot::name_param[Plot::n_name_param] = {
   {"NbColors", &typeid(long)},                        // #22
   {"pNormalT", &typeid(bool)}                         //43
 };
-#ifndef kame
+
 template< class K >
 class pb2mat : public E_F0 {
  public:
@@ -3176,7 +3177,9 @@ class pb2mat : public E_F0 {
 
   static E_F0 *f(const basicAC_F0 &args) { return new Plot(args); }
   AnyType operator( )(Stack s) const {
-    Problem::Data< FESpace > *data = pb->dataptr(this->stack);
+	  assert(false);
+#ifndef kame
+    Problem::Data< FESpace > *data = pb->dataptr(s /*KAME this->stack*/);
     if (SameType< K, double >::OK) {
       ffassert(!!data->AR);
       return SetAny< Matrice_Creuse< K > * >(&data->AR);
@@ -3184,9 +3187,10 @@ class pb2mat : public E_F0 {
       ffassert(!!data->AC);
       return SetAny< Matrice_Creuse< K > * >(&data->AC);
     }
+#endif
   }
 };
-#endif
+
 LinkToInterpreter::LinkToInterpreter( ) {
   // P,N,x,y,z,label,region,nu_triangle;
 
@@ -6162,8 +6166,9 @@ void init_lgfem( ) {
   /* FH: ne peux pas marcher, il faut passer aussi le nouveau Vh
    Add<pfes*>("(","", new OneBinaryOperator_st<pVh_renumber>  );
    */
-#ifndef kame
+
   atype< Matrice_Creuse< R > * >( )->AddCast(new OneOperatorCode< pb2mat< R > >);
+#ifndef kame
   atype< Matrice_Creuse< Complex > * >( )->AddCast(new OneOperatorCode< pb2mat< Complex > >);
 #endif
   //   Add all Finite Element "P0","P1","P2","RT0", ...
@@ -6193,16 +6198,22 @@ void init_lgfem( ) {
   // old --
   //  init FESpace
   TheOperators->Add(
-	  "<-", /*KAME  new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2));  , 
-    new OneOperatorCode< OP_MakePtr2 >, new OneOperatorCode< OP_MakePtr3 >,
+	  "<-"
+	  ,   new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2)
+	  , new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk > 
+#ifndef kame
+	  ,  new OneOperatorCode< OP_MakePtr2 >
+
+	  , new OneOperatorCode< OP_MakePtr3 >,
     new OneOperatorCode< OP_MakePtrS >, new OneOperatorCode< OP_MakePtrL >,
- */   new OpMake_pfes< pfes, Mesh , TypeOfFE, pfes_tefk >/*,
+
     new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >,
     new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >,    // add for 3D surface  FEspace
-    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >*/);
+    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >
+#endif
+	  );
 #ifndef kame
   TheOperators->Add("=", new OneOperator2< R3 *, R3 *, R3 * >(&set_eqp,2));
-
 
   Add< MeshPoint * >("P", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::P));
   Add< MeshPoint * >("N", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::N));
@@ -6212,10 +6223,10 @@ void init_lgfem( ) {
   Add< Transpose<R3 *> >("x", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::x));
   Add< Transpose<R3 *> >("y", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::y));
   Add< Transpose<R3 *> >("z", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::z));
-
+#endif
   Add< R2 * >("x", ".", new OneOperator_Ptr_o_R< R, R2 >(&R2::x));
   Add< R2 * >("y", ".", new OneOperator_Ptr_o_R< R, R2 >(&R2::y));
-
+#ifndef kame
   Add< R3 * >("[", "", new OneOperator2< double, R3 *, long >(get_R3));
 // ADD dec 2021 to R3 computation ...
     map_type[typeid(R3).name()]->AddCast(
@@ -6261,13 +6272,15 @@ void init_lgfem( ) {
 // end add
 
   Add< pmesh >("[", "", new OneOperator2_< lgElement, pmesh, long >(get_element));
+
   Add< pmesh * >("be", ".", new OneOperator1_< lgBoundaryEdge::BE, pmesh * >(Build));
+
   Add< lgElement >("adj", ".", new OneOperator1_< lgElement::Adj, lgElement >(Build));
   Add< lgBoundaryEdge::BE >(
     "(", "", new OneOperator2_< lgBoundaryEdge, lgBoundaryEdge::BE, long >(get_belement));
   Add< lgElement::Adj >("(", "", new OneOperator2_< lgElement, lgElement::Adj, long * >(get_adj));
 
-    Add<lgBoundaryEdge>("N",".",new OneOperator1_<R3,lgBoundaryEdge >(NElement));
+  Add<lgBoundaryEdge>("N",".",new OneOperator1_<R3,lgBoundaryEdge >(NElement));
 
   TheOperators->Add("==", new OneBinaryOperator< Op2_eq< lgElement, lgElement > >);
   TheOperators->Add("!=", new OneBinaryOperator< Op2_ne< lgElement, lgElement > >);
@@ -6307,10 +6320,10 @@ void init_lgfem( ) {
   // pmesh is a pointer to Mesh
 #endif
   zzzfff->Add("mesh", atype< pmesh *>( ));
-
+#ifndef kame
   // pmesh3 is a pointer to Mesh3 defined at [[file:lgfem.hpp::typedef Mesh3 pmesh3]]
   zzzfff->Add("mesh3", atype< pmesh3 * >( ));
-#ifndef kame
+
   // pmeshS is a pointer to MeshS defined at [[file:lgfem.hpp::typedef MeshS pmeshS]]
   zzzfff->Add("meshS", atype< pmeshS * >( ));
   // pmeshL is a pointer to MeshL defined at [[file:lgfem.hpp::typedef MeshL pmeshL]]
@@ -6779,13 +6792,14 @@ void init_lgfem( ) {
   Global.Add("dyy", "(", new E_F1_funcT< Complex, pfec >(pfer2R< Complex, op_dyy >));
   Global.Add("dxy", "(", new E_F1_funcT< Complex, pfec >(pfer2R< Complex, op_dxy >));
   Global.Add("dyx", "(", new E_F1_funcT< Complex, pfec >(pfer2R< Complex, op_dyx >));
-
+#endif
   Add< pfecbasearray * >(
     "[", "",
     new OneOperator2_< pfecbase *, pfecbasearray *, long >(get_element));    // use FH sep. 2009
   Add< pferbasearray * >("[", "",
                          new OneOperator2_< pferbase *, pferbasearray *, long >(
                            get_element));    //  use ???? FH sep. 2009
+#ifndef kame
   // bof bof ..
   // resize of array of Finite element ..  a little hard 2013 FH
   Dcl_Type< Resize1< pfecbasearray * > >( );
@@ -6898,11 +6912,12 @@ void init_lgfem( ) {
   Add< pf3cbasearray * >("n", ".",
                          new OneOperator1_< long, pf3cbasearray * >(get_size));    //   FH  Oct 2016
   Add< pf3carray >("n", ".", new OneOperator1_< long, pf3carray >(get_size));      //  FH Oct 2016
-
+#endif
   Add< pferarray >("[", "",
                    new OneOperator2_FE_get_elmnt< double, v_fes >( ));    // new version FH sep 2009
-  Add< pfecarray >("[", "", new OneOperator2_FE_get_elmnt< Complex, v_fes >( ));
 
+  Add< pfecarray >("[", "", new OneOperator2_FE_get_elmnt< Complex, v_fes >( ));
+#ifndef kame
   Add< pf3rarray >("[", "",
                    new OneOperator2_FE_get_elmnt< double, v_fes >( ));    // new version FH sep 2009
   Add< pf3carray >("[", "", new OneOperator2_FE_get_elmnt< Complex, v_fes >( ));    // FH Oct 2016
@@ -7176,7 +7191,7 @@ E_F0 *Op_CopyArray::code(const basicAC_F0 &args) const {
     Expression r = 0;    // new code FH sep 2009.
     if (!r) r = Op_CopyArrayT< double, v_fes >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fes >(a, b);
-	else assert(false);
+	if(!r) assert(false);
 #ifndef kame
     if (!r) r = Op_CopyArrayT< double, v_fes3 >(a, b);
     if (!r) r = Op_CopyArrayT< Complex, v_fes3 >(a, b);

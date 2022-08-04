@@ -1,3 +1,4 @@
+verbosity=100
 // Mesh
 real r=1.0;
 border a(t=0, 2*pi){x=r*cos(t); y=r*sin(t); label=1;}
@@ -31,17 +32,24 @@ for(x=0.; x<=r; x +=r/100){
 }
 
 fespace RT(disk, RT0Ortho);
-RT [bx,by]=[-dy(u), dx(u)];
-plot([bx,by]);
+
+RT [bx,by];
+
+//[bx,by]=[-dy(u), dx(u)];
 
 
-RT [hx, hy], [vx, vy];
+//plot([bx,by]);
+
+RT [hx, hy];
+RT [vx, vy];
+
 solve Tmethod([hx, hy], [vx, vy], solver="CG")
 	= int2d(disk)(1./(s*sigma)*( dx(hy)-dy(hx))*(dx(vy)-dy(vx)) + mu*(hx*vx+hy*vy) ) 
-	+ on(1, hx=nu*bx, hy=nu*by)	
+	+ on(1, hx=-nu*dy(u), hy=nu*dx(u))	
 	;
-[bx,by]=mu*[hx,hy];
-plot([bx,by]);
+
+//[bx,by]=mu*[hx,hy];
+//plot([bx,by]);
 
 y=0;
 for(x=0.; x<=r; x +=r/100){ 

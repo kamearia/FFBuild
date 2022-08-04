@@ -1226,6 +1226,7 @@ const Mesh * MoveTheMesh(const Fem2D::Mesh &Th,const KN_<double> & U,const KN_<d
 
 }
 }
+#endif
 
 /// <<Carre>> Builds a square-shaped 2D mesh. An Expression [[file:AFunction.hpp::Expression]] is a pointer to an object
 /// of class E_F0 [[file:AFunction.hpp::E_F0]].
@@ -1490,7 +1491,7 @@ basicAC_F0::name_and_type  MeshCarre2f::name_param[]= {
 	{  "label", &typeid(KN_<long> )},
 	{  "region", &typeid(long)}
     };
-#endif
+
    void  MeshErrorIO(ios& )
 {
    ExecError("Mesh IO Error ");
@@ -1997,11 +1998,11 @@ void init_lgmesh() {
   Global.Add("movemesh","(",new OneOperatorCode<MoveMesh>);
   Global.Add("splitmesh","(",new OneOperatorCode<SplitMesh>);
   Global.Add("checkmovemesh","(",new OneOperatorCode<CheckMoveMesh>);
-
+#endif
   /// <<square_keyword>> see [[file:AFunction.hpp::OneOperatorCode]]
   Global.Add("square","(",new OneOperatorCode<MeshCarre2>);
   Global.Add("square","(",new OneOperatorCode<MeshCarre2f>);
-#endif
+
   Global.Add("savemesh","(",new OneOperatorCode<SaveMesh>);
 #ifndef kame
   Global.Add("trunc","(", new Op_trunc_mesh);
