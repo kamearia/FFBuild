@@ -96,25 +96,28 @@ class vectorOfInst : public  E_F0mps { public:
 double  VersionNumber();
 
 OneOperator::pair_find OneOperator::Find(const ArrayOfaType & at)const
- {
-      const OneOperator *w=0,*oo;
-      int nn=0,p=-10000;
-      for (int ncast=0;ncast<=n;ncast++) // loop on the number of cast
-       {
-         p=-10000;
-         for (oo=this;oo;oo=oo->next)
-          if (oo->pref>=p && oo->WithCast(at,ncast))
-          {
-           if(p<oo->pref) {nn=0;p=oo->pref;}
-            nn++;
-            w=oo;}
-         if (nn) return make_pair(w,nn);
-       }
-      for (oo=this;oo;oo=oo->next)
-        if (oo->WithCast(at))
-          {nn++;
-           w=oo;}
-       return make_pair(w,nn);
+{
+	const OneOperator *w = 0, *oo;
+	int nn = 0, p = -10000;
+	for (int ncast = 0; ncast <= n; ncast++) // loop on the number of cast
+	{
+		p = -10000;
+		for (oo = this; oo; oo = oo->next)
+			if (oo->pref >= p && oo->WithCast(at, ncast))
+			{
+				if (p < oo->pref) { nn = 0; p = oo->pref; }
+				nn++;
+				w = oo;
+			}
+		if (nn) return make_pair(w, nn);
+	}
+	for (oo = this; oo; oo = oo->next)
+		if (oo->WithCast(at))
+		{
+			nn++;
+			w = oo;
+		}
+	return make_pair(w, nn);
 }
 
 OneOperator::pair_find OneOperator::FindWithOutCast(const ArrayOfaType & at)const
@@ -154,7 +157,9 @@ void OneOperator::Show(const ArrayOfaType & at,ostream &f) const
          const OneOperator *oo;
          int n=0,np=0;
          for (oo=this;oo;oo=oo->next)
-           if (oo->WithOutCast(at)) {n++;f << "\t (" <<  *oo << ")\n";}
+           if (oo->WithOutCast(at)) {
+			   n++;f << "\t (" <<  *oo << ")\n";
+		 }
          if(n==0)
           for (oo=this;oo;oo=oo->next)
            if (oo->WithCast(at)) {

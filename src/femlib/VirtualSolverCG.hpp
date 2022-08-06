@@ -252,7 +252,8 @@ public:
             if ( ! res ) err++;
         }
         if(err && erronerr) {  std::cerr << "Error: fgmres do not converge nb end ="<< err << std::endl;
-            ffassert(0); }
+ //KAME           ffassert(0); 
+		}
     }
     
 };

@@ -1436,12 +1436,11 @@ struct OpMake_pfes : public OneOperator, public OpMake_pfes_np {
 				atype< Fem2D::TypeOfFE *  >()) {}
 };
 
-#ifndef kame
 inline pfes *MakePtr2(pfes *const &p, pmesh *const &a, TypeOfFE *const &tef) {
   *p = new pfes_tef(a, tef);
   return p;
 }
-
+#ifndef kame
 inline pfes3 *MakePtr3(pfes3 *const &p, pmesh3 *const &a, TypeOfFE3 *const &tef) {
   *p = new pfes3_tef(a, tef);
   return p;
@@ -5755,12 +5754,13 @@ T feresize(const Resize1< T > &rt, const long &n) {
   rt.v.first->resize(n);
   return rt.v;
 }
+#endif
 double get_R3(R3 *p, long i) { return (*p)[i]; }
 R3 *set_eqp(R3 *a, R3 *b) {
   *a = *b;
   return a;
 }
-#endif
+
         class opDotR3 : public OneOperator{
         public:
             AnyType operator()(Stack s)  const {ffassert(0);return 0L;}
@@ -6199,27 +6199,30 @@ void init_lgfem( ) {
   //  init FESpace
   TheOperators->Add(
 	  "<-"
-	  ,   new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2)
-	  , new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk > 
+	  , new OneOperator2_< pfes *, pfes *, pmesh * >(&MakePtr2)
+	  , new OneOperatorCode< OP_MakePtr2 >
 #ifndef kame
-	  ,  new OneOperatorCode< OP_MakePtr2 >
-
-	  , new OneOperatorCode< OP_MakePtr3 >,
-    new OneOperatorCode< OP_MakePtrS >, new OneOperatorCode< OP_MakePtrL >,
-
-    new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >,
-    new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >,    // add for 3D surface  FEspace
-    new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >
+	  , new OneOperatorCode< OP_MakePtr3 >
+	  ,new OneOperatorCode< OP_MakePtrS >
+	  , new OneOperatorCode< OP_MakePtrL >
 #endif
-	  );
+//KAME	  ,new OpMake_pfes< pfes, Mesh, TypeOfFE, pfes_tefk >
 #ifndef kame
-  TheOperators->Add("=", new OneOperator2< R3 *, R3 *, R3 * >(&set_eqp,2));
+	  ,new OpMake_pfes< pfes3, Mesh3, TypeOfFE3, pfes3_tefk >
+	  ,new OpMake_pfes< pfesS, MeshS, TypeOfFES, pfesS_tefk >
+	  ,new OpMake_pfes< pfesL, MeshL, TypeOfFEL, pfesL_tefk >
+#endif
+  );
 
+
+  TheOperators->Add("=", new OneOperator2< R3 *, R3 *, R3 * >(&set_eqp,2));
   Add< MeshPoint * >("P", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::P));
   Add< MeshPoint * >("N", ".", new OneOperator_Ptr_o_R< R3, MeshPoint >(&MeshPoint::N));
+
   Add< R3 * >("x", ".", new OneOperator_Ptr_o_R< R, R3 >(&R3::x));
   Add< R3 * >("y", ".", new OneOperator_Ptr_o_R< R, R3 >(&R3::y));
   Add< R3 * >("z", ".", new OneOperator_Ptr_o_R< R, R3 >(&R3::z));
+#ifndef kame
   Add< Transpose<R3 *> >("x", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::x));
   Add< Transpose<R3 *> >("y", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::y));
   Add< Transpose<R3 *> >("z", ".", new OneOperator_trans_Ptr_o_R< R3 >(&R3::z));
@@ -6754,8 +6757,8 @@ void init_lgfem( ) {
   );
 
   Global.Add("int2d", "(", new OneOperatorCode< CDomainOfIntegration >);
-#ifndef kame
   Global.Add("int1d", "(", new OneOperatorCode< CDomainOfIntegrationBorder >);
+#ifndef kame
   Global.Add("intalledges", "(", new OneOperatorCode< CDomainOfIntegrationAllEdges >);
   Global.Add("intallBE", "(", new OneOperatorCode< CDomainOfIntegrationAllEdges >);
     Global.Add("intallVFedges", "(", new OneOperatorCode< CDomainOfIntegrationVFEdges >);

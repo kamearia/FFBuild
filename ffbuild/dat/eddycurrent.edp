@@ -1,4 +1,4 @@
-verbosity=100
+verbosity=100;
 // Mesh
 real r=1.0;
 border a(t=0, 2*pi){x=r*cos(t); y=r*sin(t); label=1;}

@@ -1,3 +1,4 @@
+verbosity=100;
 // Parameters
 func gd = 1.;
 func g1n = 1.;
