@@ -35,7 +35,7 @@
 #pragma once
 /* Tokens.  */
 #ifndef YYTOKENTYPE
-# define YYTOKENTYPE
+#define YYTOKENTYPE
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
@@ -194,8 +194,19 @@ typedef union YYSTYPE
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 # define YYSTYPE_IS_TRIVIAL 1
-#endif
+
 
 #ifndef kame
 extern YYSTYPE lglval;
 #endif
+
+#endif
+
+struct lg_stack{
+	short int  *yyss;
+	short int yyssa[200];
+
+	lg_stack() {
+		yyss = yyssa;
+	}
+};

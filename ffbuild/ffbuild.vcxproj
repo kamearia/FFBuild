@@ -147,28 +147,6 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\femlib\BamgFreeFem.hpp" />
-    <ClInclude Include="..\src\femlib\RNM.hpp" />
-    <ClInclude Include="..\src\fflib\AFunction.hpp" />
-    <ClInclude Include="..\src\fflib\AnyType.hpp" />
-    <ClInclude Include="..\src\fflib\array_init.hpp" />
-    <ClInclude Include="..\src\fflib\array_tlp.hpp" />
-    <ClInclude Include="..\src\fflib\CodeAlloc.hpp" />
-    <ClInclude Include="..\src\fflib\environment.hpp" />
-    <ClInclude Include="..\src\fflib\error.hpp" />
-    <ClInclude Include="..\src\fflib\ffapi.hpp" />
-    <ClInclude Include="..\src\fflib\ffstack.hpp" />
-    <ClInclude Include="..\src\fflib\InitFunct.hpp" />
-    <ClInclude Include="..\src\fflib\lex.hpp" />
-    <ClInclude Include="..\src\fflib\lgmesh.hpp" />
-    <ClInclude Include="..\src\fflib\Operator.hpp" />
-    <ClInclude Include="..\src\fflib\showverb.hpp" />
-    <ClInclude Include="..\src\fflib\String.hpp" />
-    <ClInclude Include="..\src\fflib\strversionnumber.hpp" />
-    <ClInclude Include="..\src\fflib\throwassert.hpp" />
-    <ClInclude Include="..\src\Graphics\getprog-unix.hpp" />
-    <ClInclude Include="..\src\Graphics\mode_open.hpp" />
-    <ClInclude Include="..\src\lglib\lg.tab.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -185,6 +163,7 @@
     <ClCompile Include="..\src\femlib\CG.cpp" />
     <ClCompile Include="..\src\femlib\CheckPtr.cpp" />
     <ClCompile Include="..\src\femlib\Element_P2h.cpp" />
+    <ClCompile Include="..\src\femlib\Element_RT.cpp" />
     <ClCompile Include="..\src\femlib\fem.cpp" />
     <ClCompile Include="..\src\femlib\FESpace.cpp" />
     <ClCompile Include="..\src\femlib\FESpacen.cpp" />
@@ -197,6 +176,8 @@
     <ClCompile Include="..\src\femlib\MeshLn.cpp" />
     <ClCompile Include="..\src\femlib\mshptg.cpp" />
     <ClCompile Include="..\src\femlib\P012_3d.cpp" />
+    <ClCompile Include="..\src\femlib\P012_3dCurve.cpp" />
+    <ClCompile Include="..\src\femlib\P012_3dSurf.cpp" />
     <ClCompile Include="..\src\femlib\QuadratureFormular.cpp" />
     <ClCompile Include="..\src\femlib\SparseLinearSolver.cpp" />
     <ClCompile Include="..\src\femlib\splitsimplex.cpp" />
@@ -218,6 +199,7 @@
     <ClCompile Include="..\src\fflib\load.cpp" />
     <ClCompile Include="..\src\fflib\P1IsoValue.cpp" />
     <ClCompile Include="..\src\fflib\problem.cpp" />
+    <ClCompile Include="..\src\fflib\string_def.cpp" />
     <ClCompile Include="..\src\fflib\UMFPack_Solver.cpp" />
     <ClCompile Include="..\src\Graphics\ff-win32.cpp" />
     <ClCompile Include="..\src\Graphics\getprog-unix.cpp" />
@@ -227,9 +209,6 @@
     <ClCompile Include="src\a_tutorial.cpp" />
     <ClCompile Include="src\main_kame.cpp" />
     <ClCompile Include="src\test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\src\lglib\lg.ypp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -677,7 +677,7 @@ extern TypeOfFE & P1ncLagrange;
     cmesh(TTh),
     N(1),
     Nproduit(1),
-    NbOfDF(TTh.nv),
+    NbOfDF(TTh.nv), 
     NbOfElements(TTh.nt),
     NbOfNodes(TTh.nv),
     nb_sub_fem(TFE[0]->nb_sub_fem),

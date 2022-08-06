@@ -2324,7 +2324,7 @@ struct quad_function
 	typedef Arg4   fourth_argument_type;
 	typedef Result result_type;
 };
-#ifndef kame
+
 template<typename T,class CODE >
 class  OneTernaryOperator : public OneOperator{
   typedef typename T::result_type R;
@@ -2354,7 +2354,7 @@ class  OneTernaryOperator : public OneOperator{
                   map_type[typeid(B).name()],
                   map_type[typeid(C).name()]) {}
 };
-
+#ifndef kame
 template<typename T,class CODE >
 class  OneQuadOperator : public OneOperator{
   typedef typename T::result_type R;
@@ -2516,7 +2516,7 @@ struct evalE_F2 {
        return ab->E_F0::eval(s,meshidenp); 
    }
 };
-#ifndef kame
+
 // Add FH juin 2020 
 template<typename A,typename B>
 class  OneBinaryOperatorBug : public OneOperator{
@@ -2532,7 +2532,6 @@ public:
     {pref = 100;}
 };
 
-#endif
 
 template<typename C,class MI=OneBinaryOperatorMI,class MIx=evalE_F2 >
 class  OneBinaryOperator : public OneOperator{
@@ -3462,8 +3461,6 @@ public:
     AnyType fj(Stack s) const { return j ? (*j)(s): Nothing ;}
     
 };
-#ifndef kame
-
 
 class ForAllLoopOpBase :  public E_F0mps { public:
     Expression et,ecode;
@@ -3504,5 +3501,4 @@ class  ForAllLoop : public OneOperator {public:
     
 };
 
-#endif
 #include "array_init.hpp"

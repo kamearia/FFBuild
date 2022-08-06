@@ -1,0 +1,2 @@
+string[int] s(6);
+s[0]="CG";

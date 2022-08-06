@@ -25,6 +25,7 @@
  along with Freefem++; if not, write to the Free Software
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
+#include "stdafx.h"
 #include <cmath>
 #include <cstdlib>
 #include "error.hpp"
@@ -502,7 +503,8 @@ void TypeOfFE_P1ncLagrange::FB(const bool * whatd,const Mesh & ,const Triangle &
 
 class TypeOfFE_RTortho : public  TypeOfFE { public:  
   static int Data[];
-   TypeOfFE_RTortho(): TypeOfFE(0,1,0,2,Data,1,1,6,3) 
+//KAME!!   TypeOfFE_RTortho(): TypeOfFE(0,1,0,1,Data,1,1,6,3) 
+   TypeOfFE_RTortho() : TypeOfFE(0, 1, 0, 2, Data, 1, 1, 6, 3)
      {const R2 Pt[] = { R2(0.5,0.5), R2(0.0,0.5), R2(0.5,0.0) };
       for (int p=0,kk=0;p<3;p++)
        { P_Pi_h[p]=Pt[p];   

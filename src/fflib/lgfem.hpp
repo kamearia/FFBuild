@@ -1053,6 +1053,7 @@ class E_FEcomp_get_elmnt_array : public E_F0 {
   AnyType operator( )(Stack s) const {
     return SetAny< R >(get_element(GetAny< A >((*a0)(s)), GetAny< B >((*a1)(s))));
   }
+
   bool MeshIndependent( ) const { return a0->MeshIndependent( ) && a1->MeshIndependent( ); }    //
 };
 

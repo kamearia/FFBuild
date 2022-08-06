@@ -33,7 +33,7 @@
 #include "String.hpp"
 #include "AFunction.hpp"
 
-#ifndef kame
+
 // TODO: remove this block as soon as autoconf is removed from FreeFem++
 #ifndef CMAKE
 #include <config.h>
@@ -64,6 +64,8 @@
 namespace Fem2D {
 #include "R3.hpp"
 }
+
+
 template <class T>
 struct affectation: binary_function<T, T, T>
 {
@@ -83,7 +85,6 @@ struct affectation_sub: binary_function<T, T, T>
 };
 
 
-#endif
 extern Map_type_of_map map_type_of_map ; //  to store te type
 extern Map_type_of_map map_pair_of_type ; //  to store te type
 #ifndef kame
@@ -94,7 +95,7 @@ extern long mpisize,mpirank;
 
 template<class T> inline T Square (const T &a){return a*a;}
 
-
+#endif
 
 template<class K>
 struct Op2_dotproduct: public binary_function<Transpose<KN_<K> >,KN<K> *,K> {
@@ -240,6 +241,7 @@ RR * get_elementp_(const A & a,const B & b){
 template<class K>
 KN_<K> fSubArray(const KN_<K> & a,const SubArray & b)
  { return a(b);}
+
 template<class K>
 KN_<K> fSubArrayp( KN<K>  * const & a,const SubArray & b)
  { return (*a)(b);}
@@ -264,7 +266,6 @@ KN_<K> fSubArraypib( KNM<K> *const & a,const long &i,const SubArray & b)
 template<class K>
 KN_<K> fSubArraypbi( KNM<K> *const & a,const SubArray & b,const long &i)
 { return (*a)(b,i);}
-
 
 template<class A>
 A fSubArrayc(const A & a,const char & b)
@@ -346,13 +347,12 @@ RR * get_elementp2__(const A & a,const B & b,const C & c){
       ExecError("Out of bound in operator (,)");}
 return  &((a)(b,c));}
 
-#endif
 template<typename T>
 struct myremove_pointer
 {
     typedef T type;
 };
-#ifndef kame
+
 template<typename T>
 struct myremove_pointer<T*>
 {
@@ -440,7 +440,6 @@ public:
     }
 
 };
-
 
 template<class CR, class KNRR,bool isinit>
 class  InitArrayfromArray : public OneOperator {
@@ -696,6 +695,7 @@ public:
 template<class K> long get_MyMap_n(MyMap<String,K> *p) {return p ? (p->m ? p->m->size():0):0 ;} 
 template<class K> long get_n(KN<K> * p){ return p->N();}//
 template<class K> long get_n(KNM<K> * p){ return p->N();}//
+
 template<class K> long get_m(KNM<K> * p){ return p->M();}//
 template<class K> K get_max(KN<K> * p){ return p->max();}//
 template<class K> K get_min(KN<K> * p){ return p->min();}//
@@ -770,7 +770,7 @@ template<class K,class T> K  get_l2_0(const T &p){ return p.l2();}
 template<class K,class T> K  get_l1_0(const T &p){ return p.l1();}
 template<class K,class T> K  get_linfty_0(const T &p){ return p.linfty();}
 
-
+#ifndef kame
 
  class ostream_precis { public:
  ostream_precis(ostream * ff) :f(ff) {}
@@ -961,7 +961,7 @@ void ArrayDCL()
 
 }
 
-#ifndef kame
+
 
 template<class A,class B> pair<A,B> * pBuild(const A & a,const B & b)
   { return new pair<A,B>(a,b);}
@@ -994,6 +994,7 @@ struct set_A_BI: public binary_function<KN_<K>,pair<KN_<K>, KN_<L> > *,KN_<K> > 
 
   }
 };
+
 //  add oct 2019  To:  real[int] b = a(I); // where a and I is also a array..
 template<class K,class L,class OP>
 struct init_A_BI: public binary_function<KN<K>* ,pair<KN_<K>, KN_<L> > *,KN<K>* > {
@@ -1024,6 +1025,7 @@ struct init_A_BI: public binary_function<KN<K>* ,pair<KN_<K>, KN_<L> > *,KN<K>* 
         
     }
 };
+
 template<class K,class L,class OP>
 struct set_AI_B: public binary_function<pair<KN_<K>, KN_<L> > * ,KN_<K>, NothingType > {
   static NothingType  f( pair<KN_<K>, KN_<L> > * const & b,const KN_<K>   & a)  {
@@ -1075,6 +1077,7 @@ struct Op3_pacc: public ternary_function<KN_<K>,K,K,if_arth_KN_<K>*> {
 	       kb(new(NewAllocTmp(s,sizeof(b))) K(b),1,0);
     return new if_arth_KN_<K>(a,kb,kc);}
 };
+
 template<class K> KNM_<K> Transp(KNM_<K>  M){ return M.t();} // Add FH July 2015
 template<class K>
 struct SetArray2: public binary_function<K,K,SetArray<K> > {
@@ -1122,6 +1125,7 @@ template<class R,class A>  R  set_array_( R const & a,const A & b){
     R aa=a;
     aa=b;
 return a;}
+
 // xxxxxxxxxxx
 template<class K>  KNM<K> * set_initmat_t(KNM<K> * a,Transpose<KNM<K> * > b ){
     ConjKNM_<K>  tb=b.t->t(); ;
@@ -1133,11 +1137,13 @@ template<class K>  KNM<K> * set_initmat(KNM<K> * a,KNM<K> *  b ){
     a->init(b->N(),b->M());
     *a=*b;
     return a;}
+
 template<class K>  KNM<K> * set_mat_t(KNM<K> * a,Transpose<KNM<K> * > b ){
     ConjKNM_<K>  tb=b.t->t(); ;
     a->resize(tb.N(),tb.M());// correction mars 2013
     *a=tb;
     return a;}
+
 template<class K>  KNM<K> * addto_mat_t(KNM<K> * a,Transpose<KNM<K> * > b ){
     ConjKNM_<K>  tb=b.t->t(); ;
     *a+=tb;
@@ -1177,6 +1183,7 @@ class  OneOperator_2KN_ : public OneOperator {public:
         return new Op(*b);}
     OneOperator_2KN_<K>(): OneOperator(atype<KN_<K> >(),atype<E_Array>()) { pref=-1;}
 };
+
 template<class K, class L>
 class Unique_Op : public E_F0mps {
     public:
@@ -1194,6 +1201,7 @@ template<class K, class L>
 basicAC_F0::name_and_type Unique_Op<K, L>::name_param[] = {
     {"remove", &typeid(long)},
 };
+
 template<class K, class L>
 class Unique : public OneOperator {
     public:
@@ -1203,6 +1211,7 @@ class Unique : public OneOperator {
             return new Unique_Op<K, L>(args, t[0]->CastTo(args[0]), t[1]->CastTo(args[1]));
         }
 };
+
 template<class K, class L>
 AnyType Unique_Op<K, L>::operator()(Stack stack) const {
     KN<K>* array = GetAny<KN<K>*>((*ar)(stack));
@@ -1223,10 +1232,6 @@ AnyType Unique_Op<K, L>::operator()(Stack stack) const {
         (*val)[i++] = *it;
     return static_cast<long>(vals.size());
 }
-
-
-
-
 
 template<class K>
 class E_ForAllLoopRNM
@@ -1338,6 +1343,7 @@ class E_ForAllLoopMapSI
     }
 
 };
+
 template <class K>
 KN_<K> getdiag_(KNM_<K> A) {
     int n = A.N(), m=A.M();
@@ -1349,6 +1355,7 @@ KN_<K> getdiag_(KNM_<K> A) {
     KN_<K> d(A,SubArray(nn,0,sj+si));
     return d;
 }
+
 template <class K>
 KN_<K> getdiag(KNM<K> *pA) {
     ffassert(pA);
@@ -1359,6 +1366,7 @@ template <class K>
 KN_<K> asarray(KNM<K> *pA) {
     ffassert( pA->IsVector1());
     return *pA; }
+
 // Add Oct 2019
 template<class K, bool init>
 KNM<K> * set_Eye(KNM<K> *pA,const  Eye eye)
@@ -1433,7 +1441,6 @@ void ArrayOperator()
     atype<KNM_<K> >()->Add("(","",new OneOperator3_<KN_<K>,KNM_<K>,char,Z >(get_element_lineorcol_<KN_<K>,KNM_<K>,char,Z>));
     atype<KNM_<K> >()->Add("(","",new OneOperator3_<K*,KNM_<K>,Z,Z >(get_elementp2__<K,KNM_<K>,Z,Z>));
 
-
      Add<KN<K> *>("sum",".",new OneOperator1<K,KN<K> *>(get_sum));
      Add<KN<K> *>("min",".",new OneOperator1<K,KN<K> *>(get_min));
      Add<KN<K> *>("max",".",new OneOperator1<K,KN<K> *>(get_max));
@@ -1441,6 +1448,7 @@ void ArrayOperator()
      Add<KN<K> *>("l2",".",new OneOperator1<double,KN<K> *>(get_l2));
      Add<KN<K> *>("l1",".",new OneOperator1<double,KN<K> *>(get_l1));
      Add<KN<K> *>("linfty",".",new OneOperator1<double,KN<K> *>(get_linfty));
+
 // add july 2009
     Add<KNM<K> *>("sum",".",new OneOperator1<K,KNM<K> *>(get_sum));
     Add<KNM<K> *>("min",".",new OneOperator1<K,KNM<K> *>(get_min));
@@ -1526,6 +1534,7 @@ void ArrayOperator()
      Add<KN<K> *>("n",".",new OneOperator1<Z,KN<K> *>(get_n));
      Add<KNM<K> *>("n",".",new OneOperator1<Z,KNM<K> *>(get_n));
      Add<KNM<K> *>("m",".",new OneOperator1<Z,KNM<K> *>(get_m));
+
  //ajout ars 2012 FH
      Add<KN<KN<K> > *>("n",".",new OneOperator1<long,KN<KN<K> > *>(get_n));
      Add<KN<KNM<K> > *>("n",".",new OneOperator1<long,KN<KNM<K> > *>(get_n));
@@ -1602,6 +1611,7 @@ void ArrayOperator()
 
       //-  new OneBinaryOperator<set_eq_arrayp<KN_<K> ,KN<K>* > >
       );
+
 //  ajoute mars 2010  FH
     TheOperators->Add("<-",
 		      new OneBinaryOperator<init_eqarray<KNM<K> ,KNM_<K> > >
@@ -1647,6 +1657,7 @@ void ArrayOperator()
 
        // new OneBinaryOperator<set_eq_arrayp_add<KN_<K> ,KN<K>* > >
       );
+
 /*    if(0)
      TheOperators->Add("-=",
         new OneBinaryOperator<set_eqarray_sub<KN<K> ,K > > ,
@@ -1723,6 +1734,7 @@ void ArrayOperator()
         new OneBinaryOperator<set_eq_arraypd_div<KN_<K> ,Add_Mulc_KN_<K>* > > ,
         new OneBinaryOperator<set_eq_array_div<KN_<K> ,KN_<K> > >
      );
+
 // end correction
      TheOperators->Add("+",
        new OneBinaryOperator<Op2_add0<Add_KN_<K>,KN_<K>,KN_<K> > >,
@@ -1816,6 +1828,7 @@ void ArrayOperator()
         new OneBinaryOperator<set_A_BI< K,Z,affectation_sub<K>  > > ,
         new OneBinaryOperator<set_AI_B< K,Z,affectation_sub<K>  > >
  );
+
 // fin
   TheOperators->Add("\'",
       // new OneOperator1<Transpose<KN_<K> >,KN<K> *>(&Build<Transpose<KN_<K> >,KN<K> *>),
@@ -1831,7 +1844,6 @@ void ArrayOperator()
       //- new OneBinaryOperator<Op2_build<DotStar_KN_<K>,KN_<K>,KN_<K> > >(knrp,knr_)
 
       );
-
 
      TheOperators->Add("./",
        new OneBinaryOperator<Op2_build<DotSlash_KN_<K>,KN_<K>,KN_<K> > > //-,
@@ -1863,7 +1875,7 @@ void ArrayOperator()
      TheOperators->Add("&",new OneOperator2_<bool,MyMap<String,K>*,string*>(exist_element<K>));
     TheOperators->Add("<<",new OneBinaryOperator<PrintP<MyMap<String,K>*> >);
     Add<MyMap<String,K>* >("n",".",new OneOperator1<Z,MyMap<String,K> *>(get_MyMap_n));
-    
+   
     // Add Mai 2009
     Dcl_Type<SetArray<K> >();
     TheOperators->Add("::",
@@ -1945,7 +1957,7 @@ void ArrayOperatorF()
     TheOperators->Add("<-", new OneOperator2_<KN<K> *,KN<K> *,F_KN_<K,K,K,KK> >(set_init_N));
 
 }
-#endif
+
 // Add nov 2019  version 4.4-3 FH
 template<class K> struct KN_rmeps {KN_<K> v;
     KN_rmeps(KN_<K> vv):v(vv) {}

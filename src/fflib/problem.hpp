@@ -1122,7 +1122,7 @@ namespace Fem2D {
     MeshPointStack(tabe.s)->set(X.x,X.y);
     tabe.eval_2(v);
   }
-#ifndef kame
+
 //general templates for 2d and 3d volume // for Surf version ...
 template<class R,typename MC,class MMesh,class FESpace1,class FESpace2>  bool AssembleVarForm(Stack stack,const MMesh & Th,
                                                                    const FESpace1 & Uh,const FESpace2 & Vh,bool sym,
@@ -1132,6 +1132,7 @@ template<class R,class MMesh,class FESpace1,class FESpace2>   void AssembleBC(St
                                                   const FESpace1 & Uh,const FESpace2 & Vh,bool sym,
                                                   MatriceCreuse<R>  * A,KN_<R> * B,KN_<R> * X,
                                                   const list<C_F0> &largs , double tgv  );
+#ifndef kame
 template<class R,class MMesh,class FESpace1,class FESpace2>  void AssembleBC(Stack stack,const MMesh & Th,const FESpace1 & Uh,
                                                   const FESpace2 & Vh,bool sym, MatriceCreuse<R>  * A,KN_<R> * B,KN_<R> * X,
                                                   const list<C_F0> &largs , double tgv  );

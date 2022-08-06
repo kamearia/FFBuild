@@ -49,7 +49,7 @@ void initArrayDCLlong() {
   ArrayDCL<long>();
 //  aaaa_knlp = atype<KN<long>*>();
 }
-#ifndef kame
+
 class OneBinaryOperatorInv_KN_long : public OneOperator {
   public:
     OneBinaryOperatorInv_KN_long(basicForEachType * ti) : OneOperator(atype<Inv_KN_long >(), ti ,atype<long>()) {}
@@ -69,7 +69,7 @@ class OneBinaryOperatorInv_KN_long : public OneOperator {
       return new E_F_F0<Inv_KN_long, KN_<long> >(Build<Inv_KN_long, KN_<long> >, to< KN_<long> >(args[0]));
     }
 };
-#endif
+
 // Add mars 2010
 template<class R> R *set_init_init( R* const & a,const long & n) {
   SHOWVERB(cout << " set_init " << typeid(R).name() << " " << n << endl);
@@ -78,7 +78,7 @@ template<class R> R *set_init_init( R* const & a,const long & n) {
     (*a)[i].init();
   return a;
 }
-#ifndef kame
+
 inline string **get_elements(KN<String> *const &a, long const &b) {
   ffassert(a && b >=0 && b < a->size());
   String &Sret = (*a)[b]; // correction FH feb 2004
@@ -140,20 +140,22 @@ long findall(const  KN_<long> & a,  const long &v,  KN<long> * const &  pI)
 }
 
 
-#endif
+
 extern Polymorphic * TheOperators;
 void initArrayOperatorlong()
 {
   typedef long K;
-#ifndef kame
+
   Dcl_Type< Eye > ();// OK this is the fist array def ..
   Global.Add("eye","(",new OneOperator1<Eye,long>(fEye));
   Global.Add("eye","(",new OneOperator2<Eye,long>(fEye));
   Global.Add("findall", "(", new OneOperator3_< long, KN_<long>, long ,KN<long>*>(findall));// oct 2020 FH.
 
   ArrayOperator<long, long>();
+
   // to define inverse permutation // Add FH mars 2005
   TheOperators->Add("^", new OneBinaryOperatorInv_KN_long(atype<KN_<long> >()));
+
   //- TheOperators->Add("^", new OneBinaryOperatorInv_KN_long(atype<KN<long> *>()));
   aatypeknlongp = atype<KN<long>*>(); // for compilation error with g++ 3.2.2
 
@@ -184,7 +186,8 @@ void initArrayOperatorlong()
   Add<KNM<K> *>("jmax", ".", new OneOperator1<long, KNM<K> *>(get_jmax)); // Add april 2018 FH
   TheOperators->Add("ijmax", new OneOperator3_<NothingType,KNM<K> *, long*, long*>(get_ijmax)); // Add april 2018 FH
   TheOperators->Add("ijmin", new OneOperator3_<NothingType,KNM<K> *, long*, long*>(get_ijmin)); // Add april 2018 FH
-  // madd FH. march 2015 ...
+
+																								// madd FH. march 2015 ...
   Global.Add("Unique", "(", new Unique<K, K>);
   Global.Add("Unique", "(", new Unique<K, double>);
   // convertion double -> long (via lround)
@@ -199,8 +202,6 @@ void initArrayOperatorlong()
   TheOperators->Add("<-", new InitMapfromArray<MyMap<String,String>*, string *, string*, true> );
 
   TheOperators->Add("<<", new OneBinaryOperator<PrintPnd<KN<String> * > >); // add may 2018 FH
-#endif
+
 }
 
-// void xxxx() {
-// }

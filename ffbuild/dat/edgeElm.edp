@@ -1,0 +1,12 @@
+
+verbosity=5;
+// Mesh
+//real pi = 4*atan(1);
+border a(t=0, 2*pi){x=cos(t); y=sin(t); label=1;}
+mesh disk= buildmesh(a(50));
+
+// Fespace
+fespace femp1(disk, RT0Ortho);
+femp1 [Hx,Hy];
+[Hx,Hy]=[-y,x];
+plot([Hx,Hy]);

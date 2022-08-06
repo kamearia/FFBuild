@@ -492,7 +492,6 @@ GlgBoundaryElement<Mesh3> get_element(GlgBoundaryElement<Mesh3>::BE const & a, l
 GlgVertex<Mesh3> get_element(GlgBoundaryElement<Mesh3> const & a, long const & n){  return a[n];}
 
 GlgElement<Mesh3> get_adj(GlgElement<Mesh3>::Adj const & a, long  * const & n){return  a.adj(*n);}
-
 GlgElement<Mesh3> get_element(pmesh3 const & a, long const & n) {  return GlgElement<Mesh3>(a,n);}
 GlgElement<Mesh3> get_element(pmesh3 *const & a, long const & n) {  return GlgElement<Mesh3>(*a,n);}
 
@@ -1759,22 +1758,6 @@ AnyType set_fe3 (Stack s,Expression ppfe, Expression e)
       << " " << kkth << "/" << kkff << " =  " << double(kkth)/Max<double>(1.,kkff) << endl;
   return SetAny<FEbase<R,v_fes>*>(&fe); 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 template<class K,class v_fes>
 E_set_fev3<K,v_fes>::E_set_fev3(const E_Array * a,Expression pp) 
