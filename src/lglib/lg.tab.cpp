@@ -3460,26 +3460,26 @@ yyerrlab:
 #endif
 		}
 
-#ifndef kame
 
-		if (yyerrstatus == 3)
+
+	if (yyerrstatus == 3)
+	{
+		/* If just tried and failed to reuse look-ahead token after an
+	   error, discard it.  */
+
+		if (yychar <= YYEOF)
 		{
-      /* If just tried and failed to reuse look-ahead token after an
-	 error, discard it.  */
-
-			if (yychar <= YYEOF)
-			{
-	  /* Return failure if at end of input.  */
-				if (yychar == YYEOF)
-					YYABORT;
-			}
-			else
-			{
-				yydestruct ("Error: discarding",
-				yytoken, &yylval);
-				yychar = YYEMPTY;
-			}
+			/* Return failure if at end of input.  */
+			if (yychar == YYEOF)
+				YYABORT;
 		}
+		else
+		{
+			yydestruct("Error: discarding",
+				yytoken, &yylval);
+			yychar = YYEMPTY;
+		}
+	}
 
   /* Else will try to reuse look-ahead token after shifting the error
      token.  */
@@ -3550,7 +3550,7 @@ yyerrlab1:
 		yystate = yyn;
 		goto yynewstate;
 
-#endif
+
 /*-------------------------------------.
 | yyacceptlab -- YYACCEPT comes here.  |
 `-------------------------------------*/
