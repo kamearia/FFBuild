@@ -1,0 +1,127 @@
+// macro the get the current mesh size parameter
+// in:
+// Th the mesh
+// Vh P1 fespace on Th
+// out :
+// h: the Vh finite element finite set to the current mesh size
+macro MeshSizecomputation (Th, Vh, h)
+{
+	real[int] count(Th.nv);
+/*mesh size (lenEdge = integral(e) 1 ds)*/
+	varf vmeshsizen (u, v) = intalledges(Th, qfnbpE=1)(v);
+/*number of edges per vertex*/
+	varf vedgecount (u, v) = intalledges(Th, qfnbpE=1)(v/lenEdge);
+/*mesh size*/
+	count = vedgecount(0, Vh);
+	h[] = 0.;
+	h[] = vmeshsizen(0, Vh);
+	cout << "count min = " << count.min << " max = " << count.max << endl;
+	h[] = h[]./count;
+	cout << "-- bound meshsize = " << h[].min << " " << h[].max << endl;
+} //
+
+// macro to remesh according the de residual indicator
+// in:
+// Th the mesh
+// Ph P0 fespace on Th
+// Vh P1 fespace on Th
+// vindicator the varf to evaluate the indicator
+// coef on etameam
+macro ReMeshIndicator (Th, Ph, Vh, vindicator, coef)
+{
+Vh h=0;
+/*evaluate the mesh size*/
+ MeshSizecomputation(Th, Vh, h);
+Ph etak;
+etak[] = vindicator(0, Ph);
+etak[] = sqrt(etak[]);
+real etastar= coef*(etak[].sum/etak[].n);
+cout << "etastar = " << etastar << " sum = " << etak[].sum << " " << endl;
+
+/*etaK is discontinous*/
+/*we use P1 L2 projection with mass lumping*/
+Vh fn, sigma;
+varf veta(unused, v) = int2d(Th)(etak*v);
+varf vun(unused, v) = int2d(Th)(1*v);
+fn[] = veta(0, Vh);
+sigma[] = vun(0, Vh);
+fn[] = fn[]./ sigma[];
+real pp=2.0;
+fn = max(min(fn/etastar,pp),1./pp);
+/*new mesh size*/
+h = h / fn;
+/*plot(h, cmm="h");*/
+cout << "-- new mesh size = " << h[].min << " " << h[].max << endl;
+/*build the mesh*/
+Th = adaptmesh(Th, IsMetric=1, h, splitpbedge=1, nbvx=10000);
+} //
+
+// Parameters
+real hinit = 0.01; //initial mesh size
+
+// Mesh
+real x0=0.;
+real x1=0.13;
+real x2=0.09;
+real y0=0.;
+real y1=0.096;
+real y2=0.06;
+real mu0=4.e-7*pi;
+
+border b11(t=x0, x1){x=t; y=y0; label=1; }
+border b12(t=y0, y1){x=x1; y=t; label=1; }
+border b2(t=x1, x2){x=t; y=y1; label=2; }
+border b31(t=y1, y2){x=x2; y=t; label=3; }
+border b32(t=x2, x0){x=t; y=y2; label=3; }
+border b4(t=y2, y0){x=0; y=t; label=4; }
+
+int k=1;
+mesh Th=buildmesh(b11(13*k)+b12(9*k)+ b2(4*k)+ b31(4*k)+ b32(9*k)+b4(6*k));
+
+// Fespace
+fespace Vh(Th, P1); //for the mesh size and solution
+Vh h = hinit; //the FE function for the mesh size
+
+fespace Ph(Th, P0); //for the error indicator
+Vh Az, Nz;
+Vh p,q;
+
+//Build a mesh with the given mesh size hinit
+Th = adaptmesh(Th, h, IsMetric=1, splitpbedge=1, nbvx=10000);
+plot(Th, cmm="mesh", wait=true);
+
+// Problem
+
+problem Amethod(Az, Nz)
+	=int2d(Th)(1./mu0*(dx(Az)*dx(Nz) + dy(Az)*dy(Nz)) )
+    +on(4, Az=0.)+on(2, Az=1.);
+
+
+solve Tmethod(p,q)
+	=int2d(Th)(mu0*(dx(p)*dx(q)+dy(p)*dy(q)) )
+     +on(1, p=0.) + on(3, p=1);
+real R, S;
+
+varf indicator2 (unused, chiK)
+= int2d(Th)(
+	chiK*hTriangle*sqrt((1./mu0*(dy(Az)+mu0*R*dx(p))^2+(-dx(Az)+mu0*R*dy(p))^2))
+)
+;
+// Mesh adaptation loop
+for (int i = 0; i < 10; i++){
+Az = Az;
+p=p;
+// Solve
+Amethod;
+Tmethod;
+R=int2d(Th)(1./mu0*(dx(Az)^2+dy(Az)^2));
+S=int2d(Th)(mu0*(dx(p)^2+dy(p)^2));
+cout<<"R=  "<< R<<  "   S=  "<< S<< "  RS= "<< R*S<< endl;
+
+//plot(Th, Az, wait=true);
+//plot(Th, p, wait=true);
+real cc = 0.8;
+if (i > 5) cc=1;
+ReMeshIndicator(Th, Ph, Vh, indicator2, cc);
+plot(Th, cmm="mesh", wait=true);
+}

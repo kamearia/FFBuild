@@ -1,0 +1,123 @@
+real r=0.425e-3;
+real rout=1.0e-3;
+real dhalf=0.475e-3;
+real mu0=4.e-7*pi;
+real sigma=5.8e7;
+real f=1.e5;
+real s=2*pi*f;
+
+int k=8;
+real ang=pi/14;
+real y1=r*sin(ang);
+
+
+border outeY(t=0., pi/2){x=rout*cos(t); y=rout*sin(t); label=1; }
+border yax1(t=rout, y1){x=0.; y=t; label=21; }
+border yax2(t=y1, 0){x=0.; y=t; label=22; }
+border cond1(t=pi, pi-ang){x=dhalf+r*cos(t); y=r*sin(t); label=31; }
+border cond2(t=pi-ang, 0){x=dhalf+r*cos(t); y=r*sin(t); label=32; }
+border xax1(t=0, dhalf-r){x=t; y=0.; label=4; }
+border xax2(t=dhalf-r, dhalf+r){x=t; y=0.; label=5; }
+border xax3(t=dhalf+r, rout){x=t; y=0.; label=6; }
+border uppeYgap(t=dhalf+r*cos(pi-ang), 0){ x=t; y=y1; label=7;}
+
+mesh Th=buildmesh(outeY(15*k)
+			+yax1(9*k)+yax2(1*k)
+			+xax1(1*k) +xax2(8*k)+xax3(1*k)
+			+cond1(1*k)+cond2(13*k)
+			+uppeYgap(1*k)
+	);
+plot(Th, cmm="mesh");
+
+int rCond=Th(dhalf,0.).region;
+int rAir =Th(0.,rout).region;
+int rGap=Th(0.,0.).region;
+
+
+// Fespace
+fespace Vh(Th, P1); //foY the mesh size and solution
+fespace V0(Th, P0);
+fespace Vhdc(Th, P1dc);
+fespace VhYot(Th, RT0Ortho);
+
+V0 sig= sigma*(Th(x, y).region==rCond);
+
+fespace Ph(Th, P0); 
+Vh az, aaz;
+Vh p,q;
+VhYot [tx,ty], [ttx,tty];
+
+real ez=1;
+solve Amethod(az, aaz, solver="CG", eps=1.0e-6)
+	=int2d(Th)(1./mu0*(dx(az)*dx(aaz) + dy(az)*dy(aaz)) )
+	+int2d(Th)(s*sig*az*aaz )
+    -int2d(Th, rCond)( sigma*ez*aaz)
+    +on(1, az=0.)+on(21, az=0.)+on(22, az=0.);
+
+Vhdc jz=sig*(ez-s*az);
+real current=int2d(Th, rCond)(jz);
+cout << "current=  "<< current<<endl;
+plot(az,cmm="az");
+plot(jz,cmm="jz-a", fill=1);
+
+/*
+real ty0=-1./y1;
+VhYot [t0x,t0y];
+solve Tgap([t0x,t0y],[ttx,tty], solver="CG", eps=1.0e-6)
+	=int2d(Th,rGap)(1.e5/sigma*( dx(t0y)-dy(t0x))*(dx(tty)-dy(ttx)) )
+		+on(4, t0x=0., t0y=0.)+on(7, t0x=0., t0y=0.)
+		+on(22, t0x=0, t0y=ty0)	
+	;
+plot([t0x,t0y]);
+*/
+
+Vh pg;
+real pg0=-1.;
+solve gapPotential(pg, q, solver="CG", eps=1.0e-6)
+	=int2d(Th, rGap)( mu0*(dx(pg)*dx(q)+dy(pg)*dy(q))  )
+	+on(7, pg=0)
+	+on(4,pg=pg0)
+	;
+
+solve Tmethod([tx, ty, p],[ttx, tty,q], solver="CG", eps=1.0e-6)
+	=int2d(Th,rCond)(s* mu0*( (tx-dx(p))*(ttx-dx(q))+ (ty-dy(p))*(tty-dy(q)) ) )
+//	+int2d(Th,rGap)(s* mu0*( (t0x-dx(p))*(ttx-dx(q))+ (t0y-dy(p))*(tty-dy(q)) ) )
+	+int2d(Th,rGap)(s* mu0*( (-dx(p))*(-dx(q))+ (-dy(p))*(-dy(q)) ) )
+//	+int2d(Th,rGap)(s* mu0*( (t0x)*(-dx(q))+ (t0y)*(-dy(q)) ) )
+	+int2d(Th,rGap)(s* mu0*( (-dx(pg))*(-dx(q))+ (-dy(pg))*(-dy(q)) ) )
+ 	+int2d(Th,rAir)(s* mu0*( dx(p)*dx(q)+ dy(p)*dy(q)) )
+	+int2d(Th, rCond)(1./sig*( dx(ty)-dy(tx))*(dx(tty)-dy(ttx)) )
+    +on(4, p=0.) + on(5, p=0)+ on(6, p=0)
+	+on(5, tx=0., ty=0.)	+on(32, tx=0., ty=0.)
+//	+on(31,tx=t0x, ty=t0y)
+	+on(31,tx=-dx(pg), ty=-dy(pg))
+	;
+jz=(dx(ty)-dy(tx))*(Th(x, y).region==rCond);
+
+//p=p+pg*(Th(x, y).region==rGap);
+plot(p,cmm="p");
+
+current=int2d(Th, rCond)(jz);
+cout << "current=  "<< current<<endl;
+
+
+real Y, Z;
+
+Y=int2d(Th)(1./mu0*(dx(az)^2+dy(az)^2)*s  + sig*(ez-s*az)^2);
+Z=int2d(Th,rCond)(mu0*((tx-dx(p))^2+(ty-dy(p))^2) )*s
+//  +int2d(Th, rGap)(mu0*((t0x-dx(p))^2+(t0y-dy(p))^2) )*s
+  +int2d(Th, rGap)(mu0*((-dx(pg)-dx(p))^2+(-dy(pg)-dy(p))^2) )*s
+	+int2d(Th,rAir)(mu0*(dx(p)^2+dy(p)^2) )*s
+    +int2d(Th,rCond)(1/sig*(dx(ty)-dy(tx))^2 )
+	;
+
+cout<<"Y=  "<< Y<<  "   Z=  "<< Z<< "  YZ= "<< Y*Z<< endl;
+
+
+jz=jz/Z;
+current=int2d(Th, rCond)(jz);
+cout << "current=  "<< current<<endl;
+plot(jz, cmm="jz-t", fill=1);
+end;
+
+end;
